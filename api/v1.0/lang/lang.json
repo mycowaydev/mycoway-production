@@ -1,0 +1,17 @@
+{
+	"en": {
+		"currency_myr": "MYR",
+		"error_session_expired": "Session expired.",
+		"error_bad_request": "Bad request.",
+		"error_signature_empty": "Signature missing.",
+		"error_signature_invalid": "Invalid signature.",
+		"error_account_deactivated": "Your account has been deactivated.",
+		"error_account_suspended": "Your account has been suspended. Please contact support for help.",
+		"error_account_blocked": "Your account has been blocked due to too many invalid attempts. Please contact support for help.",
+		"error_admin_session_expired": "Session expired. Please re-login again.",
+		"error_account_been_used": "Your account has been used on other device. You will be forced to logout.",
+		"error_unauthorized_access": "Unauthorized access. Please re-login again.",
+		"error_page_not_found": "Page not found.",
+		"error_server_error": "Server error."
+	}
+}
