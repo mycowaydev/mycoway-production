@@ -1,6 +1,13 @@
 {
 	"en": {
 		"currency_myr": "MYR",
+		"error_title_empty": "Please enter title.",
+		"error_description_empty": "Please enter description.",
+		"error_healthy_tips_id_empty": "Missing healthy tips ID parameter.",
+		"error_admin_login_user_id_empty": "Please enter user ID.",
+		"error_admin_login_password_empty": "Please enter password.",
+		"error_admin_login_user_id_password_invalid": "Invalid user ID / password.",
+		"error_admin_login_acc_blocked": "Your account has been blocked due to too many invalid attempts. Please contact support for help.",
 		"error_session_expired": "Session expired.",
 		"error_bad_request": "Bad request.",
 		"error_signature_empty": "Signature missing.",

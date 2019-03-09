@@ -28,26 +28,31 @@ module.exports = Object.freeze({
 		AUTH_TOKEN_SECRET: process.env['AUTH_TOKEN_SECRET'],
 		AUTH_TOKEN_EXPIRES: isProduction ? (60 * 60 * 24 * 365) : (60 * 60 * 24 * 7), // 1 year : 1 week
 		WEB_SESSION_EXPIRES: new Date(Date.now() + (60 * 60 * 24 * 7 * 1000)), // 1 week
-		WEB_SESSION_SECRET: process.env['WEB_SESSION_SECRET']
+		WEB_SESSION_SECRET: process.env['WEB_SESSION_SECRET'],
+		PAGE_SIZE: 10
 	},
 	CDN: {
 		NAME: isProduction ? process.env['CDN_NAME_PRODUCTION'] : process.env['CDN_NAME'],
 		API_KEY: isProduction ? process.env['CDN_API_KEY_PRODUCTION'] : process.env['CDN_API_KEY'],
 		API_SECRET: isProduction ? process.env['CDN_API_SECRET_PRODUCTION'] : process.env['CDN_API_SECRET']
 	},
-	// FB: {
-	// 	AUTH_KEY: 'facebook-auth',
-	// 	API_KEY: process.env['FB_API_KEY'],
-	// 	API_SECRET: process.env['FB_API_SECRET']
-	// },
 	DB: {
 		URI: process.env['DB_URI'] || process.env['DB_DEVELOPMENT_URI'],
 		TBL_ADMIN: 'tbl_admin',
 		TBL_LOG: 'tbl_log',
-		TBL_SESSION: 'tbl_session'
+		TBL_SESSION: 'tbl_session',
+		TBL_HEALTHY_TIPS: 'tbl_healthy_tips'
 	},
 	API: {
-		_TEST: '_test'
+		_TEST: '_test',
+		VERIFY_IS_ADMIN_EXISTS: 'verify-is-admin-exists',
+		VERIFY_ADMIN_LOGIN: 'verify-admin-login',
+		LOGOUT_ADMIN: 'logout-admin',
+		ADMIN_GET_HEALTHY_TIP_LIST: 'admin-get-healthy-tip-list',
+		ADMIN_GET_HEALTHY_TIP_INFO: 'admin-get-healthy-tip-info',
+		ADMIN_ADD_HEALTHY_TIP: 'admin-add-healthy-tip',
+		ADMIN_UPDATE_HEALTHY_TIP: 'admin-update-healthy-tip',
+		ADMIN_REMOVE_HEALTHY_TIP: 'admin-remove-healthy-tip'
 	},
 	setLocalizeFromReq: function(req) {
 		var httpHeaders = req.headers;
@@ -147,6 +152,37 @@ module.exports = Object.freeze({
 		}
 		return newInfo;
 	},
+	getHealthyTipsInfo: function(info) {
+		var newInfo = {};
+		if (!this.isEmptyJsonObject(info)) {
+			newInfo['healthy_tips_id'] = info['healthy_tips_id'];
+			newInfo['title'] = info['title'];
+			newInfo['description'] = info['description'];
+			newInfo['image'] = info['image'];
+			newInfo['created_on'] = info['created_on'];
+			newInfo['created_date'] = this.getFormattedDateTime(info['created_on'], 'YYYY-MM-DD');
+		}
+		return newInfo;
+	},
+	isParamsExist: function(req, params) {
+		var isEmpty = true;
+		var isExists = true;
+		params.push('wsid');
+		params.push('signature');
+		for (var p in req.body) {
+			if (isEmpty) {
+				isEmpty = false;
+			}
+			if (params.indexOf(p) < 0) {
+				isExists = false;
+				break;
+			}
+		}
+		if (isEmpty) {
+			isExists = false;
+		}
+		return isExists;
+	},
 	zeroPad: function(num, places) {
 		var zero = places - num.toString().length + 1;
 		return Array(+(zero > 0 && zero)).join('0') + num;
@@ -154,20 +190,20 @@ module.exports = Object.freeze({
 	getUniqueHashId: function(value) {
 		var hashids = new HashIds(this.GLOBAL['HASH_IDS_KEY']);
 		if (value) {
-			value = this.hashSHA256(value);
+			value = this.hashSHA256(value, true);
 		}
 		return hashids.encodeHex(value);
 	},
-	hashSHA256: function(value) {
+	hashSHA256: function(value, isHex) {
 		try {
-			return require('crypto').createHash('sha256').update(value).digest('base64');
+			return require('crypto').createHash('sha256').update(value).digest(isHex ? 'hex' : 'base64');
 		} catch(ex) {
 			return '';
 		}
 	},
-	hashSHA1: function(value) {
+	hashSHA1: function(value, isHex) {
 		try {
-			return require('crypto').createHash('sha1').update(value).digest('base64');
+			return require('crypto').createHash('sha1').update(value).digest(isHex ? 'hex' : 'base64');
 		} catch(ex) {
 			return '';
 		}
@@ -192,6 +228,17 @@ module.exports = Object.freeze({
 	},
 	getString: function(value) {
 		return value && value.length > 0 ? value : '-';
+	},
+	getPage: function(page) {
+		try {
+			page = parseInt(page) - 1;
+			if (!page || page < 0) {
+				page = 0;
+			}
+		} catch(ex) {
+			page = 0;
+		}
+		return page;
 	},
 	hasJsonValue: function(jsonObj, value) {
 		try {
@@ -249,6 +296,11 @@ module.exports = Object.freeze({
 	capitalizeFirstLetter: function(string) {
 		return string.charAt(0).toUpperCase() + string.slice(1);
 	},
+	appendUpdatedDate: function(obj) {
+		obj['updated_on'] = this.getCurrentTimestamp();
+		obj['updated_date'] = new Date().toISOString();
+		return obj;
+	},
 	logApiCall: function(req, res, resp) {
 		var obj = {
 			'wsid': req.body['wsid'],
@@ -289,6 +341,42 @@ module.exports = Object.freeze({
 		var resCode = code;
 		var resMessage = '';
 		switch(module) {
+			case this.API['VERIFY_ADMIN_LOGIN']: {
+				switch(code) {
+					case 201: { resMessage = this.translate('error_admin_login_user_id_empty'); break; }
+					case 202: { resMessage = this.translate('error_admin_login_password_empty'); break; }
+					case 203: { resMessage = this.translate('error_admin_login_user_id_password_invalid'); break; }
+					case 204: { resMessage = this.translate('error_admin_login_acc_blocked'); break; }
+				}
+				break;
+			}
+			case this.API['ADMIN_GET_HEALTHY_TIP_INFO']: {
+				switch(code) {
+					case 201: { resMessage = this.translate('error_healthy_tips_id_empty'); break; }
+				}
+				break;
+			}
+			case this.API['ADMIN_ADD_HEALTHY_TIP']: {
+				switch(code) {
+					case 201: { resMessage = this.translate('error_title_empty'); break; }
+					case 202: { resMessage = this.translate('error_description_empty'); break; }
+				}
+				break;
+			}
+			case this.API['ADMIN_UPDATE_HEALTHY_TIP']: {
+				switch(code) {
+					case 201: { resMessage = this.translate('error_healthy_tips_id_empty'); break; }
+					case 202: { resMessage = this.translate('error_title_empty'); break; }
+					case 203: { resMessage = this.translate('error_description_empty'); break; }
+				}
+				break;
+			}
+			case this.API['ADMIN_REMOVE_HEALTHY_TIP']: {
+				switch(code) {
+					case 201: { resMessage = this.translate('error_healthy_tips_id_empty'); break; }
+				}
+				break;
+			}
 			default: {
 				switch(code) {
 					case 301: { resMessage = this.translate('error_session_expired'); break; }

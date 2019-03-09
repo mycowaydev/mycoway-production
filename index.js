@@ -11,28 +11,16 @@ const mongoose = require('mongoose');
 const port = process.env['PORT'] || 3000;
 
 const Log = require('./api/' + config.GLOBAL['API_VERSION'] + '/model/log');
-const FacebookTokenStrategy = require('passport-facebook-token');
 const MongoStore = require('connect-mongodb-session')(session);
 
 // Connect to MongoDB
-// mongoose.connect(config.DB['URI'], { autoIndex: false, useNewUrlParser: true }, function (err) {
-// 	if (err) {
-// 		console.log('Failed to connect to database.');
-// 		return;
-// 	}
-// 	console.log('Successfully connected to database.');
-// });
-
-// Facebook auth
-// passport.use(config.FB['AUTH_KEY'], new FacebookTokenStrategy(
-// 	{
-// 		clientID: config.FB['API_KEY'],
-// 		clientSecret: config.FB['API_SECRET']
-// 	},
-// 	function(accessToken, refreshToken, profile, done) {
-// 		done(null, profile);
-// 	}
-// ));
+mongoose.connect(config.DB['URI'], { autoIndex: false, useNewUrlParser: true }, function (err) {
+	if (err) {
+		console.log('Failed to connect to database.');
+		return;
+	}
+	console.log('Successfully connected to database.');
+});
 
 /**
  * Options are the same as multiparty takes.
@@ -66,18 +54,18 @@ app.use(formData.union());
 app.use(express.static('assets/public'));
 app.use(express.static('assets/admin'));
 // Create session middleware
-// app.use(
-// 	session({
-// 		store: new MongoStore({
-// 			uri: config.DB['URI'],
-// 			collection: config.DB['TBL_SESSION']
-// 		}),
-// 		cookie: { maxAge: config.GLOBAL['WEB_SESSION_EXPIRES'] },
-// 		secret: config.GLOBAL['WEB_SESSION_SECRET'],
-// 		resave: true,
-// 		saveUninitialized: false
-// 	})
-// );
+app.use(
+	session({
+		store: new MongoStore({
+			uri: config.DB['URI'],
+			collection: config.DB['TBL_SESSION']
+		}),
+		cookie: { maxAge: config.GLOBAL['WEB_SESSION_EXPIRES'] },
+		secret: config.GLOBAL['WEB_SESSION_SECRET'],
+		resave: true,
+		saveUninitialized: false
+	})
+);
 
 // Set default engine extension
 app.set('view engine', 'html');
