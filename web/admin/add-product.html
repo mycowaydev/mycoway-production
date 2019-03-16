@@ -1,0 +1,109 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    include includes/document-head
+
+    <div class="container body">
+      <div class="main_container">
+        <!-- sidebar menu -->
+        include includes/left-navigation
+        <!-- /sidebar menu -->
+
+        <!-- top navigation -->
+        include includes/header
+        <!-- /top navigation -->
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+          <div class="">
+            <div class="page-title">
+              <div class="title_left">
+                <h3>Add Healthy Tip</h3>
+              </div>
+            </div>
+            <div class="clearfix"></div>
+
+            <div class="row">
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <!-- <div class="x_title"></div> -->
+                  <div class="x_content">
+                  <div class="panel">
+                      <div class="panel-body">
+                        <form id="healthyTipForm" data-parsley-validate class="form-horizontal">
+
+                          <h3>Healthy Tip Information</h3>
+                          <hr>
+                          <div class="row">
+                            <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                              <label for="title">Title</label>
+                              <input type="text" class="form-control" id="title" name="title" placeholder="Title">
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="form-group col-md-12 col-sm-12 col-xs-12">
+                              <label for="description">Description</label>
+                              <textarea class="form-control" id="description" name="description" style="max-width: 100%;" placeholder="Description" rows="5"></textarea>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="form-group col-md-6 col-sm-12 col-xs-12">
+                              <label for="image">Image (Optional)</label>
+                              <input type="file" id="image"/>
+                            </div>
+                          </div>
+                          <br/>
+
+                          <hr>
+                          <div class="row">
+                            <div class="form-group col-md-12" style="text-align: right;">
+                             <button id="addBtn" type="submit" class="btn btn-primary">Add Healthy Tip</button>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                  </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <!-- /page content -->
+
+        <!-- footer content -->
+        include includes/footer.html
+        <!-- /footer content -->
+      </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="../vendors/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <!-- iCheck -->
+    <script src="../vendors/iCheck/icheck.min.js"></script>
+    <!-- bootstrap-datetimepicker -->
+    <script src="../vendors/moment/min/moment.min.js"></script>
+    <script src="../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+
+    <!-- PNotify -->
+    <script src="../vendors/pnotify/dist/pnotify.js"></script>
+    <script src="../vendors/pnotify/dist/pnotify.buttons.js"></script>
+    
+    <!-- jquery.inputmask -->
+    <script src="../vendors/jquery.inputmask/dist/min/jquery.inputmask.bundle.min.js"></script>
+
+    <!-- jQuery Validation Plugin -->
+    <script src="../js/jquery.validate.min.js"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script src="../build/js/custom.js"></script>
+
+    <!-- others plugins -->
+    <script src="../web-js/notify.js"></script>
+    <script src="../web-js/add-healthy-tip.js"></script>
+
+include includes/document-foot.html

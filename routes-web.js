@@ -13,6 +13,12 @@ const apiAdminAddHealthyTip = '/' + config.API['ADMIN_ADD_HEALTHY_TIP'];
 const apiAdminUpdateHealthyTip = '/' + config.API['ADMIN_UPDATE_HEALTHY_TIP'];
 const apiAdminRemoveHealthyTip = '/' + config.API['ADMIN_REMOVE_HEALTHY_TIP'];
 
+const apiAdminGetAppParamList = '/' + config.API['ADMIN_GET_APP_PARAM_LIST'];
+const apiAdminGetAppParamInfo = '/' + config.API['ADMIN_GET_APP_PARAM_INFO'];
+const apiAdminAddAppParam = '/' + config.API['ADMIN_ADD_APP_PARAM'];
+const apiAdminUpdateAppParam = '/' + config.API['ADMIN_UPDATE_APP_PARAM'];
+const apiAdminRemoveAppParam = '/' + config.API['ADMIN_REMOVE_APP_PARAM'];
+
 module.exports = function(apiVersion) {
 	
 	let router = express.Router();
@@ -31,6 +37,11 @@ module.exports = function(apiVersion) {
 	router.post(apiAdminAddHealthyTip, apiVerifyIsAdminExistsRoute.isAuthorized, require(apiVersionPrefix + apiAdminAddHealthyTip));
 	router.post(apiAdminUpdateHealthyTip, apiVerifyIsAdminExistsRoute.isAuthorized, require(apiVersionPrefix + apiAdminUpdateHealthyTip));
 	router.post(apiAdminRemoveHealthyTip, apiVerifyIsAdminExistsRoute.isAuthorized, require(apiVersionPrefix + apiAdminRemoveHealthyTip));
+	router.post(apiAdminGetAppParamList, apiVerifyIsAdminExistsRoute.isAuthorized, require(apiVersionPrefix + apiAdminGetAppParamList));
+	router.post(apiAdminGetAppParamInfo, apiVerifyIsAdminExistsRoute.isAuthorized, require(apiVersionPrefix + apiAdminGetAppParamInfo));
+	router.post(apiAdminAddAppParam, apiVerifyIsAdminExistsRoute.isAuthorized, require(apiVersionPrefix + apiAdminAddAppParam));
+	router.post(apiAdminUpdateAppParam, apiVerifyIsAdminExistsRoute.isAuthorized, require(apiVersionPrefix + apiAdminUpdateAppParam));
+	router.post(apiAdminRemoveAppParam, apiVerifyIsAdminExistsRoute.isAuthorized, require(apiVersionPrefix + apiAdminRemoveAppParam));
 
 	router.get('/adminer', function(req, res) {
 		res.redirect('/adminer/login');
@@ -68,6 +79,33 @@ module.exports = function(apiVersion) {
 					localVar['healthy_tips_id'] = req.query['healthy_tips_id'];
 					res.render(path.join(__dirname, '/web/admin/edit-healthy-tip'), localVar);
 					break;
+				case 'product':
+					localVar['title'] = 'Product list';
+					res.render(path.join(__dirname, '/web/admin/product'), localVar);
+				break;
+				case 'add-product':
+					localVar['title'] = 'Add Product';
+					res.render(path.join(__dirname, '/web/admin/add-product'), localVar);
+				break;
+				case 'app-param':
+					localVar['title'] = 'App Param List';
+					localVar['success'] = req.query['success'];
+					localVar['remove_success'] = req.query['remove_success'];
+					res.render(path.join(__dirname, '/web/admin/app-param'), localVar);
+				break;
+				case 'add-app-param':
+					localVar['title'] = 'Add App Param';
+					res.render(path.join(__dirname, '/web/admin/add-app-param'), localVar);
+				break;
+				case 'edit-app-param':
+				localVar['title'] = 'Edit App Param';
+				localVar['key'] = req.query['key'];
+				res.render(path.join(__dirname, '/web/admin/edit-app-param'), localVar);
+				break;
+				case 'mt-param':
+					localVar['title'] = 'MT Param';
+					res.render(path.join(__dirname, '/web/admin/mt-param'), localVar);
+				break;
 				default:
 					res.redirect('/404');
 			}

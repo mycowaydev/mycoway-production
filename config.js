@@ -41,7 +41,8 @@ module.exports = Object.freeze({
 		TBL_ADMIN: 'tbl_admin',
 		TBL_LOG: 'tbl_log',
 		TBL_SESSION: 'tbl_session',
-		TBL_HEALTHY_TIPS: 'tbl_healthy_tips'
+		TBL_HEALTHY_TIPS: 'tbl_healthy_tips',
+		TBL_APPPARAM: 'tbl_app_param'
 	},
 	API: {
 		_TEST: '_test',
@@ -52,7 +53,12 @@ module.exports = Object.freeze({
 		ADMIN_GET_HEALTHY_TIP_INFO: 'admin-get-healthy-tip-info',
 		ADMIN_ADD_HEALTHY_TIP: 'admin-add-healthy-tip',
 		ADMIN_UPDATE_HEALTHY_TIP: 'admin-update-healthy-tip',
-		ADMIN_REMOVE_HEALTHY_TIP: 'admin-remove-healthy-tip'
+		ADMIN_REMOVE_HEALTHY_TIP: 'admin-remove-healthy-tip',
+		ADMIN_GET_APP_PARAM_LIST: 'admin-get-app-param-list',
+		ADMIN_GET_APP_PARAM_INFO: 'admin-get-app-param-info',
+		ADMIN_ADD_APP_PARAM: 'admin-add-app-param',
+		ADMIN_UPDATE_APP_PARAM: 'admin-update-app-param',
+		ADMIN_REMOVE_APP_PARAM: 'admin-remove-app-param'
 	},
 	setLocalizeFromReq: function(req) {
 		var httpHeaders = req.headers;
@@ -161,6 +167,18 @@ module.exports = Object.freeze({
 			newInfo['image'] = info['image'];
 			newInfo['created_on'] = info['created_on'];
 			newInfo['created_date'] = this.getFormattedDateTime(info['created_on'], 'YYYY-MM-DD');
+		}
+		return newInfo;
+	},
+	getAppParamInfo: function(info) {
+		var newInfo = {};
+		if (!this.isEmptyJsonObject(info)) {
+			newInfo['key'] = info['key'];
+			newInfo['value'] = info['value'];
+			newInfo['remarks'] = info['remarks'];
+			newInfo['opr'] = info['opr'];
+			newInfo['opr_date'] = this.getFormattedDateTime(info['opr_date'], 'YYYY-MM-DD');
+			newInfo['opr_func'] = info['opr_func'];
 		}
 		return newInfo;
 	},
@@ -301,6 +319,11 @@ module.exports = Object.freeze({
 		obj['updated_date'] = new Date().toISOString();
 		return obj;
 	},
+	appendCommonFields: function(obj, opr_func) {
+		obj['opr_date'] = this.getCurrentTimestamp();
+		obj['opr_func'] = opr_func;
+		return obj;
+	},
 	logApiCall: function(req, res, resp) {
 		var obj = {
 			'wsid': req.body['wsid'],
@@ -374,6 +397,32 @@ module.exports = Object.freeze({
 			case this.API['ADMIN_REMOVE_HEALTHY_TIP']: {
 				switch(code) {
 					case 201: { resMessage = this.translate('error_healthy_tips_id_empty'); break; }
+				}
+				break;
+			}
+			case this.API['ADMIN_GET_APP_PARAM_INFO']: {
+				switch(code) {
+					case 201: { resMessage = this.translate('error_app_param_id_empty'); break; }
+				}
+				break;
+			}
+			case this.API['ADMIN_ADD_APP_PARAM']: {
+				switch(code) {
+					case 201: { resMessage = this.translate('error_app_param_id_empty'); break; }
+					case 202: { resMessage = this.translate('error_value_empty'); break; }
+				}
+				break;
+			}
+			case this.API['ADMIN_UPDATE_APP_PARAM']: {
+				switch(code) {
+					case 201: { resMessage = this.translate('error_app_param_id_empty'); break; }
+					case 202: { resMessage = this.translate('error_value_empty'); break; }
+				}
+				break;
+			}
+			case this.API['ADMIN_REMOVE_APP_PARAM']: {
+				switch(code) {
+					case 201: { resMessage = this.translate('error_app_param_id_empty'); break; }
 				}
 				break;
 			}
