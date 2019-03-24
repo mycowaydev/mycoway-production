@@ -68,7 +68,6 @@ module.exports = function (req, res) {
 	}
 
 	function adminGetAppParamList(filters) {
-		console.log('filters :: ' + JSON.stringify(filters));
 		let query = filters.$and.length > 0 ? filters : {};
 		var pageNo = parseInt(req.body['page'] ? req.body['page'] : '')
 		var size = parseInt(req.body['length'] ? req.body['length'] : '')
@@ -93,21 +92,17 @@ module.exports = function (req, res) {
 			if (err) {
 				error.push(config.getErrorResponse('', 501));
 				let resp = config.getResponse(res, 500, error, {}, err);
-				console.err(err)
 				config.logApiCall(req, res, resp);
 				return;
 			}
 			if (result && result.length > 0) {
-				console.log('pageCount :: ' + pageCount)
-				console.log('count :: ' + count)
-				console.log('result :: ' + result)
 				for (let i = 0; i < result.length; i++) {
 					result[i] = config.getAppParamInfo(result[i]);
 				}
 			} else {
 				result = [];
 			}
-			let resp = config.getResponse(res, 100, error, { 'app_param_list': result, 'pageCount': pageCount, 'count': count });
+			let resp = config.getResponse(res, 100, error, { 'app_param_list': result, 'total_page': pageCount, 'total_record': count });
 			config.logApiCall(req, res, resp);
 			return;
 		})

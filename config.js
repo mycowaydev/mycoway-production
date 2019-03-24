@@ -188,14 +188,6 @@ module.exports = Object.freeze({
 		}
 		return newInfo;
 	},
-	getPaginationInfo: function(totalPage,totalRecord) {
-		var pagination = {};
-		if (totalPage && totalRecord) {
-			pagination['total_page'] = totalPage;
-			pagination['total_record'] = totalRecord;
-		}
-		return pagination;
-	},
 	getMtParamInfo: function(info) {
 		var newInfo = {};
 		if (!this.isEmptyJsonObject(info)) {
