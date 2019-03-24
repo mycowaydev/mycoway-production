@@ -5,7 +5,7 @@ const config = require('./../../config');
 
 const AppParam = require('./model/app-param');
 
-module.exports = function(req, res) {
+module.exports = function (req, res) {
 
 	res.contentType('application/json');
 
@@ -31,10 +31,10 @@ module.exports = function(req, res) {
 			if (data[key]['fdate'] || data[key]['tdate']) {
 				let filter = {};
 				filter[key] = {};
-				if(data[key]['fdate']){
+				if (data[key]['fdate']) {
 					filter[key]['$gte'] = new Date(data[key]['fdate']).getTime() / 1000;
 				}
-				if(data[key]['tdate']){
+				if (data[key]['tdate']) {
 					filter[key]['$lte'] = new Date(data[key]['tdate']).getTime() / 1000;
 				}
 				filters['$and'].push(filter);
@@ -43,7 +43,7 @@ module.exports = function(req, res) {
 			let filter = {
 				$or: []
 			};
-			for(let i in data[key]) {
+			for (let i in data[key]) {
 				let or_filter = {};
 				or_filter[key] = data[key][i];
 				filter['$or'].push(or_filter);
@@ -52,7 +52,9 @@ module.exports = function(req, res) {
 		} else {
 			if (data[key]) {
 				let filter = {};
-				filter[key] = data[key];
+				filter[key] = {};
+				filter[key]['$regex'] = data[key];
+				filter[key]['$options'] = '$i';
 				filters['$and'].push(filter);
 			}
 		}
@@ -66,39 +68,49 @@ module.exports = function(req, res) {
 	}
 
 	function adminGetAppParamList(filters) {
+		console.log('filters :: ' + JSON.stringify(filters));
 		let query = filters.$and.length > 0 ? filters : {};
-		AppParam.aggregate([
-			{
-				$project: {
-					'_id': 0,
-					'updated_on': 0,
-					'updated_date': 0
-				}
-			},
-			{ 
-				$sort: {
-					'created_on': -1
-				}
-			},
-			{ $match: query },
-		], function(err, result) {
+		var pageNo = parseInt(req.body['page'] ? req.body['page'] : '')
+		var size = parseInt(req.body['length'] ? req.body['length'] : '')
+
+		if (!pageNo || !size) {
+			error.push(config.getErrorResponse('', 302));
+			let resp = config.getResponse(res, 200, error, {}, null);
+			config.logApiCall(req, res, resp);
+			return;
+		}
+
+		var aggregate = AppParam.aggregate();
+		aggregate.project({
+			'_id': 0,
+		}).sort({
+			'opr_date': -1
+		}).match(query)
+
+		var options = { page: pageNo, limit: size }
+
+		AppParam.aggregatePaginate(aggregate, options, function (err, result, pageCount, count) {
 			if (err) {
 				error.push(config.getErrorResponse('', 501));
 				let resp = config.getResponse(res, 500, error, {}, err);
+				console.err(err)
 				config.logApiCall(req, res, resp);
 				return;
 			}
 			if (result && result.length > 0) {
+				console.log('pageCount :: ' + pageCount)
+				console.log('count :: ' + count)
+				console.log('result :: ' + result)
 				for (let i = 0; i < result.length; i++) {
 					result[i] = config.getAppParamInfo(result[i]);
 				}
 			} else {
 				result = [];
 			}
-			let resp = config.getResponse(res, 100, error, { 'app_param_list': result });
+			let resp = config.getResponse(res, 100, error, { 'app_param_list': result, 'pageCount': pageCount, 'count': count });
 			config.logApiCall(req, res, resp);
 			return;
-		});
+		})
 	}
 
 };

@@ -42,7 +42,8 @@ module.exports = Object.freeze({
 		TBL_LOG: 'tbl_log',
 		TBL_SESSION: 'tbl_session',
 		TBL_HEALTHY_TIPS: 'tbl_healthy_tips',
-		TBL_APPPARAM: 'tbl_app_param'
+		TBL_APPPARAM: 'tbl_app_param',
+		TBL_MTPARAM: 'tbl_mt_param'
 	},
 	API: {
 		_TEST: '_test',
@@ -58,7 +59,12 @@ module.exports = Object.freeze({
 		ADMIN_GET_APP_PARAM_INFO: 'admin-get-app-param-info',
 		ADMIN_ADD_APP_PARAM: 'admin-add-app-param',
 		ADMIN_UPDATE_APP_PARAM: 'admin-update-app-param',
-		ADMIN_REMOVE_APP_PARAM: 'admin-remove-app-param'
+		ADMIN_REMOVE_APP_PARAM: 'admin-remove-app-param',
+		ADMIN_GET_MT_PARAM_LIST: 'admin-get-mt-param-list',
+		ADMIN_GET_MT_PARAM_INFO: 'admin-get-mt-param-info',
+		ADMIN_ADD_MT_PARAM: 'admin-add-mt-param',
+		ADMIN_UPDATE_MT_PARAM: 'admin-update-mt-param',
+		ADMIN_REMOVE_MT_PARAM: 'admin-remove-mt-param'
 	},
 	setLocalizeFromReq: function(req) {
 		var httpHeaders = req.headers;
@@ -175,6 +181,29 @@ module.exports = Object.freeze({
 		if (!this.isEmptyJsonObject(info)) {
 			newInfo['key'] = info['key'];
 			newInfo['value'] = info['value'];
+			newInfo['remarks'] = info['remarks'];
+			newInfo['opr'] = info['opr'];
+			newInfo['opr_date'] = this.getFormattedDateTime(info['opr_date'], 'YYYY-MM-DD');
+			newInfo['opr_func'] = info['opr_func'];
+		}
+		return newInfo;
+	},
+	getPaginationInfo: function(totalPage,totalRecord) {
+		var pagination = {};
+		if (totalPage && totalRecord) {
+			pagination['total_page'] = totalPage;
+			pagination['total_record'] = totalRecord;
+		}
+		return pagination;
+	},
+	getMtParamInfo: function(info) {
+		var newInfo = {};
+		if (!this.isEmptyJsonObject(info)) {
+			newInfo['group'] = info['group'];
+			newInfo['code'] = info['code'];
+			newInfo['value'] = info['value'];
+			newInfo['order_no'] = info['order_no'];
+			newInfo['active'] = info['active'];
 			newInfo['remarks'] = info['remarks'];
 			newInfo['opr'] = info['opr'];
 			newInfo['opr_date'] = this.getFormattedDateTime(info['opr_date'], 'YYYY-MM-DD');
@@ -423,6 +452,40 @@ module.exports = Object.freeze({
 			case this.API['ADMIN_REMOVE_APP_PARAM']: {
 				switch(code) {
 					case 201: { resMessage = this.translate('error_app_param_id_empty'); break; }
+				}
+				break;
+			}
+			case this.API['ADMIN_GET_MT_PARAM_INFO']: {
+				switch(code) {
+					case 201: { resMessage = this.translate('error_group_empty'); break; }
+					case 202: { resMessage = this.translate('error_code_empty'); break; }
+				}
+				break;
+			}
+			case this.API['ADMIN_ADD_MT_PARAM']: {
+				switch(code) {
+					case 201: { resMessage = this.translate('error_group_empty'); break; }
+					case 202: { resMessage = this.translate('error_code_empty'); break; }
+					case 203: { resMessage = this.translate('error_value_empty'); break; }
+					case 204: { resMessage = this.translate('error_order_no_empty'); break; }
+					case 205: { resMessage = this.translate('error_active_empty'); break; }
+				}
+				break;
+			}
+			case this.API['ADMIN_UPDATE_MT_PARAM']: {
+				switch(code) {
+					case 201: { resMessage = this.translate('error_group_empty'); break; }
+					case 202: { resMessage = this.translate('error_code_empty'); break; }
+					case 203: { resMessage = this.translate('error_value_empty'); break; }
+					case 204: { resMessage = this.translate('error_order_no_empty'); break; }
+					case 205: { resMessage = this.translate('error_active_empty'); break; }
+				}
+				break;
+			}
+			case this.API['ADMIN_REMOVE_MT_PARAM']: {
+				switch(code) {
+					case 201: { resMessage = this.translate('error_group_empty'); break; }
+					case 202: { resMessage = this.translate('error_code_empty'); break; }
 				}
 				break;
 			}
