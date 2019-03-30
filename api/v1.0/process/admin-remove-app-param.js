@@ -7,10 +7,6 @@ const AppParam = require('../model/app-param');
 
 module.exports = function(req, res) {
 
-	res.contentType('application/json');
-
-	config.setLocalizeFromReq(req);
-
 	let error = [];
 
 	let params = [

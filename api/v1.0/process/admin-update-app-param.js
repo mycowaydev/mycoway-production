@@ -15,10 +15,6 @@ module.exports = function(req, res) {
 		api_secret: config.CDN['API_SECRET']
 	});
 
-	res.contentType('application/json');
-
-	config.setLocalizeFromReq(req);
-
 	let imageUrl;
 	let error = [];
 

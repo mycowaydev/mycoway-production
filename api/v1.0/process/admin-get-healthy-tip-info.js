@@ -7,10 +7,6 @@ const HealthyTips = require('../model/healthy-tips');
 
 module.exports = function(req, res) {
 
-	res.contentType('application/json');
-
-	config.setLocalizeFromReq(req);
-
 	let error = [];
 
 	let params = [

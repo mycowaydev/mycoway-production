@@ -44,10 +44,6 @@ module.exports = Object.freeze({
 		TBL_APPPARAM: 'tbl_app_param',
 		TBL_MTPARAM: 'tbl_mt_param'
 	},
-	setLocalizeFromReq: function (req) {
-		// todo: remove this function
-		return;
-	},
 	translate: function (key, req) {
 		let value;
 		let code;

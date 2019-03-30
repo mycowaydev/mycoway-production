@@ -7,10 +7,6 @@ const HealthyTips = require('../model/healthy-tips');
 
 module.exports = function(req, res) {
 
-	res.contentType('application/json');
-
-	config.setLocalizeFromReq(req);
-
 	let pageSize = config.GLOBAL['PAGE_SIZE'];
 	let error = [];
 
