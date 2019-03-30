@@ -19,6 +19,12 @@ const apiAdminAddAppParam = '/' + config.API['ADMIN_ADD_APP_PARAM'];
 const apiAdminUpdateAppParam = '/' + config.API['ADMIN_UPDATE_APP_PARAM'];
 const apiAdminRemoveAppParam = '/' + config.API['ADMIN_REMOVE_APP_PARAM'];
 
+const apiAdminGetMtParamList = '/' + config.API['ADMIN_GET_MT_PARAM_LIST'];
+const apiAdminGetMtParamInfo = '/' + config.API['ADMIN_GET_MT_PARAM_INFO'];
+const apiAdminAddMtParam = '/' + config.API['ADMIN_ADD_MT_PARAM'];
+const apiAdminUpdateMtParam = '/' + config.API['ADMIN_UPDATE_MT_PARAM'];
+const apiAdminRemoveMtParam = '/' + config.API['ADMIN_REMOVE_MT_PARAM'];
+
 module.exports = function(apiVersion) {
 	
 	let router = express.Router();
@@ -42,6 +48,12 @@ module.exports = function(apiVersion) {
 	router.post(apiAdminAddAppParam, apiVerifyIsAdminExistsRoute.isAuthorized, require(apiVersionPrefix + apiAdminAddAppParam));
 	router.post(apiAdminUpdateAppParam, apiVerifyIsAdminExistsRoute.isAuthorized, require(apiVersionPrefix + apiAdminUpdateAppParam));
 	router.post(apiAdminRemoveAppParam, apiVerifyIsAdminExistsRoute.isAuthorized, require(apiVersionPrefix + apiAdminRemoveAppParam));
+	router.post(apiAdminGetMtParamList, apiVerifyIsAdminExistsRoute.isAuthorized, require(apiVersionPrefix + apiAdminGetMtParamList));
+	router.post(apiAdminGetMtParamInfo, apiVerifyIsAdminExistsRoute.isAuthorized, require(apiVersionPrefix + apiAdminGetMtParamInfo));
+	router.post(apiAdminAddMtParam, apiVerifyIsAdminExistsRoute.isAuthorized, require(apiVersionPrefix + apiAdminAddMtParam));
+	router.post(apiAdminUpdateMtParam, apiVerifyIsAdminExistsRoute.isAuthorized, require(apiVersionPrefix + apiAdminUpdateMtParam));
+	router.post(apiAdminRemoveMtParam, apiVerifyIsAdminExistsRoute.isAuthorized, require(apiVersionPrefix + apiAdminRemoveMtParam));
+
 
 	router.get('/adminer', function(req, res) {
 		res.redirect('/adminer/login');

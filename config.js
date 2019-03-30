@@ -42,7 +42,8 @@ module.exports = Object.freeze({
 		TBL_LOG: 'tbl_log',
 		TBL_SESSION: 'tbl_session',
 		TBL_HEALTHY_TIPS: 'tbl_healthy_tips',
-		TBL_APPPARAM: 'tbl_app_param'
+		TBL_APPPARAM: 'tbl_app_param',
+		TBL_MTPARAM: 'tbl_mt_param'
 	},
 	API: {
 		_TEST: '_test',
@@ -58,9 +59,14 @@ module.exports = Object.freeze({
 		ADMIN_GET_APP_PARAM_INFO: 'admin-get-app-param-info',
 		ADMIN_ADD_APP_PARAM: 'admin-add-app-param',
 		ADMIN_UPDATE_APP_PARAM: 'admin-update-app-param',
-		ADMIN_REMOVE_APP_PARAM: 'admin-remove-app-param'
+		ADMIN_REMOVE_APP_PARAM: 'admin-remove-app-param',
+		ADMIN_GET_MT_PARAM_LIST: 'admin-get-mt-param-list',
+		ADMIN_GET_MT_PARAM_INFO: 'admin-get-mt-param-info',
+		ADMIN_ADD_MT_PARAM: 'admin-add-mt-param',
+		ADMIN_UPDATE_MT_PARAM: 'admin-update-mt-param',
+		ADMIN_REMOVE_MT_PARAM: 'admin-remove-mt-param'
 	},
-	setLocalizeFromReq: function(req) {
+	setLocalizeFromReq: function (req) {
 		var httpHeaders = req.headers;
 		if (httpHeaders) {
 			var appAcceptLanguage = httpHeaders['accept-language'];
@@ -70,20 +76,20 @@ module.exports = Object.freeze({
 		}
 		return Locale.setLocalize(defaultLocale);
 	},
-	translate: function(langKey, langCode) {
+	translate: function (langKey, langCode) {
 		return Locale.translate(langKey, langCode);
 	},
-	translateCode: function(langKey, langCode) {
+	translateCode: function (langKey, langCode) {
 		return Locale.translateCode(langKey, langCode);
 	},
-	getNewToken: function(userId) {
-		return jwt.sign( 
-			{ user_id: userId }, 
+	getNewToken: function (userId) {
+		return jwt.sign(
+			{ user_id: userId },
 			new Buffer.from(this.GLOBAL['AUTH_TOKEN_SECRET'], 'base64'),
-			{expiresIn: this.GLOBAL['AUTH_TOKEN_EXPIRES']}
+			{ expiresIn: this.GLOBAL['AUTH_TOKEN_EXPIRES'] }
 		);
 	},
-	getLogInfo: function(info) {
+	getLogInfo: function (info) {
 		var newInfo = {};
 		if (info) {
 			newInfo['wsid'] = info['wsid'];
@@ -108,7 +114,7 @@ module.exports = Object.freeze({
 		}
 		return newInfo;
 	},
-	getFacebookInfo: function(info) {
+	getFacebookInfo: function (info) {
 		var newInfo = {};
 		if (info) {
 			newInfo['fb_id'] = info['id'];
@@ -131,7 +137,7 @@ module.exports = Object.freeze({
 		}
 		return newInfo;
 	},
-	getGoogleInfo: function(info) {
+	getGoogleInfo: function (info) {
 		var newInfo = {};
 		if (newInfo) {
 			newInfo['google_id'] = info['sub'];
@@ -147,7 +153,7 @@ module.exports = Object.freeze({
 		}
 		return newInfo;
 	},
-	getAdminInfo: function(info) {
+	getAdminInfo: function (info) {
 		var newInfo = {};
 		if (!this.isEmptyJsonObject(info)) {
 			newInfo['admin_user_id'] = info['admin_user_id'];
@@ -158,14 +164,7 @@ module.exports = Object.freeze({
 		}
 		return newInfo;
 	},
-	getImage: function(img){
-		var newImg = {};
-		if (!this.isEmptyJsonObject(img)) {
-			newImg['image'] = img['image'];
-		}
-		return newImg;
-	},
-	getHealthyTipsInfo: function(info) {
+	getHealthyTipsInfo: function (info) {
 		var newInfo = {};
 		if (!this.isEmptyJsonObject(info)) {
 			newInfo['healthy_tips_id'] = info['healthy_tips_id'];
@@ -177,9 +176,10 @@ module.exports = Object.freeze({
 		}
 		return newInfo;
 	},
-	getAppParamInfo: function(info) {
+	getAppParamInfo: function (info) {
 		var newInfo = {};
 		if (!this.isEmptyJsonObject(info)) {
+			newInfo['action'] = '<a href="/adminer/edit-app-param?key=' + info['key'] + '" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</a>';
 			newInfo['key'] = info['key'];
 			newInfo['value'] = info['value'];
 			newInfo['remarks'] = info['remarks'];
@@ -189,7 +189,22 @@ module.exports = Object.freeze({
 		}
 		return newInfo;
 	},
-	isParamsExist: function(req, params) {
+	getMtParamInfo: function (info) {
+		var newInfo = {};
+		if (!this.isEmptyJsonObject(info)) {
+			newInfo['group'] = info['group'];
+			newInfo['code'] = info['code'];
+			newInfo['value'] = info['value'];
+			newInfo['order_no'] = info['order_no'];
+			newInfo['active'] = info['active'];
+			newInfo['remarks'] = info['remarks'];
+			newInfo['opr'] = info['opr'];
+			newInfo['opr_date'] = this.getFormattedDateTime(info['opr_date'], 'YYYY-MM-DD');
+			newInfo['opr_func'] = info['opr_func'];
+		}
+		return newInfo;
+	},
+	isParamsExist: function (req, params) {
 		var isEmpty = true;
 		var isExists = true;
 		params.push('wsid');
@@ -208,32 +223,32 @@ module.exports = Object.freeze({
 		}
 		return isExists;
 	},
-	zeroPad: function(num, places) {
+	zeroPad: function (num, places) {
 		var zero = places - num.toString().length + 1;
 		return Array(+(zero > 0 && zero)).join('0') + num;
 	},
-	getUniqueHashId: function(value) {
+	getUniqueHashId: function (value) {
 		var hashids = new HashIds(this.GLOBAL['HASH_IDS_KEY']);
 		if (value) {
 			value = this.hashSHA256(value, true);
 		}
 		return hashids.encodeHex(value);
 	},
-	hashSHA256: function(value, isHex) {
+	hashSHA256: function (value, isHex) {
 		try {
 			return require('crypto').createHash('sha256').update(value).digest(isHex ? 'hex' : 'base64');
-		} catch(ex) {
+		} catch (ex) {
 			return '';
 		}
 	},
-	hashSHA1: function(value, isHex) {
+	hashSHA1: function (value, isHex) {
 		try {
 			return require('crypto').createHash('sha1').update(value).digest(isHex ? 'hex' : 'base64');
-		} catch(ex) {
+		} catch (ex) {
 			return '';
 		}
 	},
-	concatString: function(...value) {
+	concatString: function (...value) {
 		var result = '';
 		for (let v of value) {
 			if (v) {
@@ -242,96 +257,96 @@ module.exports = Object.freeze({
 		}
 		return result;
 	},
-	getMaskedValue: function(value) {
+	getMaskedValue: function (value) {
 		return value ? value.replace(/\w(?=\w{4})/g, '*') : value;
 	},
-	getFormattedDateTime: function(timestamp, dateTimeFormat) {
+	getFormattedDateTime: function (timestamp, dateTimeFormat) {
 		return String(moment(timestamp * 1000).format(dateTimeFormat));
 	},
-	getCurrentTimestamp: function() {
+	getCurrentTimestamp: function () {
 		return Math.floor(Date.now() / 1000);
 	},
-	getString: function(value) {
+	getString: function (value) {
 		return value && value.length > 0 ? value : '-';
 	},
-	getPage: function(page) {
+	getPage: function (page) {
 		try {
 			page = parseInt(page) - 1;
 			if (!page || page < 0) {
 				page = 0;
 			}
-		} catch(ex) {
+		} catch (ex) {
 			page = 0;
 		}
 		return page;
 	},
-	hasJsonValue: function(jsonObj, value) {
+	hasJsonValue: function (jsonObj, value) {
 		try {
 			for (var key in jsonObj) {
 				if (jsonObj[key] == value) {
 					return true;
 				}
 			}
-		} catch(ex) {}
+		} catch (ex) { }
 		return false;
 	},
-	hasArrayValue: function(jsonObj, value) {
+	hasArrayValue: function (jsonObj, value) {
 		try {
 			let array = Object.values(jsonObj);
 			return value.every(e => array.includes(e))
-		} catch(ex) {}
+		} catch (ex) { }
 		return false;
 	},
-	isEmpty: function(value) {
+	isEmpty: function (value) {
 		return !value || String(value).trim().length <= 0;
 	},
-	isEmptyJsonObject: function(value) {
+	isEmptyJsonObject: function (value) {
 		try {
 			for (var key in value) {
 				if (value.hasOwnProperty(key)) {
 					return false;
 				}
 			}
-		} catch(ex) {}
+		} catch (ex) { }
 		return true;
 	},
-	isValidEmail: function(value) {
+	isValidEmail: function (value) {
 		value = String(value).trim().toLowerCase();
 		var regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 		return regex.test(value);
 	},
-	isValidContact: function(value) {
+	isValidContact: function (value) {
 		value = String(value).trim();
 		return value.length >= 9 && value.length <= 15 && this.isContainsDigitOnly(value);
 	},
-	isValidPassword: function(value) {
+	isValidPassword: function (value) {
 		// value = String(value).trim();
 		return value.length >= 6 && this.isContainsAlphanumeric(value);
 	},
-	isValidUrl: function(value) {
+	isValidUrl: function (value) {
 		// value = String(value).trim();
 		return /^http(s)?:\/\/(www\.)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/.test(value);
 	},
-	isContainsDigitOnly: function(value) {
+	isContainsDigitOnly: function (value) {
 		return /^\d+$/.test(value);
 	},
-	isContainsAlphanumeric: function(value) {
+	isContainsAlphanumeric: function (value) {
 		return /^(?:[0-9]+[a-z]|[a-z]+[0-9])[a-z0-9]*$/i.test(value);
 	},
-	capitalizeFirstLetter: function(string) {
+	capitalizeFirstLetter: function (string) {
 		return string.charAt(0).toUpperCase() + string.slice(1);
 	},
-	appendUpdatedDate: function(obj) {
+	appendUpdatedDate: function (obj) {
 		obj['updated_on'] = this.getCurrentTimestamp();
 		obj['updated_date'] = new Date().toISOString();
 		return obj;
 	},
-	appendCommonFields: function(obj, opr_func) {
+	appendCommonFields: function (obj, opr_func) {
 		obj['opr_date'] = this.getCurrentTimestamp();
 		obj['opr_func'] = opr_func;
 		return obj;
 	},
-	logApiCall: function(req, res, resp) {
+	logApiCall: function (req, res, resp) {
 		var obj = {
 			'wsid': req.body['wsid'],
 			'ip_address': req.connection['remoteAddress'],
@@ -345,7 +360,7 @@ module.exports = Object.freeze({
 		};
 		Log.create(obj);
 	},
-	getResponse: function(res, statusCode, error, data, err, ignoreResSend) {
+	getResponse: function (res, statusCode, error, data, err, ignoreResSend) {
 
 		var response = {};
 
@@ -367,12 +382,88 @@ module.exports = Object.freeze({
 		return jsonResponse;
 
 	},
-	getErrorResponse: function(module, code) {
+	getFilter: function (data) {
+		let filters = {
+			$and: []
+		};
+		for (let key in data) {
+			if (typeof data[key] !== 'undefined' && typeof data[key]['fdate'] !== 'undefined') {
+				if (data[key]['fdate'] || data[key]['tdate']) {
+					let filter = {};
+					filter[key] = {};
+					if (data[key]['fdate']) {
+						filter[key]['$gte'] = new Date(data[key]['fdate']).getTime() / 1000;
+					}
+					if (data[key]['tdate']) {
+						filter[key]['$lte'] = new Date(data[key]['tdate']).getTime() / 1000;
+					}
+					filters['$and'].push(filter);
+				}
+			} else if (typeof data[key] === 'object' && data[key].length > 0) {
+				let filter = {
+					$or: []
+				};
+				for (let i in data[key]) {
+					let or_filter = {};
+					or_filter[key] = data[key][i];
+					filter['$or'].push(or_filter);
+				}
+				filters['$and'].push(filter);
+			} else {
+				if (data[key]) {
+					let filter = {};
+					filter[key] = {};
+					filter[key]['$regex'] = data[key];
+					filter[key]['$options'] = '$i';
+					filters['$and'].push(filter);
+				}
+			}
+		}
+		return filters;
+	},
+	getSort: function (order, orderFields) {
+
+		let orderFieldsOpr = { asc: "1", desc: "-1" }
+		let sort = {};
+
+		for (let i = 0; i < order.length; i++) {
+			sort[orderFields[order[i].column]] = Number(orderFieldsOpr[order[i].dir]);
+		}
+		return sort;
+	},
+	getResponseP: function (res, statusCode, error, draw, recordsFiltered, recordsTotal, data, err, ignoreResSend) {
+
+		var response = {};
+
+		response['status_code'] = statusCode;
+		if (error && error.length) {
+			response['error'] = error;
+		}
+		response['draw'] = draw;
+		response['recordsFiltered'] = recordsFiltered;
+		response['recordsTotal'] = recordsTotal;
+		response['data'] = data;
+
+		var jsonResponse = JSON.stringify(response);
+		if (!ignoreResSend) {
+			res.send(jsonResponse);
+		}
+
+		if (err) {
+			response['err_log'] = err;
+			response['err_msg'] = err['message'];
+			jsonResponse = JSON.stringify(response);
+		}
+
+		return jsonResponse;
+
+	},
+	getErrorResponse: function (module, code) {
 		var resCode = code;
 		var resMessage = '';
-		switch(module) {
+		switch (module) {
 			case this.API['VERIFY_ADMIN_LOGIN']: {
-				switch(code) {
+				switch (code) {
 					case 201: { resMessage = this.translate('error_admin_login_user_id_empty'); break; }
 					case 202: { resMessage = this.translate('error_admin_login_password_empty'); break; }
 					case 203: { resMessage = this.translate('error_admin_login_user_id_password_invalid'); break; }
@@ -381,20 +472,20 @@ module.exports = Object.freeze({
 				break;
 			}
 			case this.API['ADMIN_GET_HEALTHY_TIP_INFO']: {
-				switch(code) {
+				switch (code) {
 					case 201: { resMessage = this.translate('error_healthy_tips_id_empty'); break; }
 				}
 				break;
 			}
 			case this.API['ADMIN_ADD_HEALTHY_TIP']: {
-				switch(code) {
+				switch (code) {
 					case 201: { resMessage = this.translate('error_title_empty'); break; }
 					case 202: { resMessage = this.translate('error_description_empty'); break; }
 				}
 				break;
 			}
 			case this.API['ADMIN_UPDATE_HEALTHY_TIP']: {
-				switch(code) {
+				switch (code) {
 					case 201: { resMessage = this.translate('error_healthy_tips_id_empty'); break; }
 					case 202: { resMessage = this.translate('error_title_empty'); break; }
 					case 203: { resMessage = this.translate('error_description_empty'); break; }
@@ -402,39 +493,73 @@ module.exports = Object.freeze({
 				break;
 			}
 			case this.API['ADMIN_REMOVE_HEALTHY_TIP']: {
-				switch(code) {
+				switch (code) {
 					case 201: { resMessage = this.translate('error_healthy_tips_id_empty'); break; }
 				}
 				break;
 			}
 			case this.API['ADMIN_GET_APP_PARAM_INFO']: {
-				switch(code) {
+				switch (code) {
 					case 201: { resMessage = this.translate('error_app_param_id_empty'); break; }
 				}
 				break;
 			}
 			case this.API['ADMIN_ADD_APP_PARAM']: {
-				switch(code) {
+				switch (code) {
 					case 201: { resMessage = this.translate('error_app_param_id_empty'); break; }
 					case 202: { resMessage = this.translate('error_value_empty'); break; }
 				}
 				break;
 			}
 			case this.API['ADMIN_UPDATE_APP_PARAM']: {
-				switch(code) {
+				switch (code) {
 					case 201: { resMessage = this.translate('error_app_param_id_empty'); break; }
 					case 202: { resMessage = this.translate('error_value_empty'); break; }
 				}
 				break;
 			}
 			case this.API['ADMIN_REMOVE_APP_PARAM']: {
-				switch(code) {
+				switch (code) {
 					case 201: { resMessage = this.translate('error_app_param_id_empty'); break; }
 				}
 				break;
 			}
+			case this.API['ADMIN_GET_MT_PARAM_INFO']: {
+				switch (code) {
+					case 201: { resMessage = this.translate('error_group_empty'); break; }
+					case 202: { resMessage = this.translate('error_code_empty'); break; }
+				}
+				break;
+			}
+			case this.API['ADMIN_ADD_MT_PARAM']: {
+				switch (code) {
+					case 201: { resMessage = this.translate('error_group_empty'); break; }
+					case 202: { resMessage = this.translate('error_code_empty'); break; }
+					case 203: { resMessage = this.translate('error_value_empty'); break; }
+					case 204: { resMessage = this.translate('error_order_no_empty'); break; }
+					case 205: { resMessage = this.translate('error_active_empty'); break; }
+				}
+				break;
+			}
+			case this.API['ADMIN_UPDATE_MT_PARAM']: {
+				switch (code) {
+					case 201: { resMessage = this.translate('error_group_empty'); break; }
+					case 202: { resMessage = this.translate('error_code_empty'); break; }
+					case 203: { resMessage = this.translate('error_value_empty'); break; }
+					case 204: { resMessage = this.translate('error_order_no_empty'); break; }
+					case 205: { resMessage = this.translate('error_active_empty'); break; }
+				}
+				break;
+			}
+			case this.API['ADMIN_REMOVE_MT_PARAM']: {
+				switch (code) {
+					case 201: { resMessage = this.translate('error_group_empty'); break; }
+					case 202: { resMessage = this.translate('error_code_empty'); break; }
+				}
+				break;
+			}
 			default: {
-				switch(code) {
+				switch (code) {
 					case 301: { resMessage = this.translate('error_session_expired'); break; }
 					case 302: { resMessage = this.translate('error_bad_request'); break; }
 					case 303: { resMessage = this.translate('error_signature_empty'); break; }
