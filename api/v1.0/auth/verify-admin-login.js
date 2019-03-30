@@ -16,7 +16,7 @@ module.exports = function(req, res) {
 		'password'
 	];
 	if (!config.isParamsExist(req, params)) {
-		error.push(config.getErrorResponse('', 302));
+		error.push(config.getErrorResponse('101Z002', req));
 		let resp = config.getResponse(res, 300, error, {});
 		config.logApiCall(req, res, resp);
 		return;
@@ -26,10 +26,10 @@ module.exports = function(req, res) {
 	let password = req.body['password'];
 
 	if (config.isEmpty(userId)) {
-		error.push(config.getErrorResponse(config.API['VERIFY_ADMIN_LOGIN'], 201));
+		error.push(config.getErrorResponse('101Y001', req));
 	}
 	if (config.isEmpty(password)) {
-		error.push(config.getErrorResponse(config.API['VERIFY_ADMIN_LOGIN'], 202));
+		error.push(config.getErrorResponse('101Y002', req));
 	}
 	if (error && error.length > 0) {
 		let resp = config.getResponse(res, 200, error, {});
@@ -42,7 +42,7 @@ module.exports = function(req, res) {
 		password = config.hashSHA256(password + config.GLOBAL['ADMIN_TMP_SECRET']);
 		Admin.findOne({ 'admin_user_id': userId }, function(err, result) {
 			if (err) {
-				error.push(config.getErrorResponse('', 501));
+				error.push(config.getErrorResponse('101Z012s', req));
 				let resp = config.getResponse(res, 500, error, {}, err);
 				config.logApiCall(req, res, resp);
 				return;
@@ -51,7 +51,7 @@ module.exports = function(req, res) {
 				let pwd = result['admin_password'];
 				let invalidAttempts = result['invalid_attempts'];
 				if (invalidAttempts && invalidAttempts >= 5) {
-					error.push(config.getErrorResponse(config.API['VERIFY_ADMIN_LOGIN'], 204));
+					error.push(config.getErrorResponse('101Y004', req));
 					let resp = config.getResponse(res, 200, error, {});
 					config.logApiCall(req, res, resp);
 					return;
@@ -73,7 +73,7 @@ module.exports = function(req, res) {
 					updateAdmin(invalidAttempts);
 				}
 			}
-			error.push(config.getErrorResponse(config.API['VERIFY_ADMIN_LOGIN'], 203));
+			error.push(config.getErrorResponse('101Y003', req));
 			let resp = config.getResponse(res, 200, error, {});
 			config.logApiCall(req, res, resp);
 		});

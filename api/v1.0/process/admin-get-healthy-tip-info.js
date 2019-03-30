@@ -17,7 +17,7 @@ module.exports = function(req, res) {
 		'healthy_tips_id',
 	];
 	if (!config.isParamsExist(req, params)) {
-		error.push(config.getErrorResponse('', 302));
+		error.push(config.getErrorResponse('101Z002', req));
 		let resp = config.getResponse(res, 300, error, {}, null);
 		config.logApiCall(req, res, resp);
 		return;
@@ -26,7 +26,7 @@ module.exports = function(req, res) {
 	let healthyTipsId = req.body['healthy_tips_id'];
 
 	if (config.isEmpty(healthyTipsId)) {
-		error.push(config.getErrorResponse(config.API['ADMIN_GET_HEALTHY_TIP_INFO'], 201));
+		error.push(config.getErrorResponse('101Z999', req));
 	}
 
 	if (error && error.length > 0) {
@@ -39,7 +39,7 @@ module.exports = function(req, res) {
 	function adminGetHealthyTipInfo() {
 		HealthyTips.findOne({ 'healthy_tips_id': healthyTipsId }, function(err, result) {
 			if (err) {
-				error.push(config.getErrorResponse('', 501));
+				error.push(config.getErrorResponse('101Z012', req));
 				let resp = config.getResponse(res, 500, error, {}, err);
 				config.logApiCall(req, res, resp);
 				return;

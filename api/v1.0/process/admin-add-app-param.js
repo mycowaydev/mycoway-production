@@ -31,10 +31,10 @@ module.exports = function(req, res) {
 	console.log("remarks :: " + remarks);
 
 	if (config.isEmpty(key)) {
-		error.push(config.getErrorResponse(config.API['ADMIN_ADD_APP_PARAM'], 201));
+		error.push(config.getErrorResponse('101A008', req));
 	}
 	if (config.isEmpty(value)) {
-		error.push(config.getErrorResponse(config.API['ADMIN_ADD_APP_PARAM'], 202));
+		error.push(config.getErrorResponse('101A005', req));
 	}
 
 	if (error && error.length > 0) {
@@ -62,7 +62,7 @@ module.exports = function(req, res) {
 					// 	let filename = tmpPath.substring(indexOfSeparator + 1, tmpPath.length - (tmpPath.length - indexOfDot));
 					// 	cloudinary.v2.uploader.upload(tmpPath, { public_id: config.GLOBAL['APP_NAME'].toLowerCase() + '/healthy-tips/' + filename }, function(err, result) {
 					// 		if (err) {
-					// 			error.push(config.getErrorResponse('', 501));
+					// 			error.push(config.getErrorResponse('101Z012', req));
 					// 			let resp = config.getResponse(res, 500, error, {}, err);
 					// 			config.logApiCall(req, res, resp);
 					// 			return callback(true);
@@ -83,9 +83,7 @@ module.exports = function(req, res) {
 					insertData = config.appendCommonFields(insertData ,'APPPARAM_ADD');
 					AppParam.create(insertData, function (err, result) {
 						if (err) {
-							
-		console.log("error err here :: " + err);
-							error.push(config.getErrorResponse('', 501));
+							error.push(config.getErrorResponse('101Z012', req));
 							let resp = config.getResponse(res, 500, error, {}, err);
 							config.logApiCall(req, res, resp);
 							return callback(true);

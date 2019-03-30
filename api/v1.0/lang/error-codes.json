@@ -1,0 +1,31 @@
+{
+
+	"101A001": "error_title_empty",
+	"101A002": "error_description_empty",
+	"101A003": "error_group_empty",
+	"101A004": "error_code_empty",
+	"101A005": "error_value_empty",
+	"101A006": "error_order_no_empty",
+	"101A007": "error_active_empty",
+	"101A008": "error_app_param_id_empty",
+
+	"101Y001": "error_admin_login_user_id_empty",
+	"101Y002": "error_admin_login_password_empty",
+	"101Y003": "error_admin_login_user_id_password_invalid",
+	"101Y004": "error_admin_login_acc_blocked",
+
+	"101Z001": "error_session_expired",
+	"101Z002": "error_bad_request",
+	"101Z003": "error_signature_empty",
+	"101Z004": "error_signature_invalid",
+	"101Z005": "error_account_deactivated",
+	"101Z006": "error_account_suspended",
+	"101Z007": "error_account_blocked",
+	"101Z008": "error_admin_session_expired",
+	"101Z009": "error_account_been_used",
+	"101Z010": "error_unauthorized_access",
+	"101Z011": "error_page_not_found",
+	"101Z012": "error_server_error",
+	"101Z999": "error_unknown_error"
+
+}

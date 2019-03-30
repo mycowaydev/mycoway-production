@@ -1,5 +1,7 @@
 {
 	"en": {
+		"m": "Male",
+		"f": "Female",
 		"currency_myr": "MYR",
 		"error_title_empty": "Please enter title.",
 		"error_description_empty": "Please enter description.",
@@ -9,6 +11,7 @@
 		"error_value_empty": "Please enter value.",
 		"error_order_no_empty": "Please enter order no.",
 		"error_active_empty": "Please enter active.",
+		"error_app_param_id_empty": "Missing app param ID.",
 		"error_admin_login_user_id_empty": "Please enter user ID.",
 		"error_admin_login_password_empty": "Please enter password.",
 		"error_admin_login_user_id_password_invalid": "Invalid user ID / password.",
@@ -24,6 +27,7 @@
 		"error_account_been_used": "Your account has been used on other device. You will be forced to logout.",
 		"error_unauthorized_access": "Unauthorized access. Please re-login again.",
 		"error_page_not_found": "Page not found.",
-		"error_server_error": "Server error."
+		"error_server_error": "Server error.",
+		"error_unknown_error": "Unknown error."
 	}
 }

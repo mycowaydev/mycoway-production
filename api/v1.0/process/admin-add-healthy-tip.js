@@ -28,10 +28,10 @@ module.exports = function(req, res) {
 	let image = req.files['image'];
 
 	if (config.isEmpty(title)) {
-		error.push(config.getErrorResponse(config.API['ADMIN_ADD_HEALTHY_TIP'], 201));
+		error.push(config.getErrorResponse('101A001', req));
 	}
 	if (config.isEmpty(description)) {
-		error.push(config.getErrorResponse(config.API['ADMIN_ADD_HEALTHY_TIP'], 202));
+		error.push(config.getErrorResponse('101A002', req));
 	}
 
 	if (error && error.length > 0) {
@@ -58,7 +58,7 @@ module.exports = function(req, res) {
 						let filename = tmpPath.substring(indexOfSeparator + 1, tmpPath.length - (tmpPath.length - indexOfDot));
 						cloudinary.v2.uploader.upload(tmpPath, { public_id: config.GLOBAL['APP_NAME'].toLowerCase() + '/healthy-tips/' + filename }, function(err, result) {
 							if (err) {
-								error.push(config.getErrorResponse('', 501));
+								error.push(config.getErrorResponse('101Z012', req));
 								let resp = config.getResponse(res, 500, error, {}, err);
 								config.logApiCall(req, res, resp);
 								return callback(true);
@@ -79,7 +79,7 @@ module.exports = function(req, res) {
 					insertData = config.appendUpdatedDate(insertData);
 					HealthyTips.create(insertData, function (err, result) {
 						if (err) {
-							error.push(config.getErrorResponse('', 501));
+							error.push(config.getErrorResponse('101Z012', req));
 							let resp = config.getResponse(res, 500, error, {}, err);
 							config.logApiCall(req, res, resp);
 							return callback(true);

@@ -8,13 +8,12 @@ const moment = require('moment');
 const version = 'v1.0';
 const deploymentType = { development: 1, staging: 2, production: 3 };
 const isProduction = (process.env['DEPLOYMENT_TYPE'] || deploymentType['development']) == deploymentType['production'];
-const locales = { en: 'en' };
-const defaultLocale = locales['en'];
+
+const lang = require('./api/' + version + '/lang/lang.json');
+const errorCodes = require('./api/' + version + '/lang/error-codes.json');
 
 const Log = require('./api/' + version + '/model/log');
-const Localize = require('./api/' + version + '/lang/localize');
 const HashIds = require('hashids');
-const Locale = new Localize(defaultLocale);
 
 module.exports = Object.freeze({
 	GLOBAL: {
@@ -45,42 +44,21 @@ module.exports = Object.freeze({
 		TBL_APPPARAM: 'tbl_app_param',
 		TBL_MTPARAM: 'tbl_mt_param'
 	},
-	API: {
-		_TEST: '_test',
-		VERIFY_IS_ADMIN_EXISTS: 'verify-is-admin-exists',
-		VERIFY_ADMIN_LOGIN: 'verify-admin-login',
-		LOGOUT_ADMIN: 'logout-admin',
-		ADMIN_GET_HEALTHY_TIP_LIST: 'admin-get-healthy-tip-list',
-		ADMIN_GET_HEALTHY_TIP_INFO: 'admin-get-healthy-tip-info',
-		ADMIN_ADD_HEALTHY_TIP: 'admin-add-healthy-tip',
-		ADMIN_UPDATE_HEALTHY_TIP: 'admin-update-healthy-tip',
-		ADMIN_REMOVE_HEALTHY_TIP: 'admin-remove-healthy-tip',
-		ADMIN_GET_APP_PARAM_LIST: 'admin-get-app-param-list',
-		ADMIN_GET_APP_PARAM_INFO: 'admin-get-app-param-info',
-		ADMIN_ADD_APP_PARAM: 'admin-add-app-param',
-		ADMIN_UPDATE_APP_PARAM: 'admin-update-app-param',
-		ADMIN_REMOVE_APP_PARAM: 'admin-remove-app-param',
-		ADMIN_GET_MT_PARAM_LIST: 'admin-get-mt-param-list',
-		ADMIN_GET_MT_PARAM_INFO: 'admin-get-mt-param-info',
-		ADMIN_ADD_MT_PARAM: 'admin-add-mt-param',
-		ADMIN_UPDATE_MT_PARAM: 'admin-update-mt-param',
-		ADMIN_REMOVE_MT_PARAM: 'admin-remove-mt-param'
-	},
 	setLocalizeFromReq: function (req) {
-		var httpHeaders = req.headers;
-		if (httpHeaders) {
-			var appAcceptLanguage = httpHeaders['accept-language'];
-			if (appAcceptLanguage && locales[appAcceptLanguage]) {
-				return Locale.setLocalize(appAcceptLanguage);
-			}
+		// todo: remove this function
+		return;
+	},
+	translate: function (key, req) {
+		let value;
+		let code;
+		if (req && req.headers) {
+			code = req.headers['accept-language'];
 		}
-		return Locale.setLocalize(defaultLocale);
-	},
-	translate: function (langKey, langCode) {
-		return Locale.translate(langKey, langCode);
-	},
-	translateCode: function (langKey, langCode) {
-		return Locale.translateCode(langKey, langCode);
+		let list = lang[code ? code : 'en'];
+		if (list) {
+			value = list[key];
+		}
+		return value ? value : '';
 	},
 	getNewToken: function (userId) {
 		return jwt.sign(
@@ -458,124 +436,8 @@ module.exports = Object.freeze({
 		return jsonResponse;
 
 	},
-	getErrorResponse: function (module, code) {
-		var resCode = code;
-		var resMessage = '';
-		switch (module) {
-			case this.API['VERIFY_ADMIN_LOGIN']: {
-				switch (code) {
-					case 201: { resMessage = this.translate('error_admin_login_user_id_empty'); break; }
-					case 202: { resMessage = this.translate('error_admin_login_password_empty'); break; }
-					case 203: { resMessage = this.translate('error_admin_login_user_id_password_invalid'); break; }
-					case 204: { resMessage = this.translate('error_admin_login_acc_blocked'); break; }
-				}
-				break;
-			}
-			case this.API['ADMIN_GET_HEALTHY_TIP_INFO']: {
-				switch (code) {
-					case 201: { resMessage = this.translate('error_healthy_tips_id_empty'); break; }
-				}
-				break;
-			}
-			case this.API['ADMIN_ADD_HEALTHY_TIP']: {
-				switch (code) {
-					case 201: { resMessage = this.translate('error_title_empty'); break; }
-					case 202: { resMessage = this.translate('error_description_empty'); break; }
-				}
-				break;
-			}
-			case this.API['ADMIN_UPDATE_HEALTHY_TIP']: {
-				switch (code) {
-					case 201: { resMessage = this.translate('error_healthy_tips_id_empty'); break; }
-					case 202: { resMessage = this.translate('error_title_empty'); break; }
-					case 203: { resMessage = this.translate('error_description_empty'); break; }
-				}
-				break;
-			}
-			case this.API['ADMIN_REMOVE_HEALTHY_TIP']: {
-				switch (code) {
-					case 201: { resMessage = this.translate('error_healthy_tips_id_empty'); break; }
-				}
-				break;
-			}
-			case this.API['ADMIN_GET_APP_PARAM_INFO']: {
-				switch (code) {
-					case 201: { resMessage = this.translate('error_app_param_id_empty'); break; }
-				}
-				break;
-			}
-			case this.API['ADMIN_ADD_APP_PARAM']: {
-				switch (code) {
-					case 201: { resMessage = this.translate('error_app_param_id_empty'); break; }
-					case 202: { resMessage = this.translate('error_value_empty'); break; }
-				}
-				break;
-			}
-			case this.API['ADMIN_UPDATE_APP_PARAM']: {
-				switch (code) {
-					case 201: { resMessage = this.translate('error_app_param_id_empty'); break; }
-					case 202: { resMessage = this.translate('error_value_empty'); break; }
-				}
-				break;
-			}
-			case this.API['ADMIN_REMOVE_APP_PARAM']: {
-				switch (code) {
-					case 201: { resMessage = this.translate('error_app_param_id_empty'); break; }
-				}
-				break;
-			}
-			case this.API['ADMIN_GET_MT_PARAM_INFO']: {
-				switch (code) {
-					case 201: { resMessage = this.translate('error_group_empty'); break; }
-					case 202: { resMessage = this.translate('error_code_empty'); break; }
-				}
-				break;
-			}
-			case this.API['ADMIN_ADD_MT_PARAM']: {
-				switch (code) {
-					case 201: { resMessage = this.translate('error_group_empty'); break; }
-					case 202: { resMessage = this.translate('error_code_empty'); break; }
-					case 203: { resMessage = this.translate('error_value_empty'); break; }
-					case 204: { resMessage = this.translate('error_order_no_empty'); break; }
-					case 205: { resMessage = this.translate('error_active_empty'); break; }
-				}
-				break;
-			}
-			case this.API['ADMIN_UPDATE_MT_PARAM']: {
-				switch (code) {
-					case 201: { resMessage = this.translate('error_group_empty'); break; }
-					case 202: { resMessage = this.translate('error_code_empty'); break; }
-					case 203: { resMessage = this.translate('error_value_empty'); break; }
-					case 204: { resMessage = this.translate('error_order_no_empty'); break; }
-					case 205: { resMessage = this.translate('error_active_empty'); break; }
-				}
-				break;
-			}
-			case this.API['ADMIN_REMOVE_MT_PARAM']: {
-				switch (code) {
-					case 201: { resMessage = this.translate('error_group_empty'); break; }
-					case 202: { resMessage = this.translate('error_code_empty'); break; }
-				}
-				break;
-			}
-			default: {
-				switch (code) {
-					case 301: { resMessage = this.translate('error_session_expired'); break; }
-					case 302: { resMessage = this.translate('error_bad_request'); break; }
-					case 303: { resMessage = this.translate('error_signature_empty'); break; }
-					case 304: { resMessage = this.translate('error_signature_invalid'); break; }
-					case 305: { resMessage = this.translate('error_account_deactivated'); break; }
-					case 306: { resMessage = this.translate('error_admin_session_expired'); break; }
-					case 307: { resMessage = this.translate('error_account_been_used'); break; }
-					case 308: { resMessage = this.translate('error_account_blocked'); break; }
-					case 309: { resMessage = this.translate('error_account_suspended'); break; }
-					case 401: { resMessage = this.translate('error_unauthorized_access'); break; }
-					case 404: { resMessage = this.translate('error_page_not_found'); break; }
-					case 501: { resMessage = this.translate('error_server_error'); break; }
-				}
-				break;
-			}
-		}
-		return { 'code': resCode, 'message': resMessage };
+	getErrorResponse: function (code, req) {
+		let key = errorCodes[code ? code : '101Z999'];
+		return { 'code': code, 'message': this.translate(key, req) };
 	}
 });
