@@ -73,6 +73,7 @@ app.set('view engine', 'html');
 app.engine('html', require('pug').__express);
 
 // API routes
+app.use('/', require('./routes')('v1.0'));
 app.use('/', require('./routes-web')('v1.0'));
 
 // Port listening
