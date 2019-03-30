@@ -5,13 +5,12 @@ const config = require('../../../config');
 
 const MtParam = require('../model/mt-param');
 
-module.exports = function(req, res) {
+module.exports = function (req, res) {
 
 	res.contentType('application/json');
 
 	config.setLocalizeFromReq(req);
 
-	let pageSize = config.GLOBAL['PAGE_SIZE'];
 	let error = [];
 
 	let data = {
@@ -26,40 +25,13 @@ module.exports = function(req, res) {
 			tdate: req.body['tdate'] ? req.body['tdate'] : '',
 		}
 	};
-	let filters = {
-		$and: []
-	};
-	for (let key in data) {
-		if (typeof data[key] !== 'undefined' && typeof data[key]['fdate'] !== 'undefined') {
-			if (data[key]['fdate'] || data[key]['tdate']) {
-				let filter = {};
-				filter[key] = {};
-				if(data[key]['fdate']){
-					filter[key]['$gte'] = new Date(data[key]['fdate']).getTime() / 1000;
-				}
-				if(data[key]['tdate']){
-					filter[key]['$lte'] = new Date(data[key]['tdate']).getTime() / 1000;
-				}
-				filters['$and'].push(filter);
-			}
-		} else if (typeof data[key] === 'object' && data[key].length > 0) {
-			let filter = {
-				$or: []
-			};
-			for(let i in data[key]) {
-				let or_filter = {};
-				or_filter[key] = data[key][i];
-				filter['$or'].push(or_filter);
-			}
-			filters['$and'].push(filter);
-		} else {
-			if (data[key]) {
-				let filter = {};
-				filter[key] = data[key];
-				filters['$and'].push(filter);
-			}
-		}
-	}
+
+	// Get filters string
+	let filters = config.getFilter(data);
+
+	// Get sort criteria
+	let orderFields = { 1: "group", 2: "code", 3: "value", 4: "order_no", 5: "remarks", 6: "opr_date" }
+	let sort = config.getSort(req.body.order, orderFields);
 
 	if (error && error.length > 0) {
 		let resp = config.getResponse(res, 200, error, {}, null);
@@ -69,44 +41,47 @@ module.exports = function(req, res) {
 	}
 
 	function adminGetMtParamList(filters) {
+
 		let query = filters.$and.length > 0 ? filters : {};
-		MtParam.aggregate([
-			{
-				$project: {
-					'_id': 0,
-					'updated_on': 0,
-					'updated_date': 0
-				}
-			},
-			{ 
-				$sort: {
-					'created_on': -1
-				}
-			},
-			{ 
-				$skip: 5
-			},
-			{ 
-				$limit: 5
-			},
-			{ $match: query },
-		], function(err, result) {
-			if (err) {
-				error.push(config.getErrorResponse('101Z012', req));
-				let resp = config.getResponse(res, 500, error, {}, err);
-				config.logApiCall(req, res, resp);
-				return;
-			}
-			if (result && result.length > 0) {
-				for (let i = 0; i < result.length; i++) {
-					result[i] = config.getMtParamInfo(result[i]);
-				}
-			} else {
-				result = [];
-			}
-			let resp = config.getResponse(res, 100, error, { 'mt_param_list': result });
-			config.logApiCall(req, res, resp);
-			return;
+		var recordsTotal = 0;
+		var recordsFiltered = 0;
+
+		MtParam.countDocuments({}, function (err, c) {
+			recordsTotal = c;
+			MtParam.countDocuments(query, function (err, c) {
+				recordsFiltered = c;
+				MtParam.aggregate([
+					{
+						$project: {
+							'_id': 0,
+						},
+					},
+					{ $match: query },
+					{ $sort: sort },
+					{ $skip: Number(req.body.start) },
+					{ $limit: Number(req.body.length) },
+				], function (err, results) {
+					if (err) {
+						error.push(config.getErrorResponse('101Z012', req));
+						let resp = config.getResponse(res, 500, error, {}, err);
+						config.logApiCall(req, res, resp);
+						return;
+					}
+
+					if (results && results.length > 0) {
+						for (let i = 0; i < results.length; i++) {
+							results[i] = config.getMtParamInfo(results[i]);
+						}
+					} else {
+						results = [];
+					}
+
+					let resp = config.getResponseP(res, 100, error, req.body.draw, recordsFiltered, recordsTotal, results);
+					config.logApiCall(req, res, resp);
+					return;
+				});
+
+			});
 		});
 	}
 
