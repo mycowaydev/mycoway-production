@@ -5,8 +5,11 @@ const mongooseAggregatePaginate = require('mongoose-aggregate-paginate');
 const schema = mongoose.Schema({
 	key: String,
 	value: String,
+	status: String,
 	remarks: String,
-	opr: String,
+	created_by: String,
+	created_date: { type: Number, default: config.getCurrentTimestamp() },
+	opr_by: String,
 	opr_date: { type: Number, default: config.getCurrentTimestamp() },
 	opr_func: String
 });

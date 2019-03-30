@@ -192,6 +192,7 @@ module.exports = Object.freeze({
 	getMtParamInfo: function (info) {
 		var newInfo = {};
 		if (!this.isEmptyJsonObject(info)) {
+			newInfo['action'] = '<a href="/adminer/edit-mt-param?key=' + info['key'] + '" class="btn btn-primary btn-xs"><i class="fa fa-edit"></i> Edit</a>';
 			newInfo['group'] = info['group'];
 			newInfo['code'] = info['code'];
 			newInfo['value'] = info['value'];

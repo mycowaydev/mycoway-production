@@ -10,9 +10,7 @@ module.exports = function (req, res) {
 	res.contentType('application/json');
 
 	config.setLocalizeFromReq(req);
-	let pageSize = config.GLOBAL['PAGE_SIZE'];
-	console.log("req :: " + JSON.stringify(req.body));
-	console.log("column :: " + JSON.stringify(req.body.order));
+	
 	let error = [];
 
 	let data = {
@@ -45,9 +43,9 @@ module.exports = function (req, res) {
 		var recordsTotal = 0;
 		var recordsFiltered = 0;
 
-		AppParam.count({}, function (err, c) {
+		AppParam.countDocuments({}, function (err, c) {
 			recordsTotal = c;
-			AppParam.count(query, function (err, c) {
+			AppParam.countDocuments(query, function (err, c) {
 				recordsFiltered = c;
 				AppParam.aggregate([
 					{
@@ -60,7 +58,6 @@ module.exports = function (req, res) {
 					{ $skip: Number(req.body.start) },
 					{ $limit: Number(req.body.length) },
 				], function (err, results) {
-					//AppParam.find(query, 'key value remarks opr opr_date',{'skip': Number( req.body.start), 'limit': Number(req.body.length) }, function (err, results) {
 					if (err) {
 						error.push(config.getErrorResponse('', 501));
 						let resp = config.getResponse(res, 500, error, {}, err);
@@ -76,13 +73,6 @@ module.exports = function (req, res) {
 						results = [];
 					}
 
-					// var data = JSON.stringify({
-					// 	"draw": req.body.draw,
-					// 	"recordsFiltered": recordsFiltered,
-					// 	"recordsTotal": recordsTotal,
-					// 	"data": results
-					// });
-					//res.send(data);
 					let resp = config.getResponseP(res, 100, error, req.body.draw, recordsFiltered, recordsTotal, results);
 					config.logApiCall(req, res, resp);
 					return;
