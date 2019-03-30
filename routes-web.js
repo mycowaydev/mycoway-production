@@ -124,6 +124,13 @@ module.exports = function(apiVersion) {
 	router.get('/', function(req, res) {
 		res.sendFile(path.join(__dirname, '/web/public/index.html'));
 	});
+	router.get('/water-purifier', function(req, res) {
+		let localVar = {
+			product_image: req.session['publicProductImg']
+		};
+		res.render(path.join(__dirname, '/web/public/web-purifier'), localVar);
+	});
+
 	router.get('*', function(req, res) {
 		res.redirect('/404');
 	});
