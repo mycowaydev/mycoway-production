@@ -4,22 +4,11 @@
 // const async = require('async');
 // const cloudinary = require('cloudinary');
 
-// const ProductMaster = require('./model/product-master');
+// const ProductMaster = require('../../../api/v1.0/model/product-master');
 
 //  module.exports = function(req, res) {
-	// let image = "https://res.cloudinary.com/dp1opv9ke/image/upload/v1553603677/coway/healthy-tips/jH35AEN2sVRFp23ta1nwXMae.png";
-	// ProductMaster.findOne({ 'image': image }, function(err, result) {
-	// result = config.getImage(result);
-	// req.session['publicProductImg'] = result['image'];
-	// let resp = config.getResponse(res, 100, error, { 'img_info': result });
-	// config.logApiCall(req, res, resp);
-
-	// });
-	// var imgInfo = result.data.img_info;
-	// document.cookie = 'image=' + imgInfo.publicProductImg + ';path=/';
-
 	window.onload = function() {
-
+		alert("here")
 		var fileInput = document.getElementById('fileInput');
 		var fileDisplayArea = document.getElementById('fileDisplayArea');
 
@@ -47,6 +36,29 @@
 		});
 
 }
+
+
+	
+		// ProductMaster.find({ 'image': image }, function(err, result) {
+		// 	if (err) {
+		// 		error.push(config.getErrorResponse('', 501));
+		// 		let resp = config.getResponse(res, 500, error, {}, err);
+		// 		config.logApiCall(req, res, resp);
+		// 		return;
+		// 	}
+		// 	if (result) {
+		// 			result = config.getImage(result);
+		// 			req.session['publicImage'] = result['image'];
+		// 			let resp = config.getResponse(res, 100, error, { 'image_info': result });
+		// 			config.logApiCall(req, res, resp);
+		// 			return;
+		// 	}
+		// 	error.push(config.getErrorResponse(config.API['VERIFY_ADMIN_LOGIN'], 203));
+		// 	let resp = config.getResponse(res, 200, error, {});
+		// 	config.logApiCall(req, res, resp);
+		// });
+	
+
 
 // }
 

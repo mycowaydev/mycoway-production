@@ -72,7 +72,7 @@ module.exports = function(apiVersion) {
 			let localVar = {
 				app_name: ' | ' + config.GLOBAL['APP_NAME'],
 				name: req.session['adminUsername'],
-				profile_pic: req.session['adminProfileImg']
+			    profile_pic: req.session['adminProfileImg']
 			};
 			// Logged in and navigate to the page requested 
 			switch(page) {
@@ -138,11 +138,15 @@ module.exports = function(apiVersion) {
 	});
 	router.get('/water-purifier', function(req, res) {
 		let localVar = {
-			product_image: req.session['publicProductImg']
+			product_image: req.session['publicImage']
 		};
-		res.render(path.join(__dirname, '/web/public/web-purifier'), localVar);
+		res.render(path.join(__dirname, '/web/public/water-purifier'),localVar);
+		// res.sendFile(path.join(__dirname, '/web/public/water-purifier.html'));
 	});
 
+	router.get('/air-purifier', function(req, res) {
+		res.sendFile(path.join(__dirname, '/web/public/air-purifier.html'));
+	});
 	router.get('*', function(req, res) {
 		res.redirect('/404');
 	});

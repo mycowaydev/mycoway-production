@@ -164,6 +164,14 @@ module.exports = Object.freeze({
 		}
 		return newInfo;
 	},
+	getImage: function (image) {
+		var newImage = {};
+		if (!this.isEmptyJsonObject(image)) {
+			newImage['id'] = image['id'];
+			newImage['image'] = image['image'];
+		}
+		return newImage;
+	},
 	getHealthyTipsInfo: function (info) {
 		var newInfo = {};
 		if (!this.isEmptyJsonObject(info)) {
