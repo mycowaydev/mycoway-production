@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Coway Admin</title>
+    <link rel="icon" href="/logo/logo.png" type="image/png">
+
+    <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
+        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link href="../vendors/nprogress/nprogress.css" rel="stylesheet">
+    <link href="../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+    <link href="../vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+    <link href="../vendors/pnotify/dist/pnotify.css" rel="stylesheet">
+    <link href="../vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+    <link href="../vendors/dropzone/dist/min/dropzone.min.css" rel="stylesheet">
+    <link href="../build/css/custom.css" rel="stylesheet">
+
+    <script>
+        function resizeIframe(obj) {
+            obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+        }
+    </script>
+</head>
+
+<body class="nav-md">
+    <div class="container body">
+        <div class="main_container">
+            <div class="col-md-3 left_col">
+                <div class="left_col scroll-view">
+
+                    <div class="navbar nav_title" style="border: 0;">
+                        <img class="img-rounded" src="/logo/logo.png" style="max-height: 100%; max-width: 50%"
+                            alt="Coway">
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <div class="profile clearfix">
+                        <div class="profile_pic">
+                            <img id="imgProfile" class='img-circle profile_img' src="" />
+                        </div>
+                        <div class="profile_info">
+                            <span>Welcome,</span>
+                            <h2 id="txtUsername"></h2>
+                        </div>
+                    </div>
+                    <br />
+                    <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                        <div class="menu_section">
+                            <ul class="nav side-menu">
+                                <li><a><i class="fas fa-briefcase-medical fa-lg"></i> <span class="sub_menu">Manage
+                                            Healthy Tips</span> <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="/adminer/healthy-tip">Healthy Tip List</a></li>
+                                        <li><a href="/adminer/add-healthy-tip">Add Healthy Tip</a></li>
+                                    </ul>
+                                </li>
+
+                                <li><a><i class="fas fa-briefcase-medical fa-lg"></i> <span class="sub_menu">Manage
+                                            Product</span> <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="/adminer/product">Product List</a></li>
+                                        <li><a href="/adminer/add-product">Add Product</a></li>
+                                    </ul>
+                                </li>
+
+                                <li><a><i class="fas fa-briefcase-medical fa-lg"></i> <span
+                                            class="sub_menu">Preference</span> <span
+                                            class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="app_param.html" target="mainFrame">App Param</a></li>
+                                        <li><a href="/adminer/add-app-param">Add App Param</a></li>
+                                        <li><a href="/adminer/mt-param">Mt Param</a></li>
+                                        <li><a><i class="fas fa-briefcase-medical fa-lg"></i> <span
+                                                    class="sub_menu">Testing</span> <span
+                                                    class="fa fa-chevron-down"></span></a>
+
+                                            <ul class="nav child_menu">
+                                                <li><a href="app_param1.html" target="mainFrame">App Param 1</a></li>
+                                            </ul>
+
+                                        </li>
+                                    </ul>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="top_nav">
+                <div class="nav_menu">
+                    <nav>
+                        <div class="nav toggle">
+                            <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                        </div>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="">
+                                <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown"
+                                    aria-expanded="false">
+                                    <i class="fas fa-power-off"></i>
+                                </a>
+                                <ul class="dropdown-menu dropdown-usermenu pull-right">
+                                    <li><a id="btnLogout"><i class="fas fa-sign-out-alt pull-right"></i> Log Out</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="right_col" role="main">
+                <iframe name="mainFrame" src="" frameborder="0" scrolling="no" onload="resizeIframe(this)"
+                    style="min-height: 1000px; min-width: 100%"></iframe>
+            </div>
+
+            <footer>
+                <div class="pull-right">
+                    Copyright © 2019 by Coway Sdn Bhd. All right reserved.
+                </div>
+                <div class="clearfix"></div>
+            </footer>
+        </div>
+    </div>
+
+    <script src="../vendors/jquery/dist/jquery.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
+        integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+        crossorigin="anonymous"></script> -->
+    <!-- <script src="../vendors/jquery/dist/popper.js"></script> -->
+    <script src="../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="../vendors/iCheck/icheck.min.js"></script>
+    <script src="../vendors/moment/min/moment.min.js"></script>
+    <script src="../vendors/pnotify/dist/pnotify.js"></script>
+    <script src="../vendors/pnotify/dist/pnotify.buttons.js"></script>
+    <script src="../build/js/custom.js"></script>
+    <script src="../web-js/notify.js"></script>
+    <script src="../web-js/admin-logout.js"></script>
+
+    <script>
+        function init() {
+            initCookies();
+        }
+
+        function initCookies() {
+            $('#txtUsername').text(getCookieString('user_name'));
+            $('#imgProfile').attr("src", 'https://ui-avatars.com/api/?background=2A3F54&color=ffffff&length=1&name=' + getCookieString('user_name'));
+        }
+
+        function getCookieString(cname) {
+            var name = cname + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+
+        $(document).ready(function () {
+            init();
+        });
+    </script>
+</body>
+
+</html>

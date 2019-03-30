@@ -31,10 +31,10 @@ function verifyAdminLogin() {
 	    .then(function(result) {
 	    	var statusCode = result.status_code;
 	    	if (statusCode == '100') {
-	    		var adminInfo = result.data.admin_info;
-	    		document.cookie = 'username=' + adminInfo.adminUsername + ';expires=' + getCookieExpiresTime() + ';path=/';
-	    		document.cookie = 'profile_img=' + adminInfo.adminProfileImg + ';expires=' + getCookieExpiresTime() + ';path=/';
-	    		window.location.href = '/adminer/healthy-tip';
+				var adminInfo = result.data.admin_info;
+				document.cookie = 'user_name=' + adminInfo.admin_username + ';expires=' + getCookieExpiresTime() + ';path=/';
+				document.cookie = 'user_id=' + adminInfo.admin_user_id + ';expires=' + getCookieExpiresTime() + ';path=/';	    		
+	    		window.location.href = '/admin/dashboard';
 	    	} else {
 	    		var errors = result.error;
 	    		if (errors && errors.length > 0) {

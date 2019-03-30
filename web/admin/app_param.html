@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="../vendors/jquery/dist/jquery.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
+        integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+        crossorigin="anonymous"></script> -->
+    <script src="../vendors/jquery/dist/popper.js"></script>
+    <script src="../vendors/bootstrap-4/dist/js/bootstrap.min.js"></script>
+    <script src="../vendors/moment/min/moment.min.js"></script>
+    <script src="../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="../vendors/datatables.net/js/jquery.dataTables.js"></script>
+    <script src="../js/jquery.validate.min.js"></script>
+    <script src="../vendors/pnotify/dist/pnotify.js"></script>
+    <script src="../vendors/pnotify/dist/pnotify.buttons.js"></script>
+    <script src="../web-js/notify.js"></script>
+    <script src="../build/js/custom.js"></script>
+
+    <link href="../vendors/bootstrap-4/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
+    <link href="../vendors/DataTables/datatables.css" />
+    <link href="../vendors/pnotify/dist/pnotify.css" rel="stylesheet">
+    <link href="../vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+    <link href="../build/css/custom.css" rel="stylesheet">
+
+    <style>
+        table#dtSearch.dataTable tbody tr:hover {
+            background-color: #ffa;
+        }
+    </style>
+
+    <script>
+        function init() {
+            initButton();
+            initModal();
+            initDataTable();
+            initDataTableBehavior();
+            initValidateInput();
+            initSizeChange();
+        }
+
+        function initSizeChange() {
+            $(window).resize(function () {
+                //alert('asd');
+            });
+        }
+
+        function initButton() {
+            $("#btnMainSearch").click(function (event) {
+                getAppParam();
+            });
+            $("#btnMainReset").click(function (event) {
+                resetAllSearchInput();
+            });
+            $("#btnMainAdd").click(function (event) {
+                insertRecordMode();
+            });
+            $("#btnModalMainAction").click(function (event) {
+                actionAppParam();
+            });
+            $("#btnModalDismiss").click(function (event) {
+                $('#modalCUWindow').modal('hide')
+            });
+        }
+
+        function initModal() {
+            $('#modalLoad').modal({
+                backdrop: 'static', keyboard: true, show: false
+            });
+            $('#modalCUWindow').modal({
+                backdrop: 'static', keyboard: true, show: false
+            });
+            $('#modalCUWindow').on('hidden.bs.modal', function () {
+                resetAllModalInput();
+            });
+        }
+
+        function initDataTable() {
+            $("#dtSearch").DataTable({
+                searching: false,
+                lengthChange: false,
+                data: {},
+                columns: [
+                    { data: 'key' },
+                    { data: 'value' },
+                    { data: 'remarks' },
+                    { data: 'opr_date' },
+                ],
+                columnDefs: [
+                    { width: "30%", "targets": 0 },
+                    { width: "30%", "targets": 1 },
+                    { width: "30%", "targets": 2 },
+                    { width: "10%", "targets": 3 },
+                ],
+                order: [0, 'asc']
+            });
+        }
+
+        var getDataFromServer = function (startindex, endindex) {
+            // var svr_data = [];
+
+            // $.ajax({
+            //     url: '/admin-get-app-param-list',
+            //     type: 'POST',
+            //     contentType: "application/json; charset=utf-8",
+            //     data: JSON.stringify(getSearchFormDataJson()),
+            //     datatype: 'json',
+            //     async: false,
+            //     success: function (data) {
+            //         console.log(data);
+            //         console.log(data.data)
+            // $("#dtSearch").DataTable({
+            //     processing: true,
+            //     serverSide: true,
+            //     searching: false,
+            //     ajax: {
+            //         url: '/admin-get-app-param-list',
+            //         //type: 'POST',
+            //         //contentType: 'application/json',
+            //         // data: function () {
+            //         //     var searchData = {
+            //         //         key: $("#inputKey").val(),
+            //         //         value: $("#inputValue").val(),
+            //         //         page: 2,
+            //         //         length: 10,
+            //         //     }
+            //         //     return searchData;
+            //         // },
+            //         datatype: 'json',
+
+            //     },
+            //     columns: [
+            //         { data: 'key' },
+            //         { data: 'value' },
+            //         { data: 'remarks' },
+            //         { data: 'opr_date' },
+            //     ],
+            //     columnDefs: [
+            //         { width: "30%", "targets": 0 },
+            //         { width: "30%", "targets": 1 },
+            //         { width: "30%", "targets": 2 },
+            //         { width: "10%", "targets": 3 },
+            //     ],
+            // });
+            //     }
+            // });
+
+            // return svr_data;
+
+
+        }
+
+        function initDataTableBehavior() {
+            $('#dtSearch tbody').on('dblclick', 'tr', function () {
+                var data = $('#dtSearch').DataTable().row(this).data();
+                if (typeof data !== "undefined") {
+                    getAppParamById(data["key"]);
+                }
+            });
+            $('#dtSearch').on('page.dt', function () {
+                var info = $('#dtSearch').DataTable().page.info();
+                console.log(info);
+
+                getAppParam(info)
+            });
+        }
+
+        function initValidateInput() {
+            $("#modalForm").validate({
+                rules: {
+                    inputModalKey: {
+                        required: true,
+                        minlength: 5
+                    },
+                    inputModalValue: {
+                        required: true
+                    }
+                },
+                messages: {
+                    inputModalKey: {
+                        required: "Please enter App Param ID.",
+                        minlength: "App Param ID must consist of at least 5 characters."
+                    },
+                    inputModalValue: {
+                        required: "Please enter Value."
+                    }
+                },
+            });
+        }
+
+        function insertRecordMode() {
+            $('#modalTitle').text('Insert App Param');
+            $('#btnModalMainActionText').text('Insert');
+            $("#inputModalKey").prop('disabled', false);
+            $('#modalCUWindow').modal('show')
+        }
+
+        function updateRecordMode() {
+            $('#modalTitle').text('Update App Param');
+            $('#btnModalMainActionText').text('Update');
+            $("#inputModalKey").prop('disabled', true);
+            $('#modalCUWindow').modal('show')
+        }
+
+        function resetAllSearchInput() {
+            $("form#searchForm :input").each(function () {
+                $(this).val('')
+            });
+            $('#dtSearch').DataTable().clear().draw();
+        }
+
+        function resetAllModalInput() {
+            $("form#modalForm :input").each(function () {
+                $(this).val('')
+            });
+            $('#modalForm').validate().resetForm();
+        }
+
+        function getSearchFormData(info) {
+            var searchData = new FormData();
+
+            searchData.append('key', $("#inputKey").val());
+            searchData.append('value', $("#inputValue").val());
+            searchData.append('page', 1);
+            searchData.append('length', 10);
+
+            return searchData;
+        }
+
+        function getSearchFormDataJson(info) {
+            var searchData = new FormData();
+
+            searchData.key = $("#inputKey").val();
+            searchData.value = $("#inputValue").val();
+            searchData.page = 2;
+            searchData.length = 10;
+
+            return searchData;
+        }
+
+        function getModalFormData() {
+            var formData = new FormData();
+
+            formData.append('key', $("#inputModalKey").val());
+            formData.append('value', $("#inputModalValue").val());
+            formData.append('remarks', $("#inputModalRemarks").val());
+
+            return formData;
+        }
+
+        function setSearchDataTableResult(result) {
+            console.log(result.data)
+            $('#dtSearch').DataTable().clear();
+            $('#dtSearch').DataTable().rows.add(result.data.app_param_list).draw();
+        }
+
+        function successHandler(mode) {
+            notify_success(mode + ' successfully.');
+            $('#btnMainSearch').click();
+            $('#modalCUWindow').modal('hide');
+        }
+
+        function editHandler(result) {
+            var app_param_info = result.data.app_param_info;
+
+            if (app_param_info) {
+                $("#inputModalKey").val(app_param_info.key);
+                $("#inputModalValue").val(app_param_info.value);
+                $("#inputModalRemarks").val(app_param_info.remarks);
+                updateRecordMode();
+            }
+        }
+
+        function errorMessageHandler(result) {
+            if (result.error && result.error.length > 0) {
+                notify_err(errors[0].message);
+            } else {
+                notify_server_err();
+            }
+        }
+
+        function getAppParam(info) {
+            $('#modalLoad').modal('show');
+
+            fetch('/admin-get-app-param-list', { method: 'POST', body: getSearchFormData(info) })
+                .then(function (res) {
+                    if (res.ok) {
+                        return res.json();
+                    }
+                    notify_req_failed();
+                })
+                .then(function (result) {
+                    if (result.status_code == '100') {
+                        setSearchDataTableResult(result);
+                    } else {
+                        errorMessageHandler(result);
+                    }
+                })
+                .catch(function (err) {
+                    alert(err);
+                    notify_server_err();
+                })
+                .finally(function () {
+                    $('#modalLoad').modal('hide');
+                });
+        }
+
+        function getAppParamById(id) {
+            $('#modalLoad').modal('show');
+            var formData = new FormData();
+            formData.append('key', id);
+
+            fetch('/admin-get-app-param-info', { method: 'POST', body: formData })
+                .then(function (res) {
+                    if (res.ok) {
+                        return res.json();
+                    }
+                    notify_req_failed();
+                })
+                .then(function (result) {
+                    if (result.status_code == '100') {
+                        editHandler(result);
+                    } else {
+                        errorMessageHandler(result);
+                    }
+                })
+                .catch(function (err) {
+                    notify_server_err();
+                })
+                .finally(function () {
+                    $('#modalLoad').modal('hide');
+                });
+        }
+
+        function actionAppParam() {
+            if ($("#modalForm").valid()) {
+                $('#modalLoad').modal('show');
+
+                var mode = $('#btnModalMainActionText').text();
+                var path = (mode === 'Update' ? "/admin-update-app-param" : "/admin-add-app-param");
+
+                fetch(path, { method: 'POST', body: getModalFormData() })
+                    .then(function (res) {
+                        if (res.ok) {
+                            return res.json();
+                        }
+                        notify_req_failed();
+                    })
+                    .then(function (result) {
+                        if (result.status_code == '100') {
+                            successHandler(mode);
+                        } else {
+                            errorMessageHandler(result);
+                        }
+                    })
+                    .catch(function (err) {
+                        notify_server_err();
+                    })
+                    .finally(function () {
+                        $('#modalLoad').modal('hide');
+                    });
+            }
+        }
+
+        $(document).ready(function () {
+            init();
+        });
+    </script>
+</head>
+
+<body>
+    <div class="x_panel">
+        <div class="x_content mb-2">
+            <!-- ACCORDION START -->
+            <div class="accordion" id="accordion">
+                <div class="panel border">
+                    <a class="panel-heading" role="tab" id="headerPanel" data-toggle="collapse" data-parent="#accordion"
+                        href="#collapsePanel" aria-expanded="false" aria-controls="collapsePanel">
+                        <h4 class="panel-title"><span class="glyphicon glyphicon-chevron-down"
+                                aria-hidden="false"></span>App Param</h4>
+                    </a>
+                    <div id="collapsePanel" class="panel-collapse show m-3" role="">
+                        <div class="panel-body">
+                            <form id="searchForm">
+                                <div class="form-group row">
+                                    <label for="inputKey" class="col-sm-2 col-form-label col-form-label-sm">App
+                                        Param
+                                        ID</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control form-control-sm" id="inputKey">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="inputValue"
+                                        class="col-sm-2 col-form-label col-form-label-sm">Value</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control form-control-sm" id="inputValue">
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="text-right">
+                                <button id="btnMainReset" class="btn btn-secondary btn-sm"
+                                    id="btnMainReset">Reset</button>
+                                <button id="btnMainSearch" class="btn btn-success btn-sm"
+                                    id="btnMainSearch">Search</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ACCORDION END -->
+        </div>
+
+        <div class="mb-2">
+            <button class="btn btn-success btn-sm" id="btnMainAdd">Add</button>
+        </div>
+
+        <!-- RESULT TABLE START -->
+        <div>
+            <table id="dtSearch" class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>App Param ID</th>
+                        <th>Value</th>
+                        <th>Remarks</th>
+                        <th>Created On</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <!-- RESULT TABLE END -->
+    </div>
+
+    <!-- PROMPT MODAL START -->
+    <!-- PROMPT MODAL START -->
+    <!-- PROMPT MODAL START -->
+    <!-- PROMPT MODAL START -->
+    <div class="modal fade bd-example-modal-lg" id="modalCUWindow" tabindex="-1" role="dialog"
+        aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"><span id="modalTitle"></span></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="modalForm">
+                        <div class="form-group row">
+                            <label for="key" class="col-sm-2 col-form-label col-form-label-sm">App Param ID</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control form-control-sm" id="inputModalKey"
+                                    name="inputModalKey" placeholder="Key">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="value" class="col-sm-2 col-form-label col-form-label-sm">Value</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control form-control-sm" id="inputModalValue"
+                                    name="inputModalValue" placeholder="Value">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="remarks" class="col-sm-2 col-form-label col-form-label-sm">Remarks</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control form-control-sm" rows="5"
+                                    id="inputModalRemarks"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" id="btnModalDismiss">Close</button>
+                    <button type="button" class="btn btn-primary btn-sm" id="btnModalMainAction">
+                        <span id="btnModalMainActionText"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- PROMPT MODAL END -->
+    <!-- PROMPT MODAL END -->
+    <!-- PROMPT MODAL END -->
+    <!-- PROMPT MODAL END -->
+
+    <!-- LOADING START -->
+    <!-- LOADING START -->
+    <!-- LOADING START -->
+    <!-- LOADING START -->
+    <div class="modal fade bd-example-modal-sm" id="modalLoad" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- LOADING END -->
+    <!-- LOADING END -->
+    <!-- LOADING END -->
+    <!-- LOADING END -->
+</body>
+
+</html>

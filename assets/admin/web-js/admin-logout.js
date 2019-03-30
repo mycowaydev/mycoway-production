@@ -8,7 +8,7 @@ function logoutAdmin() {
 	fetch('/logout-admin', { method: 'POST' })
 		.then(function(res) {
 			if(res.ok) {
-				window.location.href = '/adminer/login';
+				window.location.href = '/admin/login';
 			}
 			else{
 				notify_req_failed();
