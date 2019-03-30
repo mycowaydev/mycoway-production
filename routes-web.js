@@ -113,6 +113,18 @@ module.exports = function (apiVersion) {
 		res.sendFile(path.join(__dirname, '/web/public/index.html'));
 	});
 
+	router.get('/water-purifier', function(req, res) {
+		let localVar = {
+			product_image: req.session['publicImage']
+		};
+		res.render(path.join(__dirname, '/web/public/water-purifier'),localVar);
+		// res.sendFile(path.join(__dirname, '/web/public/water-purifier.html'));
+	});
+
+	router.get('/air-purifier', function(req, res) {
+		res.sendFile(path.join(__dirname, '/web/public/air-purifier.html'));
+	});
+	
 	router.get('*', function (req, res) {
 		res.redirect('/404');
 	});
