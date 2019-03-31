@@ -5,7 +5,13 @@ const jwt = require('jsonwebtoken');
 
 const Admin = require('./model/admin');
 
-module.exports.isAuthorized = function(req, res, next) {
+module.exports.processCommon = function(req, res, next) {
+	res.contentType('application/json');
+	return next();
+}
+
+module.exports.processAuthorization = function(req, res, next) {
+	res.contentType('application/json');
 	var userId;
 	var error = [];
 	if (req.session) {
@@ -57,20 +63,20 @@ function destroySession(req) {
 
 function sessionExpired(req, res, error) {
 	destroySession(req);
-	error.push(config.getErrorResponse('', 306));
+	error.push(config.getErrorResponse('101Z008', req));
 	var resp = config.getResponse(res, 300, error, {}, null);
 	config.logApiCall(req, res, resp);
 }
 
 function denyAccess(req, res, error) {
 	destroySession(req);
-	error.push(config.getErrorResponse('', 401));
+	error.push(config.getErrorResponse('101Z010', req));
 	var resp = config.getResponse(res, 400, error, {}, null);
 	config.logApiCall(req, res, resp);
 }
 
 function serverError(req, res, error) {
-	error.push(config.getErrorResponse('', 501));
+	error.push(config.getErrorResponse('101Z012', req));
 	var resp = config.getResponse(res, 500, error, {}, null);
 	config.logApiCall(req, res, resp);
 }

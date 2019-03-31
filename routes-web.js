@@ -132,7 +132,7 @@ module.exports = function (apiVersion) {
 	router.post('*', function (req, res) {
 		res.contentType('application/json');
 		let error = [];
-		error.push(config.getErrorResponse('', 404));
+		error.push(config.getErrorResponse('101Z011', req));
 		config.getResponse(res, 400, error, {}, null);
 	});
 

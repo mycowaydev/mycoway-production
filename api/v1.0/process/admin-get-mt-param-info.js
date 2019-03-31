@@ -7,10 +7,6 @@ const MtParam = require('../model/mt-param');
 
 module.exports = function(req, res) {
 
-	res.contentType('application/json');
-
-	config.setLocalizeFromReq(req);
-
 	let error = [];
 
 	let params = [
@@ -18,7 +14,7 @@ module.exports = function(req, res) {
 		'code',
 	];
 	if (!config.isParamsExist(req, params)) {
-		error.push(config.getErrorResponse('', 302));
+		error.push(config.getErrorResponse('101Z002', req));
 		let resp = config.getResponse(res, 300, error, {}, null);
 		config.logApiCall(req, res, resp);
 		return;
@@ -28,10 +24,10 @@ module.exports = function(req, res) {
 	let code = req.body['code'];
 
 	if (config.isEmpty(group)) {
-		error.push(config.getErrorResponse(config.API['ADMIN_GET_MT_PARAM_INFO'], 201));
+		error.push(config.getErrorResponse('101A003', req));
 	}
 	if (config.isEmpty(code)) {
-		error.push(config.getErrorResponse(config.API['ADMIN_GET_MT_PARAM_INFO'], 202));
+		error.push(config.getErrorResponse('101A004', req));
 	}
 
 	if (error && error.length > 0) {
@@ -44,7 +40,7 @@ module.exports = function(req, res) {
 	function adminGetMtParamInfo() {
 		MtParam.findOne({ 'group': group ,'code': code}, function(err, result) {
 			if (err) {
-				error.push(config.getErrorResponse('', 501));
+				error.push(config.getErrorResponse('101Z012', req));
 				let resp = config.getResponse(res, 500, error, {}, err);
 				config.logApiCall(req, res, resp);
 				return;

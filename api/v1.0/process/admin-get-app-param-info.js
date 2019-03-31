@@ -7,17 +7,13 @@ const AppParam = require('../model/app-param');
 
 module.exports = function(req, res) {
 
-	res.contentType('application/json');
-
-	config.setLocalizeFromReq(req);
-
 	let error = [];
 
 	let params = [
 		'key',
 	];
 	if (!config.isParamsExist(req, params)) {
-		error.push(config.getErrorResponse('', 302));
+		error.push(config.getErrorResponse('101Z002', req));
 		let resp = config.getResponse(res, 300, error, {}, null);
 		config.logApiCall(req, res, resp);
 		return;
@@ -26,7 +22,7 @@ module.exports = function(req, res) {
 	let key = req.body['key'];
 
 	if (config.isEmpty(key)) {
-		error.push(config.getErrorResponse(config.API['ADMIN_GET_APP_PARAM_INFO'], 201));
+		error.push(config.getErrorResponse('101A008', req));
 	}
 
 	if (error && error.length > 0) {
@@ -39,7 +35,7 @@ module.exports = function(req, res) {
 	function adminGetAppParamInfo() {
 		AppParam.findOne({ 'key': key }, function(err, result) {
 			if (err) {
-				error.push(config.getErrorResponse('', 501));
+				error.push(config.getErrorResponse('101Z012', req));
 				let resp = config.getResponse(res, 500, error, {}, err);
 				config.logApiCall(req, res, resp);
 				return;

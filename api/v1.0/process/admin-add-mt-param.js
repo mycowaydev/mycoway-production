@@ -15,10 +15,6 @@ module.exports = function (req, res) {
 		api_secret: config.CDN['API_SECRET']
 	});
 
-	res.contentType('application/json');
-
-	config.setLocalizeFromReq(req);
-
 	let error = [];
 
 	let group = req.body['group'];
@@ -29,19 +25,19 @@ module.exports = function (req, res) {
 	let remarks = req.body['remarks'];
 
 	if (config.isEmpty(group)) {
-		error.push(config.getErrorResponse(config.API['ADMIN_ADD_MT_PARAM'], 201));
+		error.push(config.getErrorResponse('101A003', req));
 	}
 	if (config.isEmpty(code)) {
-		error.push(config.getErrorResponse(config.API['ADMIN_ADD_MT_PARAM'], 202));
+		error.push(config.getErrorResponse('101A004', req));
 	}
 	if (config.isEmpty(value)) {
-		error.push(config.getErrorResponse(config.API['ADMIN_ADD_MT_PARAM'], 203));
+		error.push(config.getErrorResponse('101A005', req));
 	}
 	if (config.isEmpty(order_no)) {
-		error.push(config.getErrorResponse(config.API['ADMIN_ADD_MT_PARAM'], 204));
+		error.push(config.getErrorResponse('101A006', req));
 	}
 	if (config.isEmpty(active)) {
-		error.push(config.getErrorResponse(config.API['ADMIN_ADD_MT_PARAM'], 205));
+		error.push(config.getErrorResponse('101A007', req));
 	}
 
 	if (error && error.length > 0) {
@@ -70,7 +66,7 @@ module.exports = function (req, res) {
 					insertData = config.appendCommonFields(insertData, 'MTPARAM_ADD');
 					MtParam.create(insertData, function (err, result) {
 						if (err) {
-							error.push(config.getErrorResponse('', 501));
+							error.push(config.getErrorResponse('101Z012', req));
 							let resp = config.getResponse(res, 500, error, {}, err);
 							config.logApiCall(req, res, resp);
 							return callback(true);

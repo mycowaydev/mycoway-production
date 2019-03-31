@@ -7,10 +7,6 @@ const HealthyTips = require('../model/healthy-tips');
 
 module.exports = function(req, res) {
 
-	res.contentType('application/json');
-
-	config.setLocalizeFromReq(req);
-
 	let pageSize = config.GLOBAL['PAGE_SIZE'];
 	let error = [];
 
@@ -82,7 +78,7 @@ module.exports = function(req, res) {
 			{ $match: query },
 		], function(err, result) {
 			if (err) {
-				error.push(config.getErrorResponse('', 501));
+				error.push(config.getErrorResponse('101Z012', req));
 				let resp = config.getResponse(res, 500, error, {}, err);
 				config.logApiCall(req, res, resp);
 				return;

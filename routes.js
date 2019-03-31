@@ -4,10 +4,16 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 
-const apiTest = '/' + config.API['_TEST'];
-const apiVerifyIsAdminExists = '/' + config.API['VERIFY_IS_ADMIN_EXISTS'];
+const apiTest = '/_test';
+const apiVerifyIsAdminExists = '/verify-is-admin-exists';
+
+const routeTypes = {
+	'PROCESS_COMMON': 1,
+	'PROCESS_AUTHORIZATION': 2
+}
 
 module.exports = function (apiVersion) {
+
 	let router = express.Router();
 	let apiVersionPrefix = './api/' + apiVersion;
 
@@ -15,37 +21,28 @@ module.exports = function (apiVersion) {
 		router.post(apiTest, require('./api/' + apiTest));
 	}
 
-	router = defineRouterPostValue(apiVersionPrefix + '/auth/', router);
-	router = defineRouterPostValueAuth(apiVersionPrefix, apiVersionPrefix + '/process/', router);
+	router = defineRouterPostValue(routeTypes['PROCESS_COMMON'], apiVersionPrefix, apiVersionPrefix + '/auth/', router);
+	router = defineRouterPostValue(routeTypes['PROCESS_AUTHORIZATION'], apiVersionPrefix, apiVersionPrefix + '/process/', router);
 
 	return router;
+
 };
 
-function defineRouterPostValue(folder, router) {
+function defineRouterPostValue(routeType, apiVersionPrefix, folder, router) {
+	let apiVerifyIsAdminExistsRoute = require(apiVersionPrefix + apiVerifyIsAdminExists);
 	fs.readdir(folder, (err, files) => {
 		files.forEach(file => {
 			if (path.parse(file).ext === '.js') {
-				var value = path.parse(file).name;
-				router.post('/' + value, require(folder + value));
+				let value = path.parse(file).name;
+				switch(routeType) {
+					case routeTypes['PROCESS_AUTHORIZATION']:
+						router.post('/' + value, apiVerifyIsAdminExistsRoute.processAuthorization, require(folder + value));
+						break;
+					default:
+						router.post('/' + value, apiVerifyIsAdminExistsRoute.processCommon, require(folder + value));
+				}
 			}
 		});
 	});
-
-	return router;
-}
-
-function defineRouterPostValueAuth(api, folder, router) {
-	let apiVerifyIsAdminExistsRoute = require(api + apiVerifyIsAdminExists);
-
-	fs.readdir(folder, (err, files) => {
-		files.forEach(file => {
-			if (path.parse(file).ext === '.js') {
-				var value = path.parse(file).name;
-				console.log(folder + value);
-				router.post('/' + value, apiVerifyIsAdminExistsRoute.isAuthorized, require(folder + value));
-			}
-		});
-	});
-
 	return router;
 }
