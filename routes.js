@@ -21,8 +21,8 @@ module.exports = function (apiVersion) {
 		router.post(apiTest, require('./api/' + apiTest));
 	}
 
-	router = defineRouterPostValue(routeTypes['PROCESS_COMMON'], apiVersionPrefix, apiVersionPrefix + '/auth/', router);
-	router = defineRouterPostValue(routeTypes['PROCESS_AUTHORIZATION'], apiVersionPrefix, apiVersionPrefix + '/process/', router);
+	router = defineRouterPostValue(routeTypes['PROCESS_COMMON'], apiVersionPrefix, apiVersionPrefix + '/admin/auth/', router);
+	router = defineRouterPostValue(routeTypes['PROCESS_AUTHORIZATION'], apiVersionPrefix, apiVersionPrefix + '/admin/process/', router);
 
 	return router;
 

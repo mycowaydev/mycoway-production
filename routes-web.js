@@ -96,7 +96,6 @@ module.exports = function (apiVersion) {
 	});
 
 	router.get('/admin/*', function (req, res) {
-		console.log(`admin -> ${req.url}`);
 		let localVar = {
 			app_name: ' | ' + config.GLOBAL['APP_NAME'],
 			name: req.session['adminUsername'],

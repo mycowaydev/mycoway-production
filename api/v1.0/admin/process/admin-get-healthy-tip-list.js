@@ -1,9 +1,9 @@
 
 "use strict";
 
-const config = require('../../../config');
+const config = require('../../../../config');
 
-const HealthyTips = require('../model/healthy-tips');
+const HealthyTips = require('../../model/healthy-tips');
 
 module.exports = function(req, res) {
 
