@@ -1,11 +1,11 @@
 
 "use strict";
 
-const config = require('../../../config');
+const config = require('../../../../config');
 const async = require('async');
 const cloudinary = require('cloudinary');
 
-const HealthyTips = require('../model/healthy-tips');
+const HealthyTips = require('../../model/healthy-tips');
 
 module.exports = function(req, res) {
 

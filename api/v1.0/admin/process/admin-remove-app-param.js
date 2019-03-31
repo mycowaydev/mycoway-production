@@ -1,17 +1,16 @@
 
 "use strict";
 
-const config = require('../../../config');
+const config = require('../../../../config');
 
-const MtParam = require('../model/mt-param');
+const AppParam = require('../../model/app-param');
 
-module.exports = function (req, res) {
+module.exports = function(req, res) {
 
 	let error = [];
 
 	let params = [
-		'group',
-		'code',
+		'key',
 	];
 	if (!config.isParamsExist(req, params)) {
 		error.push(config.getErrorResponse('101Z002', req));
@@ -20,46 +19,41 @@ module.exports = function (req, res) {
 		return;
 	}
 
-	let group = req.body['group'];
-	let code = req.body['code'];
+	let key = req.body['key'];
 
-	if (config.isEmpty(group)) {
-		error.push(config.getErrorResponse('101A003', req));
-	}
-	if (config.isEmpty(code)) {
-		error.push(config.getErrorResponse('101A004', req));
+	if (config.isEmpty(key)) {
+		error.push(config.getErrorResponse('101A008', req));
 	}
 
 	if (error && error.length > 0) {
 		let resp = config.getResponse(res, 200, error, {}, null);
 		config.logApiCall(req, res, resp);
 	} else {
-		adminRemoveMtParam();
+		adminRemoveAppParam();
 	}
 
-	function adminRemoveMtParam() {
+	function adminRemoveAppParam() {
 		let query = {
-			'group': group,
-			'code': code
+			'key': key
 		};
-		let options = {
+		let options = { 
 			$project: {
 				'_id': 0,
 				'updated_on': 0,
 				'updated_date': 0
 			}
 		};
-		MtParam.findOneAndDelete(query, options, function (err, result) {
+		AppParam.findOneAndDelete(query, options, function(err, result) {
 			if (err) {
 				error.push(config.getErrorResponse('101Z012', req));
 				let resp = config.getResponse(res, 500, error, {}, err);
 				config.logApiCall(req, res, resp);
 				return;
 			}
-			let resp = config.getResponse(res, 100, error, { 'info': config.getMtParamInfo(result) });
+			let resp = config.getResponse(res, 100, error, { 'info': config.getAppParamInfo(result) });
 			config.logApiCall(req, res, resp);
 			return;
 		});
 	}
-
+	
 };

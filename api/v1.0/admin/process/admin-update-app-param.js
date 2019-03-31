@@ -1,11 +1,11 @@
 
 "use strict";
 
-const config = require('../../../config');
+const config = require('../../../../config');
 const async = require('async');
 const cloudinary = require('cloudinary');
 
-const AppParam = require('../model/app-param');
+const AppParam = require('../../model/app-param');
 
 module.exports = function(req, res) {
 

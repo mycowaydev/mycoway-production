@@ -1,17 +1,16 @@
 
 "use strict";
 
-const config = require('../../../config');
+const config = require('../../../../config');
 
-const MtParam = require('../model/mt-param');
+const HealthyTips = require('../../model/healthy-tips');
 
 module.exports = function(req, res) {
 
 	let error = [];
 
 	let params = [
-		'group',
-		'code',
+		'healthy_tips_id',
 	];
 	if (!config.isParamsExist(req, params)) {
 		error.push(config.getErrorResponse('101Z002', req));
@@ -20,32 +19,28 @@ module.exports = function(req, res) {
 		return;
 	}
 
-	let group = req.body['group'];
-	let code = req.body['code'];
+	let healthyTipsId = req.body['healthy_tips_id'];
 
-	if (config.isEmpty(group)) {
-		error.push(config.getErrorResponse('101A003', req));
-	}
-	if (config.isEmpty(code)) {
-		error.push(config.getErrorResponse('101A004', req));
+	if (config.isEmpty(healthyTipsId)) {
+		error.push(config.getErrorResponse('101Z999', req));
 	}
 
 	if (error && error.length > 0) {
 		let resp = config.getResponse(res, 200, error, {}, null);
 		config.logApiCall(req, res, resp);
 	} else {
-		adminGetMtParamInfo();
+		adminGetHealthyTipInfo();
 	}
 
-	function adminGetMtParamInfo() {
-		MtParam.findOne({ 'group': group ,'code': code}, function(err, result) {
+	function adminGetHealthyTipInfo() {
+		HealthyTips.findOne({ 'healthy_tips_id': healthyTipsId }, function(err, result) {
 			if (err) {
 				error.push(config.getErrorResponse('101Z012', req));
 				let resp = config.getResponse(res, 500, error, {}, err);
 				config.logApiCall(req, res, resp);
 				return;
 			}
-			let resp = config.getResponse(res, 100, error, { 'mt_param_info': config.getMtParamInfo(result) });
+			let resp = config.getResponse(res, 100, error, { 'healthy_tip_info': config.getHealthyTipsInfo(result) });
 			config.logApiCall(req, res, resp);
 			return;
 		});

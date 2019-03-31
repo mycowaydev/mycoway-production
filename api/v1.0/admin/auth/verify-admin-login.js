@@ -1,7 +1,6 @@
+const config = require('../../../../config');
 
-const config = require('../../../config');
-
-const Admin = require('../model/admin');
+const Admin = require('../../model/admin');
 
 module.exports = function(req, res) {
 
