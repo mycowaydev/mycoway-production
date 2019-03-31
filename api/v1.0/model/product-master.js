@@ -9,13 +9,13 @@ const schema = mongoose.Schema({
     image: Array,
     service: Array,
     desc: String,
-    publish_date: timestamp,
-    unpublish_date: timestamp,
+    publish_date: { type: Number, default: config.getCurrentTimestamp() },
+    unpublish_date: { type: Number, default: config.getCurrentTimestamp() },
     remark: String,
     create_by: String,
-    create_date: timestamp,
+    create_date: { type: Number, default: config.getCurrentTimestamp() },
     opr: String,
-    opr_date: timestamp,
+    opr_date: { type: Number, default: config.getCurrentTimestamp() },
     opr_func: String
     
 });

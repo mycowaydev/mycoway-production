@@ -42,7 +42,8 @@ module.exports = Object.freeze({
 		TBL_SESSION: 'tbl_session',
 		TBL_HEALTHY_TIPS: 'tbl_healthy_tips',
 		TBL_APPPARAM: 'tbl_app_param',
-		TBL_MTPARAM: 'tbl_mt_param'
+		TBL_MTPARAM: 'tbl_mt_param',
+		TBL_PRODUCT_MASTER: 'tbl_product_master'
 	},
 	translate: function (key, req) {
 		let value;
@@ -142,6 +143,7 @@ module.exports = Object.freeze({
 		var newImage = {};
 		if (!this.isEmptyJsonObject(image)) {
 			newImage['id'] = image['id'];
+			newImage['name'] = image['name'];
 			newImage['image'] = image['image'];
 		}
 		return newImage;
