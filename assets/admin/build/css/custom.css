@@ -1129,7 +1129,8 @@ h2 {
 .x_panel {
     position: relative;
     width: 100%;
-    height: 100%;
+    min-height: 100%;
+    /* height: 100%; */
     /* margin-bottom: 10px; */
     padding: 10px 17px;
     display: inline-block;
@@ -1389,6 +1390,9 @@ table.jambo_table tbody tr.selected {
 table.jambo_table tbody tr.selected td {
     border-top: 1px solid rgba(38, 185, 154, 0.4);
     border-bottom: 1px solid rgba(38, 185, 154, 0.4)
+}
+.dataTable tbody tr:hover {
+    background-color: #ffa;
 }
 .dataTables_paginate a {
     background: #ff0000

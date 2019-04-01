@@ -3,9 +3,6 @@
 
 <head>
     <script src="../vendors/jquery/dist/jquery.min.js"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
-        integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
-        crossorigin="anonymous"></script> -->
     <script src="../vendors/jquery/dist/popper.js"></script>
     <script src="../vendors/bootstrap-4/dist/js/bootstrap.min.js"></script>
     <script src="../vendors/moment/min/moment.min.js"></script>
@@ -24,12 +21,6 @@
     <link href="../vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
     <link href="../build/css/custom.css" rel="stylesheet">
 
-    <style>
-        table#dtSearch.dataTable tbody tr:hover {
-            background-color: #ffa;
-        }
-    </style>
-
     <script>
         function init() {
             initButton();
@@ -41,14 +32,13 @@
         }
 
         function initSizeChange() {
-            $(window).resize(function () {
-                //alert('asd');
-            });
+            height = $('#main_panel').height();
+            window.parent.postMessage({ "height": height }, "*");
         }
 
         function initButton() {
             $("#btnMainSearch").click(function (event) {
-                getAppParam();
+                $("#dtSearch").DataTable().ajax.reload();
             });
             $("#btnMainReset").click(function (event) {
                 resetAllSearchInput();
@@ -77,10 +67,27 @@
         }
 
         function initDataTable() {
+            $('#dtSearch').DataTable().destroy();
             $("#dtSearch").DataTable({
+                paging: true,
+                pageLength: 10,
+                serverSide: true,
                 searching: false,
-                lengthChange: false,
-                data: {},
+                deferLoading: 0,
+                ajax: {
+                    url: "/admin-get-app-param-list",
+                    type: "POST",
+                    data: function (dataValue) {
+                        dataValue.key = $("#inputKey").val();
+                        dataValue.value = $("#inputValue").val();
+                    },
+                    beforeSend: function (value) {
+                        $('#modalLoad').modal('show');
+                    },
+                    complete: function () {
+                        $('#modalLoad').modal('hide'); initSizeChange();
+                    },
+                },
                 columns: [
                     { data: 'key' },
                     { data: 'value' },
@@ -88,67 +95,13 @@
                     { data: 'opr_date' },
                 ],
                 columnDefs: [
-                    { width: "30%", "targets": 0 },
+                    { width: "25%", "targets": 0 },
                     { width: "30%", "targets": 1 },
                     { width: "30%", "targets": 2 },
-                    { width: "10%", "targets": 3 },
+                    { width: "15%", "targets": 3 },
                 ],
-                order: [0, 'asc']
+                order: [[0, 'desc']]
             });
-        }
-
-        var getDataFromServer = function (startindex, endindex) {
-            // var svr_data = [];
-
-            // $.ajax({
-            //     url: '/admin-get-app-param-list',
-            //     type: 'POST',
-            //     contentType: "application/json; charset=utf-8",
-            //     data: JSON.stringify(getSearchFormDataJson()),
-            //     datatype: 'json',
-            //     async: false,
-            //     success: function (data) {
-            //         console.log(data);
-            //         console.log(data.data)
-            // $("#dtSearch").DataTable({
-            //     processing: true,
-            //     serverSide: true,
-            //     searching: false,
-            //     ajax: {
-            //         url: '/admin-get-app-param-list',
-            //         //type: 'POST',
-            //         //contentType: 'application/json',
-            //         // data: function () {
-            //         //     var searchData = {
-            //         //         key: $("#inputKey").val(),
-            //         //         value: $("#inputValue").val(),
-            //         //         page: 2,
-            //         //         length: 10,
-            //         //     }
-            //         //     return searchData;
-            //         // },
-            //         datatype: 'json',
-
-            //     },
-            //     columns: [
-            //         { data: 'key' },
-            //         { data: 'value' },
-            //         { data: 'remarks' },
-            //         { data: 'opr_date' },
-            //     ],
-            //     columnDefs: [
-            //         { width: "30%", "targets": 0 },
-            //         { width: "30%", "targets": 1 },
-            //         { width: "30%", "targets": 2 },
-            //         { width: "10%", "targets": 3 },
-            //     ],
-            // });
-            //     }
-            // });
-
-            // return svr_data;
-
-
         }
 
         function initDataTableBehavior() {
@@ -157,12 +110,6 @@
                 if (typeof data !== "undefined") {
                     getAppParamById(data["key"]);
                 }
-            });
-            $('#dtSearch').on('page.dt', function () {
-                var info = $('#dtSearch').DataTable().page.info();
-                console.log(info);
-
-                getAppParam(info)
             });
         }
 
@@ -207,7 +154,6 @@
             $("form#searchForm :input").each(function () {
                 $(this).val('')
             });
-            $('#dtSearch').DataTable().clear().draw();
         }
 
         function resetAllModalInput() {
@@ -215,28 +161,6 @@
                 $(this).val('')
             });
             $('#modalForm').validate().resetForm();
-        }
-
-        function getSearchFormData(info) {
-            var searchData = new FormData();
-
-            searchData.append('key', $("#inputKey").val());
-            searchData.append('value', $("#inputValue").val());
-            searchData.append('page', 1);
-            searchData.append('length', 10);
-
-            return searchData;
-        }
-
-        function getSearchFormDataJson(info) {
-            var searchData = new FormData();
-
-            searchData.key = $("#inputKey").val();
-            searchData.value = $("#inputValue").val();
-            searchData.page = 2;
-            searchData.length = 10;
-
-            return searchData;
         }
 
         function getModalFormData() {
@@ -247,12 +171,6 @@
             formData.append('remarks', $("#inputModalRemarks").val());
 
             return formData;
-        }
-
-        function setSearchDataTableResult(result) {
-            console.log(result.data)
-            $('#dtSearch').DataTable().clear();
-            $('#dtSearch').DataTable().rows.add(result.data.app_param_list).draw();
         }
 
         function successHandler(mode) {
@@ -278,32 +196,6 @@
             } else {
                 notify_server_err();
             }
-        }
-
-        function getAppParam(info) {
-            $('#modalLoad').modal('show');
-
-            fetch('/admin-get-app-param-list', { method: 'POST', body: getSearchFormData(info) })
-                .then(function (res) {
-                    if (res.ok) {
-                        return res.json();
-                    }
-                    notify_req_failed();
-                })
-                .then(function (result) {
-                    if (result.status_code == '100') {
-                        setSearchDataTableResult(result);
-                    } else {
-                        errorMessageHandler(result);
-                    }
-                })
-                .catch(function (err) {
-                    alert(err);
-                    notify_server_err();
-                })
-                .finally(function () {
-                    $('#modalLoad').modal('hide');
-                });
         }
 
         function getAppParamById(id) {
@@ -370,7 +262,7 @@
 </head>
 
 <body>
-    <div class="x_panel">
+    <div id="main_panel" class="x_panel">
         <div class="x_content mb-2">
             <!-- ACCORDION START -->
             <div class="accordion" id="accordion">
@@ -432,6 +324,11 @@
             </table>
         </div>
         <!-- RESULT TABLE END -->
+
+        <br />
+        <br />
+        <br />
+        <br />
     </div>
 
     <!-- PROMPT MODAL START -->
