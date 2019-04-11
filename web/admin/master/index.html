@@ -55,43 +55,7 @@
                     <br />
                     <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
                         <div class="menu_section">
-                            <ul class="nav side-menu">
-                                <li><a><i class="fas fa-briefcase-medical fa-lg"></i> <span class="sub_menu">Manage
-                                            Healthy Tips</span> <span class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu">
-                                        <li><a href="/adminer/healthy-tip">Healthy Tip List</a></li>
-                                        <li><a href="/adminer/add-healthy-tip">Add Healthy Tip</a></li>
-                                    </ul>
-                                </li>
-
-                                <li><a><i class="fas fa-briefcase-medical fa-lg"></i> <span class="sub_menu">Manage
-                                            Product</span> <span class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu">
-                                        <li><a href="/adminer/product">Product List</a></li>
-                                        <li><a href="/adminer/add-product">Add Product</a></li>
-                                    </ul>
-                                </li>
-
-                                <li><a><i class="fas fa-briefcase-medical fa-lg"></i> <span
-                                            class="sub_menu">Preference</span> <span
-                                            class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu">
-                                        <li><a href="app_param.html" target="mainFrame">App Param</a></li>
-                                        <li><a href="/adminer/add-app-param">Add App Param</a></li>
-                                        <li><a href="/adminer/mt-param">Mt Param</a></li>
-                                        <li><a><i class="fas fa-briefcase-medical fa-lg"></i> <span
-                                                    class="sub_menu">Testing</span> <span
-                                                    class="fa fa-chevron-down"></span></a>
-
-                                            <ul class="nav child_menu">
-                                                <li><a href="app_param1.html" target="mainFrame">App Param 1</a></li>
-                                            </ul>
-
-                                        </li>
-                                    </ul>
-                                </li>
-
-                            </ul>
+                            <ul id="menubar" class="nav side-menu"></ul>
                         </div>
                     </div>
                 </div>
@@ -146,6 +110,39 @@
     <script>
         function init() {
             initCookies();
+            initMenu();
+        }
+
+        function successHandler(result) {
+            setupMenu('', result.data.menu_list);
+            init_sidebar(); //Referring to custom.js
+        }
+
+        function editHandler(result) {
+
+        }
+
+        function initMenu() {
+            fetch("/admin-get-menu-list", { method: 'POST' })
+                .then(function (res) {
+                    if (res.ok) {
+                        return res.json();
+                    }
+                    notify_req_failed();
+                })
+                .then(function (result) {
+                    if (result.status_code == '100') {
+                        successHandler(result);
+                    } else {
+                        errorMessageHandler(result);
+                    }
+                })
+                .catch(function (err) {
+                    notify_server_err();
+                })
+                .finally(function () {
+                    //$('#modalLoad').modal('hide');
+                });
         }
 
         function initCookies() {
@@ -169,10 +166,44 @@
             return "";
         }
 
+        function setupMenu(parent_id, menu_list) {
+            parent_id = parent_id.length > 0 ? parent_id : '#menubar';
+
+            for (var row = 0; row < menu_list.length; row++) {
+                var data = menu_list[row];
+
+                if (data.type === 'folder') {
+                    setupMenuFolder(parent_id, data);
+                } else if (data.type === 'file') {
+                    setupMenuFile(parent_id, data);
+                }
+
+                if (data.sub_folder.length > 0) {
+                    setupMenu('#' + data.id + '_child', data.sub_folder);
+                }
+            }
+        }
+
+        function setupMenuFolder(parent_id, data) {
+            $(parent_id).append('<li>\
+                                    <a>\
+                                        <i class="fas fa-folder fa-lg"></i>\
+                                        <span class="sub_menu">' + data.title + '</span>\
+                                        <span class="fa fa-chevron-down"></span>\
+                                    </a>\
+                                    <ul id="' + data.id + '_child" class="nav child_menu"></ul>\
+                                </li>');
+        }
+
+        function setupMenuFile(parent_id, data) {
+            $(parent_id).append('<li><a href="' + data.value + '" target="mainFrame">' + data.title + '</a></li>');
+        }
+
         $(document).ready(function () {
             init();
         });
     </script>
+
 </body>
 
 </html>

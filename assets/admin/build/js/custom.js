@@ -2200,7 +2200,7 @@ if (typeof NProgress != 'undefined') {
 	$(document).ready(function() {
 				
 		// init_sparklines();
-		init_sidebar();
+		// init_sidebar();
 		// init_wysiwyg();
 		init_InputMask();
 		// init_JQVmap();
