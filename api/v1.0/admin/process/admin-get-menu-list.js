@@ -28,6 +28,7 @@ function adminGetMenuList(req, res) {
         })
         .catch(err => {
             error.push(config.getErrorResponse('101Z012', req));
+            console.log(err);
             let resp = config.getResponse(res, 500, error, {}, err);
             config.logApiCall(req, res, resp);
             return;
@@ -36,7 +37,7 @@ function adminGetMenuList(req, res) {
 
 function getChild() {
     return new Promise((resolve, reject) => {
-        Menu.find({ status: 'A' }, function (error, data) {
+        Menu.find({ status: 'A' }).sort({ order: 1 }).exec(function (error, data) {
             if (error) {
                 return reject(error);
             } else {
