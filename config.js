@@ -43,7 +43,8 @@ module.exports = Object.freeze({
 		TBL_HEALTHY_TIPS: 'tbl_healthy_tips',
 		TBL_APPPARAM: 'tbl_app_param',
 		TBL_MTPARAM: 'tbl_mt_param',
-		TBL_PRODUCT_MASTER: 'tbl_product_master'
+		TBL_PRODUCT_MASTER: 'tbl_product_master',
+		TBL_MENU: 'tbl_menu',
 	},
 	translate: function (key, req) {
 		let value;
