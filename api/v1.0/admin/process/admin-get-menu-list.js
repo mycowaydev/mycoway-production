@@ -37,7 +37,7 @@ function adminGetMenuList(req, res) {
 
 function getChild() {
     return new Promise((resolve, reject) => {
-        Menu.find({ status: 'A' }).sort({ order: 1 }).exec(function (error, data) {
+        Menu.find({ status: 'A' }).sort({ order_no: 1 }).exec(function (error, data) {
             if (error) {
                 return reject(error);
             } else {

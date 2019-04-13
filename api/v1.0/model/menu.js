@@ -2,10 +2,10 @@
 const config = require('./../../../config');
 const mongoose = require('mongoose');
 const schema = mongoose.Schema({
-	_id: mongoose.Schema.Types.ObjectId,
 	title: String,
 	type: String,
 	parent_id: String,
+	order_no: String,
 	value: String,
 	status: String,
 	remarks: String,

@@ -13,9 +13,5 @@ const schema = mongoose.Schema({
 	opr_date: { type: Number, default: config.getCurrentTimestamp() },
 	opr_func: String
 });
-// schema.pre('save', function(next) {
-// 	this.key = config.getUniqueHashId(String(this._id));
-// 	next();
-// });
 schema.plugin(mongooseAggregatePaginate );
 module.exports = mongoose.model('AppParam', schema, config.DB['TBL_APPPARAM']);
