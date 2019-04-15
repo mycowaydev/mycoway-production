@@ -20,6 +20,8 @@ module.exports = Object.freeze({
 		IS_PRODUCTION: isProduction,
 		API_VERSION: version,
 		APP_NAME: 'Coway',
+		INVALID_ATTEMPTS: process.env['INVALID_ATTEMPTS'],
+		ADMIN_DEF_PASS: process.env['ADMIN_DEF_PASS'],
 		ADMIN_TMP_SECRET: process.env['ADMIN_TMP_SECRET'],
 		SIGNATURE_SECRET: process.env['SIGNATURE_SECRET'],
 		ENCRYPTION_KEY: process.env['ENCRYPTION_KEY'],
@@ -38,12 +40,16 @@ module.exports = Object.freeze({
 	DB: {
 		URI: process.env['DB_URI'] || process.env['DB_DEVELOPMENT_URI'],
 		TBL_ADMIN: 'tbl_admin',
+		TBL_ADMIN_LOGIN: 'tbl_admin_login',
+		TBL_ADMIN_ROLE: 'tbl_admin_role',
+		TBL_ADMIN_PASS: 'tbl_admin_pass',
 		TBL_LOG: 'tbl_log',
 		TBL_SESSION: 'tbl_session',
 		TBL_HEALTHY_TIPS: 'tbl_healthy_tips',
 		TBL_APPPARAM: 'tbl_app_param',
 		TBL_MTPARAM: 'tbl_mt_param',
-		TBL_PRODUCT_MASTER: 'tbl_product_master'
+		TBL_PRODUCT_MASTER: 'tbl_product_master',
+		TBL_MENU: 'tbl_menu',
 	},
 	translate: function (key, req) {
 		let value;
@@ -136,6 +142,21 @@ module.exports = Object.freeze({
 			newInfo['profile_img'] = info['profile_img'];
 			newInfo['created_on'] = info['created_on'];
 			newInfo['created_date'] = this.getFormattedDateTime(info['created_on'], 'YYYY-MM-DD');
+		}
+		return newInfo;
+	},
+	getAdminPass: function (info) {
+		var newInfo = {};
+		if (!this.isEmptyJsonObject(info)) {
+			newInfo['admin_user_id'] = info['admin_user_id'];
+			newInfo['salt_value'] = info['salt_value'];
+			newInfo['hash_password'] = info['hash_password'];
+			newInfo['otp_flag'] = info['otp_flag'];
+			newInfo['expiry_flag'] = info['expiry_flag'];
+			newInfo['expiry_date'] = info['expiry_date'];
+			newInfo['opr'] = info['opr'];
+			newInfo['opr_date'] = this.getFormattedDateTime(info['opr_date'], 'YYYY-MM-DD');
+			newInfo['opr_func'] = info['opr_func'];
 		}
 		return newInfo;
 	},
@@ -233,6 +254,20 @@ module.exports = Object.freeze({
 			return '';
 		}
 	},
+	genRandomString: function (length) {
+		return crypto.randomBytes(Math.ceil(length / 2))
+			.toString('hex') /** convert to hexadecimal format */
+			.slice(0, length);   /** return required number of characters */
+	},
+	sha512: function (password, salt) {
+		var hash = crypto.createHmac('sha512', salt); /** Hashing algorithm sha512 */
+		hash.update(password);
+		var value = hash.digest('hex');
+		return {
+			salt: salt,
+			passwordHash: value
+		};
+	},
 	concatString: function (...value) {
 		var result = '';
 		for (let v of value) {
@@ -326,9 +361,14 @@ module.exports = Object.freeze({
 		obj['updated_date'] = new Date().toISOString();
 		return obj;
 	},
-	appendCommonFields: function (obj, opr_func) {
+	appendCommonFields: function (obj, opr_func, admin_user_id, create) {
+		if (create) {
+			obj['created_by'] = admin_user_id || '';
+			obj['created_date'] = this.getCurrentTimestamp();
+		}
+		obj['opr_by'] = admin_user_id || '';
 		obj['opr_date'] = this.getCurrentTimestamp();
-		obj['opr_func'] = opr_func;
+		obj['opr_func'] = opr_func || '';
 		return obj;
 	},
 	logApiCall: function (req, res, resp) {

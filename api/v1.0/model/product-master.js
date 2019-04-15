@@ -12,8 +12,8 @@ const schema = mongoose.Schema({
     publish_date: { type: Number, default: config.getCurrentTimestamp() },
     unpublish_date: { type: Number, default: config.getCurrentTimestamp() },
     remark: String,
-    create_by: String,
-    create_date: { type: Number, default: config.getCurrentTimestamp() },
+    created_by: String,
+    created_date: { type: Number, default: config.getCurrentTimestamp() },
     opr: String,
     opr_date: { type: Number, default: config.getCurrentTimestamp() },
     opr_func: String

@@ -1,8 +1,9 @@
 const config = require('../../../../config');
 
 const Admin = require('../../model/admin');
+const AdminPass = require('../../model/admin-pass');
 
-module.exports = function(req, res) {
+module.exports = function (req, res) {
 
 	let error = [];
 
@@ -34,8 +35,10 @@ module.exports = function(req, res) {
 	}
 
 	function verifyAdminLogin() {
-		password = config.hashSHA256(password + config.GLOBAL['ADMIN_TMP_SECRET']);
-		Admin.findOne({ 'admin_user_id': userId }, function(err, result) {
+		let admin_username = '';
+		let invalidAttempts = '';
+		let AdminInfo = null;
+		Admin.findOne({ 'admin_user_id': userId }, function (err, result) {
 			if (err) {
 				error.push(config.getErrorResponse('101Z012s', req));
 				let resp = config.getResponse(res, 500, error, {}, err);
@@ -43,20 +46,36 @@ module.exports = function(req, res) {
 				return;
 			}
 			if (result) {
-				let pwd = result['admin_password'];
-				let invalidAttempts = result['invalid_attempts'];
-				if (invalidAttempts && invalidAttempts >= 5) {
+				AdminInfo = result;
+				admin_username = result['admin_username'];
+				invalidAttempts = result['invalid_attempts'];
+			}
+		});
+		AdminPass.findOne({ 'admin_user_id': userId }, function (err, result) {
+			if (err) {
+				error.push(config.getErrorResponse('101Z012s', req));
+				let resp = config.getResponse(res, 500, error, {}, err);
+				config.logApiCall(req, res, resp);
+				return;
+			}
+			if (result) {
+				let salt_value_db = result['salt_value'];
+				let hash_password_db = result['hash_password'];
+				let hash_password = config.sha512(password, salt_value_db);
+
+				if (invalidAttempts && invalidAttempts >= config.GLOBAL['INVALID_ATTEMPTS']) {
 					error.push(config.getErrorResponse('101Y004', req));
 					let resp = config.getResponse(res, 200, error, {});
 					config.logApiCall(req, res, resp);
 					return;
 				}
-				if (pwd && password == pwd) {
+				if (hash_password_db && hash_password_db == hash_password.passwordHash) {
 					result = config.getAdminInfo(result);
 					req.session['adminLoginToken'] = config.getNewToken(result['admin_user_id']);
-					req.session['adminUsername'] = result['admin_username'];
+					req.session['adminUserid'] = result['admin_user_id'];
+					req.session['adminUsername'] = admin_username;
 					req.session['adminProfileImg'] = result['profile_img'];
-					let resp = config.getResponse(res, 100, error, { 'admin_info': result });
+					let resp = config.getResponse(res, 100, error, { 'admin_info': AdminInfo });
 					config.logApiCall(req, res, resp);
 					return;
 				} else {
@@ -84,7 +103,7 @@ module.exports = function(req, res) {
 		};
 		let set = { $set: replacement };
 		let options = { upsert: false, returnNewDocument: true, returnOriginal: false, new: true };
-		Admin.findOneAndUpdate(query, set, options, function(err, result) {
+		Admin.findOneAndUpdate(query, set, options, function (err, result) {
 			return;
 		});
 	}

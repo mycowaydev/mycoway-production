@@ -1,17 +1,17 @@
 
 var btnLogin = document.getElementById('btnLogin');
-btnLogin.onclick = function() {
+btnLogin.onclick = function () {
 	verifyAdminLogin();
 }
 
 var adminUserId = document.getElementById('adminUserId');
-adminUserId.addEventListener('keyup', function(event) {
+adminUserId.addEventListener('keyup', function (event) {
 	if (event.keyCode === 13) {
 		document.getElementById('btnLogin').click();
 	}
 });
 var adminPassword = document.getElementById('adminPassword');
-adminPassword.addEventListener('keyup', function(event) {
+adminPassword.addEventListener('keyup', function (event) {
 	if (event.keyCode === 13) {
 		document.getElementById('btnLogin').click();
 	}
@@ -22,29 +22,30 @@ function verifyAdminLogin() {
 	formData.append('user_id', adminUserId.value);
 	formData.append('password', adminPassword.value);
 	fetch('/verify-admin-login', { method: 'POST', body: formData })
-		.then(function(res) {
-			if(res.ok) {
+		.then(function (res) {
+			if (res.ok) {
 				return res.json();
 			}
 			notify_req_failed();
-	    })
-	    .then(function(result) {
-	    	var statusCode = result.status_code;
-	    	if (statusCode == '100') {
+		})
+		.then(function (result) {
+			var statusCode = result.status_code;
+			if (statusCode == '100') {
 				var adminInfo = result.data.admin_info;
 				document.cookie = 'user_name=' + adminInfo.admin_username + ';expires=' + getCookieExpiresTime() + ';path=/';
-				document.cookie = 'user_id=' + adminInfo.admin_user_id + ';expires=' + getCookieExpiresTime() + ';path=/';	    		
-	    		window.location.href = '/admin/dashboard';
-	    	} else {
-	    		var errors = result.error;
-	    		if (errors && errors.length > 0) {
-	    			notify_err(errors[0].message);
-	    		}
-	    	}
-	    })
-	    .catch(function(err) {
-	    	notify_server_err();
-	    });
+				document.cookie = 'user_id=' + adminInfo.admin_user_id + ';expires=' + getCookieExpiresTime() + ';path=/';
+				document.cookie = 'profile_img=' + adminInfo.profile_img + ';expires=' + getCookieExpiresTime() + ';path=/';
+				window.location.href = '/admin/dashboard';
+			} else {
+				var errors = result.error;
+				if (errors && errors.length > 0) {
+					notify_err(errors[0].message);
+				}
+			}
+		})
+		.catch(function (err) {
+			notify_server_err();
+		});
 }
 
 function getCookieExpiresTime() {
