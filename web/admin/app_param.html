@@ -245,6 +245,7 @@
         function getModalFormData() {
             var formData = new FormData();
 
+            formData.append('id', $("#formId").val());
             formData.append('key', $("#txtModel_Key").val());
             formData.append('value', $("#txtModel_Value").val());
             formData.append('status', $("#ddlModal_Status").val());
@@ -263,6 +264,7 @@
             var data = result.data;
 
             if (data) {
+                $("#formId").val(data._id);
                 $("#txtModel_Key").val(data.key);
                 $("#txtModel_Value").val(data.value);
                 $("#ddlModal_Status").val(data.status);
@@ -439,6 +441,7 @@
                 </div>
                 <div class="modal-body">
                     <form id="modalForm">
+                            <input type="hidden" id="formId">
                         <div class="form-group row">
                             <label for="txtModel_Key" class="col-sm-2 col-form-label col-form-label-sm">Key</label>
                             <div class="col-sm-10">

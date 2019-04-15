@@ -27,6 +27,7 @@ module.exports = function (req, res) {
 function getParam(req) {
 	var data = {};
 
+	data.id = req.body['id'];
 	data.key = req.body['key'];
 	data.value = req.body['value'];
 	data.status = req.body['status'];
@@ -60,7 +61,7 @@ function getReplacement(data) {
 
 function getQuery(data) {
 	let query = {
-		'key': data.key
+		'_id': data.id
 	};
 	return query;
 }

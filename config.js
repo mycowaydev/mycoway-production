@@ -50,6 +50,7 @@ module.exports = Object.freeze({
 		TBL_MTPARAM: 'tbl_mt_param',
 		TBL_PRODUCT_MASTER: 'tbl_product_master',
 		TBL_MENU: 'tbl_menu',
+		TBL_REVIEW: 'tbl_review',
 	},
 	translate: function (key, req) {
 		let value;
