@@ -8,11 +8,22 @@
 	"101A006": "error_order_no_empty",
 	"101A007": "error_active_empty",
 	"101A008": "error_app_param_id_empty",
+	
+	"101A011": "error_admin_user_id_empty",
+	"101A012": "error_admin_username_empty",
+	"101A013": "error_old_password_empty",
+	"101A014": "error_password_empty",
+	"101A015": "error_password_confirmation_empty",
+	"101A016": "error_password_not_match_with_password_confirmation",
+	"101A017": "error_password_cannot_same_with_old_password",
+	"101A018": "error_status_empty",
 
 	"101Y001": "error_admin_login_user_id_empty",
 	"101Y002": "error_admin_login_password_empty",
 	"101Y003": "error_admin_login_user_id_password_invalid",
 	"101Y004": "error_admin_login_acc_blocked",
+	"101Y005": "error_admin_old_password_invalid",
+	"101Y006": "error_admin_password_confirmation_not_match",
 
 	"101Z001": "error_session_expired",
 	"101Z002": "error_bad_request",

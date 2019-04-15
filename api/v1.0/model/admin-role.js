@@ -2,17 +2,9 @@
 const config = require('./../../../config');
 const mongoose = require('mongoose');
 const schema = mongoose.Schema({
-	admin_user_id: String,
-	admin_username: String,
-	role: String,
-	email: String,
-	phone_no: String,
-	profile_img: String,
-	level: String,
-	group: String,
-	superior: String,
-	valid_until: { type: Number, default: config.getCurrentTimestamp() },
-	invalid_attempts: Number,
+	name: String,
+	desc: String,
+	menu_id: String,
 	status: String,
 	remarks: String,
 	created_by: String,
@@ -21,4 +13,4 @@ const schema = mongoose.Schema({
 	opr_date: { type: Number, default: config.getCurrentTimestamp() },
 	opr_func: String
 });
-module.exports = mongoose.model('Admin', schema, config.DB['TBL_ADMIN']);
+module.exports = mongoose.model('AdminRole', schema, config.DB['TBL_ADMIN_ROLE']);

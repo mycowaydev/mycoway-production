@@ -63,7 +63,7 @@ module.exports = function (req, res) {
 						'active': active,
 						'remarks': remarks,
 					};
-					insertData = config.appendCommonFields(insertData, 'MTPARAM_ADD');
+					insertData = config.appendCommonFields(insertData, 'MTPARAM_ADD', req.session.adminUserid, true);
 					MtParam.create(insertData, function (err, result) {
 						if (err) {
 							error.push(config.getErrorResponse('101Z012', req));

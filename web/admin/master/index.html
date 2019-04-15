@@ -147,7 +147,11 @@
 
         function initCookies() {
             $('#txtUsername').text(getCookieString('user_name'));
-            $('#imgProfile').attr("src", 'https://ui-avatars.com/api/?background=2A3F54&color=ffffff&length=1&name=' + getCookieString('user_name'));
+            var img_src = getCookieString('profile_img');
+            if (!img_src) {
+                img_src = 'https://ui-avatars.com/api/?background=2A3F54&color=ffffff&length=1&name=' + getCookieString('user_name');
+            }
+            $('#imgProfile').attr("src", img_src);
         }
 
         function getCookieString(cname) {

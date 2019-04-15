@@ -57,7 +57,7 @@ function adminAddAppParam(req, res, error, data) {
 				return callback(null);
 			},
 			function (callback) {
-				let insertData = config.appendCommonFields(data, 'APPPARAM_ADD');
+				let insertData = config.appendCommonFields(data, 'APPPARAM_ADD', req.session.adminUserid, true);
 				AppParam.create(insertData, function (err, result) {
 					if (err) {
 						error.push(config.getErrorResponse('101Z012', req));
