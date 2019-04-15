@@ -51,7 +51,7 @@ label.error {
     margin-left: 10px
 }
 .nav-sm span.sub_menu {
-    display: none 
+    margin-left: 0px;
 }
 .nav-sm .left_col {
     margin-top: 15px
