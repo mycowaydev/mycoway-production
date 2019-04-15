@@ -10,7 +10,6 @@ const apiVerifyIsAdminExists = '/verify-is-admin-exists';
 const routeTypes = {
 	'PROCESS_COMMON': 1,
 	'PROCESS_AUTHORIZATION': 2,
-	// 'PROCESS_TEST': 1
 }
 
 module.exports = function (apiVersion) {
@@ -24,7 +23,6 @@ module.exports = function (apiVersion) {
 
 	router = defineRouterPostValue(routeTypes['PROCESS_COMMON'], apiVersionPrefix, apiVersionPrefix + '/admin/auth/', router);
 	router = defineRouterPostValue(routeTypes['PROCESS_AUTHORIZATION'], apiVersionPrefix, apiVersionPrefix + '/admin/process/', router);
-	// router = defineRouterPostValue(routeTypes['PROCESS_TEST'], apiVersionPrefix, apiVersionPrefix + '/public/', router);
 	return router;
 
 };
