@@ -2,6 +2,7 @@
 const config = require('./config');
 const express = require('express');
 const path = require('path');
+const fs = require('fs')
 
 module.exports = function (apiVersion) {
 	let router = express.Router();
@@ -80,13 +81,13 @@ module.exports = function (apiVersion) {
 
 	router.get('/admin/login', function (req, res) {
 		if (req.session && req.session['adminUsername']) {
-			res.redirect('/admin/dashboard');
+			res.redirect('/admin/main');
 		} else {
 			res.render(path.join(__dirname, '/web/admin/login'), { title: 'Admin Login', app_name: ' | ' + config.GLOBAL['APP_NAME'] });
 		}
 	});
 
-	router.get('/admin/dashboard', function (req, res) {
+	router.get('/admin/main', function (req, res) {
 		let localVar = {
 			app_name: ' | ' + config.GLOBAL['APP_NAME'],
 			name: req.session['adminUsername'],
@@ -96,12 +97,22 @@ module.exports = function (apiVersion) {
 	});
 
 	router.get('/admin/*', function (req, res) {
-		let localVar = {
-			app_name: ' | ' + config.GLOBAL['APP_NAME'],
-			name: req.session['adminUsername'],
-			profile_pic: req.session['adminProfileImg']
-		};
-		res.sendFile(path.join(__dirname, `/web/${req.url}`), localVar);
+		let reqFile = path.join(__dirname, `/web${req.url}`);
+
+		try {
+			if (fs.existsSync(reqFile)) {
+				let localVar = {
+					app_name: ' | ' + config.GLOBAL['APP_NAME'],
+					name: req.session['adminUsername'],
+					profile_pic: req.session['adminProfileImg']
+				};
+				res.sendFile(reqFile, localVar);
+			} else {
+				res.sendFile(path.join(__dirname, `/web/admin/master/404.html`));
+			}
+		} catch (err) {
+			console.error(err)
+		}
 	});
 
 	router.get('/404', function (req, res) {
@@ -112,19 +123,19 @@ module.exports = function (apiVersion) {
 		res.sendFile(path.join(__dirname, '/web/public/index.html'));
 	});
 
-	router.get('/water-purifier', function(req, res) {
+	router.get('/water-purifier', function (req, res) {
 		let localVar = {
-			 product_image: req.session['publicProductImage']
+			product_image: req.session['publicProductImage']
 			//product_image: 'https://res.cloudinary.com/dp1opv9ke/image/upload/v1553603677/coway/healthy-tips/jH35AEN2sVRFp23ta1nwXMae.png'
 		};
 		res.render(path.join(__dirname, '/web/public/water-purifier'), localVar);
 		//res.sendFile(path.join(__dirname, '/web/public/water-purifier.html'));
 	});
 
-	router.get('/air-purifier', function(req, res) {
+	router.get('/air-purifier', function (req, res) {
 		res.sendFile(path.join(__dirname, '/web/public/air-purifier.html'));
 	});
-	
+
 	router.get('*', function (req, res) {
 		res.redirect('/404');
 	});
