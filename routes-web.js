@@ -136,6 +136,14 @@ module.exports = function (apiVersion) {
 		res.sendFile(path.join(__dirname, '/web/public/air-purifier.html'));
 	});
 
+	router.get('/cart', function(req, res) {
+        res.sendFile(path.join(__dirname, '/web/public/cart.html'));
+    });
+
+    router.get('/cart-submission', function(req, res) {
+        res.sendFile(path.join(__dirname, '/web/public/cart-submission.html'));
+    });
+	
 	router.get('*', function (req, res) {
 		res.redirect('/404');
 	});
