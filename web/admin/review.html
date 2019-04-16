@@ -23,7 +23,7 @@
 
     <script>
         var app = {
-            name: 'App Param',
+            name: "Review",
             http: {
                 method: 'POST'
             },
@@ -35,11 +35,15 @@
                 insert: 'Insert',
             },
             link: {
-                insert: '/admin-add-app-param',
-                update: '/admin-update-app-param',
-                getList: '/admin-get-app-param-list',
-                getById: '/admin-get-app-param-info',
+                insert: '/admin-add-review',
+                update: '/admin-update-review',
+                getList: '/admin-get-review-list',
+                getById: '/admin-get-review-info',
                 mtparam: '/admin-get-mt-param-group',
+            },
+            rateValue: {
+                min: 1,
+                max: 5
             }
         }
 
@@ -52,6 +56,7 @@
             initApp();
             initButton();
             initModal();
+            initDropdownList2();
             initDataTable();
             initDataTableBehavior();
             initValidateInput();
@@ -95,14 +100,16 @@
             $('#modalCUWindow').on('hidden.bs.modal', function () {
                 resetAllModalInput();
             });
-            $("#modalCUWindow").on("shown.bs.modal", function (e) {
-                $('#modalLoad').modal('hide');
-            })
         }
-
         function initDropdownList(target, data) {
             for (var row = 0; row < data.length; row++) {
                 $(target).append(new Option(data[row].value, data[row].code));
+            }
+        }
+
+        function initDropdownList2() {
+            for (var row = app.rateValue.min; row <= app.rateValue.max; row++) {
+                $("#ddlSearch_Rate,#ddlModal_Rate").append(new Option(row + " star(s)", row));
             }
         }
 
@@ -135,30 +142,28 @@
                     url: app.link.getList,
                     type: app.http.method,
                     data: function (dataValue) {
-                        dataValue.key = $("#txtSearch_Key").val();
-                        dataValue.value = $("#txtSearch_Value").val();
+                        dataValue.rate = $("#ddlSearch_Rate").val();
                         dataValue.status = $("#ddlSearch_Status").val();
                     },
                     beforeSend: function (value) {
                         $('#modalLoad').modal('show');
                     },
                     complete: function () {
-                        $('#modalLoad').modal('hide');
-                        initSizeChange();
+                        $('#modalLoad').modal('hide'); initSizeChange();
                     },
                 },
                 columns: [
                     { data: '_id' },
-                    { data: 'key' },
-                    { data: 'value' },
+                    { data: 'name' },
                     { data: 'status' },
+                    { data: 'email_address' },
+                    { data: 'rate' },
                 ],
                 columnDefs: [
                     { width: "0%", "targets": 0, "visible": false },
-                    { width: "40%", "targets": 1 },
-                    { width: "30%", "targets": 2 },
+                    { width: "30%", "targets": 1 },
                     {
-                        width: "30%", "targets": 3, render: function (data, type, row) {
+                        width: "20%", "targets": 2, render: function (data, type, row) {
                             for (var row = 0; row < mtpStatus.length; row++) {
                                 if (mtpStatus[row].code == data) {
                                     return mtpStatus[row].value;
@@ -167,8 +172,14 @@
                             return data;
                         }
                     },
+                    { width: "30%", "targets": 3 },
+                    {
+                        width: "20%", "targets": 4, render: function (data, type, row) {
+                            return data + " star(s)";
+                        }
+                    },
                 ],
-                order: [[1, 'desc']]
+                order: [[0, 'desc']]
             });
         }
 
@@ -184,11 +195,7 @@
         function initValidateInput() {
             $("#modalForm").validate({
                 rules: {
-                    txtModal_Key: {
-                        required: true,
-                        minlength: 5
-                    },
-                    txtModal_Value: {
+                    txtModal_Name: {
                         required: true
                     },
                     ddlModal_Status: {
@@ -197,18 +204,24 @@
                                 return $("#ddlModal_Status").val() === "";
                             }
                         }
+                    },
+                    ddlModal_Rate: {
+                        required: {
+                            depends: function (element) {
+                                return $("#ddlModal_Rate").val() === "";
+                            }
+                        }
                     }
                 },
                 messages: {
-                    txtModal_Key: {
-                        required: "Please enter key.",
-                        minlength: "Key must consist of at least 5 characters."
-                    },
-                    txtModal_Value: {
-                        required: "Please enter value."
+                    txtModal_Name: {
+                        required: "Please enter name."
                     },
                     ddlModal_Status: {
                         required: "Please select status."
+                    },
+                    ddlModal_Rate: {
+                        required: "Please select rate."
                     }
                 }
             });
@@ -219,7 +232,7 @@
             $('#modalTitle').text(mode + ' ' + app.name);
             $('#btnModalMainActionText').text(mode);
             disableElement(false);
-            $('#modalCUWindow').modal('show');
+            $('#modalCUWindow').modal('show')
         }
 
         function updateRecordMode() {
@@ -227,11 +240,11 @@
             $('#modalTitle').text(mode + ' ' + app.name);
             $('#btnModalMainActionText').text(mode);
             disableElement(true);
-            $('#modalCUWindow').modal('show');
+            $('#modalCUWindow').modal('show')
         }
 
         function disableElement(disable) {
-            $("#txtModal_Key").prop('disabled', disable);
+
         }
 
         function resetAllSearchInput() {
@@ -251,10 +264,12 @@
             var formData = new FormData();
 
             formData.append('id', $("#formId").val());
-            formData.append('key', $("#txtModal_Key").val());
-            formData.append('value', $("#txtModal_Value").val());
+            formData.append('name', $("#txtModal_Name").val());
             formData.append('status', $("#ddlModal_Status").val());
-            formData.append('remarks', $("#txtModal_Remarks").val());
+            formData.append('email_address', $("#txtModal_Email").val());
+            formData.append('rate', $("#ddlModal_Rate").val());
+            formData.append('desc', $("#taModal_Description").val());
+            formData.append('remarks', $("#taModal_Remarks").val());
 
             return formData;
         }
@@ -270,10 +285,12 @@
 
             if (data) {
                 $("#formId").val(data._id);
-                $("#txtModal_Key").val(data.key);
-                $("#txtModal_Value").val(data.value);
+                $("#txtModal_Name").val(data.name);
                 $("#ddlModal_Status").val(data.status);
-                $("#txtModal_Remarks").val(data.remarks);
+                $("#txtModal_Email").val(data.email_address);
+                $("#ddlModal_Rate").val(data.rate);
+                $("#taModal_Description").val(data.desc);
+                $("#taModal_Remarks").val(data.remarks);
                 updateRecordMode();
             }
         }
@@ -310,7 +327,7 @@
                 })
                 .finally(function () {
                     $('#modalLoad').modal('hide');
-                })
+                });
         }
 
         function actionModifyData() {
@@ -364,27 +381,19 @@
                         <div class="panel-body">
                             <form id="searchForm">
                                 <div class="form-group row">
-                                    <label for="txtSearch_Key"
-                                        class="col-sm-2 col-form-label col-form-label-sm">Key</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control form-control-sm" id="txtSearch_Key"
-                                            name="txtSearch_Key" placeholder="Key">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="txtSearch_Value"
-                                        class="col-sm-2 col-form-label col-form-label-sm">Value</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control form-control-sm" id="txtSearch_Value"
-                                            name="txtSearch_Value" placeholder="Value">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="txtSearch_Value"
+                                    <label for="ddlSearch_Status"
                                         class="col-sm-2 col-form-label col-form-label-sm">Status</label>
                                     <div class="col-sm-10">
                                         <select id="ddlSearch_Status" class="form-control form-control-sm"
                                             name="normal">
+                                            <option value="">Please select</option>
+                                        </select> </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="ddlSearch_Rate"
+                                        class="col-sm-2 col-form-label col-form-label-sm">Rate</label>
+                                    <div class="col-sm-10">
+                                        <select id="ddlSearch_Rate" class="form-control form-control-sm" name="normal">
                                             <option value="">Please select</option>
                                         </select>
                                     </div>
@@ -413,9 +422,10 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Key</th>
-                        <th>Value</th>
+                        <th>Name</th>
                         <th>Status</th>
+                        <th>Email</th>
+                        <th>Rate</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -448,34 +458,51 @@
                     <form id="modalForm">
                         <input type="hidden" id="formId">
                         <div class="form-group row">
-                            <label for="txtModal_Key" class="col-sm-2 col-form-label col-form-label-sm">Key</label>
+                            <label for="txtModal_Name" class="col-sm-2 col-form-label col-form-label-sm">Name</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control form-control-sm" id="txtModal_Key"
-                                    name="txtModal_Key" placeholder="Key">
+                                <input type="text" class="form-control form-control-sm" id="txtModal_Name"
+                                    name="txtModal_Name" placeholder="Name">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="txtModal_Value" class="col-sm-2 col-form-label col-form-label-sm">Value</label>
+                            <label for="ddlModal_Status"
+                                class="col-sm-2 col-form-label col-form-label-sm">Status</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control form-control-sm" id="txtModal_Value"
-                                    name="txtModal_Value" placeholder="Value">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="txtModal_Value" class="col-sm-2 col-form-label col-form-label-sm">Status</label>
-                            <div class="col-sm-10">
-                                <select id="ddlModal_Status" name="ddlModal_Status"
-                                    class="form-control form-control-sm">
+                                <select id="ddlModal_Status" class="form-control form-control-sm"
+                                    name="ddlModal_Status">
                                     <option value="">Please select</option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="txtModal_Remarks" class="col-sm-2 col-form-label col-form-label-sm">Remarks
+                            <label for="txtModal_Email" class="col-sm-2 col-form-label col-form-label-sm">Email</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control form-control-sm" id="txtModal_Email"
+                                    name="txtModal_Email" placeholder="Email">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="ddlModal_Rate" class="col-sm-2 col-form-label col-form-label-sm">Rate</label>
+                            <div class="col-sm-10">
+                                <select id="ddlModal_Rate" class="form-control form-control-sm" name="ddlModal_Rate">
+                                    <option value="">Please select</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="taModal_Description"
+                                class="col-sm-2 col-form-label col-form-label-sm">Description</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control form-control-sm" rows="5" id="taModal_Description"
+                                    name="taModal_Description" placeholder="Description"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="taModal_Remarks" class="col-sm-2 col-form-label col-form-label-sm">Remarks
                                 (FOUO)</label>
                             <div class="col-sm-10">
-                                <textarea class="form-control form-control-sm" rows="5" id="txtModal_Remarks"
-                                    name="txtModal_Remarks" placeholder="Remarks"></textarea>
+                                <textarea class="form-control form-control-sm" rows="5" id="taModal_Remarks"
+                                    name="taModal_Remarks" placeholder="Remarks"></textarea>
                             </div>
                         </div>
                     </form>

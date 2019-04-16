@@ -2224,7 +2224,7 @@ button,
     border: 1px solid #EFEFEF
 }
 .input-group {
-    margin-bottom: 10px
+    /* margin-bottom: 10px */
 }
 .ln_solid {
     border-top: 1px solid #e5e5e5;
