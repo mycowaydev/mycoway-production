@@ -4,7 +4,7 @@
 const config = require('../../../../config');
 const async = require('async');
 const cloudinary = require('cloudinary');
-const AppParam = require('../../model/app-param');
+const Review = require('../../model/review');
 
 module.exports = function (req, res) {
 	cloudinary.config({
@@ -20,18 +20,20 @@ module.exports = function (req, res) {
 		let resp = config.getResponse(res, 200, error, {}, null);
 		config.logApiCall(req, res, resp);
 	} else {
-		adminUpdateAppParam(req, res, error, data);
+		adminAddReview(req, res, error, data);
 	}
 }
 
 function getParam(req) {
 	var data = {};
 
-	data.id = req.body['id'];
-	data.key = req.body['key'];
-	data.value = req.body['value'];
+	data.name = req.body['name'];
 	data.status = req.body['status'];
+	data.email_address = req.body['email_address'];
+	data.rate = req.body['rate'];
+	data.desc = req.body['desc'];
 	data.remarks = req.body['remarks'];
+	data.review_date = config.getCurrentTimestamp();
 
 	return data;
 }
@@ -39,46 +41,27 @@ function getParam(req) {
 function validateParam(req, data) {
 	let error = [];
 
-	if (config.isEmpty(data.key)) {
-		error.push(config.getErrorResponse('101A008', req));
-	}
-	if (config.isEmpty(data.value)) {
-		error.push(config.getErrorResponse('101A005', req));
-	}
+	// if (config.isEmpty(data.key)) {
+	// 	error.push(config.getErrorResponse('101A008', req));
+	// }
+	// if (config.isEmpty(data.value)) {
+	// 	error.push(config.getErrorResponse('101A005', req));
+	// }
 
 	return error;
 }
 
-function getReplacement(data) {
-	let replacement = {
-		'value': data.value,
-		'status': data.status,
-		'remarks': data.remarks,
-	};
-	replacement = config.appendCommonFields(replacement, 'APPPARAM_UPD');
-	return replacement;
-}
-
-function getQuery(data) {
-	let query = {
-		'_id': data.id
-	};
-	return query;
-}
-
-function adminUpdateAppParam(req, res, error, data) {
+function adminAddReview(req, res, error, data) {
 	async.series(
 		[
 			function (callback) {
 				return callback(null);
 			},
 			function (callback) {
-				let query = getQuery(data);
-				let set = { $set: getReplacement(data) };
-
-				let options = { upsert: false, returnNewDocument: true, returnOriginal: false, new: true };
-				AppParam.findOneAndUpdate(query, set, options, function (err, result) {
+				var insertData = config.appendCommonFields(data, 'REVIEW_ADD');
+				Review.create(insertData, function (err, result) {
 					if (err) {
+						console.log(err)
 						error.push(config.getErrorResponse('101Z012', req));
 						let resp = config.getResponse(res, 500, error, {}, err);
 						config.logApiCall(req, res, resp);
