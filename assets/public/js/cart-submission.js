@@ -65,3 +65,20 @@ $(document).ready(function() {
         }
     });
 });
+
+$(window).load(function(){
+    $( "#ic_tooltips" ).tooltip({ content: '<img src="res/sample_ic.jpg" />' });
+    $( "#card_tooltips" ).tooltip({ content: '<img src="res/sample_card.jpg" />' });
+
+    if (!sessionStorage.cart) {
+        $( "#cart-detail" ).text('cart is empty');
+        window.location.href = '/cart'
+    } else {
+        var cart_text = "";
+        var cart_list = JSON.parse(sessionStorage.cart);
+        for (var cart_item of cart_list) {
+            var cart_line = "<p><b>" + cart_item.name + "</b> x " +  cart_item.quantity + " = RM " + cart_item.charge + "</p>";
+            $( "#cart-detail" ).append(cart_line);
+        }
+    }
+});

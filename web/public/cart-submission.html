@@ -33,6 +33,10 @@
 </head>
 
 <body>
+<!--================ Start Header Menu Area =================-->
+include includes/header.html
+<!--================ End Header Menu Area =================-->
+
     <div class="page-wrapper bg-dark p-t-100 p-b-50">
         <div class="wrapper wrapper--w900">
             <div class="card card-6">
@@ -127,6 +131,10 @@
             </div>
         </div>
     </div>
+
+<!--================ Start footer Area  =================-->
+include includes/footer.html
+<!--================ End footer Area  =================-->
     
     <script src="vendors/jquery/jquery.min.js"></script>
     <script src="js/cart-submission.js"></script>
@@ -134,25 +142,8 @@
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-    
-    <script type="text/javascript">
-        $(window).load(function(){
-            $( "#ic_tooltips" ).tooltip({ content: '<img src="res/sample_ic.jpg" />' });
-            $( "#card_tooltips" ).tooltip({ content: '<img src="res/sample_card.jpg" />' });
 
-            if (!sessionStorage.cart) {
-                $( "#cart-detail" ).text('cart is empty');
-                window.location.href = '/cart'
-            } else {
-                var cart_text = "";
-                var cart_list = JSON.parse(sessionStorage.cart);
-                for (var cart_item of cart_list) {
-                    var cart_line = "<p><b>" + cart_item.name + "</b> x " +  cart_item.quantity + " = RM " + cart_item.charge + "</p>";
-                    $( "#cart-detail" ).append(cart_line);
-                }
-            }
-        });
-    </script>
+    <script src="js/cart-submission.js"></script>
 </body>
 
 </html>

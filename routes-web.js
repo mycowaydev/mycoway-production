@@ -120,7 +120,7 @@ module.exports = function (apiVersion) {
 	});
 
 	router.get('/', function (req, res) {
-		res.sendFile(path.join(__dirname, '/web/public/index.html'));
+		res.render(path.join(__dirname, '/web/public/index'));
 	});
 
 	router.get('/*', function (req, res) {
