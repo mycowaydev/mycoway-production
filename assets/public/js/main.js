@@ -116,4 +116,5 @@ $(function() {
   
 });
 
-
+console.log("selected_tab: " + selected_tab);
+$('#' + selected_tab).addClass("active");

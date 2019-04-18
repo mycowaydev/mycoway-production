@@ -18,7 +18,7 @@ module.exports = function (apiVersion) {
 				name: req.session['adminUsername'],
 				profile_pic: req.session['adminProfileImg']
 			};
-			// Logged in and navigate to the page requested 
+			// Logged in and navigate to the page requested
 			switch (page) {
 				case 'healthy-tip':
 					localVar['title'] = 'Healthy Tip List';
@@ -66,7 +66,7 @@ module.exports = function (apiVersion) {
 					res.redirect('/404');
 			}
 		} else {
-			// No logged in so redirect to login page 
+			// No logged in so redirect to login page
 			switch (page) {
 				default:
 					res.redirect('/adminer/login');
@@ -120,16 +120,46 @@ module.exports = function (apiVersion) {
 	});
 
 	router.get('/', function (req, res) {
-		res.render(path.join(__dirname, '/web/public/index'));
+	    let localVar = {
+            selected_tab: 'tab-home'
+        };
+		res.render(path.join(__dirname, '/web/public/index'), localVar);
 	});
 
 	router.get('/*', function (req, res) {
+	    let page = req.params[0];
+
+        let localVar = {
+            selected_tab: 'tab-home'
+        };
+
+	    switch (page) {
+	        case '':
+	            localVar['selected_tab'] = 'tab-home';
+	            break;
+	        case 'air-purifier':
+            case 'water-purifier':
+                localVar['selected_tab'] = 'tab-shop';
+                break;
+            case 'promotion':
+                localVar['selected_tab'] = 'tab-promotion';
+                break;
+            case 'tracking-order':
+                localVar['selected_tab'] = 'tab-tracking';
+                break;
+            case 'faq':
+                localVar['selected_tab'] = 'tab-faq';
+                break;
+            default:
+                break;
+        }
+
 	    let reqFile = path.join(__dirname, `/web/public${req.url}.html`);
 	    let reqFileReal = path.join(__dirname, `/web/public${req.url}`);
 
         try {
             if (fs.existsSync(reqFile)) {
-                res.render(reqFileReal);
+                res.render(reqFileReal, localVar);
             } else {
                 res.sendFile(path.join(__dirname, `/web/public/404.html`));
             }
@@ -137,7 +167,6 @@ module.exports = function (apiVersion) {
             console.error(err)
         }
     });
-
 
 	router.get('/water-purifier', function (req, res) {
 		let localVar = {
@@ -151,7 +180,7 @@ module.exports = function (apiVersion) {
 //	router.get('/air-purifier', function (req, res) {
 //		res.sendFile(path.join(__dirname, '/web/public/air-purifier.html'));
 //	});
-	
+
 	router.get('*', function (req, res) {
 		res.redirect('/404');
 	});
