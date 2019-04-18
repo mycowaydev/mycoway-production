@@ -123,6 +123,22 @@ module.exports = function (apiVersion) {
 		res.sendFile(path.join(__dirname, '/web/public/index.html'));
 	});
 
+	router.get('/*', function (req, res) {
+	    let reqFile = path.join(__dirname, `/web/public${req.url}.html`);
+	    let reqFileReal = path.join(__dirname, `/web/public${req.url}`);
+
+        try {
+            if (fs.existsSync(reqFile)) {
+                res.render(reqFileReal);
+            } else {
+                res.sendFile(path.join(__dirname, `/web/public/404.html`));
+            }
+        } catch (err) {
+            console.error(err)
+        }
+    });
+
+
 	router.get('/water-purifier', function (req, res) {
 		let localVar = {
 			product_image: req.session['publicProductImage']
@@ -132,17 +148,9 @@ module.exports = function (apiVersion) {
 		//res.sendFile(path.join(__dirname, '/web/public/water-purifier.html'));
 	});
 
-	router.get('/air-purifier', function (req, res) {
-		res.sendFile(path.join(__dirname, '/web/public/air-purifier.html'));
-	});
-
-	router.get('/cart', function(req, res) {
-        res.sendFile(path.join(__dirname, '/web/public/cart.html'));
-    });
-
-    router.get('/cart-submission', function(req, res) {
-        res.sendFile(path.join(__dirname, '/web/public/cart-submission.html'));
-    });
+//	router.get('/air-purifier', function (req, res) {
+//		res.sendFile(path.join(__dirname, '/web/public/air-purifier.html'));
+//	});
 	
 	router.get('*', function (req, res) {
 		res.redirect('/404');
