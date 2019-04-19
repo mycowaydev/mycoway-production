@@ -83,35 +83,43 @@ module.exports = function (apiVersion) {
 		if (req.session && req.session['adminUsername']) {
 			res.redirect('/admin/main');
 		} else {
-			res.render(path.join(__dirname, '/web/admin/login'), { title: 'Admin Login', app_name: ' | ' + config.GLOBAL['APP_NAME'] });
+			res.sendFile(path.join(__dirname, `/web/admin/login.html`));
 		}
 	});
 
 	router.get('/admin/main', function (req, res) {
-		let localVar = {
-			app_name: ' | ' + config.GLOBAL['APP_NAME'],
-			name: req.session['adminUsername'],
-			profile_pic: req.session['adminProfileImg']
-		};
-		res.sendFile(path.join(__dirname, '/web/admin/master/index.html'), localVar);
+		if (req.session && req.session['adminUsername']) {
+			let localVar = {
+				app_name: ' | ' + config.GLOBAL['APP_NAME'],
+				name: req.session['adminUsername'],
+				profile_pic: req.session['adminProfileImg']
+			};
+			res.sendFile(path.join(__dirname, '/web/admin/master/index.html'), localVar);
+		} else {
+			res.sendFile(path.join(__dirname, `/web/admin/master/end-session.html`));
+		}
 	});
 
 	router.get('/admin/*', function (req, res) {
-		let reqFile = path.join(__dirname, `/web${req.url}`);
+		if (req.session && req.session['adminUsername']) {
+			let reqFile = path.join(__dirname, `/web${req.url}`);
 
-		try {
-			if (fs.existsSync(reqFile)) {
-				let localVar = {
-					app_name: ' | ' + config.GLOBAL['APP_NAME'],
-					name: req.session['adminUsername'],
-					profile_pic: req.session['adminProfileImg']
-				};
-				res.sendFile(reqFile, localVar);
-			} else {
-				res.sendFile(path.join(__dirname, `/web/admin/master/404.html`));
+			try {
+				if (fs.existsSync(reqFile)) {
+					let localVar = {
+						app_name: ' | ' + config.GLOBAL['APP_NAME'],
+						name: req.session['adminUsername'],
+						profile_pic: req.session['adminProfileImg']
+					};
+					res.sendFile(reqFile, localVar);
+				} else {
+					res.sendFile(path.join(__dirname, `/web/admin/master/404.html`));
+				}
+			} catch (err) {
+				console.error(err)
 			}
-		} catch (err) {
-			console.error(err)
+		} else {
+			res.sendFile(path.join(__dirname, `/web/admin/master/end-session.html`));
 		}
 	});
 
