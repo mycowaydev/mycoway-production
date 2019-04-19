@@ -2,34 +2,16 @@
 <html lang="en">
 
 <head>
-    <!-- Required meta tags-->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="Colorlib Templates">
-    <meta name="author" content="Colorlib">
-    <meta name="keywords" content="Colorlib Templates">
-
-    <!-- Title Page-->
     <title>Coway</title>
-
-    <!-- common -->
     <link rel="icon" href="img/Fevicon.png" type="image/png">
-    <link rel="stylesheet" href="vendors/bootstrap/bootstrap.min.css">
-    <link rel="stylesheet" href="vendors/fontawesome/css/all.min.css">
-    <link rel="stylesheet" href="vendors/themify-icons/themify-icons.css">
-    <link rel="stylesheet" href="vendors/linericon/style.css">
-    <link rel="stylesheet" href="vendors/owl-carousel/owl.theme.default.min.css">
-    <link rel="stylesheet" href="vendors/owl-carousel/owl.carousel.min.css">
-    <link rel="stylesheet" href="vendors/nice-select/nice-select.css">
-    <link rel="stylesheet" href="vendors/nouislider/nouislider.min.css">
 
-    <link rel="stylesheet" href="css/style.css">
+    include includes/head
 
     <!-- cart submission -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet">
-    <link href="css/cart-submission.css" rel="stylesheet" media="all">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link href="css/cart-submission.css" rel="stylesheet" media="all">
 </head>
 
 <body>
@@ -37,112 +19,120 @@
 include includes/header.html
 <!--================ End Header Menu Area =================-->
 
-    <div class="page-wrapper bg-dark p-t-100 p-b-50">
-        <div class="wrapper wrapper--w900">
-            <div class="card card-6">
-                <div class="card-heading">
-                    <h2 class="title">Billing details</h2>
-                </div>
-                <div class="card-body">
-                    <form method="POST">
-                        <div class="form-row">
-                            <div class="name">
-                                Payment
-                            </div>
-                            <div class="value">
-                                <div id="cart-detail"></div>
-                                <div class="label--desc">Double check your cart item before submit.</div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="name">
-                                Malaysia IC Front
-                                <i id="ic_tooltips" href="#" title="" class="fa fa-info-circle" style="font-size:12px;vertical-align: text-top;margin-left: 10px;" ></i>
-                            </div>
-                            <div class="value">
-                                <div class="input-group js-input-file">
-                                    <input class="input-file" type="file" id="file_ic">
-                                    <label class="label--file" for="file_ic">Choose file</label>
-                                    <span class="input-file__info">No file chosen</span>
-                                </div>
-                                <div class="label--desc">Watermark "FOR COWAY" before upload the image.</div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="name">
-                                Credit or Debit card Front                                
-                                <i id="card_tooltips" href="#" title="" class="fa fa-info-circle" style="font-size:12px;vertical-align: text-top;margin-left: 10px;"></i>
-                            </div>
-                            <div class="value">
-                                <div class="input-group js-input-file">
-                                    <input class="input-file" type="file" id="file_card">
-                                    <label class="label--file" for="file_card">Choose file</label>
-                                    <span class="input-file__info">No file chosen</span>
-                                </div>
-                                <div class="label--desc">Watermark "FOR COWAY" before upload the image.</div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="name">
-                                Signature
-                            </div>
-                            <div class="value">
-                                <div class="input-group js-input-file">
-                                    <input class="input-file" type="file" id="file_sig">
-                                    <label class="label--file" for="file_sig">Choose file</label>
-                                    <span class="input-file__info">No file chosen</span>
-                                </div>
-                                <div class="label--desc">Watermark "FOR COWAY" before upload the image.</div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="name">Installation Address</div>
-                            <div class="value">
-                                <div class="input-group">
-                                    <textarea class="textarea--style-6" name="message" placeholder="Address of location which you want to install our product(s)" required></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="name">Phone Number</div>
-                            <div class="value">
-                                <input class="input--style-6" type="tel" pattern='^\d{3}-\d{7,8}$' name="phone_number" id="phone_number" placeholder="012-3456789" required>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="name">Emergency Phone Number</div>
-                            <div class="value">
-                                <input class="input--style-6" type="tel" name="emergency_phone_number" id="emergency_phone_number" placeholder="012-3456789" required>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="name">Email address</div>
-                            <div class="value">
-                                <div class="input-group">
-                                    <input class="input--style-6" type="email" name="email" placeholder="example@email.com" required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                            <button class="btn btn--radius-2 btn--blue-2" type="submit" id="upload">Submit Booking Request</button>
-                        </div>
-                    </form>
-                </div>
+<!-- ================ start banner area ================= -->
+<section class="blog-banner-area" id="category">
+    <div class="container h-100">
+        <div class="blog-banner">
+            <div class="text-center">
+                <h1>Payment Detail</h1>
+                <nav aria-label="breadcrumb" class="banner-breadcrumb">
+                </nav>
             </div>
         </div>
     </div>
+</section>
+<!-- ================ end banner area ================= -->
+
+    <section class="cart_area">
+        <div class="container">
+            <div class="cart_inner">
+                <form method="POST">
+                    <div class="form-row">
+                        <div class="name"> Payment </div>
+                        <div class="value">
+                            <div id="cart-detail"></div>
+                            <div class="label--desc">Double check your cart item before submit.</div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="name"> Malaysia IC Front
+                            <i id="ic_tooltips" href="#" title="" class="fa fa-info-circle" style="font-size:12px;vertical-align: text-top;margin-left: 10px;" ></i>
+                        </div>
+                        <div class="value">
+                            <div class="input-group js-input-file">
+                                <input class="input-file" type="file" id="file_ic">
+                                <label class="label--file" for="file_ic">Choose file</label>
+                                <span class="input-file__info">No file chosen</span>
+                            </div>
+                            <div class="label--desc">Watermark "FOR COWAY" before upload the image.</div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="name"> Credit or Debit card Front
+                            <i id="card_tooltips" href="#" title="" class="fa fa-info-circle" style="font-size:12px;vertical-align: text-top;margin-left: 10px;"></i>
+                        </div>
+                        <div class="value">
+                            <div class="input-group js-input-file">
+                                <input class="input-file" type="file" id="file_card">
+                                <label class="label--file" for="file_card">Choose file</label>
+                                <span class="input-file__info">No file chosen</span>
+                            </div>
+                            <div class="label--desc">Watermark "FOR COWAY" before upload the image.</div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="name"> Signature
+                        </div>
+                        <div class="value">
+                            <div class="input-group js-input-file">
+                                <input class="input-file" type="file" id="file_sig">
+                                <label class="label--file" for="file_sig">Choose file</label>
+                                <span class="input-file__info">No file chosen</span>
+                            </div>
+                            <div class="label--desc">Watermark "FOR COWAY" before upload the image.</div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="name">Installation Address</div>
+                        <div class="value">
+                            <div class="input-group">
+                                <textarea class="textarea--style-6" name="message" placeholder="Address of location which you want to install our product(s)" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="name">Phone Number</div>
+                        <div class="value">
+                            <input class="input--style-6" type="tel" pattern='^\d{3}-\d{7,8}$' name="phone_number" id="phone_number" placeholder="012-3456789" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="name">Emergency Phone Number</div>
+                        <div class="value">
+                            <input class="input--style-6" type="tel" name="emergency_phone_number" id="emergency_phone_number" placeholder="012-3456789" required>
+                        </div>
+                    </div>
+                    <div class="form-row last-row">
+                        <div class="name">Email address</div>
+                        <div class="value">
+                            <div class="input-group">
+                                <input class="input--style-6" type="email" name="email" placeholder="example@email.com" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn--radius-2 btn--blue-2" type="submit" id="upload">Submit Booking Request</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
 
 <!--================ Start footer Area  =================-->
 include includes/footer.html
 <!--================ End footer Area  =================-->
-    
+
     <script src="vendors/jquery/jquery.min.js"></script>
-    <script src="js/cart-submission.js"></script>
-    
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 
+    <!-- Stick header top while scrolling -->
+    <script src="vendors/skrollr.min.js"></script>
+    <script src="vendors/owl-carousel/owl.carousel.min.js"></script>
+    <script src="vendors/nice-select/jquery.nice-select.min.js"></script>
+    <script src="vendors/jquery.ajaxchimp.min.js"></script>
+
+    <script src="js/main.js"></script>
     <script src="js/cart-submission.js"></script>
 </body>
 
