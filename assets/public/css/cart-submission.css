@@ -199,14 +199,6 @@ body form {
   font-size: 14px;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-weight: 400;
-}
-
-h1 {
-  font-size: 36px;
-}
-
 h2 {
   font-size: 30px;
 }
@@ -694,7 +686,19 @@ textarea {
   }
 }
 
-.btn {
-    float: right;
+.card-footer {
+    text-align: right;
+}
+
+.payment-btn {
+    height: 40px;
+    padding: 0px 44px;
+    margin-left: 44px;
+    line-height: 38px;
+    text-transform: capitalize;
+    background: #384aeb;
+    border-radius: 30px;
+    color: #fff;
+    font-weight: 500;
 }
 

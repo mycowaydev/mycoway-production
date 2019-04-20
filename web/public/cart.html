@@ -31,140 +31,16 @@ include includes/header.html
             <div class="table-responsive">
                 <table class="table">
                     <thead>
-                    <tr>
-                        <th scope="col">Product</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Quantity</th>
-                        <th scope="col">Total</th>
-                    </tr>
+                        <tr>
+                            <th scope="col">Product</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Total</th>
+                            <th scope="col"></th>
+                        </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>
-                            <div class="media">
-                                <div class="d-flex">
-                                    <img alt="" src="img/cart/cart1.png">
-                                </div>
-                                <div class="media-body">
-                                    <p>Minimalistic shop for multipurpose use</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <h5>$360.00</h5>
-                        </td>
-                        <td>
-                            <div class="product_count">
-                                <input class="input-text qty" id="sst" maxlength="12" name="qty" title="Quantity:" type="text" value="1">
-                                <button class="increase items-count" onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;" type="button"><i class="lnr lnr-chevron-up"></i>
-                                </button>
-                                <button class="reduced items-count" onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst ) &amp;&amp; sst > 0 ) result.value--;return false;" type="button"><i class="lnr lnr-chevron-down"></i>
-                                </button>
-                            </div>
-                        </td>
-                        <td>
-                            <h5>$720.00</h5>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="media">
-                                <div class="d-flex">
-                                    <img alt="" src="img/cart/cart2.png">
-                                </div>
-                                <div class="media-body">
-                                    <p>Minimalistic shop for multipurpose use</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <h5>$360.00</h5>
-                        </td>
-                        <td>
-                            <div class="product_count">
-                                <input class="input-text qty" id="sst" maxlength="12" name="qty" title="Quantity:" type="text" value="1">
-                                <button class="increase items-count" onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;" type="button"><i class="lnr lnr-chevron-up"></i>
-                                </button>
-                                <button class="reduced items-count" onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst ) &amp;&amp; sst > 0 ) result.value--;return false;" type="button"><i class="lnr lnr-chevron-down"></i>
-                                </button>
-                            </div>
-                        </td>
-                        <td>
-                            <h5>$720.00</h5>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="media">
-                                <div class="d-flex">
-                                    <img alt="" src="img/cart/cart3.png">
-                                </div>
-                                <div class="media-body">
-                                    <p>Minimalistic shop for multipurpose use</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <h5>$360.00</h5>
-                        </td>
-                        <td>
-                            <div class="product_count">
-                                <input class="input-text qty" id="sst" maxlength="12" name="qty" title="Quantity:" type="text" value="1">
-                                <button class="increase items-count" onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;" type="button"><i class="lnr lnr-chevron-up"></i>
-                                </button>
-                                <button class="reduced items-count" onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst ) &amp;&amp; sst > 0 ) result.value--;return false;" type="button"><i class="lnr lnr-chevron-down"></i>
-                                </button>
-                            </div>
-                        </td>
-                        <td>
-                            <h5>$720.00</h5>
-                        </td>
-                    </tr>
-                    <tr class="bottom_button">
-                        <td>
 
-                        </td>
-                        <td>
-
-                        </td>
-                        <td>
-                            <h5>Subtotal</h5>
-                        </td>
-                        <td>
-                            <h5>$2160.00</h5>
-                        </td>
-                    </tr>
-                    <tr class="shipping_area">
-                        <td class="d-none d-md-block">
-
-                        </td>
-                        <td>
-
-                        </td>
-                        <td>
-                            <h5>Shipping</h5>
-                        </td>
-                        <td>
-                            <h7>RM 6.00</h7>
-                        </td>
-                    </tr>
-                    <tr class="out_button_area">
-                        <td class="d-none-l">
-
-                        </td>
-                        <td class="">
-
-                        </td>
-                        <td>
-
-                        </td>
-                        <td>
-                            <div class="checkout_btn_inner d-flex align-items-center">
-                                <a class="gray_btn" href="/">Continue Shopping</a>
-                                <a class="primary-btn ml-2"  id="checkout" href="cart-submission">Proceed to checkout</a>
-                            </div>
-                        </td>
-                    </tr>
                     </tbody>
                 </table>
             </div>

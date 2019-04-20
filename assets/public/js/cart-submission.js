@@ -77,7 +77,7 @@ $(window).load(function(){
         var cart_text = "";
         var cart_list = JSON.parse(sessionStorage.cart);
         for (var cart_item of cart_list) {
-            var cart_line = "<p><b>" + cart_item.name + "</b> x " +  cart_item.quantity + " = RM " + cart_item.charge + "</p>";
+            var cart_line = "<p><b>" + cart_item.name + "</b> x " +  cart_item.quantity + " = RM " + (cart_item.price * cart_item.quantity) + "</p>";
             $( "#cart-detail" ).append(cart_line);
         }
     }
