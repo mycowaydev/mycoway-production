@@ -7,7 +7,7 @@
 	"101A005": "error_value_empty",
 	"101A006": "error_order_no_empty",
 	"101A007": "error_active_empty",
-	"101A008": "error_app_param_id_empty",
+	"101A008": "error_id_empty",
 	
 	"101A011": "error_admin_user_id_empty",
 	"101A012": "error_admin_username_empty",
@@ -37,6 +37,12 @@
 	"101Z010": "error_unauthorized_access",
 	"101Z011": "error_page_not_found",
 	"101Z012": "error_server_error",
-	"101Z999": "error_unknown_error"
+	"101Z999": "error_unknown_error",
 
+	"102A001": "error_review_name_empty",
+	"102A002": "error_review_status_empty",
+	"102A003": "error_review_rate_empty",
+
+	"103A001": "error_service_name_empty",
+	"103A002": "error_service_status_empty"
 }
