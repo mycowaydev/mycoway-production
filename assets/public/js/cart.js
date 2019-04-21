@@ -39,7 +39,7 @@ function getDefaultRowContent(subtotal) {
        "<td colspan='5'>" +
            "<div class='checkout_btn_inner d-flex align-items-center'>" +
                "<a class='gray_btn' href='/'>Continue Shopping</a>" +
-               "<a class='primary-btn ml-2'  id='checkout' href='cart-submission'>Proceed to Payment Detail</a>" +
+               "<a class='primary-btn ml-2'  id='checkout' href='order-form'>Proceed to Order Detail</a>" +
            "</div>" +
        "</td>" +
    "</tr>"

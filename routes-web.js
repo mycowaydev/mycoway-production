@@ -152,7 +152,7 @@ module.exports = function (apiVersion) {
             case 'promotion':
                 localVar['selected_tab'] = 'tab-promotion';
                 break;
-            case 'tracking-order':
+            case 'order-tracking':
                 localVar['selected_tab'] = 'tab-tracking';
                 break;
             case 'faq':
