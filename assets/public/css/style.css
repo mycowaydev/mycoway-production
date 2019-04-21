@@ -4737,7 +4737,7 @@ a {
 
 .footer-bottom {
 	background: rgba(0, 35, 71, 0.980392);
-	padding: 32px
+	padding: 15px
 }
 
 .footer-bottom .footer-text {
@@ -4771,6 +4771,13 @@ a {
     overflow:hidden;
 }
 
-.button-disable {
-    // make checkout button color grey and disable feel
+.cart_inner .table tbody tr.out_button_area .checkout_btn_inner .button-disable {
+    background: #cccccc;
+    color: #ededed;
+}
+
+.footer-bottom .footer-text {
+    font-size: 10px;
+    font-weight: 300;
+    line-height: 1.6777;
 }

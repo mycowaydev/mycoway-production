@@ -142,7 +142,7 @@ module.exports = function (apiVersion) {
         };
 
 	    switch (page) {
-	        case '':
+	        case 'index':
 	            localVar['selected_tab'] = 'tab-home';
 	            break;
 	        case 'air-purifier':
@@ -159,6 +159,7 @@ module.exports = function (apiVersion) {
                 localVar['selected_tab'] = 'tab-faq';
                 break;
             default:
+                localVar['selected_tab'] = '';
                 break;
         }
 

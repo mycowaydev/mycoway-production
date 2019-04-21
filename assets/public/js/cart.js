@@ -1,10 +1,10 @@
 if (!sessionStorage.cart) {
-//    var cart_list = [];
-//    var itemA = {id: '0001', name: 'water purifier A', quantity: 2, price: 120.00};
-//    cart_list.push(itemA);
-//    var itemB = {id: '0002', name: 'water purifier B', quantity: 1, price: 135.00};
-//    cart_list.push(itemB);
-//    sessionStorage.cart = JSON.stringify(cart_list);
+    var cart_list = [];
+    var itemA = {id: '0001', name: 'water purifier A', quantity: 2, price: 120.00};
+    cart_list.push(itemA);
+    var itemB = {id: '0002', name: 'water purifier B', quantity: 1, price: 135.00};
+    cart_list.push(itemB);
+    sessionStorage.cart = JSON.stringify(cart_list);
 }
 
 if (sessionStorage.cart) {
@@ -85,6 +85,7 @@ function deleteItem(elementIndex) {
         $('#checkout').click(function(e) {
             e.preventDefault();
         });
+        $('#checkout').addClass('button-disable');
     }
 
     updateSubtotal(cart_list);
@@ -149,6 +150,7 @@ if (sessionStorage.cart) {
         $('#checkout').click(function(e) {
             e.preventDefault();
         });
+        $('#checkout').addClass('button-disable');
     }
 } else {
     $('tbody').append(emptyRowContent);
@@ -156,6 +158,7 @@ if (sessionStorage.cart) {
     $('#checkout').click(function(e) {
         e.preventDefault();
     });
+    $('#checkout').addClass('button-disable');
 }
 
 
