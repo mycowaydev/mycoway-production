@@ -35,7 +35,7 @@ function verifyAdminLogin() {
 				document.cookie = 'user_name=' + adminInfo.admin_username + ';expires=' + getCookieExpiresTime() + ';path=/';
 				document.cookie = 'user_id=' + adminInfo.admin_user_id + ';expires=' + getCookieExpiresTime() + ';path=/';
 				document.cookie = 'profile_img=' + adminInfo.profile_img + ';expires=' + getCookieExpiresTime() + ';path=/';
-				window.location.href = '/admin/dashboard';
+				window.location.href = '/admin/main';
 			} else {
 				var errors = result.error;
 				if (errors && errors.length > 0) {

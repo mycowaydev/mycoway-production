@@ -41,12 +41,15 @@ function getParam(req) {
 function validateParam(req, data) {
 	let error = [];
 
-	// if (config.isEmpty(data.key)) {
-	// 	error.push(config.getErrorResponse('101A008', req));
-	// }
-	// if (config.isEmpty(data.value)) {
-	// 	error.push(config.getErrorResponse('101A005', req));
-	// }
+	if (config.isEmpty(data.name)) {
+		error.push(config.getErrorResponse('102A001', req));
+	}
+	if (config.isEmpty(data.status)) {
+		error.push(config.getErrorResponse('102A002', req));
+	}
+	if (config.isEmpty(data.rate)) {
+		error.push(config.getErrorResponse('102A003', req));
+	}
 
 	return error;
 }

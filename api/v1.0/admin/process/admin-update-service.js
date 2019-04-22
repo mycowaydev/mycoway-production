@@ -4,7 +4,7 @@
 const config = require('../../../../config');
 const async = require('async');
 const cloudinary = require('cloudinary');
-const Review = require('../../model/review');
+const Service = require('../../model/service');
 
 module.exports = function (req, res) {
 	cloudinary.config({
@@ -20,7 +20,7 @@ module.exports = function (req, res) {
 		let resp = config.getResponse(res, 200, error, {}, null);
 		config.logApiCall(req, res, resp);
 	} else {
-		adminUpdateReview(req, res, error, data);
+		adminUpdateService(req, res, error, data);
 	}
 }
 
@@ -30,9 +30,6 @@ function getParam(req) {
 	data.id = req.body['id'];
 	data.name = req.body['name'];
 	data.status = req.body['status'];
-	data.email_address = req.body['email_address'];
-	data.rate = req.body['rate'];
-	data.desc = req.body['desc'];
 	data.remarks = req.body['remarks'];
 
 	return data;
@@ -42,13 +39,10 @@ function validateParam(req, data) {
 	let error = [];
 
 	if (config.isEmpty(data.name)) {
-		error.push(config.getErrorResponse('102A001', req));
+		error.push(config.getErrorResponse('103A001', req));
 	}
 	if (config.isEmpty(data.status)) {
-		error.push(config.getErrorResponse('102A002', req));
-	}
-	if (config.isEmpty(data.rate)) {
-		error.push(config.getErrorResponse('102A003', req));
+		error.push(config.getErrorResponse('103A002', req));
 	}
 
 	return error;
@@ -56,14 +50,10 @@ function validateParam(req, data) {
 
 function getReplacement(data) {
 	let replacement = {
-		'name': data.name,
 		'status': data.status,
-		'email_address': data.email_address,
-		'rate': data.rate,
-		'desc': data.desc,
 		'remarks': data.remarks,
 	};
-	replacement = config.appendCommonFields(replacement, 'REVIEW_UPD');
+	replacement = config.appendCommonFields(replacement, 'SERVICE_UPD');
 	return replacement;
 }
 
@@ -74,7 +64,7 @@ function getQuery(data) {
 	return query;
 }
 
-function adminUpdateReview(req, res, error, data) {
+function adminUpdateService(req, res, error, data) {
 	async.series(
 		[
 			function (callback) {
@@ -85,7 +75,7 @@ function adminUpdateReview(req, res, error, data) {
 				let set = { $set: getReplacement(data) };
 
 				let options = { upsert: false, returnNewDocument: true, returnOriginal: false, new: true };
-				Review.findOneAndUpdate(query, set, options, function (err, result) {
+				Service.findOneAndUpdate(query, set, options, function (err, result) {
 					if (err) {
 						error.push(config.getErrorResponse('101Z012', req));
 						let resp = config.getResponse(res, 500, error, {}, err);

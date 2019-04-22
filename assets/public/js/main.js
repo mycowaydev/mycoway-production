@@ -116,4 +116,11 @@ $(function() {
   
 });
 
-
+$(document).ready(function() {
+    if (selected_tab) {
+        console.log("selected_tab: " + selected_tab);
+        $('#' + selected_tab).addClass("active");
+    } else {
+        console.log("selected_tab: none");
+    }
+});

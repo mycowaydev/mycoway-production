@@ -11,7 +11,7 @@
 		"error_value_empty": "Please enter value.",
 		"error_order_no_empty": "Please enter order no.",
 		"error_active_empty": "Please enter active.",
-		"error_app_param_id_empty": "Missing app param ID.",
+		"error_id_empty": "Missing ID.",
 		"error_admin_login_user_id_empty": "Please enter user ID.",
 		"error_admin_login_password_empty": "Please enter password.",
 		"error_admin_login_user_id_password_invalid": "Invalid user ID / password.",
@@ -28,6 +28,11 @@
 		"error_unauthorized_access": "Unauthorized access. Please re-login again.",
 		"error_page_not_found": "Page not found.",
 		"error_server_error": "Server error.",
-		"error_unknown_error": "Unknown error."
+		"error_unknown_error": "Unknown error.",
+		"error_review_name_empty": "Missing review name.",
+		"error_review_status_empty": "Missing review status.",
+		"error_review_rate_empty": "Missing review rate.",
+		"error_service_name_empty": "Missing service name",
+		"error_service_status_empty": "Missing service status"
 	}
 }

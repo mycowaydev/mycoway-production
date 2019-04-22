@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link href="../vendors/bootstrap-4/dist/css/bootstrap.css" rel="stylesheet">
+    <link href="../vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
+    <link href="../vendors/DataTables/datatables.css" />
+    <link href="../vendors/pnotify/dist/pnotify.css" rel="stylesheet">
+    <link href="../vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+    <link href="../build/css/custom.css" rel="stylesheet">
+
+    <script src="../vendors/jquery/dist/jquery.min.js"></script>
+    <script src="../vendors/jquery/dist/popper.js"></script>
+    <script src="../vendors/bootstrap-4/dist/js/bootstrap.min.js"></script>
+    <script src="../vendors/moment/min/moment.min.js"></script>
+    <script src="../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="../vendors/datatables.net/js/jquery.dataTables.js"></script>
+    <script src="../vendors/jquery/dist/jquery.validate.min.js"></script>
+    <script src="../vendors/pnotify/dist/pnotify.js"></script>
+    <script src="../vendors/pnotify/dist/pnotify.buttons.js"></script>
+    <script src="../web-js/notify.js"></script>
+    <script src="../build/js/custom.js"></script>
+
+    <script>
+        var app = {
+            name: "Service",
+            http: {
+                method: 'POST'
+            },
+            mtparam: {
+                status: 'DEFAULT_STATUS'
+            },
+            action: {
+                update: 'Update',
+                insert: 'Insert',
+            },
+            link: {
+                insert: '/admin-add-service',
+                update: '/admin-update-service',
+                getList: '/admin-get-service-list',
+                getById: '/admin-get-service-info',
+                mtparam: '/admin-get-mt-param-group',
+            }
+        }
+
+        var mtpStatus = getMTParam(app.mtparam.status).then(function (result) {
+            mtpStatus = result.data;
+            initDropdownList('#ddlSearch_Status,#ddlModal_Status', result.data);
+        });
+
+        function init() {
+            initApp();
+            initButton();
+            initModal();
+            initDataTable();
+            initDataTableBehavior();
+            initValidateInput();
+            initSizeChange();
+        }
+
+        function initApp() {
+            $('#app_title').text(app.name);
+        }
+
+        function initSizeChange() {
+            height = $('#main_panel').height();
+            window.parent.postMessage({ "height": height }, "*");
+        }
+
+        function initButton() {
+            $("#btnMainSearch").click(function (event) {
+                $("#dtSearch").DataTable().ajax.reload();
+            });
+            $("#btnMainReset").click(function (event) {
+                resetAllSearchInput();
+            });
+            $("#btnMainAdd").click(function (event) {
+                insertRecordMode();
+            });
+            $("#btnModalMainAction").click(function (event) {
+                actionModifyData();
+            });
+            $("#btnModalDismiss").click(function (event) {
+                $('#modalCUWindow').modal('hide')
+            });
+        }
+
+        function initModal() {
+            $('#modalLoad').modal({
+                backdrop: 'static', keyboard: true, show: false
+            });
+            $('#modalCUWindow').modal({
+                backdrop: 'static', keyboard: true, show: false
+            });
+            $('#modalCUWindow').on('hidden.bs.modal', function () {
+                resetAllModalInput();
+            });
+        }
+        function initDropdownList(target, data) {
+            for (var row = 0; row < data.length; row++) {
+                $(target).append(new Option(data[row].value, data[row].code));
+            }
+        }
+
+        function getMTParam(group) {
+            return new Promise((resolve, reject) => {
+                fetch(app.link.mtparam, { method: app.http.method, body: group })
+                    .then(function (res) {
+                        if (res.ok) {
+                            return res.json();
+                        }
+                    })
+                    .then(function (result) {
+                        return resolve(result);
+                    })
+                    .catch(function (err) {
+                        return reject(err);
+                    })
+            });
+        }
+
+        function initDataTable() {
+            $('#dtSearch').DataTable().destroy();
+            $("#dtSearch").DataTable({
+                paging: true,
+                pageLength: 10,
+                serverSide: true,
+                searching: false,
+                deferLoading: 0,
+                ajax: {
+                    url: app.link.getList,
+                    type: app.http.method,
+                    data: function (dataValue) {
+                        dataValue.name = $("#txtSearch_Name").val();
+                        dataValue.status = $("#ddlSearch_Status").val();
+                    },
+                    beforeSend: function (value) {
+                        $('#modalLoad').modal('show');
+                    },
+                    complete: function () {
+                        $('#modalLoad').modal('hide'); initSizeChange();
+                    },
+                },
+                columns: [
+                    { data: '_id' },
+                    { data: 'name' },
+                    { data: 'status' }
+                ],
+                columnDefs: [
+                    { width: "0%", "targets": 0, "visible": false },
+                    { width: "70%", "targets": 1 },
+                    {
+                        width: "30%", "targets": 2, render: function (data, type, row) {
+                            for (var row = 0; row < mtpStatus.length; row++) {
+                                if (mtpStatus[row].code == data) {
+                                    return mtpStatus[row].value;
+                                }
+                            }
+                            return data;
+                        }
+                    },
+                ],
+                order: [[0, 'desc']]
+            });
+        }
+
+        function initDataTableBehavior() {
+            $('#dtSearch tbody').on('dblclick', 'tr', function () {
+                var data = $('#dtSearch').DataTable().row(this).data();
+                if (typeof data !== "undefined") {
+                    getDetailById(data["_id"]);
+                }
+            });
+        }
+
+        function initValidateInput() {
+            $("#modalForm").validate({
+                rules: {
+                    txtModal_Name: {
+                        required: true
+                    },
+                    ddlModal_Status: {
+                        required: {
+                            depends: function (element) {
+                                return $("#ddlModal_Status").val() === "";
+                            }
+                        }
+                    }
+                },
+                messages: {
+                    txtModal_Name: {
+                        required: "Please enter name."
+                    },
+                    ddlModal_Status: {
+                        required: "Please select status."
+                    }
+                }
+            });
+        }
+
+        function insertRecordMode() {
+            var mode = app.action.insert;
+            $('#modalTitle').text(mode + ' ' + app.name);
+            $('#btnModalMainActionText').text(mode);
+            disableElement(false);
+            $('#modalCUWindow').modal('show')
+        }
+
+        function updateRecordMode() {
+            var mode = app.action.update;
+            $('#modalTitle').text(mode + ' ' + app.name);
+            $('#btnModalMainActionText').text(mode);
+            disableElement(true);
+            $('#modalCUWindow').modal('show')
+        }
+
+        function disableElement(disable) {
+            $("#txtModal_Name").prop("disabled", disable);
+        }
+
+        function resetAllSearchInput() {
+            $("form#searchForm :input").each(function () {
+                $(this).val('')
+            });
+        }
+
+        function resetAllModalInput() {
+            $("form#modalForm :input").each(function () {
+                $(this).val('')
+            });
+            $('#modalForm').validate().resetForm();
+        }
+
+        function getModalFormData() {
+            var formData = new FormData();
+
+            formData.append('id', $("#formId").val());
+            formData.append('name', $("#txtModal_Name").val());
+            formData.append('status', $("#ddlModal_Status").val());
+            formData.append('remarks', $("#taModal_Remarks").val());
+
+            return formData;
+        }
+
+        function successHandler(mode) {
+            notify_success(mode + ' successfully.');
+            $('#btnMainSearch').click();
+            $('#modalCUWindow').modal('hide');
+        }
+
+        function editHandler(result) {
+            var data = result.data;
+
+            if (data) {
+                $("#formId").val(data._id);
+                $("#txtModal_Name").val(data.name);
+                $("#ddlModal_Status").val(data.status);
+                $("#taModal_Remarks").val(data.remarks);
+                updateRecordMode();
+            }
+        }
+
+        function errorMessageHandler(result) {
+            if (result.error && result.error.length > 0) {
+                notify_err(errors[0].message);
+            } else {
+                notify_server_err();
+            }
+        }
+
+        function getDetailById(id) {
+            $('#modalLoad').modal('show');
+            var formData = new FormData();
+            formData.append('id', id);
+
+            fetch(app.link.getById, { method: app.http.method, body: formData })
+                .then(function (res) {
+                    if (res.ok) {
+                        return res.json();
+                    }
+                    notify_req_failed();
+                })
+                .then(function (result) {
+                    if (result.status_code == '100') {
+                        editHandler(result);
+                    } else {
+                        errorMessageHandler(result);
+                    }
+                })
+                .catch(function (err) {
+                    notify_server_err();
+                })
+                .finally(function () {
+                    $('#modalLoad').modal('hide');
+                });
+        }
+
+        function actionModifyData() {
+            if ($("#modalForm").valid()) {
+                $('#modalLoad').modal('show');
+
+                var mode = $('#btnModalMainActionText').text();
+                var path = (mode === app.action.update ? app.link.update : app.link.insert);
+
+                fetch(path, { method: app.http.method, body: getModalFormData() })
+                    .then(function (res) {
+                        if (res.ok) {
+                            return res.json();
+                        }
+                        notify_req_failed();
+                    })
+                    .then(function (result) {
+                        if (result.status_code == '100') {
+                            successHandler(mode);
+                        } else {
+                            errorMessageHandler(result);
+                        }
+                    })
+                    .catch(function (err) {
+                        notify_server_err();
+                    })
+                    .finally(function () {
+                        $('#modalLoad').modal('hide');
+                    });
+            }
+        }
+
+        $(document).ready(function () {
+            init();
+        });
+    </script>
+</head>
+
+<body>
+    <div id="main_panel" class="x_panel">
+        <div class="x_content mb-2">
+            <!-- ACCORDION START -->
+            <div class="accordion" id="accordion">
+                <div class="panel border">
+                    <a class="panel-heading" role="tab" id="headerPanel" data-toggle="collapse" data-parent="#accordion"
+                        href="#collapsePanel" aria-expanded="false" aria-controls="collapsePanel">
+                        <h4 id="app_title" class="panel-title"><span class="glyphicon glyphicon-chevron-down"
+                                aria-hidden="false"></span></h4>
+                    </a>
+                    <div id="collapsePanel" class="panel-collapse show m-3" role="">
+                        <div class="panel-body">
+                            <form id="searchForm">
+                                <div class="form-group row">
+                                    <label for="txtSearch_Name"
+                                        class="col-sm-2 col-form-label col-form-label-sm">Name</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control form-control-sm" id="txtSearch_Name"
+                                            name="txtSearch_Name" placeholder="Name">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="ddlSearch_Status"
+                                        class="col-sm-2 col-form-label col-form-label-sm">Status</label>
+                                    <div class="col-sm-10">
+                                        <select id="ddlSearch_Status" class="form-control form-control-sm"
+                                            name="normal">
+                                            <option value="">Please select</option>
+                                        </select> </div>
+                                </div>
+                            </form>
+                            <div class="text-right">
+                                <button id="btnMainReset" class="btn btn-secondary btn-sm"
+                                    id="btnMainReset">Reset</button>
+                                <button id="btnMainSearch" class="btn btn-success btn-sm"
+                                    id="btnMainSearch">Search</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ACCORDION END -->
+        </div>
+
+        <div class="mb-2">
+            <button class="btn btn-success btn-sm" id="btnMainAdd">Add</button>
+        </div>
+
+        <!-- RESULT TABLE START -->
+        <div>
+            <table id="dtSearch" class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <!-- RESULT TABLE END -->
+
+        <br />
+        <br />
+        <br />
+        <br />
+    </div>
+
+    <!-- PROMPT MODAL START -->
+    <!-- PROMPT MODAL START -->
+    <!-- PROMPT MODAL START -->
+    <!-- PROMPT MODAL START -->
+    <div class="modal fade bd-example-modal-lg" id="modalCUWindow" tabindex="-1" role="dialog"
+        aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"><span id="modalTitle"></span></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="modalForm">
+                        <input type="hidden" id="formId">
+                        <div class="form-group row">
+                            <label for="txtModal_Name" class="col-sm-2 col-form-label col-form-label-sm">Name</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control form-control-sm" id="txtModal_Name"
+                                    name="txtModal_Name" placeholder="Name">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="ddlModal_Status"
+                                class="col-sm-2 col-form-label col-form-label-sm">Status</label>
+                            <div class="col-sm-10">
+                                <select id="ddlModal_Status" class="form-control form-control-sm"
+                                    name="ddlModal_Status">
+                                    <option value="">Please select</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="taModal_Remarks" class="col-sm-2 col-form-label col-form-label-sm">Remarks
+                                (FOUO)</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control form-control-sm" rows="5" id="taModal_Remarks"
+                                    name="taModal_Remarks" placeholder="Remarks"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" id="btnModalDismiss">Close</button>
+                    <button type="button" class="btn btn-primary btn-sm" id="btnModalMainAction">
+                        <span id="btnModalMainActionText"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- PROMPT MODAL END -->
+    <!-- PROMPT MODAL END -->
+    <!-- PROMPT MODAL END -->
+    <!-- PROMPT MODAL END -->
+
+    <!-- LOADING START -->
+    <!-- LOADING START -->
+    <!-- LOADING START -->
+    <!-- LOADING START -->
+    <div class="modal fade bd-example-modal-sm" id="modalLoad" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- LOADING END -->
+    <!-- LOADING END -->
+    <!-- LOADING END -->
+    <!-- LOADING END -->
+</body>
+
+</html>

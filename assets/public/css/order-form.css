@@ -93,6 +93,10 @@
   width: calc(100% - 188px);
 }
 
+.last-row {
+    border-bottom: none;
+}
+
 @media (max-width: 767px) {
   .form-row {
     display: block;
@@ -189,18 +193,10 @@ button {
   min-height: 100vh;
 }
 
-body {
+body form {
   font-family: "Open Sans", "Arial", "Helvetica Neue", sans-serif;
   font-weight: 400;
   font-size: 14px;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  font-weight: 400;
-}
-
-h1 {
-  font-size: 36px;
 }
 
 h2 {
@@ -658,7 +654,7 @@ textarea {
   border-top-right-radius: 3px;
 }
 
-.card-6 .card-body:before {
+.card-body:before {
   bottom: 100%;
   left: 75px;
   border: solid transparent;
@@ -672,10 +668,8 @@ textarea {
   border-width: 10px;
 }
 
-.card-6 .card-footer {
-  background: #fff;
-  border: 1px solid #e5e5e5;
-  border-top: none;
+.card-footer {
+  background-color: transparent;
   -webkit-border-bottom-left-radius: 3px;
   -moz-border-radius-bottomleft: 3px;
   border-bottom-left-radius: 3px;
@@ -683,6 +677,7 @@ textarea {
   -moz-border-radius-bottomright: 3px;
   border-bottom-right-radius: 3px;
   padding: 50px 55px;
+  border-top: none;
 }
 
 @media (max-width: 767px) {
@@ -690,3 +685,20 @@ textarea {
     padding: 50px 30px;
   }
 }
+
+.card-footer {
+    text-align: right;
+}
+
+.payment-btn {
+    height: 40px;
+    padding: 0px 44px;
+    margin-left: 44px;
+    line-height: 38px;
+    text-transform: capitalize;
+    background: #384aeb;
+    border-radius: 30px;
+    color: #fff;
+    font-weight: 500;
+}
+

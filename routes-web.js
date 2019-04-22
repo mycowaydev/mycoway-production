@@ -18,7 +18,7 @@ module.exports = function (apiVersion) {
 				name: req.session['adminUsername'],
 				profile_pic: req.session['adminProfileImg']
 			};
-			// Logged in and navigate to the page requested 
+			// Logged in and navigate to the page requested
 			switch (page) {
 				case 'healthy-tip':
 					localVar['title'] = 'Healthy Tip List';
@@ -66,7 +66,7 @@ module.exports = function (apiVersion) {
 					res.redirect('/404');
 			}
 		} else {
-			// No logged in so redirect to login page 
+			// No logged in so redirect to login page
 			switch (page) {
 				default:
 					res.redirect('/adminer/login');
@@ -83,35 +83,43 @@ module.exports = function (apiVersion) {
 		if (req.session && req.session['adminUsername']) {
 			res.redirect('/admin/main');
 		} else {
-			res.render(path.join(__dirname, '/web/admin/login'), { title: 'Admin Login', app_name: ' | ' + config.GLOBAL['APP_NAME'] });
+			res.sendFile(path.join(__dirname, `/web/admin/login.html`));
 		}
 	});
 
 	router.get('/admin/main', function (req, res) {
-		let localVar = {
-			app_name: ' | ' + config.GLOBAL['APP_NAME'],
-			name: req.session['adminUsername'],
-			profile_pic: req.session['adminProfileImg']
-		};
-		res.sendFile(path.join(__dirname, '/web/admin/master/index.html'), localVar);
+		if (req.session && req.session['adminUsername']) {
+			let localVar = {
+				app_name: ' | ' + config.GLOBAL['APP_NAME'],
+				name: req.session['adminUsername'],
+				profile_pic: req.session['adminProfileImg']
+			};
+			res.sendFile(path.join(__dirname, '/web/admin/master/index.html'), localVar);
+		} else {
+			res.sendFile(path.join(__dirname, `/web/admin/master/end-session.html`));
+		}
 	});
 
 	router.get('/admin/*', function (req, res) {
-		let reqFile = path.join(__dirname, `/web${req.url}`);
+		if (req.session && req.session['adminUsername']) {
+			let reqFile = path.join(__dirname, `/web${req.url}`);
 
-		try {
-			if (fs.existsSync(reqFile)) {
-				let localVar = {
-					app_name: ' | ' + config.GLOBAL['APP_NAME'],
-					name: req.session['adminUsername'],
-					profile_pic: req.session['adminProfileImg']
-				};
-				res.sendFile(reqFile, localVar);
-			} else {
-				res.sendFile(path.join(__dirname, `/web/admin/master/404.html`));
+			try {
+				if (fs.existsSync(reqFile)) {
+					let localVar = {
+						app_name: ' | ' + config.GLOBAL['APP_NAME'],
+						name: req.session['adminUsername'],
+						profile_pic: req.session['adminProfileImg']
+					};
+					res.sendFile(reqFile, localVar);
+				} else {
+					res.sendFile(path.join(__dirname, `/web/admin/master/404.html`));
+				}
+			} catch (err) {
+				console.error(err)
 			}
-		} catch (err) {
-			console.error(err)
+		} else {
+			res.sendFile(path.join(__dirname, `/web/admin/master/end-session.html`));
 		}
 	});
 
@@ -120,16 +128,47 @@ module.exports = function (apiVersion) {
 	});
 
 	router.get('/', function (req, res) {
-		res.render(path.join(__dirname, '/web/public/index'));
+	    let localVar = {
+            selected_tab: 'tab-home'
+        };
+		res.render(path.join(__dirname, '/web/public/index'), localVar);
 	});
 
 	router.get('/*', function (req, res) {
+	    let page = req.params[0];
+
+        let localVar = {
+            selected_tab: 'tab-home'
+        };
+
+	    switch (page) {
+	        case 'index':
+	            localVar['selected_tab'] = 'tab-home';
+	            break;
+	        case 'air-purifier':
+            case 'water-purifier':
+                localVar['selected_tab'] = 'tab-shop';
+                break;
+            case 'promotion':
+                localVar['selected_tab'] = 'tab-promotion';
+                break;
+            case 'order-tracking':
+                localVar['selected_tab'] = 'tab-tracking';
+                break;
+            case 'faq':
+                localVar['selected_tab'] = 'tab-faq';
+                break;
+            default:
+                localVar['selected_tab'] = '';
+                break;
+        }
+
 	    let reqFile = path.join(__dirname, `/web/public${req.url}.html`);
 	    let reqFileReal = path.join(__dirname, `/web/public${req.url}`);
 
         try {
             if (fs.existsSync(reqFile)) {
-                res.render(reqFileReal);
+                res.render(reqFileReal, localVar);
             } else {
                 res.sendFile(path.join(__dirname, `/web/public/404.html`));
             }
@@ -137,7 +176,6 @@ module.exports = function (apiVersion) {
             console.error(err)
         }
     });
-
 
 	router.get('/water-purifier', function (req, res) {
 		let localVar = {
@@ -151,7 +189,7 @@ module.exports = function (apiVersion) {
 //	router.get('/air-purifier', function (req, res) {
 //		res.sendFile(path.join(__dirname, '/web/public/air-purifier.html'));
 //	});
-	
+
 	router.get('*', function (req, res) {
 		res.redirect('/404');
 	});
