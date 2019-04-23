@@ -1,9 +1,9 @@
 
 "use strict";
 
-const config = require('../../../../config');
+const config = require('../../../../../config');
 
-const Review = require('../../model/review');
+const Review = require('../../../model/review');
 
 module.exports = function (req, res) {
 	let error = [];

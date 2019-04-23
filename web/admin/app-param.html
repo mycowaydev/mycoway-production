@@ -1,170 +1,518 @@
-
 <!DOCTYPE html>
 <html lang="en">
-    include includes/document-head
 
-    <div class="container body">
-      <div class="main_container">
-        <!-- sidebar menu -->
-        include includes/left-navigation
-        <!-- /sidebar menu -->
+<head>
+    <link href="../vendors/bootstrap-4/dist/css/bootstrap.css" rel="stylesheet">
+    <link href="../vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
+    <link href="../vendors/DataTables/datatables.css" />
+    <link href="../vendors/pnotify/dist/pnotify.css" rel="stylesheet">
+    <link href="../vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+    <link href="../build/css/custom.css" rel="stylesheet">
 
-        <!-- top navigation -->
-        include includes/header
-        <!-- /top navigation -->
-
-        <!-- page content -->
-        <div class="right_col" role="main">
-          <div class="">
-            <div class="page-title">
-              <div class="title_left">
-                <h3>App Param</h3>
-              </div>
-            </div>
-            <div class="clearfix"></div>
-
-            <div class="row">
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                if success
-                  <div class="alert alert-success alert-dismissible fade in" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
-                    </button>
-                    <strong>App Param was successfully added.</strong>
-                  </div>
-                if remove_success
-                  <div class="alert alert-success alert-dismissible fade in" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
-                    </button>
-                    <strong>App Param was successfully removed.</strong>
-                  </div>
-
-                <div class="x_panel">
-                  <div class="x_title">
-                  </div>
-                  <div class="x_content">
-                    <!-- start accordion -->
-                    <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
-                      <div class="panel">
-                        <a class="panel-heading collapsed" role="tab" id="headingTwo" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                          <h4 class="panel-title"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span> Advanced Search</h4>
-                        </a>
-                        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                          <div class="panel-body">
-                            <form data-parsley-validate class="form-horizontal">
-                              <div class="form-group">
-                                <label class="control-label col-md-2 col-sm-2 col-xs-12">App Param ID</label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                  <input type="text" name="key" class="form-control col-md-7 col-xs-12">
-                                </div>
-                              </div>
-                              <div class="form-group">
-                                <label class="control-label col-md-2 col-sm-2 col-xs-12">Value</label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                  <input type="text" name="value" class="form-control col-md-7 col-xs-12">
-                                </div>
-                              </div>
-                              <div class="form-group">
-                                <label class="control-label col-md-2 col-sm-2 col-xs-12">Remarks</label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                  <input type="text" name="remarks" class="form-control col-md-7 col-xs-12">
-                                </div>
-                              </div>
-                              <div class="form-group">
-                                <label class="control-label col-md-2 col-sm-2 col-xs-12">From Date</label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                  <div class='input-group date datepicker'>
-                                      <span class="input-group-addon">
-                                         <span class="glyphicon glyphicon-calendar"></span>
-                                      </span>
-                                      <input type='text' class="form-control" name="fdate" />
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="form-group">
-                                <label class="control-label col-md-2 col-sm-2 col-xs-12">To Date</label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                  <div class='input-group date datepicker'>
-                                      <span class="input-group-addon">
-                                         <span class="glyphicon glyphicon-calendar"></span>
-                                      </span>
-                                      <input type='text' class="form-control" name="tdate" />
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="form-group">
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                  <button id="advanced_search" type="submit" class="btn btn-success">Search</button>
-                                </div>
-                              </div>
-                            </form>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- end of accordion -->
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                      <button id="add" type="submit" class="btn btn-success">Add</button>
-                    </div>
-                    <br>
-
-                    <table id="table" class="table table-striped table-bordered bulk_action">
-                      <thead>
-                        <tr>
-                          <th>Action</th>
-                          <th>App Param ID</th>
-                          <th>Value</th>
-                          <th>Remarks</th>
-                          <th>Created On</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-        <!-- /page content -->
-
-        <!-- footer content -->
-        include includes/footer.html
-        <!-- /footer content -->
-      </div>
-    </div>
-
-    <!-- jQuery -->
     <script src="../vendors/jquery/dist/jquery.min.js"></script>
-    <!-- Bootstrap -->
-    <script src="../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
-    <!-- Datatables -->
-    <script src="../vendors/datatables.net/js/jquery.dataTables.min.js"></script>
-    <script src="../vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-    <script src="../vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
-    <script src="../vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
-    <script src="../vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
-    <script src="../vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
-    <script src="../vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
-    <script src="../vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
-    <script src="../vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
-    <script src="../vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
-    <script src="../vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
-    <script src="../vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
-    <script src="../vendors/ColReorderWithResize-master/ColReorderWithResize.js"></script>
-    <!-- bootstrap-datetimepicker -->
+    <script src="../vendors/jquery/dist/popper.js"></script>
+    <script src="../vendors/bootstrap-4/dist/js/bootstrap.min.js"></script>
     <script src="../vendors/moment/min/moment.min.js"></script>
     <script src="../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
-    <!-- PNotify -->
+    <script src="../vendors/datatables.net/js/jquery.dataTables.js"></script>
+    <script src="../vendors/jquery/dist/jquery.validate.min.js"></script>
     <script src="../vendors/pnotify/dist/pnotify.js"></script>
     <script src="../vendors/pnotify/dist/pnotify.buttons.js"></script>
-
-    <!-- Custom Theme Scripts -->
+    <script src="../web-js/notify.js"></script>
     <script src="../build/js/custom.js"></script>
 
-    <!-- others plugins -->
-    <script src="../web-js/notify.js"></script>
-    <script src="../web-js/app-param.js"></script>
+    <script>
+        var app = {
+            name: 'App Param',
+            http: {
+                method: 'POST'
+            },
+            mtparam: {
+                status: 'DEFAULT_STATUS'
+            },
+            action: {
+                update: 'Update',
+                insert: 'Insert',
+            },
+            link: {
+                insert: '/app-param-add',
+                update: '/app-param-upd',
+                getList: '/app-param-get-list',
+                getById: '/app-param-get-info',
+                mtparam: '/admin-get-mt-param-group',
+            }
+        }
 
-include includes/document-foot.html
+        var mtpStatus = getMTParam(app.mtparam.status).then(function (result) {
+            mtpStatus = result.data;
+            initDropdownList('#ddlSearch_Status,#ddlModal_Status', result.data);
+        });
+
+        function init() {
+            initApp();
+            initButton();
+            initModal();
+            initDataTable();
+            initDataTableBehavior();
+            initValidateInput();
+            initSizeChange();
+        }
+
+        function initApp() {
+            $('#app_title').text(app.name);
+        }
+
+        function initSizeChange() {
+            height = $('#main_panel').height();
+            window.parent.postMessage({ "height": height }, "*");
+        }
+
+        function initButton() {
+            $("#btnMainSearch").click(function (event) {
+                $("#dtSearch").DataTable().ajax.reload();
+            });
+            $("#btnMainReset").click(function (event) {
+                resetAllSearchInput();
+            });
+            $("#btnMainAdd").click(function (event) {
+                insertRecordMode();
+            });
+            $("#btnModalMainAction").click(function (event) {
+                actionModifyData();
+            });
+            $("#btnModalDismiss").click(function (event) {
+                $('#modalCUWindow').modal('hide')
+            });
+        }
+
+        function initModal() {
+            $('#modalLoad').modal({
+                backdrop: 'static', keyboard: true, show: false
+            });
+            $('#modalCUWindow').modal({
+                backdrop: 'static', keyboard: true, show: false
+            });
+            $('#modalCUWindow').on('hidden.bs.modal', function () {
+                resetAllModalInput();
+            });
+            $("#modalCUWindow").on("shown.bs.modal", function (e) {
+                $('#modalLoad').modal('hide');
+            })
+        }
+
+        function initDropdownList(target, data) {
+            for (var row = 0; row < data.length; row++) {
+                $(target).append(new Option(data[row].value, data[row].code));
+            }
+        }
+
+        function getMTParam(group) {
+            return new Promise((resolve, reject) => {
+                fetch(app.link.mtparam, { method: app.http.method, body: group })
+                    .then(function (res) {
+                        if (res.ok) {
+                            return res.json();
+                        }
+                    })
+                    .then(function (result) {
+                        return resolve(result);
+                    })
+                    .catch(function (err) {
+                        return reject(err);
+                    })
+            });
+        }
+
+        function initDataTable() {
+            $('#dtSearch').DataTable().destroy();
+            $("#dtSearch").DataTable({
+                paging: true,
+                pageLength: 10,
+                serverSide: true,
+                searching: false,
+                deferLoading: 0,
+                ajax: {
+                    url: app.link.getList,
+                    type: app.http.method,
+                    data: function (dataValue) {
+                        dataValue.key = $("#txtSearch_Key").val();
+                        dataValue.value = $("#txtSearch_Value").val();
+                        dataValue.status = $("#ddlSearch_Status").val();
+                    },
+                    beforeSend: function (value) {
+                        $('#modalLoad').modal('show');
+                    },
+                    complete: function () {
+                        $('#modalLoad').modal('hide');
+                        initSizeChange();
+                    },
+                },
+                columns: [
+                    { data: '_id' },
+                    { data: 'key' },
+                    { data: 'value' },
+                    { data: 'status' },
+                ],
+                columnDefs: [
+                    { width: "0%", "targets": 0, "visible": false },
+                    { width: "40%", "targets": 1 },
+                    { width: "30%", "targets": 2 },
+                    {
+                        width: "30%", "targets": 3, render: function (data, type, row) {
+                            for (var row = 0; row < mtpStatus.length; row++) {
+                                if (mtpStatus[row].code == data) {
+                                    return mtpStatus[row].value;
+                                }
+                            }
+                            return data;
+                        }
+                    },
+                ],
+                order: [[1, 'desc']]
+            });
+        }
+
+        function initDataTableBehavior() {
+            $('#dtSearch tbody').on('dblclick', 'tr', function () {
+                var data = $('#dtSearch').DataTable().row(this).data();
+                if (typeof data !== "undefined") {
+                    getDetailById(data["_id"]);
+                }
+            });
+        }
+
+        function initValidateInput() {
+            $("#modalForm").validate({
+                rules: {
+                    txtModal_Key: {
+                        required: true,
+                        minlength: 5
+                    },
+                    txtModal_Value: {
+                        required: true
+                    },
+                    ddlModal_Status: {
+                        required: {
+                            depends: function (element) {
+                                return $("#ddlModal_Status").val() === "";
+                            }
+                        }
+                    }
+                },
+                messages: {
+                    txtModal_Key: {
+                        required: "Please enter key.",
+                        minlength: "Key must consist of at least 5 characters."
+                    },
+                    txtModal_Value: {
+                        required: "Please enter value."
+                    },
+                    ddlModal_Status: {
+                        required: "Please select status."
+                    }
+                }
+            });
+        }
+
+        function insertRecordMode() {
+            var mode = app.action.insert;
+            $('#modalTitle').text(mode + ' ' + app.name);
+            $('#btnModalMainActionText').text(mode);
+            disableElement(false);
+            $('#modalCUWindow').modal('show');
+        }
+
+        function updateRecordMode() {
+            var mode = app.action.update;
+            $('#modalTitle').text(mode + ' ' + app.name);
+            $('#btnModalMainActionText').text(mode);
+            disableElement(true);
+            $('#modalCUWindow').modal('show');
+        }
+
+        function disableElement(disable) {
+            $("#txtModal_Key").prop('disabled', disable);
+        }
+
+        function resetAllSearchInput() {
+            $("form#searchForm :input").each(function () {
+                $(this).val('')
+            });
+        }
+
+        function resetAllModalInput() {
+            $("form#modalForm :input").each(function () {
+                $(this).val('')
+            });
+            $('#modalForm').validate().resetForm();
+        }
+
+        function getModalFormData() {
+            var formData = new FormData();
+
+            formData.append('id', $("#formId").val());
+            formData.append('key', $("#txtModal_Key").val());
+            formData.append('value', $("#txtModal_Value").val());
+            formData.append('status', $("#ddlModal_Status").val());
+            formData.append('remarks', $("#txtModal_Remarks").val());
+
+            return formData;
+        }
+
+        function successHandler(mode) {
+            notify_success(mode + ' successfully.');
+            $('#btnMainSearch').click();
+            $('#modalCUWindow').modal('hide');
+        }
+
+        function editHandler(result) {
+            var data = result.data;
+
+            if (data) {
+                $("#formId").val(data._id);
+                $("#txtModal_Key").val(data.key);
+                $("#txtModal_Value").val(data.value);
+                $("#ddlModal_Status").val(data.status);
+                $("#txtModal_Remarks").val(data.remarks);
+                updateRecordMode();
+            }
+        }
+
+        function errorMessageHandler(result) {
+            if (result.error && result.error.length > 0) {
+                notify_err(errors[0].message);
+            } else {
+                notify_server_err();
+            }
+        }
+
+        function getDetailById(id) {
+            $('#modalLoad').modal('show');
+            var formData = new FormData();
+            formData.append('id', id);
+
+            fetch(app.link.getById, { method: app.http.method, body: formData })
+                .then(function (res) {
+                    if (res.ok) {
+                        return res.json();
+                    }
+                    notify_req_failed();
+                })
+                .then(function (result) {
+                    if (result.status_code == '100') {
+                        editHandler(result);
+                    } else {
+                        errorMessageHandler(result);
+                    }
+                })
+                .catch(function (err) {
+                    notify_server_err();
+                })
+                .finally(function () {
+                    $('#modalLoad').modal('hide');
+                })
+        }
+
+        function actionModifyData() {
+            if ($("#modalForm").valid()) {
+                $('#modalLoad').modal('show');
+
+                var mode = $('#btnModalMainActionText').text();
+                var path = (mode === app.action.update ? app.link.update : app.link.insert);
+
+                fetch(path, { method: app.http.method, body: getModalFormData() })
+                    .then(function (res) {
+                        if (res.ok) {
+                            return res.json();
+                        }
+                        notify_req_failed();
+                    })
+                    .then(function (result) {
+                        if (result.status_code == '100') {
+                            successHandler(mode);
+                        } else {
+                            errorMessageHandler(result);
+                        }
+                    })
+                    .catch(function (err) {
+                        notify_server_err();
+                    })
+                    .finally(function () {
+                        $('#modalLoad').modal('hide');
+                    });
+            }
+        }
+
+        $(document).ready(function () {
+            init();
+        });
+    </script>
+</head>
+
+<body>
+    <div id="main_panel" class="x_panel">
+        <div class="x_content mb-2">
+            <!-- ACCORDION START -->
+            <div class="accordion" id="accordion">
+                <div class="panel border">
+                    <a class="panel-heading" role="tab" id="headerPanel" data-toggle="collapse" data-parent="#accordion"
+                        href="#collapsePanel" aria-expanded="false" aria-controls="collapsePanel">
+                        <h4 id="app_title" class="panel-title"><span class="glyphicon glyphicon-chevron-down"
+                                aria-hidden="false"></span></h4>
+                    </a>
+                    <div id="collapsePanel" class="panel-collapse show m-3" role="">
+                        <div class="panel-body">
+                            <form id="searchForm">
+                                <div class="form-group row">
+                                    <label for="txtSearch_Key"
+                                        class="col-sm-2 col-form-label col-form-label-sm">Key</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control form-control-sm" id="txtSearch_Key"
+                                            name="txtSearch_Key" placeholder="Key">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="txtSearch_Value"
+                                        class="col-sm-2 col-form-label col-form-label-sm">Value</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control form-control-sm" id="txtSearch_Value"
+                                            name="txtSearch_Value" placeholder="Value">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="txtSearch_Value"
+                                        class="col-sm-2 col-form-label col-form-label-sm">Status</label>
+                                    <div class="col-sm-10">
+                                        <select id="ddlSearch_Status" class="form-control form-control-sm"
+                                            name="normal">
+                                            <option value="">Please select</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="text-right">
+                                <button id="btnMainReset" class="btn btn-secondary btn-sm"
+                                    id="btnMainReset">Reset</button>
+                                <button id="btnMainSearch" class="btn btn-success btn-sm"
+                                    id="btnMainSearch">Search</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ACCORDION END -->
+        </div>
+
+        <div class="mb-2">
+            <button class="btn btn-success btn-sm" id="btnMainAdd">Add</button>
+        </div>
+
+        <!-- RESULT TABLE START -->
+        <div>
+            <table id="dtSearch" class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Key</th>
+                        <th>Value</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <!-- RESULT TABLE END -->
+
+        <br />
+        <br />
+        <br />
+        <br />
+    </div>
+
+    <!-- PROMPT MODAL START -->
+    <!-- PROMPT MODAL START -->
+    <!-- PROMPT MODAL START -->
+    <!-- PROMPT MODAL START -->
+    <div class="modal fade bd-example-modal-lg" id="modalCUWindow" tabindex="-1" role="dialog"
+        aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"><span id="modalTitle"></span></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="modalForm">
+                        <input type="hidden" id="formId">
+                        <div class="form-group row">
+                            <label for="txtModal_Key" class="col-sm-2 col-form-label col-form-label-sm">Key</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control form-control-sm" id="txtModal_Key"
+                                    name="txtModal_Key" placeholder="Key">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="txtModal_Value" class="col-sm-2 col-form-label col-form-label-sm">Value</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control form-control-sm" id="txtModal_Value"
+                                    name="txtModal_Value" placeholder="Value">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="txtModal_Value" class="col-sm-2 col-form-label col-form-label-sm">Status</label>
+                            <div class="col-sm-10">
+                                <select id="ddlModal_Status" name="ddlModal_Status"
+                                    class="form-control form-control-sm">
+                                    <option value="">Please select</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="txtModal_Remarks" class="col-sm-2 col-form-label col-form-label-sm">Remarks
+                                (FOUO)</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control form-control-sm" rows="5" id="txtModal_Remarks"
+                                    name="txtModal_Remarks" placeholder="Remarks"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" id="btnModalDismiss">Close</button>
+                    <button type="button" class="btn btn-primary btn-sm" id="btnModalMainAction">
+                        <span id="btnModalMainActionText"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- PROMPT MODAL END -->
+    <!-- PROMPT MODAL END -->
+    <!-- PROMPT MODAL END -->
+    <!-- PROMPT MODAL END -->
+
+    <!-- LOADING START -->
+    <!-- LOADING START -->
+    <!-- LOADING START -->
+    <!-- LOADING START -->
+    <div class="modal fade bd-example-modal-sm" id="modalLoad" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- LOADING END -->
+    <!-- LOADING END -->
+    <!-- LOADING END -->
+    <!-- LOADING END -->
+</body>
+
+</html>

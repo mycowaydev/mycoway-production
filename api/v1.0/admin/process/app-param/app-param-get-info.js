@@ -1,9 +1,8 @@
 
 "use strict";
 
-const config = require('../../../../config');
-
-const AppParam = require('../../model/app-param');
+const config = require('../../../../../config');
+const AppParam = require('../../../model/app-param');
 
 module.exports = function (req, res) {
 	let error = [];

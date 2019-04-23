@@ -1,9 +1,9 @@
 
 "use strict";
 
-const config = require('../../../../config');
+const config = require('../../../../../config');
 
-const Service = require('../../model/service');
+const Admin = require('../../../model/admin');
 
 module.exports = function (req, res) {
 	let error = [];
@@ -24,12 +24,12 @@ module.exports = function (req, res) {
 		let resp = config.getResponse(res, 200, error, {}, null);
 		config.logApiCall(req, res, resp);
 	} else {
-		adminGetServiceInfo(req, res, error, id);
+		adminGetAdminInfo(req, res, error, id);
 	}
 }
 
-function adminGetServiceInfo(req, res, error, id) {
-	Service.findOne({ '_id': id }, function (err, result) {
+function adminGetAdminInfo(req, res, error, id) {
+	Admin.findOne({ '_id': id }, function (err, result) {
 		if (err) {
 			error.push(config.getErrorResponse('101Z012', req));
 			let resp = config.getResponse(res, 500, error, {}, err);

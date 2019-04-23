@@ -1,9 +1,9 @@
 
 "use strict";
 
-const config = require('../../../../config');
+const config = require('../../../../../config');
 
-const AppParam = require('../../model/app-param');
+const Service = require('../../../model/service');
 
 module.exports = function (req, res) {
 	let error = [];
@@ -15,34 +15,35 @@ module.exports = function (req, res) {
 		let resp = config.getResponse(res, 200, error, {}, null);
 		config.logApiCall(req, res, resp);
 	} else {
-		adminGetAppParamList(req, res, error, filters, sort);
+		adminGetServiceList(req, res, error, filters, sort);
 	}
 }
 
 function getParam(req) {
 	var data = {};
 
-	data.key = req.body['key'] ? req.body['key'] : '';
-	data.value = req.body['value'] ? req.body['value'] : '';
+	data.rate = req.body['name'] ? req.body['name'] : '';
 	data.status = req.body['status'] ? req.body['status'] : '';
 
 	return data;
 }
 
 function getSortFields() {
-	return { 1: "key", 2: "value" };
+	return { 
+		1: "name" 
+	};
 }
 
-function adminGetAppParamList(req, res, error, filters, sort) {
+function adminGetServiceList(req, res, error, filters, sort) {
 	let query = filters.$and.length > 0 ? filters : {};
 	var recordsTotal = 0;
 	var recordsFiltered = 0;
 
-	AppParam.countDocuments({}, function (err, c) {
+	Service.countDocuments({}, function (err, c) {
 		recordsTotal = c;
-		AppParam.countDocuments(query, function (err, c) {
+		Service.countDocuments(query, function (err, c) {
 			recordsFiltered = c;
-			AppParam.aggregate([
+			Service.aggregate([
 				{ $match: query },
 				{ $sort: sort },
 				{ $skip: Number(req.body.start) },

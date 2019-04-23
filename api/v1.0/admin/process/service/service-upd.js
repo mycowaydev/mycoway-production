@@ -1,10 +1,10 @@
 
 "use strict";
 
-const config = require('../../../../config');
+const config = require('../../../../../config');
 const async = require('async');
 const cloudinary = require('cloudinary');
-const Service = require('../../model/service');
+const Service = require('../../../model/service');
 
 module.exports = function (req, res) {
 	cloudinary.config({
@@ -20,18 +20,17 @@ module.exports = function (req, res) {
 		let resp = config.getResponse(res, 200, error, {}, null);
 		config.logApiCall(req, res, resp);
 	} else {
-		adminAddService(req, res, error, data);
+		adminUpdateService(req, res, error, data);
 	}
 }
 
 function getParam(req) {
 	var data = {};
 
+	data.id = req.body['id'];
 	data.name = req.body['name'];
 	data.status = req.body['status'];
 	data.remarks = req.body['remarks'];
-	data.created_by = '';
-	data.created_date = config.getCurrentTimestamp();
 
 	return data;
 }
@@ -49,20 +48,39 @@ function validateParam(req, data) {
 	return error;
 }
 
-function adminAddService(req, res, error, data) {
+function getReplacement(data) {
+	let replacement = {
+		'status': data.status,
+		'remarks': data.remarks,
+	};
+	replacement = config.appendCommonFields(replacement, 'SERVICE_UPD');
+	return replacement;
+}
+
+function getQuery(data) {
+	let query = {
+		'_id': data.id
+	};
+	return query;
+}
+
+function adminUpdateService(req, res, error, data) {
 	async.series(
 		[
 			function (callback) {
 				return callback(null);
 			},
 			function (callback) {
-				var insertData = config.appendCommonFields(data, 'SERVICE_ADD');
-				Service.create(insertData, function (err, result) {
+				let query = getQuery(data);
+				let set = { $set: getReplacement(data) };
+
+				let options = { upsert: false, returnNewDocument: true, returnOriginal: false, new: true };
+				Service.findOneAndUpdate(query, set, options, function (err, result) {
 					if (err) {
-						console.log(err)
 						error.push(config.getErrorResponse('101Z012', req));
 						let resp = config.getResponse(res, 500, error, {}, err);
 						config.logApiCall(req, res, resp);
+						console.log(err)
 						return callback(true);
 					}
 					let resp = config.getResponse(res, 100, error, {});

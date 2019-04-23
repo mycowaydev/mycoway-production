@@ -17,14 +17,21 @@ module.exports = function (apiVersion) {
 
 	let router = express.Router();
 	let apiVersionPrefix = './api/' + apiVersion;
+	let apiFolder = '/admin/process/';
+
+	let subfolders = getDirectories(apiVersionPrefix + apiFolder);
 
 	if (!config.GLOBAL['IS_PRODUCTION']) {
 		router.post(apiTest, require('./api/' + apiTest));
 	}
 
 	router = defineRouterPostValue(routeTypes['PROCESS_COMMON'], apiVersionPrefix, apiVersionPrefix + '/admin/auth/', router);
-	router = defineRouterPostValue(routeTypes['PROCESS_AUTHORIZATION'], apiVersionPrefix, apiVersionPrefix + '/admin/process/', router);
+	router = defineRouterPostValue(routeTypes['PROCESS_AUTHORIZATION'], apiVersionPrefix, apiVersionPrefix + apiFolder, router);
+	for (let a = 0; a < subfolders.length; a++) {
+		router = defineRouterPostValue(routeTypes['PROCESS_AUTHORIZATION'], apiVersionPrefix, apiVersionPrefix + apiFolder + subfolders[a] + '/', router);
+	}
 	// router = defineRouterPostValue(routeTypes['PROCESS_TEST'], apiVersionPrefix, apiVersionPrefix + '/public/', router);
+
 	return router;
 
 };
@@ -35,7 +42,7 @@ function defineRouterPostValue(routeType, apiVersionPrefix, folder, router) {
 		files.forEach(file => {
 			if (path.parse(file).ext === '.js') {
 				let value = path.parse(file).name;
-				switch(routeType) {
+				switch (routeType) {
 					case routeTypes['PROCESS_AUTHORIZATION']:
 						router.post('/' + value, apiVerifyIsAdminExistsRoute.processAuthorization, require(folder + value));
 						break;
@@ -46,4 +53,10 @@ function defineRouterPostValue(routeType, apiVersionPrefix, folder, router) {
 		});
 	});
 	return router;
+}
+
+function getDirectories(path) {
+	return fs.readdirSync(path).filter(function (file) {
+		return fs.statSync(path + '/' + file).isDirectory();
+	});
 }

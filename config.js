@@ -162,6 +162,22 @@ module.exports = Object.freeze({
 		}
 		return newInfo;
 	},
+	getAdminRole: function (info) {
+		var newInfo = {};
+		if (!this.isEmptyJsonObject(info)) {
+			newInfo['role_id'] = info['role_id'];
+			newInfo['name'] = info['name'];
+			newInfo['desc'] = info['desc'];
+			newInfo['menu_id'] = info['menu_id'];
+			newInfo['remarks'] = info['remarks'];
+			newInfo['created_by'] = info['created_by'];
+			newInfo['created_date'] = this.getFormattedDateTime(info['created_date'], 'YYYY-MM-DD');
+			newInfo['opr'] = info['opr'];
+			newInfo['opr_date'] = this.getFormattedDateTime(info['opr_date'], 'YYYY-MM-DD');
+			newInfo['opr_func'] = info['opr_func'];
+		}
+		return newInfo;
+	},
 	getImage: function (image) {
 		var newImage = {};
 		if (!this.isEmptyJsonObject(image)) {
