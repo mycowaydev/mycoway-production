@@ -20,6 +20,13 @@
                 <div class="blog-banner">
                     <div class="text-center">
                         <h1>Order Detail</h1>
+                        <nav aria-label="breadcrumb" class="banner-breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item white"><a href="cart">Cart</a></li>
+                                <li class="breadcrumb-item active white" aria-current="page">Order Detail</li>
+                            </ol>
+                        </nav>
+                        <div class="label--desc white">After order details submitted, our team member will contact you and assist you the process of payment and installation.</div>
                     </div>
                 </div>
             </div>
@@ -47,7 +54,7 @@
                                     <label class="label--file" for="file_ic">Choose file</label>
                                     <span class="input-file__info">No file chosen</span>
                                 </div>
-                                <div class="label--desc">Watermark "FOR COWAY" before upload the image.</div>
+                                <div class="label--desc">We will watermark the images with "FOR COWAY" OR you can watermark "FOR COWAY" before upload to us.</div>
                             </div>
                         </div>
                         <div class="form-row">
@@ -60,7 +67,7 @@
                                     <label class="label--file" for="file_card">Choose file</label>
                                     <span class="input-file__info">No file chosen</span>
                                 </div>
-                                <div class="label--desc">Watermark "FOR COWAY" before upload the image.</div>
+                                <div class="label--desc">We will watermark the images with "FOR COWAY" OR you can watermark "FOR COWAY" before upload to us.</div>
                             </div>
                         </div>
                         <div class="form-row">
@@ -72,40 +79,58 @@
                                     <label class="label--file" for="file_sig">Choose file</label>
                                     <span class="input-file__info">No file chosen</span>
                                 </div>
-                                <div class="label--desc">Watermark "FOR COWAY" before upload the image.</div>
+                                <div class="label--desc">We will watermark the images with "FOR COWAY" OR you can watermark "FOR COWAY" before upload to us.</div>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="name">Installation Address</div>
                             <div class="value">
                                 <div class="input-group">
-                                    <textarea class="textarea--style-6" name="message" placeholder="Address of location which you want to install our product(s)" required></textarea>
+                                    <input class="input--style-6 address-input" type="text" name="first_line" id="first_line" placeholder="First Line" required>
+                                </div>
+                                <div class="input-group">
+                                    <input class="input--style-6 address-input" type="text" name="second_line" id="second_line" placeholder="Second Line">
+                                </div>
+                                <div class="input-group">
+                                    <input class="input--style-6 address-input" type="text" name="third_line" id="third_line" placeholder="Third Line">
+                                </div>
+                                <div class="input-group">
+                                    <input class="input--style-6 address-input width-60" type="text" name="city" id="city" placeholder="City" required>
+                                </div>
+                                <div class="input-group">
+                                    <input class="input--style-6 address-input width-30" type="text" pattern='^\d{5}$' name="postcode" id="postcode" placeholder="Postcode e.g. 23000" required>
+                                </div>
+                                <div class="input-group">
+                                    <input class="input--style-6 address-input width-60" type="text" name="state" id="state" placeholder="State" required>
+                                </div>
+                                <div class="input-group">
+                                    <input class="input--style-6 address-input width-60" type="text" name="country" id="country" placeholder="Country" required>
                                 </div>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="name">Phone Number</div>
                             <div class="value">
-                                <input class="input--style-6" type="tel" pattern='^\d{3}-\d{7,8}$' name="phone_number" id="phone_number" placeholder="012-3456789" required>
+                                <input class="input--style-6" type="tel" pattern='^\d{3}-\d{7,8}$' name="phone_number" id="phone_number" placeholder="e.g. 012-3456789" required>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="name">Emergency Phone Number</div>
                             <div class="value">
-                                <input class="input--style-6" type="tel" name="emergency_phone_number" id="emergency_phone_number" placeholder="012-3456789" required>
+                                <input class="input--style-6" type="tel" name="emergency_phone_number" id="emergency_phone_number" placeholder="e.g. 012-3456789" required>
                             </div>
                         </div>
                         <div class="form-row last-row">
                             <div class="name">Email address</div>
                             <div class="value">
                                 <div class="input-group">
-                                    <input class="input--style-6" type="email" name="email" placeholder="example@email.com" required>
+                                    <input class="input--style-6" type="email" name="email" placeholder="e.g. example@email.com" required>
                                 </div>
                             </div>
                         </div>
                         <div class="card-footer">
                             <a class='back-btn' href='javascript:history.back()'>Back</a>
-                            <button class="payment-btn" type="submit" id="upload">Submit Booking Request</button>
+                            <button class="payment-btn" type="submit" id="upload">Submit Order Details</button>
                         </div>
                     </form>
                 </div>

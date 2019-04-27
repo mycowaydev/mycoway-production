@@ -1375,17 +1375,17 @@ a {
 
 .banner-breadcrumb .breadcrumb-item a {
 	text-transform: capitalize;
-	color: #777777
+	color: #ededed
 }
 
 .banner-breadcrumb .breadcrumb-item+.breadcrumb-item::before {
-	color: #777777;
+	color: #ededed;
 	padding-right: .1rem;
-	content: "-"
+	content: ">"
 }
 
 .banner-breadcrumb .breadcrumb-item.active {
-	color: #777777
+	color: #ededed
 }
 
 .l_blog_item .l_blog_text .date {
