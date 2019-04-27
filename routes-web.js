@@ -124,7 +124,7 @@ module.exports = function (apiVersion) {
 	});
 
 	router.get('/404', function (req, res) {
-		res.sendFile(path.join(__dirname, '/web/public/404.html'));
+		res.render(path.join(__dirname, '/web/public/404'));
 	});
 
 	router.get('/', function (req, res) {
@@ -170,7 +170,7 @@ module.exports = function (apiVersion) {
             if (fs.existsSync(reqFile)) {
                 res.render(reqFileReal, localVar);
             } else {
-                res.sendFile(path.join(__dirname, `/web/public/404.html`));
+                res.render(path.join(__dirname, `/web/public/404`));
             }
         } catch (err) {
             console.error(err)
