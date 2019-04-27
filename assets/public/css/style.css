@@ -4781,3 +4781,9 @@ a {
     font-weight: 300;
     line-height: 1.6777;
 }
+
+.content_area {
+    padding-top: 90px;
+    padding-bottom: 55px;
+    min-height: 400px;
+}
