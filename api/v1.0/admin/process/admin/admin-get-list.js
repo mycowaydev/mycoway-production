@@ -1,9 +1,9 @@
 
 "use strict";
 
-const config = require('../../../../config');
+const config = require('../../../../../config');
 
-const Service = require('../../model/service');
+const Admin = require('../../../model/admin');
 
 module.exports = function (req, res) {
 	let error = [];
@@ -15,35 +15,35 @@ module.exports = function (req, res) {
 		let resp = config.getResponse(res, 200, error, {}, null);
 		config.logApiCall(req, res, resp);
 	} else {
-		adminGetServiceList(req, res, error, filters, sort);
+		adminGetAdminList(req, res, error, filters, sort);
 	}
 }
 
 function getParam(req) {
 	var data = {};
 
-	data.rate = req.body['name'] ? req.body['name'] : '';
+	data.admin_user_id = req.body['adminUserID'] ? req.body['adminUserID'] : '';
+	data.admin_username = req.body['adminUserName'] ? req.body['adminUserName'] : '';
+	data.role = req.body['role'] ? req.body['role'] : '';
 	data.status = req.body['status'] ? req.body['status'] : '';
 
 	return data;
 }
 
 function getSortFields() {
-	return { 
-		1: "name" 
-	};
+	return { 1: "admin_user_id", 2: "admin_username", 3: "role", 4: "status" };
 }
 
-function adminGetServiceList(req, res, error, filters, sort) {
+function adminGetAdminList(req, res, error, filters, sort) {
 	let query = filters.$and.length > 0 ? filters : {};
 	var recordsTotal = 0;
 	var recordsFiltered = 0;
 
-	Service.countDocuments({}, function (err, c) {
+	Admin.countDocuments({}, function (err, c) {
 		recordsTotal = c;
-		Service.countDocuments(query, function (err, c) {
+		Admin.countDocuments(query, function (err, c) {
 			recordsFiltered = c;
-			Service.aggregate([
+			Admin.aggregate([
 				{ $match: query },
 				{ $sort: sort },
 				{ $skip: Number(req.body.start) },

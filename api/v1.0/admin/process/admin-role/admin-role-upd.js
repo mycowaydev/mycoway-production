@@ -1,10 +1,10 @@
 
 "use strict";
 
-const config = require('../../../../config');
+const config = require('../../../../../config');
 const async = require('async');
 const cloudinary = require('cloudinary');
-const Service = require('../../model/service');
+const AdminRole = require('../../../model/admin-role');
 
 module.exports = function (req, res) {
 	cloudinary.config({
@@ -20,17 +20,19 @@ module.exports = function (req, res) {
 		let resp = config.getResponse(res, 200, error, {}, null);
 		config.logApiCall(req, res, resp);
 	} else {
-		adminUpdateService(req, res, error, data);
+		updateAdminRole(req, res, error, data);
 	}
 }
 
 function getParam(req) {
 	var data = {};
 
-	data.id = req.body['id'];
-	data.name = req.body['name'];
-	data.status = req.body['status'];
-	data.remarks = req.body['remarks'];
+	data.id = req.body['id'] || '';
+	data.name = req.body['name'] || '';
+	data.desc = req.body['desc'] || '';
+	data.menu_id = req.body['menu_id'] || '';
+	data.remarks = req.body['remarks'] || '';
+	data.adminUserid = req.session.adminUserid;
 
 	return data;
 }
@@ -38,11 +40,17 @@ function getParam(req) {
 function validateParam(req, data) {
 	let error = [];
 
-	if (config.isEmpty(data.name)) {
-		error.push(config.getErrorResponse('103A001', req));
+	if (config.isEmpty(data.id)) {
+		error.push(config.getErrorResponse('101A008', req));
 	}
-	if (config.isEmpty(data.status)) {
-		error.push(config.getErrorResponse('103A002', req));
+	if (config.isEmpty(data.name)) {
+		error.push(config.getErrorResponse('101A005', req));
+	}
+	if (config.isEmpty(data.desc)) {
+		error.push(config.getErrorResponse('101A005', req));
+	}
+	if (config.isEmpty(data.menu_id)) {
+		error.push(config.getErrorResponse('101A005', req));
 	}
 
 	return error;
@@ -50,10 +58,12 @@ function validateParam(req, data) {
 
 function getReplacement(data) {
 	let replacement = {
-		'status': data.status,
+		'name': data.name,
+		'desc': data.desc,
+		'menu_id': data.menu_id,
 		'remarks': data.remarks,
 	};
-	replacement = config.appendCommonFields(replacement, 'SERVICE_UPD');
+	replacement = config.appendCommonFields(replacement, 'UPD_ROLE', data.adminUserid);
 	return replacement;
 }
 
@@ -64,7 +74,7 @@ function getQuery(data) {
 	return query;
 }
 
-function adminUpdateService(req, res, error, data) {
+function updateAdminRole(req, res, error, data) {
 	async.series(
 		[
 			function (callback) {
@@ -75,12 +85,11 @@ function adminUpdateService(req, res, error, data) {
 				let set = { $set: getReplacement(data) };
 
 				let options = { upsert: false, returnNewDocument: true, returnOriginal: false, new: true };
-				Service.findOneAndUpdate(query, set, options, function (err, result) {
+				AdminRole.findOneAndUpdate(query, set, options, function (err, result) {
 					if (err) {
 						error.push(config.getErrorResponse('101Z012', req));
 						let resp = config.getResponse(res, 500, error, {}, err);
 						config.logApiCall(req, res, resp);
-						console.log(err)
 						return callback(true);
 					}
 					let resp = config.getResponse(res, 100, error, {});

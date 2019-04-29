@@ -1,10 +1,10 @@
 
 "use strict";
 
-const config = require('../../../../config');
+const config = require('../../../../../config');
 const async = require('async');
 const cloudinary = require('cloudinary');
-const Review = require('../../model/review');
+const AppParam = require('../../../model/app-param');
 
 module.exports = function (req, res) {
 	cloudinary.config({
@@ -20,20 +20,19 @@ module.exports = function (req, res) {
 		let resp = config.getResponse(res, 200, error, {}, null);
 		config.logApiCall(req, res, resp);
 	} else {
-		adminAddReview(req, res, error, data);
+		adminAddAppParam(req, res, error, data);
 	}
 }
 
 function getParam(req) {
 	var data = {};
 
-	data.name = req.body['name'];
+	data.key = req.body['key'];
+	data.value = req.body['value'];
 	data.status = req.body['status'];
-	data.email_address = req.body['email_address'];
-	data.rate = req.body['rate'];
-	data.desc = req.body['desc'];
 	data.remarks = req.body['remarks'];
-	data.review_date = config.getCurrentTimestamp();
+	data.created_by = '';
+	data.created_date = config.getCurrentTimestamp();
 
 	return data;
 }
@@ -41,30 +40,26 @@ function getParam(req) {
 function validateParam(req, data) {
 	let error = [];
 
-	if (config.isEmpty(data.name)) {
-		error.push(config.getErrorResponse('102A001', req));
+	if (config.isEmpty(data.key)) {
+		error.push(config.getErrorResponse('101A008', req));
 	}
-	if (config.isEmpty(data.status)) {
-		error.push(config.getErrorResponse('102A002', req));
-	}
-	if (config.isEmpty(data.rate)) {
-		error.push(config.getErrorResponse('102A003', req));
+	if (config.isEmpty(data.value)) {
+		error.push(config.getErrorResponse('101A005', req));
 	}
 
 	return error;
 }
 
-function adminAddReview(req, res, error, data) {
+function adminAddAppParam(req, res, error, data) {
 	async.series(
 		[
 			function (callback) {
 				return callback(null);
 			},
 			function (callback) {
-				var insertData = config.appendCommonFields(data, 'REVIEW_ADD');
-				Review.create(insertData, function (err, result) {
+				let insertData = config.appendCommonFields(data, 'APPPARAM_ADD', req.session.adminUserid, true);
+				AppParam.create(insertData, function (err, result) {
 					if (err) {
-						console.log(err)
 						error.push(config.getErrorResponse('101Z012', req));
 						let resp = config.getResponse(res, 500, error, {}, err);
 						config.logApiCall(req, res, resp);

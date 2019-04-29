@@ -702,3 +702,22 @@ textarea {
     font-weight: 500;
 }
 
+.address-input {
+    margin: 10px 0px 10px 0px;
+}
+
+.width-30 {
+    width: 30%
+}
+
+.width-50 {
+    width: 50%
+}
+
+.width-60 {
+    width: 60%
+}
+
+.white {
+    color: #fff;
+}

@@ -1,10 +1,10 @@
 
 "use strict";
-const config = require('../../../../config');
+const config = require('../../../../../config');
 const async = require('async');
 const cloudinary = require('cloudinary');
 
-const AdminPass = require('../../model/admin-pass');
+const AdminPass = require('../../../model/admin-pass');
 
 module.exports = function (req, res) {
 

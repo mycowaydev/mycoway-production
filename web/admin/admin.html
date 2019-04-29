@@ -23,7 +23,7 @@
 
     <script>
         var app = {
-            name: "Review",
+            name: 'Admin',
             http: {
                 method: 'POST'
             },
@@ -35,28 +35,29 @@
                 insert: 'Insert',
             },
             link: {
-                insert: '/review-add',
-                update: '/review-upd',
-                getList: '/review-get-list',
-                getById: '/review-get-info',
+                insert: '/admin-add',
+                update: '/admin-info-superadmin-upd',
+                getList: '/admin-get-list',
+                getById: '/admin-get-info',
                 mtparam: '/admin-get-mt-param-group',
-            },
-            rateValue: {
-                min: 1,
-                max: 5
+                roleParam: '/admin-role-get-param',
             }
         }
 
         var mtpStatus = getMTParam(app.mtparam.status).then(function (result) {
             mtpStatus = result.data;
-            initDropdownList('#ddlSearch_Status,#ddlModal_Status', result.data);
+            initDropdownList('#ddlSearch_Status,#ddlModal_Status', result.data, app.link.mtparam);
+        });
+
+        var roleP = getRoleParam().then(function (result) {
+            roleP = result.data;
+            initDropdownList('#ddlSearch_Role,#ddlModal_Role', result.data, app.link.roleParam);
         });
 
         function init() {
             initApp();
             initButton();
             initModal();
-            initDropdownList2();
             initDataTable();
             initDataTableBehavior();
             initValidateInput();
@@ -100,17 +101,39 @@
             $('#modalCUWindow').on('hidden.bs.modal', function () {
                 resetAllModalInput();
             });
+            $("#modalCUWindow").on("shown.bs.modal", function (e) {
+                $('#modalLoad').modal('hide');
+            })
         }
-        function initDropdownList(target, data) {
-            for (var row = 0; row < data.length; row++) {
-                $(target).append(new Option(data[row].value, data[row].code));
+
+        function initDropdownList(target, data, link) {
+            if (link == app.link.mtparam) {
+                for (var row = 0; row < data.length; row++) {
+                    $(target).append(new Option(data[row].value, data[row].code));
+                }
+            }
+            else if (link == app.link.roleParam) {
+                for (var row = 0; row < data.length; row++) {
+                    $(target).append(new Option(data[row].desc, data[row].name));
+                }
             }
         }
 
-        function initDropdownList2() {
-            for (var row = app.rateValue.min; row <= app.rateValue.max; row++) {
-                $("#ddlSearch_Rate,#ddlModal_Rate").append(new Option(row + " star(s)", row));
-            }
+        function getRoleParam() {
+            return new Promise((resolve, reject) => {
+                fetch(app.link.roleParam, { method: app.http.method })
+                    .then(function (res) {
+                        if (res.ok) {
+                            return res.json();
+                        }
+                    })
+                    .then(function (result) {
+                        return resolve(result);
+                    })
+                    .catch(function (err) {
+                        return reject(err);
+                    })
+            });
         }
 
         function getMTParam(group) {
@@ -142,28 +165,34 @@
                     url: app.link.getList,
                     type: app.http.method,
                     data: function (dataValue) {
-                        dataValue.rate = $("#ddlSearch_Rate").val();
+                        dataValue.adminUserID = $("#txtSearch_AdminUserID").val();
+                        dataValue.adminUserName = $("#txtSearch_AdminUserName").val();
+                        dataValue.role = $("#ddlSearch_Role").val();
                         dataValue.status = $("#ddlSearch_Status").val();
                     },
-                    beforeSend: function (value) {
+                    beforeSend: function (adminUserName) {
                         $('#modalLoad').modal('show');
                     },
                     complete: function () {
-                        $('#modalLoad').modal('hide'); initSizeChange();
+                        $('#modalLoad').modal('hide');
+                        initSizeChange();
                     },
                 },
                 columns: [
                     { data: '_id' },
-                    { data: 'name' },
+                    { data: 'admin_user_id' },
+                    { data: 'admin_username' },
+                    { data: 'role' },
                     { data: 'status' },
-                    { data: 'email_address' },
-                    { data: 'rate' },
                 ],
                 columnDefs: [
                     { width: "0%", "targets": 0, "visible": false },
-                    { width: "30%", "targets": 1 },
+                    { width: "20%", "targets": 1 },
+                    { width: "30%", "targets": 2 },
+                    { width: "30%", "targets": 2 },
+                    { width: "20%", "targets": 2 },
                     {
-                        width: "20%", "targets": 2, render: function (data, type, row) {
+                        width: "30%", "targets": 3, render: function (data, type, row) {
                             for (var row = 0; row < mtpStatus.length; row++) {
                                 if (mtpStatus[row].code == data) {
                                     return mtpStatus[row].value;
@@ -172,14 +201,8 @@
                             return data;
                         }
                     },
-                    { width: "30%", "targets": 3 },
-                    {
-                        width: "20%", "targets": 4, render: function (data, type, row) {
-                            return data + " star(s)";
-                        }
-                    },
                 ],
-                order: [[0, 'desc']]
+                order: [[1, 'desc']]
             });
         }
 
@@ -195,8 +218,19 @@
         function initValidateInput() {
             $("#modalForm").validate({
                 rules: {
-                    txtModal_Name: {
+                    txtModal_AdminUserID: {
+                        required: true,
+                        minlength: 5
+                    },
+                    txtModal_AdminUserName: {
                         required: true
+                    },
+                    ddlModal_Role: {
+                        required: {
+                            depends: function (element) {
+                                return $("#ddlModal_Role").val() === "";
+                            }
+                        }
                     },
                     ddlModal_Status: {
                         required: {
@@ -204,24 +238,21 @@
                                 return $("#ddlModal_Status").val() === "";
                             }
                         }
-                    },
-                    ddlModal_Rate: {
-                        required: {
-                            depends: function (element) {
-                                return $("#ddlModal_Rate").val() === "";
-                            }
-                        }
                     }
                 },
                 messages: {
-                    txtModal_Name: {
-                        required: "Please enter name."
+                    txtModal_AdminUserID: {
+                        required: "Please enter Admin User ID.",
+                        minlength: "Key must consist of at least 5 characters."
+                    },
+                    txtModal_AdminUserName: {
+                        required: "Please enter Value."
+                    },
+                    ddlModal_Role: {
+                        required: "Please select Admin role."
                     },
                     ddlModal_Status: {
                         required: "Please select status."
-                    },
-                    ddlModal_Rate: {
-                        required: "Please select rate."
                     }
                 }
             });
@@ -232,7 +263,7 @@
             $('#modalTitle').text(mode + ' ' + app.name);
             $('#btnModalMainActionText').text(mode);
             disableElement(false);
-            $('#modalCUWindow').modal('show')
+            $('#modalCUWindow').modal('show');
         }
 
         function updateRecordMode() {
@@ -240,11 +271,11 @@
             $('#modalTitle').text(mode + ' ' + app.name);
             $('#btnModalMainActionText').text(mode);
             disableElement(true);
-            $('#modalCUWindow').modal('show')
+            $('#modalCUWindow').modal('show');
         }
 
         function disableElement(disable) {
-
+            $("#txtModal_AdminUserID").prop('disabled', disable);
         }
 
         function resetAllSearchInput() {
@@ -264,12 +295,11 @@
             var formData = new FormData();
 
             formData.append('id', $("#formId").val());
-            formData.append('name', $("#txtModal_Name").val());
+            formData.append('admin_user_id', $("#txtModal_AdminUserID").val());
+            formData.append('admin_username', $("#txtModal_AdminUserName").val());
+            formData.append('role', $("#ddlModal_Role").val());
             formData.append('status', $("#ddlModal_Status").val());
-            formData.append('email_address', $("#txtModal_Email").val());
-            formData.append('rate', $("#ddlModal_Rate").val());
-            formData.append('desc', $("#taModal_Description").val());
-            formData.append('remarks', $("#taModal_Remarks").val());
+            formData.append('remarks', $("#txtModal_Remarks").val());
 
             return formData;
         }
@@ -285,12 +315,11 @@
 
             if (data) {
                 $("#formId").val(data._id);
-                $("#txtModal_Name").val(data.name);
+                $("#txtModal_AdminUserID").val(data.admin_user_id);
+                $("#txtModal_AdminUserName").val(data.admin_username);
+                $("#ddlModal_Role").val(data.role);
                 $("#ddlModal_Status").val(data.status);
-                $("#txtModal_Email").val(data.email_address);
-                $("#ddlModal_Rate").val(data.rate);
-                $("#taModal_Description").val(data.desc);
-                $("#taModal_Remarks").val(data.remarks);
+                $("#txtModal_Remarks").val(data.remarks);
                 updateRecordMode();
             }
         }
@@ -327,7 +356,7 @@
                 })
                 .finally(function () {
                     $('#modalLoad').modal('hide');
-                });
+                })
         }
 
         function actionModifyData() {
@@ -372,38 +401,47 @@
             <!-- ACCORDION START -->
             <div class="accordion" id="accordion">
                 <div class="panel border">
-                    <a class="panel-heading" role="tab" id="headerPanel" data-toggle="collapse" data-parent="#accordion"
-                        href="#collapsePanel" aria-expanded="false" aria-controls="collapsePanel">
-                        <h4 id="app_title" class="panel-title"><span class="glyphicon glyphicon-chevron-down"
-                                aria-hidden="false"></span></h4>
+                    <a class="panel-heading" role="tab" id="headerPanel" data-toggle="collapse" data-parent="#accordion" href="#collapsePanel"
+                        aria-expanded="false" aria-controls="collapsePanel">
+                        <h4 id="app_title" class="panel-title">
+                            <span class="glyphicon glyphicon-chevron-down" aria-hidden="false"></span>
+                        </h4>
                     </a>
                     <div id="collapsePanel" class="panel-collapse show m-3" role="">
                         <div class="panel-body">
                             <form id="searchForm">
                                 <div class="form-group row">
-                                    <label for="ddlSearch_Status"
-                                        class="col-sm-2 col-form-label col-form-label-sm">Status</label>
+                                    <label for="txtSearch_AdminUserID" class="col-sm-2 col-form-label col-form-label-sm">Admin User ID</label>
                                     <div class="col-sm-10">
-                                        <select id="ddlSearch_Status" class="form-control form-control-sm"
-                                            name="normal">
-                                            <option value="">Please select</option>
-                                        </select> </div>
+                                        <input type="text" class="form-control form-control-sm" id="txtSearch_AdminUserID" name="txtSearch_AdminUserID" placeholder="Admin User ID">
+                                    </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="ddlSearch_Rate"
-                                        class="col-sm-2 col-form-label col-form-label-sm">Rate</label>
+                                    <label for="txtSearch_AdminUserName" class="col-sm-2 col-form-label col-form-label-sm">Admin User Name</label>
                                     <div class="col-sm-10">
-                                        <select id="ddlSearch_Rate" class="form-control form-control-sm" name="normal">
+                                        <input type="text" class="form-control form-control-sm" id="txtSearch_AdminUserName" name="txtSearch_AdminUserName" placeholder="Admin User Name">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="txtSearch_Value" class="col-sm-2 col-form-label col-form-label-sm">Role</label>
+                                    <div class="col-sm-10">
+                                        <select id="ddlSearch_Role" class="form-control form-control-sm" name="normal">
+                                            <option value="">Please select</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="txtSearch_Value" class="col-sm-2 col-form-label col-form-label-sm">Status</label>
+                                    <div class="col-sm-10">
+                                        <select id="ddlSearch_Status" class="form-control form-control-sm" name="normal">
                                             <option value="">Please select</option>
                                         </select>
                                     </div>
                                 </div>
                             </form>
                             <div class="text-right">
-                                <button id="btnMainReset" class="btn btn-secondary btn-sm"
-                                    id="btnMainReset">Reset</button>
-                                <button id="btnMainSearch" class="btn btn-success btn-sm"
-                                    id="btnMainSearch">Search</button>
+                                <button id="btnMainReset" class="btn btn-secondary btn-sm" id="btnMainReset">Reset</button>
+                                <button id="btnMainSearch" class="btn btn-success btn-sm" id="btnMainSearch">Search</button>
                             </div>
                         </div>
                     </div>
@@ -422,10 +460,10 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Name</th>
+                        <th>Admin ID</th>
+                        <th>Admin Name</th>
+                        <th>Role</th>
                         <th>Status</th>
-                        <th>Email</th>
-                        <th>Rate</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -444,65 +482,55 @@
     <!-- PROMPT MODAL START -->
     <!-- PROMPT MODAL START -->
     <!-- PROMPT MODAL START -->
-    <div class="modal fade bd-example-modal-lg" id="modalCUWindow" tabindex="-1" role="dialog"
-        aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal fade bd-example-modal-lg" id="modalCUWindow" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel"><span id="modalTitle"></span></h5>
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        <span id="modalTitle"></span>
+                    </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <form id="modalForm">
+
                         <input type="hidden" id="formId">
                         <div class="form-group row">
-                            <label for="txtModal_Name" class="col-sm-2 col-form-label col-form-label-sm">Name</label>
+                            <label for="txtModal_AdminUserID" class="col-sm-2 col-form-label col-form-label-sm">Admin User ID</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control form-control-sm" id="txtModal_Name"
-                                    name="txtModal_Name" placeholder="Name">
+                                <input type="text" class="form-control form-control-sm" id="txtModal_AdminUserID" name="txtModal_AdminUserID" placeholder="Admin User ID">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="ddlModal_Status"
-                                class="col-sm-2 col-form-label col-form-label-sm">Status</label>
+                            <label for="txtModal_AdminUserName" class="col-sm-2 col-form-label col-form-label-sm">Admin User Name</label>
                             <div class="col-sm-10">
-                                <select id="ddlModal_Status" class="form-control form-control-sm"
-                                    name="ddlModal_Status">
+                                <input type="text" class="form-control form-control-sm" id="txtModal_AdminUserName" name="txtModal_AdminUserName" placeholder="Admin User Name">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="txtModal_Value" class="col-sm-2 col-form-label col-form-label-sm">Admin Role</label>
+                            <div class="col-sm-10">
+                                <select id="ddlModal_Role" name="ddlModal_Role" class="form-control form-control-sm">
                                     <option value="">Please select</option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="txtModal_Email" class="col-sm-2 col-form-label col-form-label-sm">Email</label>
+                            <label for="txtModal_Value" class="col-sm-2 col-form-label col-form-label-sm">Status</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control form-control-sm" id="txtModal_Email"
-                                    name="txtModal_Email" placeholder="Email">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="ddlModal_Rate" class="col-sm-2 col-form-label col-form-label-sm">Rate</label>
-                            <div class="col-sm-10">
-                                <select id="ddlModal_Rate" class="form-control form-control-sm" name="ddlModal_Rate">
+                                <select id="ddlModal_Status" name="ddlModal_Status" class="form-control form-control-sm">
                                     <option value="">Please select</option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="taModal_Description"
-                                class="col-sm-2 col-form-label col-form-label-sm">Description</label>
+                            <label for="txtModal_Remarks" class="col-sm-2 col-form-label col-form-label-sm">Remarks (FOUO)
+                            </label>
                             <div class="col-sm-10">
-                                <textarea class="form-control form-control-sm" rows="5" id="taModal_Description"
-                                    name="taModal_Description" placeholder="Description"></textarea>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="taModal_Remarks" class="col-sm-2 col-form-label col-form-label-sm">Remarks
-                                (FOUO)</label>
-                            <div class="col-sm-10">
-                                <textarea class="form-control form-control-sm" rows="5" id="taModal_Remarks"
-                                    name="taModal_Remarks" placeholder="Remarks"></textarea>
+                                <textarea class="form-control form-control-sm" rows="5" id="txtModal_Remarks" name="txtModal_Remarks" placeholder="Remarks"></textarea>
                             </div>
                         </div>
                     </form>
