@@ -30,6 +30,9 @@ function getParam(req) {
 	data.id = req.body['id'];
 	data.name = req.body['name'];
 	data.status = req.body['status'];
+	data.value = req.body['value'];
+	data.unit = req.body['unit'];
+	data.repeat = req.body['repeat'];
 	data.remarks = req.body['remarks'];
 
 	return data;
@@ -44,6 +47,15 @@ function validateParam(req, data) {
 	if (config.isEmpty(data.status)) {
 		error.push(config.getErrorResponse('103A002', req));
 	}
+	if (config.isEmpty(data.value)) {
+		error.push(config.getErrorResponse('103A003', req));
+	}
+	if (config.isEmpty(data.unit)) {
+		error.push(config.getErrorResponse('103A004', req));
+	}
+	if (config.isEmpty(data.repeat)) {
+		error.push(config.getErrorResponse('103A005', req));
+	}
 
 	return error;
 }
@@ -52,6 +64,9 @@ function getReplacement(data) {
 	let replacement = {
 		'status': data.status,
 		'remarks': data.remarks,
+		'value': data.value,
+		'unit': data.unit,
+		'repeat': data.repeat,
 	};
 	replacement = config.appendCommonFields(replacement, 'SERVICE_UPD');
 	return replacement;

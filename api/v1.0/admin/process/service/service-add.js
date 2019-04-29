@@ -29,6 +29,9 @@ function getParam(req) {
 
 	data.name = req.body['name'];
 	data.status = req.body['status'];
+	data.value = req.body['value'];
+	data.unit = req.body['unit'];
+	data.repeat = req.body['repeat'];
 	data.remarks = req.body['remarks'];
 	data.created_by = '';
 	data.created_date = config.getCurrentTimestamp();
@@ -44,6 +47,15 @@ function validateParam(req, data) {
 	}
 	if (config.isEmpty(data.status)) {
 		error.push(config.getErrorResponse('103A002', req));
+	}
+	if (config.isEmpty(data.value)) {
+		error.push(config.getErrorResponse('103A003', req));
+	}
+	if (config.isEmpty(data.unit)) {
+		error.push(config.getErrorResponse('103A004', req));
+	}
+	if (config.isEmpty(data.repeat)) {
+		error.push(config.getErrorResponse('103A005', req));
 	}
 
 	return error;

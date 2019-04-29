@@ -33,6 +33,9 @@
 		"error_review_status_empty": "Missing review status.",
 		"error_review_rate_empty": "Missing review rate.",
 		"error_service_name_empty": "Missing service name",
-		"error_service_status_empty": "Missing service status"
+		"error_service_status_empty": "Missing service status",
+		"error_service_value_empty": "Missing service value",
+		"error_service_unit_empty": "Missing service unit",
+		"error_service_repeat_empty": "Missing service repeat"
 	}
 }
