@@ -44,5 +44,8 @@
 	"102A003": "error_review_rate_empty",
 
 	"103A001": "error_service_name_empty",
-	"103A002": "error_service_status_empty"
+	"103A002": "error_service_status_empty",
+	"103A003": "error_service_value_empty",
+	"103A004": "error_service_unit_empty",
+	"103A005": "error_service_repeat_empty"
 }

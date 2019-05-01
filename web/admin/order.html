@@ -23,25 +23,27 @@
 
     <script>
         var app = {
-            name: "Service",
+            name: "Order",
             http: {
                 method: 'POST'
             },
             mtparam: {
-                status: 'DEFAULT_STATUS',
-                repeat: 'DEFAULT_BOOLEAN',
-                unit: 'DEFAULT_UNIT'
+                status: 'DEFAULT_STATUS'
             },
             action: {
                 update: 'Update',
                 insert: 'Insert',
             },
             link: {
-                insert: '/service-add',
-                update: '/service-upd',
-                getList: '/service-get-list',
-                getById: '/service-get-info',
+                insert: '/order-add',
+                update: '/order-upd',
+                getList: '/order-get-list',
+                getById: '/order-get-info',
                 mtparam: '/admin-get-mt-param-group',
+            },
+            rateValue: {
+                min: 1,
+                max: 5
             }
         }
 
@@ -50,21 +52,11 @@
             initDropdownList('#ddlSearch_Status,#ddlModal_Status', result.data);
         });
 
-        var mtpRepeat = getMTParam(app.mtparam.repeat).then(function (result) {
-            mtpRepeat = result.data;
-            initDropdownList('#ddlSearch_Repeat,#ddlModal_Repeat', result.data);
-        });
-
-        var mtpUnit = getMTParam(app.mtparam.unit).then(function (result) {
-            mtpUnit = result.data;
-            initDropdownList('#ddlSearch_Unit,#ddlModal_Unit', result.data);
-        });
-
         function init() {
             initApp();
             initButton();
             initModal();
-            initInputControl();
+            initDropdownList2();
             initDataTable();
             initDataTableBehavior();
             initValidateInput();
@@ -78,16 +70,6 @@
         function initSizeChange() {
             height = $('#main_panel').height();
             window.parent.postMessage({ "height": height }, "*");
-        }
-
-        function initInputControl() {
-            $(".allownumericwithdecimal").on("keypress keyup blur", function (event) {
-                //this.value = this.value.replace(/[^0-9\.]/g,'');
-                $(this).val($(this).val().replace(/[^0-9\.]/g, ''));
-                if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
-                    event.preventDefault();
-                }
-            });
         }
 
         function initButton() {
@@ -125,6 +107,12 @@
             }
         }
 
+        function initDropdownList2() {
+            for (var row = app.rateValue.min; row <= app.rateValue.max; row++) {
+                $("#ddlSearch_Rate,#ddlModal_Rate").append(new Option(row + " star(s)", row));
+            }
+        }
+
         function getMTParam(group) {
             return new Promise((resolve, reject) => {
                 fetch(app.link.mtparam, { method: app.http.method, body: group })
@@ -154,7 +142,7 @@
                     url: app.link.getList,
                     type: app.http.method,
                     data: function (dataValue) {
-                        dataValue.name = $("#txtSearch_Name").val();
+                        dataValue.rate = $("#ddlSearch_Rate").val();
                         dataValue.status = $("#ddlSearch_Status").val();
                     },
                     beforeSend: function (value) {
@@ -167,19 +155,27 @@
                 columns: [
                     { data: '_id' },
                     { data: 'name' },
-                    { data: 'status' }
+                    { data: 'status' },
+                    { data: 'email_address' },
+                    { data: 'rate' },
                 ],
                 columnDefs: [
                     { width: "0%", "targets": 0, "visible": false },
-                    { width: "70%", "targets": 1 },
+                    { width: "30%", "targets": 1 },
                     {
-                        width: "30%", "targets": 2, render: function (data, type, row) {
+                        width: "20%", "targets": 2, render: function (data, type, row) {
                             for (var row = 0; row < mtpStatus.length; row++) {
                                 if (mtpStatus[row].code == data) {
                                     return mtpStatus[row].value;
                                 }
                             }
                             return data;
+                        }
+                    },
+                    { width: "30%", "targets": 3 },
+                    {
+                        width: "20%", "targets": 4, render: function (data, type, row) {
+                            return data + " star(s)";
                         }
                     },
                 ],
@@ -202,9 +198,6 @@
                     txtModal_Name: {
                         required: true
                     },
-                    txtModal_Value: {
-                        required: true
-                    },
                     ddlModal_Status: {
                         required: {
                             depends: function (element) {
@@ -212,17 +205,10 @@
                             }
                         }
                     },
-                    ddlModal_Repeat: {
+                    ddlModal_Rate: {
                         required: {
                             depends: function (element) {
-                                return $("#ddlModal_Repeat").val() === "";
-                            }
-                        }
-                    },
-                    ddlModal_Unit: {
-                        required: {
-                            depends: function (element) {
-                                return $("#ddlModal_Unit").val() === "";
+                                return $("#ddlModal_Rate").val() === "";
                             }
                         }
                     }
@@ -231,17 +217,11 @@
                     txtModal_Name: {
                         required: "Please enter name."
                     },
-                    txtModal_Value: {
-                        required: "Please enter value."
-                    },
                     ddlModal_Status: {
                         required: "Please select status."
                     },
-                    ddlModal_Repeat: {
-                        required: "Please select repeat mode."
-                    },
-                    ddlModal_Unit: {
-                        required: "Please select unit."
+                    ddlModal_Rate: {
+                        required: "Please select rate."
                     }
                 }
             });
@@ -264,7 +244,7 @@
         }
 
         function disableElement(disable) {
-            $("#txtModal_Name").prop("disabled", disable);
+
         }
 
         function resetAllSearchInput() {
@@ -286,9 +266,9 @@
             formData.append('id', $("#formId").val());
             formData.append('name', $("#txtModal_Name").val());
             formData.append('status', $("#ddlModal_Status").val());
-            formData.append('value', $("#txtModal_Value").val());
-            formData.append('unit', $("#ddlModal_Unit").val());
-            formData.append('repeat', $("#ddlModal_Repeat").val());
+            formData.append('email_address', $("#txtModal_Email").val());
+            formData.append('rate', $("#ddlModal_Rate").val());
+            formData.append('desc', $("#taModal_Description").val());
             formData.append('remarks', $("#taModal_Remarks").val());
 
             return formData;
@@ -307,9 +287,9 @@
                 $("#formId").val(data._id);
                 $("#txtModal_Name").val(data.name);
                 $("#ddlModal_Status").val(data.status);
-                $("#ddlModal_Unit").val(data.unit);
-                $("#ddlModal_Repeat").val(data.repeat.toString());
-                $("#txtModal_Value").val(data.value);
+                $("#txtModal_Email").val(data.email_address);
+                $("#ddlModal_Rate").val(data.rate);
+                $("#taModal_Description").val(data.desc);
                 $("#taModal_Remarks").val(data.remarks);
                 updateRecordMode();
             }
@@ -401,14 +381,6 @@
                         <div class="panel-body">
                             <form id="searchForm">
                                 <div class="form-group row">
-                                    <label for="txtSearch_Name"
-                                        class="col-sm-2 col-form-label col-form-label-sm">Name</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control form-control-sm" id="txtSearch_Name"
-                                            name="txtSearch_Name" placeholder="Name">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
                                     <label for="ddlSearch_Status"
                                         class="col-sm-2 col-form-label col-form-label-sm">Status</label>
                                     <div class="col-sm-10">
@@ -416,6 +388,15 @@
                                             name="normal">
                                             <option value="">Please select</option>
                                         </select> </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="ddlSearch_Rate"
+                                        class="col-sm-2 col-form-label col-form-label-sm">Rate</label>
+                                    <div class="col-sm-10">
+                                        <select id="ddlSearch_Rate" class="form-control form-control-sm" name="normal">
+                                            <option value="">Please select</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </form>
                             <div class="text-right">
@@ -443,6 +424,8 @@
                         <th>ID</th>
                         <th>Name</th>
                         <th>Status</th>
+                        <th>Email</th>
+                        <th>Rate</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -492,28 +475,26 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="txtModal_Value" class="col-sm-2 col-form-label col-form-label-sm">Value</label>
+                            <label for="txtModal_Email" class="col-sm-2 col-form-label col-form-label-sm">Email</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control form-control-sm allownumericwithdecimal"
-                                    id="txtModal_Value" name="txtModal_Value" maxlength="5" placeholder="Value">
+                                <input type="text" class="form-control form-control-sm" id="txtModal_Email"
+                                    name="txtModal_Email" placeholder="Email">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="ddlModal_Unit" class="col-sm-2 col-form-label col-form-label-sm">Unit</label>
+                            <label for="ddlModal_Rate" class="col-sm-2 col-form-label col-form-label-sm">Rate</label>
                             <div class="col-sm-10">
-                                <select id="ddlModal_Unit" class="form-control form-control-sm" name="ddlModal_Unit">
+                                <select id="ddlModal_Rate" class="form-control form-control-sm" name="ddlModal_Rate">
                                     <option value="">Please select</option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="ddlModal_Repeat"
-                                class="col-sm-2 col-form-label col-form-label-sm">Repeat</label>
+                            <label for="taModal_Description"
+                                class="col-sm-2 col-form-label col-form-label-sm">Description</label>
                             <div class="col-sm-10">
-                                <select id="ddlModal_Repeat" class="form-control form-control-sm"
-                                    name="ddlModal_Repeat">
-                                    <option value="">Please select</option>
-                                </select>
+                                <textarea class="form-control form-control-sm" rows="5" id="taModal_Description"
+                                    name="taModal_Description" placeholder="Description"></textarea>
                             </div>
                         </div>
                         <div class="form-group row">
