@@ -1,6 +1,5 @@
 
 "use strict";
-
 const config = require('../../../../../config');
 const AppParam = require('../../../model/app-param');
 
@@ -20,7 +19,6 @@ module.exports = function (req, res) {
 
 function getParam(req) {
 	var data = {};
-
 	data.key = req.body['key'] ? req.body['key'] : '';
 	data.value = req.body['value'] ? req.body['value'] : '';
 	data.status = req.body['status'] ? req.body['status'] : '';
@@ -36,7 +34,6 @@ function adminGetAppParamList(req, res, error, filters, sort) {
 	let query = filters.$and.length > 0 ? filters : {};
 	var recordsTotal = 0;
 	var recordsFiltered = 0;
-	console.log(" query :: " + query);
 
 	AppParam.countDocuments({}, function (err, c) {
 		recordsTotal = c;

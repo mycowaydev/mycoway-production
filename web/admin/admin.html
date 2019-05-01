@@ -165,12 +165,12 @@
                     url: app.link.getList,
                     type: app.http.method,
                     data: function (dataValue) {
-                        dataValue.adminUserID = $("#txtSearch_AdminUserID").val();
-                        dataValue.adminUserName = $("#txtSearch_AdminUserName").val();
+                        dataValue.admin_user_id = $("#txtSearch_AdminUserID").val();
+                        dataValue.admin_username = $("#txtSearch_AdminUserName").val();
                         dataValue.role = $("#ddlSearch_Role").val();
                         dataValue.status = $("#ddlSearch_Status").val();
                     },
-                    beforeSend: function (adminUserName) {
+                    beforeSend: function (admin_username) {
                         $('#modalLoad').modal('show');
                     },
                     complete: function () {

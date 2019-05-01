@@ -1,6 +1,5 @@
 
 "use strict";
-
 const config = require('../../../../../config');
 const AdminRole = require('../../../model/admin-role');
 
@@ -20,11 +19,11 @@ module.exports = function (req, res) {
 
 function getParam(req) {
 	var data = {};
-
 	data.name = req.body['name'] ? req.body['name'] : '';
 	data.desc = req.body['desc'] ? req.body['desc'] : '';
 	data.menu_id = req.body['menu_id'] ? req.body['menu_id'] : '';
 	data.remarks = req.body['remarks'] ? req.body['remarks'] : '';
+
 	return data;
 }
 
@@ -48,7 +47,6 @@ function getAdminRoleList(req, res, error, filters, sort) {
 				{ $limit: Number(req.body.length) },
 			], function (err, results) {
 				if (err) {
-					console.log(err);
 					error.push(config.getErrorResponse('101Z012', req));
 					let resp = config.getResponse(res, 500, error, {}, err);
 					config.logApiCall(req, res, resp);

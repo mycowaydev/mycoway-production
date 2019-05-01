@@ -1,11 +1,9 @@
 "use strict";
-
 const config = require('../../../../../config');
 const AdminRole = require('../../../model/admin-role');
 
 module.exports = function (req, res) {
 	let error = [];
-
 	adminGetMTParamGroup(req, res, error);
 }
 

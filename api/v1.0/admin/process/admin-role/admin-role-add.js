@@ -6,20 +6,37 @@ const cloudinary = require('cloudinary');
 const AdminRole = require('../../../model/admin-role');
 
 module.exports = function (req, res) {
-
 	cloudinary.config({
 		cloud_name: config.CDN['NAME'],
 		api_key: config.CDN['API_KEY'],
 		api_secret: config.CDN['API_SECRET']
 	});
 
-	let error = [];
+	let data = getParam(req);
+	let error = validateParam(req, data);
 
-	//console.log(req);
-	let name = req.body['name'];
-	let desc = req.body['desc'] || '';
-	let menu_id = req.body['menu_id'] || '';
-	let remarks = req.body['remarks'] || '';
+	if (error && error.length > 0) {
+		let resp = config.getResponse(res, 200, error, {}, null);
+		config.logApiCall(req, res, resp);
+	} else {
+		adminAddAdminRole(req, res, error, data);
+	}
+}
+
+function getParam(req) {
+	var data = {};
+
+	data.admin_user_id = req.body['admin_user_id'];
+	data.name = req.body['name'];
+	data.desc = req.body['desc'] || '';
+	data.menu_id = req.body['menu_id'] || '';
+	data.remarks = req.body['remarks'] || '';
+
+	return data;
+}
+
+function validateParam(req, data) {
+	let error = [];
 
 	if (config.isEmpty(name)) {
 		error.push(config.getErrorResponse('101A012', req));
@@ -30,42 +47,40 @@ module.exports = function (req, res) {
 	if (config.isEmpty(menu_id)) {
 		error.push(config.getErrorResponse('101A012', req));
 	}
+	return error;
+}
 
-	if (error && error.length > 0) {
-		let resp = config.getResponse(res, 200, error, {}, null);
-		config.logApiCall(req, res, resp);
-	} else {
-		adminAddAdminRole();
-	}
+function getInsertData(data) {
+	let insertAdminRoleData = {
+		'name': data.name,
+		'desc': data.desc,
+		'menu_id': data.menu_id,
+		'status': 'A',
+		'remarks': data.remarks,
+	};
 
-	function adminAddAdminRole() {
-		async.series(
-			[
-				function (callback) {
-					let insertAdminRoleData = {
-						'name': name,
-						'desc': desc,
-						'menu_id': menu_id,
-						'status': 'A',
-						'remarks': remarks,
-					};
+	insertAdminRoleData = config.appendCommonFields(insertAdminRoleData, 'ADD_ROLE', data.admin_user_id, true);
+	return insertAdminRoleData;
+}
 
-					insertAdminRoleData = config.appendCommonFields(insertAdminRoleData, 'ADD_ROLE', req.session.adminUserid, true);
-					AdminRole.create(insertAdminRoleData, function (err, result) {
-						if (err) {
-							error.push(config.getErrorResponse('101Z012', req));
-							let resp = config.getResponse(res, 500, error, {}, err);
-							config.logApiCall(req, res, resp);
-							return callback(true);
-						}
-
-						let resp = config.getResponse(res, 100, error, {});
+function adminAddAdminRole(req, res, error, data) {
+	async.series(
+		[
+			function (callback) {
+				AdminRole.create(getInsertData(data), function (err, result) {
+					if (err) {
+						error.push(config.getErrorResponse('101Z012', req));
+						let resp = config.getResponse(res, 500, error, {}, err);
 						config.logApiCall(req, res, resp);
-						return callback(null);
+						return callback(true);
+					}
 
-					});
-				}
-			]
-		);
-	}
-};
+					let resp = config.getResponse(res, 100, error, {});
+					config.logApiCall(req, res, resp);
+					return callback(null);
+
+				});
+			}
+		]
+	);
+}

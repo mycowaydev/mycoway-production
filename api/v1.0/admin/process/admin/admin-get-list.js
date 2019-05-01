@@ -1,8 +1,6 @@
 
 "use strict";
-
 const config = require('../../../../../config');
-
 const Admin = require('../../../model/admin');
 
 module.exports = function (req, res) {
@@ -11,21 +9,16 @@ module.exports = function (req, res) {
 	let filters = config.getFilter(data);
 	let sort = config.getSort(req.body.order, getSortFields());
 
-	if (error && error.length > 0) {
-		let resp = config.getResponse(res, 200, error, {}, null);
-		config.logApiCall(req, res, resp);
-	} else {
-		adminGetAdminList(req, res, error, filters, sort);
-	}
+	getAdminList(req, res, error, filters, sort);
 }
 
 function getParam(req) {
-	var data = {};
+	let data = {};
 
-	data.admin_user_id = req.body['adminUserID'] ? req.body['adminUserID'] : '';
-	data.admin_username = req.body['adminUserName'] ? req.body['adminUserName'] : '';
-	data.role = req.body['role'] ? req.body['role'] : '';
-	data.status = req.body['status'] ? req.body['status'] : '';
+	data.admin_user_id = req.body['adminUserID'] || '';
+	data.admin_username = req.body['adminUserName'] || '';
+	data.role = req.body['role'] || '';
+	data.status = req.body['status'] || '';
 
 	return data;
 }
@@ -34,10 +27,10 @@ function getSortFields() {
 	return { 1: "admin_user_id", 2: "admin_username", 3: "role", 4: "status" };
 }
 
-function adminGetAdminList(req, res, error, filters, sort) {
+function getAdminList(req, res, error, filters, sort) {
 	let query = filters.$and.length > 0 ? filters : {};
-	var recordsTotal = 0;
-	var recordsFiltered = 0;
+	let recordsTotal = 0;
+	let recordsFiltered = 0;
 
 	Admin.countDocuments({}, function (err, c) {
 		recordsTotal = c;
