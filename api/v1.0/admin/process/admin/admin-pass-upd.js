@@ -19,8 +19,8 @@ module.exports = function (req, res) {
 		let resp = config.getResponse(res, 200, error, {}, null);
 		config.logApiCall(req, res, resp);
 	} else {
-		verifyAdminPass(data, function (isVerify) {
-			adminUpdateAdminPass(req, res, error, data, isVerify);
+		verifyAdminPass(req, data, error, function (isVerify, err) {
+			adminUpdateAdminPass(req, res, err, data, isVerify);
 		});
 	}
 }
@@ -61,7 +61,7 @@ function validateParam(req, data) {
 	return error;
 }
 
-function verifyAdminPass(data, callback) {
+function verifyAdminPass(req, data, error, callback) {
 	AdminPass.aggregate([
 		{
 			$project: {
@@ -83,19 +83,28 @@ function verifyAdminPass(data, callback) {
 			for (let i = 0; i < results.length; i++) {
 				results[i] = config.getAdminPass(results[i]);
 			}
-			console.log( "result :: "+ JSON.stringify(results[0]));
-			let hash_password_db = results[0]['hash_password'];
-			let salt_db = results[0]['salt_value'];
-			let hash_password = config.sha512(data.password_old, salt_db);
-
-			if (hash_password_db == hash_password.passwordHash) {
-				isVerify = true;
-			}
 		} else {
 			results = [];
 		}
 
-		callback(isVerify);
+		let hash_password_db = results[0]['hash_password'];
+		let salt_db = results[0]['salt_value'];
+
+		if (config.isEmpty(hash_password_db)) {
+			error.push(config.getErrorResponse('101Y007', req));
+		}
+		if (config.isEmpty(salt_db)) {
+			error.push(config.getErrorResponse('101Y008', req));
+		}
+
+		let hash_password = config.sha512(data.password_old, salt_db);
+		if (hash_password_db == hash_password.passwordHash) {
+			isVerify = true;
+		} else {
+			error.push(config.getErrorResponse('101Y005', req));
+		}
+
+		callback(isVerify, error);
 	});
 }
 
@@ -120,8 +129,7 @@ function adminUpdateAdminPass(req, res, error, data, isVerify) {
 	async.series(
 		[
 			function () {
-				if (!isVerify) {
-					error.push(config.getErrorResponse('101Y005', req));
+				if (!isVerify || (error && error.length > 0)) {
 					let resp = config.getResponse(res, 200, error, {}, null);
 					config.logApiCall(req, res, resp);
 					return true;
