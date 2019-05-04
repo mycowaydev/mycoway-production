@@ -14,7 +14,6 @@ module.exports = function (req, res) {
 
 function getParam(req) {
 	let data = {};
-
 	data.admin_user_id = req.body['adminUserID'] || '';
 	data.admin_username = req.body['adminUserName'] || '';
 	data.role = req.body['role'] || '';

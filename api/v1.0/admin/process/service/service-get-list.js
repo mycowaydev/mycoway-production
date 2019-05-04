@@ -1,8 +1,6 @@
 
 "use strict";
-
 const config = require('../../../../../config');
-
 const Service = require('../../../model/service');
 
 module.exports = function (req, res) {
@@ -15,26 +13,25 @@ module.exports = function (req, res) {
 		let resp = config.getResponse(res, 200, error, {}, null);
 		config.logApiCall(req, res, resp);
 	} else {
-		adminGetServiceList(req, res, error, filters, sort);
+		getServiceList(req, res, error, filters, sort);
 	}
 }
 
 function getParam(req) {
 	var data = {};
-
-	data.rate = req.body['name'] ? req.body['name'] : '';
-	data.status = req.body['status'] ? req.body['status'] : '';
+	data.rate = req.body['name'] || '';
+	data.status = req.body['status'] || '';
 
 	return data;
 }
 
 function getSortFields() {
-	return { 
-		1: "name" 
+	return {
+		1: "name"
 	};
 }
 
-function adminGetServiceList(req, res, error, filters, sort) {
+function getServiceList(req, res, error, filters, sort) {
 	let query = filters.$and.length > 0 ? filters : {};
 	var recordsTotal = 0;
 	var recordsFiltered = 0;

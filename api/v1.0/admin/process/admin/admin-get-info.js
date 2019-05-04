@@ -46,7 +46,6 @@ function getQuery(data) {
 }
 
 function getAdminInfo(req, res, error, data) {
-
 	Admin.findOne(getQuery(data), function (err, result) {
 		if (err) {
 			error.push(config.getErrorResponse('101Z012', req));

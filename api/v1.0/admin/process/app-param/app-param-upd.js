@@ -25,6 +25,7 @@ module.exports = function (req, res) {
 
 function getParam(req) {
 	var data = {};
+	data.admin_user_id = req.session.adminUserid;
 	data.id = req.body['id'];
 	data.key = req.body['key'];
 	data.value = req.body['value'];
@@ -53,7 +54,7 @@ function getReplacement(data) {
 		'status': data.status,
 		'remarks': data.remarks,
 	};
-	replacement = config.appendCommonFields(replacement, 'APPPARAM_UPD');
+	replacement = config.appendCommonFields(replacement, 'APPPARAM_UPD', data.admin_user_id);
 	return replacement;
 }
 

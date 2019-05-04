@@ -13,7 +13,7 @@ module.exports = function (req, res) {
 		let resp = config.getResponse(res, 200, error, {}, null);
 		config.logApiCall(req, res, resp);
 	} else {
-		adminGetAppParamList(req, res, error, filters, sort);
+		getAppParamList(req, res, error, filters, sort);
 	}
 }
 
@@ -30,7 +30,7 @@ function getSortFields() {
 	return { 1: "key", 2: "value" };
 }
 
-function adminGetAppParamList(req, res, error, filters, sort) {
+function getAppParamList(req, res, error, filters, sort) {
 	let query = filters.$and.length > 0 ? filters : {};
 	var recordsTotal = 0;
 	var recordsFiltered = 0;

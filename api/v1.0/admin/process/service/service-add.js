@@ -1,6 +1,5 @@
 
 "use strict";
-
 const config = require('../../../../../config');
 const async = require('async');
 const cloudinary = require('cloudinary');
@@ -20,13 +19,13 @@ module.exports = function (req, res) {
 		let resp = config.getResponse(res, 200, error, {}, null);
 		config.logApiCall(req, res, resp);
 	} else {
-		adminAddService(req, res, error, data);
+		addService(req, res, error, data);
 	}
 }
 
 function getParam(req) {
 	var data = {};
-
+	data.admin_user_id = req.session.adminUserid;
 	data.name = req.body['name'];
 	data.status = req.body['status'];
 	data.value = req.body['value'];
@@ -61,14 +60,14 @@ function validateParam(req, data) {
 	return error;
 }
 
-function adminAddService(req, res, error, data) {
+function addService(req, res, error, data) {
 	async.series(
 		[
 			function (callback) {
 				return callback(null);
 			},
 			function (callback) {
-				var insertData = config.appendCommonFields(data, 'SERVICE_ADD');
+				var insertData = config.appendCommonFields(data, 'SERVICE_ADD', data.admin_user_id, true);
 				Service.create(insertData, function (err, result) {
 					if (err) {
 						console.log(err)

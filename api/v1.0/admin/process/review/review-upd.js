@@ -1,6 +1,5 @@
 
 "use strict";
-
 const config = require('../../../../../config');
 const async = require('async');
 const cloudinary = require('cloudinary');
@@ -20,13 +19,13 @@ module.exports = function (req, res) {
 		let resp = config.getResponse(res, 200, error, {}, null);
 		config.logApiCall(req, res, resp);
 	} else {
-		adminUpdateReview(req, res, error, data);
+		updateReview(req, res, error, data);
 	}
 }
 
 function getParam(req) {
 	var data = {};
-
+	data.admin_user_id = req.session.adminUserid;
 	data.id = req.body['id'];
 	data.name = req.body['name'];
 	data.status = req.body['status'];
@@ -63,7 +62,7 @@ function getReplacement(data) {
 		'desc': data.desc,
 		'remarks': data.remarks,
 	};
-	replacement = config.appendCommonFields(replacement, 'REVIEW_UPD');
+	replacement = config.appendCommonFields(replacement, 'REVIEW_UPD', data.admin_user_id);
 	return replacement;
 }
 
@@ -74,7 +73,7 @@ function getQuery(data) {
 	return query;
 }
 
-function adminUpdateReview(req, res, error, data) {
+function updateReview(req, res, error, data) {
 	async.series(
 		[
 			function (callback) {
