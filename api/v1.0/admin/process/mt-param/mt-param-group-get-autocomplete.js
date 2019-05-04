@@ -1,14 +1,14 @@
 "use strict";
 const config = require('../../../../../config');
-const AdminRole = require('../../../model/admin-role');
+const MtParam = require('../../../model/mt-param');
 
 module.exports = function (req, res) {
 	let error = [];
-	adminGetMTParamGroup(req, res, error);
+	getMTParamGroup(req, res, error);
 }
 
-function adminGetMTParamGroup(req, res, error) {
-	AdminRole.find().sort({ order_no: 1 }).exec(function (err, result) {
+function getMTParamGroup(req, res, error) {
+	MtParam.distinct("group").exec(function (err, result) {
 		if (err) {
 			error.push(config.getErrorResponse('101Z012', req));
 			let resp = config.getResponse(res, 500, error, {}, err);

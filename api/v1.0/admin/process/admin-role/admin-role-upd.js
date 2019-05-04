@@ -1,6 +1,5 @@
 
 "use strict";
-
 const config = require('../../../../../config');
 const async = require('async');
 const cloudinary = require('cloudinary');
@@ -26,13 +25,12 @@ module.exports = function (req, res) {
 
 function getParam(req) {
 	var data = {};
-
+	data.adminUserid = req.session.adminUserid;
 	data.id = req.body['id'] || '';
 	data.name = req.body['name'] || '';
 	data.desc = req.body['desc'] || '';
 	data.menu_id = req.body['menu_id'] || '';
 	data.remarks = req.body['remarks'] || '';
-	data.adminUserid = req.session.adminUserid;
 
 	return data;
 }
@@ -63,6 +61,7 @@ function getReplacement(data) {
 		'menu_id': data.menu_id,
 		'remarks': data.remarks,
 	};
+
 	replacement = config.appendCommonFields(replacement, 'UPD_ROLE', data.adminUserid);
 	return replacement;
 }

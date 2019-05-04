@@ -23,7 +23,7 @@
 
     <script>
         var app = {
-            name: 'Admin',
+            name: 'MT Param',
             http: {
                 method: 'POST'
             },
@@ -35,23 +35,23 @@
                 insert: 'Insert',
             },
             link: {
-                insert: '/admin-add',
-                update: '/admin-info-superadmin-upd',
-                getList: '/admin-get-list',
-                getById: '/admin-get-info',
+                insert: '/mt-param-add',
+                update: '/mt-param-upd',
+                getList: '/mt-param-get-list',
+                getById: '/mt-param-get-info',
                 mtparam: '/admin-get-mt-param-group',
-                roleParam: '/admin-role-get-param',
+                groupparam: '/mt-param-group-get-autocomplete',
             }
         }
 
         var mtpStatus = getMTParam(app.mtparam.status).then(function (result) {
             mtpStatus = result.data;
-            initDropdownList('#ddlSearch_Status,#ddlModal_Status', result.data, app.link.mtparam);
+            initDropdownList('#ddlSearch_Status,#ddlModal_Status', result.data);
         });
 
-        var roleP = getRoleParam().then(function (result) {
-            roleP = result.data;
-            initDropdownList('#ddlSearch_Role,#ddlModal_Role', result.data, app.link.roleParam);
+        var groupParamResult = getGroupParam().then(function (result) {
+            groupParamResult = result.data;
+            initGroupAutoComplete(groupParamResult);
         });
 
         function init() {
@@ -106,22 +106,20 @@
             })
         }
 
-        function initDropdownList(target, data, link) {
-            if (link == app.link.mtparam) {
-                for (var row = 0; row < data.length; row++) {
-                    $(target).append(new Option(data[row].value, data[row].code));
-                }
-            }
-            else if (link == app.link.roleParam) {
-                for (var row = 0; row < data.length; row++) {
-                    $(target).append(new Option(data[row].desc, data[row].name));
-                }
+        function initGroupAutoComplete(groupList) {
+            autocomplete(document.getElementById("txtModal_Group"), groupList);
+            autocomplete(document.getElementById("txtSearch_Group"), groupList);
+        }
+
+        function initDropdownList(target, data) {
+            for (var row = 0; row < data.length; row++) {
+                $(target).append(new Option(data[row].value, data[row].code));
             }
         }
 
-        function getRoleParam() {
+        function getMTParam(group) {
             return new Promise((resolve, reject) => {
-                fetch(app.link.roleParam, { method: app.http.method })
+                fetch(app.link.mtparam, { method: app.http.method, body: group })
                     .then(function (res) {
                         if (res.ok) {
                             return res.json();
@@ -136,9 +134,9 @@
             });
         }
 
-        function getMTParam(group) {
+        function getGroupParam(group) {
             return new Promise((resolve, reject) => {
-                fetch(app.link.mtparam, { method: app.http.method, body: group })
+                fetch(app.link.groupparam, { method: app.http.method, body: group })
                     .then(function (res) {
                         if (res.ok) {
                             return res.json();
@@ -165,12 +163,12 @@
                     url: app.link.getList,
                     type: app.http.method,
                     data: function (dataValue) {
-                        dataValue.admin_user_id = $("#txtSearch_AdminUserID").val();
-                        dataValue.admin_username = $("#txtSearch_AdminUserName").val();
-                        dataValue.role = $("#ddlSearch_Role").val();
+                        dataValue.group = $("#txtSearch_Group").val();
+                        dataValue.code = $("#txtSearch_Code").val();
+                        dataValue.value = $("#txtSearch_Value").val();
                         dataValue.status = $("#ddlSearch_Status").val();
                     },
-                    beforeSend: function (admin_username) {
+                    beforeSend: function (value) {
                         $('#modalLoad').modal('show');
                     },
                     complete: function () {
@@ -180,19 +178,19 @@
                 },
                 columns: [
                     { data: '_id' },
-                    { data: 'admin_user_id' },
-                    { data: 'admin_username' },
-                    { data: 'role' },
+                    { data: 'group' },
+                    { data: 'code' },
+                    { data: 'value' },
                     { data: 'status' },
                 ],
                 columnDefs: [
                     { width: "0%", "targets": 0, "visible": false },
-                    { width: "20%", "targets": 1 },
-                    { width: "30%", "targets": 2 },
-                    { width: "30%", "targets": 2 },
-                    { width: "20%", "targets": 2 },
+                    { width: "25%", "targets": 1 },
+                    { width: "25%", "targets": 2 },
+                    { width: "25%", "targets": 3 },
+                    { width: "25%", "targets": 4 },
                     {
-                        width: "30%", "targets": 3, render: function (data, type, row) {
+                        width: "30%", "targets": 4, render: function (data, type, row) {
                             for (var row = 0; row < mtpStatus.length; row++) {
                                 if (mtpStatus[row].code == data) {
                                     return mtpStatus[row].value;
@@ -218,19 +216,17 @@
         function initValidateInput() {
             $("#modalForm").validate({
                 rules: {
-                    txtModal_AdminUserID: {
+                    txtModal_Group: {
                         required: true,
-                        minlength: 5
                     },
-                    txtModal_AdminUserName: {
+                    txtModal_Code: {
+                        required: true,
+                    },
+                    txtModal_Value: {
                         required: true
                     },
-                    ddlModal_Role: {
-                        required: {
-                            depends: function (element) {
-                                return $("#ddlModal_Role").val() === "";
-                            }
-                        }
+                    txtModal_OrderNo: {
+                        required: true
                     },
                     ddlModal_Status: {
                         required: {
@@ -241,15 +237,17 @@
                     }
                 },
                 messages: {
-                    txtModal_AdminUserID: {
-                        required: "Please enter Admin User ID.",
-                        minlength: "Key must consist of at least 5 characters."
+                    txtModal_Group: {
+                        required: "Please enter Group.",
                     },
-                    txtModal_AdminUserName: {
-                        required: "Please enter Value."
+                    txtModal_Code: {
+                        required: "Please enter Code.",
                     },
-                    ddlModal_Role: {
-                        required: "Please select Admin role."
+                    txtModal_Value: {
+                        required: "Please enter value."
+                    },
+                    txtModal_OrderNo: {
+                        required: "Please enter value."
                     },
                     ddlModal_Status: {
                         required: "Please select status."
@@ -275,7 +273,7 @@
         }
 
         function disableElement(disable) {
-            $("#txtModal_AdminUserID").prop('disabled', disable);
+            $("#txtModal_Group").prop('disabled', disable);
         }
 
         function resetAllSearchInput() {
@@ -295,9 +293,10 @@
             var formData = new FormData();
 
             formData.append('id', $("#formId").val());
-            formData.append('admin_user_id', $("#txtModal_AdminUserID").val());
-            formData.append('admin_username', $("#txtModal_AdminUserName").val());
-            formData.append('role', $("#ddlModal_Role").val());
+            formData.append('group', $("#txtModal_Group").val());
+            formData.append('code', $("#txtModal_Code").val());
+            formData.append('value', $("#txtModal_Value").val());
+            formData.append('order_no', $("#txtModal_OrderNo").val());
             formData.append('status', $("#ddlModal_Status").val());
             formData.append('remarks', $("#txtModal_Remarks").val());
 
@@ -315,9 +314,10 @@
 
             if (data) {
                 $("#formId").val(data._id);
-                $("#txtModal_AdminUserID").val(data.admin_user_id);
-                $("#txtModal_AdminUserName").val(data.admin_username);
-                $("#ddlModal_Role").val(data.role);
+                $("#txtModal_Group").val(data.group);
+                $("#txtModal_Code").val(data.code);
+                $("#txtModal_Value").val(data.value);
+                $("#txtModal_OrderNo").val(data.order_no);
                 $("#ddlModal_Status").val(data.status);
                 $("#txtModal_Remarks").val(data.remarks);
                 updateRecordMode();
@@ -389,6 +389,103 @@
             }
         }
 
+        function autocomplete(inp, arr) {
+            /*the autocomplete function takes two arguments,
+            the text field element and an array of possible autocompleted values:*/
+            var currentFocus;
+            /*execute a function when someone writes in the text field:*/
+            inp.addEventListener("input", function (e) {
+                var a, b, i, val = this.value;
+                /*close any already open lists of autocompleted values*/
+                closeAllLists();
+                if (!val) { return false; }
+                currentFocus = -1;
+                /*create a DIV element that will contain the items (values):*/
+                a = document.createElement("DIV");
+                a.setAttribute("id", this.id + "autocomplete-list");
+                a.setAttribute("class", "autocomplete-items");
+                /*append the DIV element as a child of the autocomplete container:*/
+                this.parentNode.appendChild(a);
+                /*for each item in the array...*/
+                for (i = 0; i < arr.length; i++) {
+                    /*check if the item starts with the same letters as the text field value:*/
+                    if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                        /*create a DIV element for each matching element:*/
+                        b = document.createElement("DIV");
+                        /*make the matching letters bold:*/
+                        b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+                        b.innerHTML += arr[i].substr(val.length);
+                        /*insert a input field that will hold the current array item's value:*/
+                        b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                        /*execute a function when someone clicks on the item value (DIV element):*/
+                        b.addEventListener("click", function (e) {
+                            /*insert the value for the autocomplete text field:*/
+                            inp.value = this.getElementsByTagName("input")[0].value;
+                            /*close the list of autocompleted values,
+                            (or any other open lists of autocompleted values:*/
+                            closeAllLists();
+                        });
+                        a.appendChild(b);
+                    }
+                }
+            });
+            /*execute a function presses a key on the keyboard:*/
+            inp.addEventListener("keydown", function (e) {
+                var x = document.getElementById(this.id + "autocomplete-list");
+                if (x) x = x.getElementsByTagName("div");
+                if (e.keyCode == 40) {
+                    /*If the arrow DOWN key is pressed,
+                    increase the currentFocus variable:*/
+                    currentFocus++;
+                    /*and and make the current item more visible:*/
+                    addActive(x);
+                } else if (e.keyCode == 38) { //up
+                    /*If the arrow UP key is pressed,
+                    decrease the currentFocus variable:*/
+                    currentFocus--;
+                    /*and and make the current item more visible:*/
+                    addActive(x);
+                } else if (e.keyCode == 13) {
+                    /*If the ENTER key is pressed, prevent the form from being submitted,*/
+                    e.preventDefault();
+                    if (currentFocus > -1) {
+                        /*and simulate a click on the "active" item:*/
+                        if (x) x[currentFocus].click();
+                    }
+                }
+            });
+            function addActive(x) {
+                /*a function to classify an item as "active":*/
+                if (!x) return false;
+                /*start by removing the "active" class on all items:*/
+                removeActive(x);
+                if (currentFocus >= x.length) currentFocus = 0;
+                if (currentFocus < 0) currentFocus = (x.length - 1);
+                /*add class "autocomplete-active":*/
+                x[currentFocus].classList.add("autocomplete-active");
+            }
+            function removeActive(x) {
+                /*a function to remove the "active" class from all autocomplete items:*/
+                for (var i = 0; i < x.length; i++) {
+                    x[i].classList.remove("autocomplete-active");
+                }
+            }
+            function closeAllLists(elmnt) {
+                /*close all autocomplete lists in the document,
+                except the one passed as an argument:*/
+                var x = document.getElementsByClassName("autocomplete-items");
+                for (var i = 0; i < x.length; i++) {
+                    if (elmnt != x[i] && elmnt != inp) {
+                        x[i].parentNode.removeChild(x[i]);
+                    }
+                }
+            }
+            /*execute a function when someone clicks in the document:*/
+            document.addEventListener("click", function (e) {
+                closeAllLists(e.target);
+            });
+        }
+
         $(document).ready(function () {
             init();
         });
@@ -411,23 +508,21 @@
                         <div class="panel-body">
                             <form id="searchForm">
                                 <div class="form-group row">
-                                    <label for="txtSearch_AdminUserID" class="col-sm-2 col-form-label col-form-label-sm">Admin User ID</label>
+                                    <label for="txtSearch_Group" class="col-sm-2 col-form-label col-form-label-sm">Group</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control form-control-sm" id="txtSearch_AdminUserID" name="txtSearch_AdminUserID" placeholder="Admin User ID">
+                                        <input type="text" class="form-control form-control-sm" id="txtSearch_Group" name="txtSearch_Group" placeholder="Group">
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="txtSearch_AdminUserName" class="col-sm-2 col-form-label col-form-label-sm">Admin User Name</label>
+                                    <label for="txtSearch_Code" class="col-sm-2 col-form-label col-form-label-sm">Code</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control form-control-sm" id="txtSearch_AdminUserName" name="txtSearch_AdminUserName" placeholder="Admin User Name">
+                                        <input type="text" class="form-control form-control-sm" id="txtSearch_Code" name="txtSearch_Code" placeholder="Code">
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="txtSearch_Value" class="col-sm-2 col-form-label col-form-label-sm">Role</label>
+                                    <label for="txtSearch_Value" class="col-sm-2 col-form-label col-form-label-sm">Value</label>
                                     <div class="col-sm-10">
-                                        <select id="ddlSearch_Role" class="form-control form-control-sm" name="normal">
-                                            <option value="">Please select</option>
-                                        </select>
+                                        <input type="text" class="form-control form-control-sm" id="txtSearch_Value" name="txtSearch_Value" placeholder="Value">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -460,9 +555,9 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Admin ID</th>
-                        <th>Admin Name</th>
-                        <th>Role</th>
+                        <th>Group</th>
+                        <th>Code</th>
+                        <th>Value</th>
                         <th>Status</th>
                     </tr>
                 </thead>
@@ -496,26 +591,29 @@
                 </div>
                 <div class="modal-body">
                     <form id="modalForm">
-
                         <input type="hidden" id="formId">
                         <div class="form-group row">
-                            <label for="txtModal_AdminUserID" class="col-sm-2 col-form-label col-form-label-sm">Admin User ID</label>
+                            <label for="txtModal_Group" class="col-sm-2 col-form-label col-form-label-sm">Group</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control form-control-sm" id="txtModal_AdminUserID" name="txtModal_AdminUserID" placeholder="Admin User ID">
+                                <input type="text" class="form-control form-control-sm" id="txtModal_Group" name="txtModal_Group" placeholder="Group">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="txtModal_AdminUserName" class="col-sm-2 col-form-label col-form-label-sm">Admin User Name</label>
+                            <label for="txtModal_Code" class="col-sm-2 col-form-label col-form-label-sm">Code</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control form-control-sm" id="txtModal_AdminUserName" name="txtModal_AdminUserName" placeholder="Admin User Name">
+                                <input type="text" class="form-control form-control-sm" id="txtModal_Code" name="txtModal_Code" placeholder="Code">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="txtModal_Value" class="col-sm-2 col-form-label col-form-label-sm">Admin Role</label>
+                            <label for="txtModal_Value" class="col-sm-2 col-form-label col-form-label-sm">Value</label>
                             <div class="col-sm-10">
-                                <select id="ddlModal_Role" name="ddlModal_Role" class="form-control form-control-sm">
-                                    <option value="">Please select</option>
-                                </select>
+                                <input type="text" class="form-control form-control-sm" id="txtModal_Value" name="txtModal_Value" placeholder="Value">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="txtModal_OrderNo" class="col-sm-2 col-form-label col-form-label-sm">Order No</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control form-control-sm" id="txtModal_OrderNo" name="txtModal_OrderNo" placeholder="Order No">
                             </div>
                         </div>
                         <div class="form-group row">

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link href="../vendors/bootstrap-4/dist/css/bootstrap.css" rel="stylesheet">
+    <link href="../vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
+    <link href="../vendors/DataTables/datatables.css" />
+    <link href="../vendors/pnotify/dist/pnotify.css" rel="stylesheet">
+    <link href="../vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+    <link href="../build/css/custom.css" rel="stylesheet">
+
+    <script src="../vendors/jquery/dist/jquery.min.js"></script>
+    <script src="../vendors/jquery/dist/popper.js"></script>
+    <script src="../vendors/bootstrap-4/dist/js/bootstrap.min.js"></script>
+    <script src="../vendors/moment/min/moment.min.js"></script>
+    <script src="../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="../vendors/datatables.net/js/jquery.dataTables.js"></script>
+    <script src="../vendors/jquery/dist/jquery.validate.min.js"></script>
+    <script src="../vendors/pnotify/dist/pnotify.js"></script>
+    <script src="../vendors/pnotify/dist/pnotify.buttons.js"></script>
+    <script src="../web-js/notify.js"></script>
+    <script src="../build/js/custom.js"></script>
+
+    <script>
+        var app = {
+            name: 'Personal Infomation',
+            http: {
+                method: 'POST'
+            },
+            action: {
+                update: 'Update',
+            },
+            link: {
+                getById: '/admin-get-info',
+                update: '/admin-info-upd',
+            }
+        }
+
+        function init() {
+            initApp();
+            initButton();
+            initValidateInput();
+            initSizeChange();
+            getDetailById(getCookieString('user_id'));
+        }
+
+        function initApp() {
+            $('#app_title').text(app.name);
+        }
+
+        function initSizeChange() {
+            height = $('#main_panel').height();
+            window.parent.postMessage({ "height": height }, "*");
+        }
+
+        function initButton() {
+            $("#btnMainReset").click(function (event) {
+                getDetailById(getCookieString('user_id'));
+            });
+            $("#btnEdit").click(function (event) {
+                disableElement(false);
+            });
+            $("#btnModalAdminInfoUpdate").click(function (event) {
+                actionModifyData();
+            });
+        }
+
+        function getCookieString(cname) {
+            var name = cname + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+
+        function initValidateInput() {
+            $("#modalForm").validate({
+                rules: {
+                    txtModal_AdminUserID: {
+                        required: true,
+                        minlength: 5
+                    },
+                    txtModal_AdminUserName: {
+                        required: true
+                    },
+                },
+                messages: {
+                    txtModal_AdminUserID: {
+                        required: "Please enter Admin User ID.",
+                        minlength: "Key must consist of at least 5 characters."
+                    },
+                    txtModal_AdminUserName: {
+                        required: "Please enter Value."
+                    },
+                }
+            });
+        }
+
+        function updateRecordMode() {
+            var mode = app.action.update;
+            disableElement(true);
+        }
+
+        function disableElement(disable) {
+            if (disable) {
+                $("#txtModal_AdminUserID").prop('disabled', disable);
+                $('#btnEdit').show();
+                $('#btnModalAdminInfoUpdate').hide();
+                $('#btnMainReset').hide();
+            } else {
+                $('#btnEdit').hide();
+                $('#btnModalAdminInfoUpdate').show();
+                $('#btnMainReset').show()
+            }
+
+            $("#txtModal_AdminUserName").prop('disabled', disable);
+            $("#txtModal_PhoneNo").prop('disabled', disable);
+            $("#txtModal_Email").prop('disabled', disable);;
+        }
+
+        function getModalFormData() {
+            var formData = new FormData();
+
+            formData.append('id', $("#formId").val());
+            formData.append('admin_user_id', $("#txtModal_AdminUserID").val());
+            formData.append('admin_username', $("#txtModal_AdminUserName").val());
+            formData.append('phone_no', $("#txtModal_PhoneNo").val());
+            formData.append('email', $("#txtModal_Email").val());
+
+            return formData;
+        }
+
+        function successHandler(mode) {
+            notify_success(mode + ' successfully.');
+            getDetailById(getCookieString('user_id'));
+        }
+
+        function editHandler(result) {
+            var data = result.data;
+
+            if (data) {
+                $("#formId").val(data._id);
+                $("#txtModal_AdminUserID").val(data.admin_user_id);
+                $("#txtModal_AdminUserName").val(data.admin_username);
+                $("#txtModal_PhoneNo").val(data.phone_no);
+                $("#txtModal_Email").val(data.email);
+                // $("#txtModal_Remarks").val(data.remarks);
+                updateRecordMode();
+            }
+        }
+
+        function errorMessageHandler(result) {
+            if (result.error && result.error.length > 0) {
+                notify_err(errors[0].message);
+            } else {
+                notify_server_err();
+            }
+        }
+
+        function getDetailById(id) {
+
+            $('#modalLoad').modal('show');
+            var formData = new FormData();
+            formData.append('admin_user_id', id);
+
+            fetch(app.link.getById, { method: app.http.method, body: formData })
+                .then(function (res) {
+                    if (res.ok) {
+                        return res.json();
+                    }
+                    notify_req_failed();
+                })
+                .then(function (result) {
+                    if (result.status_code == '100') {
+                        editHandler(result);
+                    } else {
+                        errorMessageHandler(result);
+                    }
+                })
+                .catch(function (err) {
+                    notify_server_err();
+                })
+                .finally(function () {
+                    $('#modalLoad').modal('hide');
+                })
+        }
+
+        function actionModifyData() {
+            if ($("#modalForm").valid()) {
+                $('#modalLoad').modal('show');
+
+                var mode = $('#btnModalAdminInfoUpdateText').text();
+                var path = app.link.update;
+
+                fetch(path, { method: app.http.method, body: getModalFormData() })
+                    .then(function (res) {
+                        if (res.ok) {
+                            return res.json();
+                        }
+                        notify_req_failed();
+                    })
+                    .then(function (result) {
+                        if (result.status_code == '100') {
+                            successHandler(mode);
+                        } else {
+                            errorMessageHandler(result);
+                        }
+                    })
+                    .catch(function (err) {
+                        notify_server_err();
+                    })
+                    .finally(function () {
+                        $('#modalLoad').modal('hide');
+                    });
+            }
+        }
+
+        $(document).ready(function () {
+            init();
+        });
+    </script>
+</head>
+
+<body>
+    <div id="main_panel" class="x_panel">
+        <div class="x_content mb-2">
+            <!-- ACCORDION START -->
+            <div class="accordion" id="accordion">
+                <div class="panel border">
+                    <a class="panel-heading" role="tab" id="headerPanel" data-parent="#accordion" aria-expanded="false">
+                        <h4 id="app_title" class="panel-title">
+                            <span class="glyphicon glyphicon-chevron-down" aria-hidden="false"></span>
+                        </h4>
+                    </a>
+
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <form id="modalForm">
+                                <input type="hidden" id="formId">
+                                <div class="form-group row">
+                                    <label for="txtModal_AdminUserID" class="col-sm-2 col-form-label col-form-label-sm">Admin User ID</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control form-control-sm" id="txtModal_AdminUserID" name="txtModal_AdminUserID" placeholder="Admin User ID">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="txtModal_AdminUserName" class="col-sm-2 col-form-label col-form-label-sm">Admin User Name</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control form-control-sm" id="txtModal_AdminUserName" name="txtModal_AdminUserName" placeholder="Admin User Name">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="txtModal_PhoneNo" class="col-sm-2 col-form-label col-form-label-sm">Phone Number</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control form-control-sm" id="txtModal_PhoneNo" name="txtModal_PhoneNo" placeholder="Phone Number">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="txtModal_Email" class="col-sm-2 col-form-label col-form-label-sm">Email</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control form-control-sm" id="txtModal_Email" name="txtModal_Email" placeholder="Email">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div id="collapsePanel" class="panel-collapse show m-3" role="">
+                            <div class="panel-body">
+
+                                <div class="text-right">
+                                    <button id="btnEdit" class="btn btn-secondary btn-sm" id="btnEdit">Edit</button>
+                                    <button id="btnMainReset" style="display: none" class="btn btn-secondary btn-sm" id="btnMainReset">Reset</button>
+                                    <button type="button" style="display: none" class="btn btn-primary btn-sm" id="btnModalAdminInfoUpdate" hide="true">
+                                        <span id="btnModalAdminInfoUpdateText">Update</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- ACCORDION END -->
+        </div>
+        <!-- RESULT TABLE END -->
+
+        <br />
+        <br />
+        <br />
+        <br />
+    </div>
+
+
+    <!-- LOADING START -->
+    <!-- LOADING START -->
+    <!-- LOADING START -->
+    <!-- LOADING START -->
+    <div class="modal fade bd-example-modal-sm" id="modalLoad" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- LOADING END -->
+    <!-- LOADING END -->
+    <!-- LOADING END -->
+    <!-- LOADING END -->
+</body>
+
+</html>

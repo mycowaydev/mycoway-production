@@ -1,6 +1,5 @@
 
 "use strict";
-
 const config = require('../../../../../config');
 const async = require('async');
 const cloudinary = require('cloudinary');
@@ -20,19 +19,17 @@ module.exports = function (req, res) {
 		let resp = config.getResponse(res, 200, error, {}, null);
 		config.logApiCall(req, res, resp);
 	} else {
-		adminAddAppParam(req, res, error, data);
+		addAppParam(req, res, error, data);
 	}
 }
 
 function getParam(req) {
 	var data = {};
-
+	data.admin_user_id = req.session.adminUserid;
 	data.key = req.body['key'];
 	data.value = req.body['value'];
 	data.status = req.body['status'];
 	data.remarks = req.body['remarks'];
-	data.created_by = '';
-	data.created_date = config.getCurrentTimestamp();
 
 	return data;
 }
@@ -50,14 +47,14 @@ function validateParam(req, data) {
 	return error;
 }
 
-function adminAddAppParam(req, res, error, data) {
+function addAppParam(req, res, error, data) {
 	async.series(
 		[
 			function (callback) {
 				return callback(null);
 			},
 			function (callback) {
-				let insertData = config.appendCommonFields(data, 'APPPARAM_ADD', req.session.adminUserid, true);
+				let insertData = config.appendCommonFields(data, 'APPPARAM_ADD', data.admin_user_id, true);
 				AppParam.create(insertData, function (err, result) {
 					if (err) {
 						error.push(config.getErrorResponse('101Z012', req));

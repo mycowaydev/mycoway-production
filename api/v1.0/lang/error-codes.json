@@ -24,6 +24,8 @@
 	"101Y004": "error_admin_login_acc_blocked",
 	"101Y005": "error_admin_old_password_invalid",
 	"101Y006": "error_admin_password_confirmation_not_match",
+	"101Y007": "error_admin_hash_password_db_empty",
+	"101Y008": "error_admin_salt_db_empty",
 
 	"101Z001": "error_session_expired",
 	"101Z002": "error_bad_request",

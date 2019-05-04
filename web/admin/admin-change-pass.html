@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link href="../vendors/bootstrap-4/dist/css/bootstrap.css" rel="stylesheet">
+    <link href="../vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
+    <link href="../vendors/DataTables/datatables.css" />
+    <link href="../vendors/pnotify/dist/pnotify.css" rel="stylesheet">
+    <link href="../vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+    <link href="../build/css/custom.css" rel="stylesheet">
+
+    <script src="../vendors/jquery/dist/jquery.min.js"></script>
+    <script src="../vendors/jquery/dist/popper.js"></script>
+    <script src="../vendors/bootstrap-4/dist/js/bootstrap.min.js"></script>
+    <script src="../vendors/moment/min/moment.min.js"></script>
+    <script src="../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="../vendors/datatables.net/js/jquery.dataTables.js"></script>
+    <script src="../vendors/jquery/dist/jquery.validate.min.js"></script>
+    <script src="../vendors/pnotify/dist/pnotify.js"></script>
+    <script src="../vendors/pnotify/dist/pnotify.buttons.js"></script>
+    <script src="../web-js/notify.js"></script>
+    <script src="../build/js/custom.js"></script>
+
+    <script>
+        var app = {
+            name: 'Change Password',
+            http: {
+                method: 'POST'
+            },
+            action: {
+                update: 'Update',
+            },
+            link: {
+                update: '/admin-pass-upd',
+            }
+        }
+
+        function init() {
+            initApp();
+            initButton();
+            initAdminUserId();
+            initValidateInput();
+            initSizeChange();
+        }
+
+        function initApp() {
+            $('#app_title').text(app.name);
+        }
+
+        function initSizeChange() {
+            height = $('#main_panel').height();
+            window.parent.postMessage({ "height": height }, "*");
+        }
+
+        function initButton() {
+            $("#btnModalAdminPassUpdate").click(function (event) {
+                actionModifyData();
+            });
+        }
+
+        function initAdminUserId() {
+            var admin_user_id = getCookieString('user_id');
+            $("#txtModal_AdminUserID").val(admin_user_id);
+            disableElement(true);
+
+        }
+
+        function resetAllModalInput() {
+            $('#txtModal_OldPass').val('');
+            $('#txtModal_NewPass').val('');
+            $('#txtModal_ConfirmNewPass').val('');
+            $('#modalForm').validate().resetForm();
+        }
+
+        function getCookieString(cname) {
+            var name = cname + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+
+        function initValidateInput() {
+            $("#modalForm").validate({
+                rules: {
+                    txtModal_AdminUserID: {
+                        required: true,
+                    },
+                    txtModal_OldPass: {
+                        required: true
+                    },
+                    txtModal_NewPass: {
+                        required: true
+                    },
+                    txtModal_ConfirmNewPass: {
+                        required: true
+                    },
+                },
+                messages: {
+                    txtModal_AdminUserID: {
+                        required: "Please enter Admin User ID.",
+                    },
+                    txtModal_OldPass: {
+                        required: "Please enter Old Password."
+                    },
+                    txtModal_NewPass: {
+                        required: "Please enter New Password."
+                    },
+                    txtModal_ConfirmNewPass: {
+                        required: "Please enter New Password Confirmation."
+                    },
+                }
+            });
+        }
+
+        function disableElement(disable) {
+            $("#txtModal_AdminUserID").prop('disabled', disable);
+        }
+
+        function getModalFormData() {
+            var formData = new FormData();
+
+            formData.append('id', $("#formId").val());
+            formData.append('admin_user_id', $("#txtModal_AdminUserID").val());
+            formData.append('password_old', $("#txtModal_OldPass").val());
+            formData.append('password_new', $("#txtModal_NewPass").val());
+            formData.append('password_new_confirm', $("#txtModal_ConfirmNewPass").val());
+
+            return formData;
+        }
+
+        function successHandler(mode) {
+            notify_success(mode + ' successfully.');
+        }
+
+        function errorMessageHandler(result) {
+            if (result.error && result.error.length > 0) {
+                notify_err(errors[0].message);
+            } else {
+                notify_server_err();
+            }
+        }
+
+        function actionModifyData() {
+            if ($("#modalForm").valid()) {
+                $('#modalLoad').modal('show');
+
+                var mode = $('#btnModalAdminPassUpdateText').text();
+                var path = app.link.update;
+
+                fetch(path, { method: app.http.method, body: getModalFormData() })
+                    .then(function (res) {
+                        if (res.ok) {
+                            return res.json();
+                        }
+                        notify_req_failed();
+                    })
+                    .then(function (result) {
+                        if (result.status_code == '100') {
+                            successHandler(mode);
+                            resetAllModalInput();
+                        } else {
+                            errorMessageHandler(result);
+                        }
+                    })
+                    .catch(function (err) {
+                        notify_server_err();
+                    })
+                    .finally(function () {
+                        $('#modalLoad').modal('hide');
+                    });
+            }
+        }
+
+        $(document).ready(function () {
+            init();
+        });
+    </script>
+</head>
+
+<body>
+    <div id="main_panel" class="x_panel">
+        <div class="x_content mb-2">
+            <!-- ACCORDION START -->
+            <div class="accordion" id="accordion">
+                <div class="panel border">
+                    <a class="panel-heading" role="tab" id="headerPanel" data-parent="#accordion" aria-expanded="false">
+                        <h4 id="app_title" class="panel-title">
+                            <span class="glyphicon glyphicon-chevron-down" aria-hidden="false"></span>
+                        </h4>
+                    </a>
+
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <form id="modalForm">
+                                <input type="hidden" id="formId">
+                                <div class="form-group row">
+                                    <label for="txtModal_AdminUserID" class="col-sm-2 col-form-label col-form-label-sm">Admin User ID</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control form-control-sm" id="txtModal_AdminUserID" name="txtModal_AdminUserID" placeholder="Admin User ID">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="txtModal_OldPass" class="col-sm-2 col-form-label col-form-label-sm">Old Password</label>
+                                    <div class="col-sm-10">
+                                        <input type="password" class="form-control form-control-sm" id="txtModal_OldPass" name="txtModal_OldPass" placeholder="Old Password">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="txtModal_NewPass" class="col-sm-2 col-form-label col-form-label-sm">New Password</label>
+                                    <div class="col-sm-10">
+                                        <input type="password" class="form-control form-control-sm" id="txtModal_NewPass" name="txtModal_NewPass" placeholder="New Password">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="txtModal_ConfirmNewPass" class="col-sm-2 col-form-label col-form-label-sm">New Password Confirmation</label>
+                                    <div class="col-sm-10">
+                                        <input type="password" class="form-control form-control-sm" id="txtModal_ConfirmNewPass" name="txtModal_ConfirmNewPass" placeholder="New Password Confirmation">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div id="collapsePanel" class="panel-collapse show m-3" role="">
+                            <div class="panel-body">
+
+                                <div class="text-right">
+                                    <button type="button" class="btn btn-primary btn-sm" id="btnModalAdminPassUpdate" hide="true">
+                                        <span id="btnModalAdminPassUpdateText">Update</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- ACCORDION END -->
+        </div>
+        <!-- RESULT TABLE END -->
+
+        <br />
+        <br />
+        <br />
+        <br />
+    </div>
+
+
+    <!-- LOADING START -->
+    <!-- LOADING START -->
+    <!-- LOADING START -->
+    <!-- LOADING START -->
+    <div class="modal fade bd-example-modal-sm" id="modalLoad" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- LOADING END -->
+    <!-- LOADING END -->
+    <!-- LOADING END -->
+    <!-- LOADING END -->
+</body>
+
+</html>
