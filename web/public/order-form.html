@@ -124,7 +124,7 @@
                             <div class="name">Email address</div>
                             <div class="value">
                                 <div class="input-group">
-                                    <input class="input--style-6" type="email" name="email" placeholder="e.g. example@email.com" required>
+                                    <input class="input--style-6" type="email" name="email" id="email_address" placeholder="e.g. example@email.com" required>
                                 </div>
                             </div>
                         </div>
@@ -137,6 +137,8 @@
             </div>
         </section>
 
+        <button class="payment-btn" id="test" onclick="addOrder()">Test API</button>
+
         include includes/footer.html
 
         <script src="vendors/jquery/jquery.min.js"></script>
@@ -148,6 +150,11 @@
         <script src="vendors/owl-carousel/owl.carousel.min.js"></script>
         <script src="vendors/nice-select/jquery.nice-select.min.js"></script>
         <script src="vendors/jquery.ajaxchimp.min.js"></script>
+
+        <!-- api lib -->
+        <script src="../vendors/pnotify/dist/pnotify.js"></script>
+        <script src="../vendors/pnotify/dist/pnotify.buttons.js"></script>
+        <script src="../web-js/notify.js"></script>
 
         <script src="js/main.js"></script>
         <script src="js/order-form.js"></script>

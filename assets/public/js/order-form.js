@@ -82,3 +82,89 @@ $(window).load(function(){
         }
     }
 });
+
+/** call api **/
+
+function getModalFormData() {
+    var addressFormData = new FormData();
+
+    var formData = new FormData();
+//			todo: generate unique ID or take mongodb object ID
+    formData.set('id', '1');
+    formData.append('email_addr', $("#email_address").val());
+    formData.set('status', 'P');
+//			todo: wait for CK
+    formData.set('image_ic', 'url');
+    formData.set('image_card', 'url');
+    formData.set('image_signature', 'url');
+    formData.append('phone_no', $("#phone_number").val());
+    formData.append('emergency_no', $("#emergency_phone_number").val());
+    formData.set('address[first_line]', $("#first_line").val());
+    formData.set('address[second_line]', $("#second_line").val() );
+    formData.set('address[third_line]', $("#third_line").val() );
+    formData.set('address[city]', $("#city").val() );
+    formData.set('address[postcode]', $("#postcode").val() );
+    formData.set('address[state]', $("#state").val() );
+    formData.set('address[country]', $("#country").val() );
+    formData.set('order_product[0]', '1');
+    formData.set('order_product[1]', '2');
+    formData.set('order_product[2]', '3');
+    formData.set('remarks', '');
+
+    return formData;
+}
+
+/** testing purpose **/
+function getModalFormDataTesting() {
+    var addressFormData = new FormData();
+
+    var formData = new FormData();
+    formData.set('id', '1');
+    formData.set('email_addr', 'hello@email.com');
+    formData.set('status', 'P');
+    formData.set('image_ic', 'url');
+    formData.set('image_card', 'url');
+    formData.set('image_signature', 'url');
+    formData.set('phone_no', '0123334444');
+    formData.set('emergency_no', '0123334444');
+    formData.set('address[first_line]', 'first_line' );
+    formData.set('address[second_line]', 'second_line' );
+    formData.set('address[third_line]', 'third_line' );
+    formData.set('address[city]', 'city' );
+    formData.set('address[postcode]', 'postcode' );
+    formData.set('address[state]', 'state' );
+    formData.set('address[country]', 'country' );
+    formData.set('order_product[0]', '1');
+    formData.set('order_product[1]', '2');
+    formData.set('order_product[2]', '3');
+    formData.set('remarks', 'remark');
+
+    return formData;
+}
+
+function addOrder() {
+    fetch('/order-add', { method: 'POST', body: getModalFormDataTesting() })
+        .then(function (res) {
+            if (res.ok) {
+                return res.json();
+            }
+            notify_req_failed();
+        })
+        .then(function (result) {
+            if (result.status_code == '100') {
+                notify_success('request successfully.');
+            } else {
+                if (result.error && result.error.length > 0) {
+                    notify_err(errors[0].message);
+                } else {
+                    notify_server_err();
+                }
+            }
+        })
+        .catch(function (err) {
+            notify_server_err();
+        })
+        .finally(function () {
+
+        });
+}

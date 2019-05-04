@@ -18,7 +18,11 @@ module.exports = function (apiVersion) {
 	let router = express.Router();
 	let apiVersionPrefix = './api/' + apiVersion;
 	let apiFolder = '/admin/process/';
+	let apiPublicFolder = '/public/';
 
+    /** admin router api **/
+
+	// To loop all subfolders inside /admin/process
 	let subfolders = getDirectories(apiVersionPrefix + apiFolder);
 
 	if (!config.GLOBAL['IS_PRODUCTION']) {
@@ -31,6 +35,9 @@ module.exports = function (apiVersion) {
 		router = defineRouterPostValue(routeTypes['PROCESS_AUTHORIZATION'], apiVersionPrefix, apiVersionPrefix + apiFolder + subfolders[a] + '/', router);
 	}
 	// router = defineRouterPostValue(routeTypes['PROCESS_TEST'], apiVersionPrefix, apiVersionPrefix + '/public/', router);
+
+	/** for public router api **/
+	router = defineRouterPostValue(routeTypes['PROCESS_COMMON'], apiVersionPrefix, apiVersionPrefix + apiPublicFolder, router);
 
 	return router;
 
