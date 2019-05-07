@@ -2,13 +2,9 @@ const config = require('./../../../config');
 const mongoose = require('mongoose');
 const schema = mongoose.Schema({
     name: String,
-    type: String,
-    detail: Array,
-    image: Array,
-    service: Array,
     desc: String,
-    publish_date: { type: Number, default: config.getCurrentTimestamp() },
-    unpublish_date: { type: Number, default: config.getCurrentTimestamp() },
+    price: Double,
+    compare_price: Double,
     status: String,
     remarks: String,
     created_by: String,
@@ -17,4 +13,4 @@ const schema = mongoose.Schema({
     opr_date: { type: Number, default: config.getCurrentTimestamp() },
     opr_func: String
 });
-module.exports = mongoose.model('ProductMaster', schema, config.DB['TBL_PRODUCT_MASTER']);
+module.exports = mongoose.model('ProductDetail', schema, config.DB['TBL_PRODUCT_DETAIL']);

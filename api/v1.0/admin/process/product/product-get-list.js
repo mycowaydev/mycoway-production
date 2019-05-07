@@ -1,7 +1,7 @@
 
 "use strict";
 const config = require('../../../../../config');
-const AppParam = require('../../../model/app-param');
+const Product = require('../../../model/product-master');
 
 module.exports = function (req, res) {
 	let error = [];
@@ -13,14 +13,14 @@ module.exports = function (req, res) {
 		let resp = config.getResponse(res, 200, error, {}, null);
 		config.logApiCall(req, res, resp);
 	} else {
-		getAppParamList(req, res, error, filters, sort);
+		getProductList(req, res, error, filters, sort);
 	}
 }
 
 function getParam(req) {
 	var data = {};
-	data.key = req.body['key'] || '';
-	data.value = req.body['value'] || '';
+	data.name = req.body['name'] || '';
+	data.type = req.body['type'] || '';
 	data.status = req.body['status'] || '';
 
 	return data;
@@ -30,16 +30,16 @@ function getSortFields() {
 	return { 1: "key", 2: "value" };
 }
 
-function getAppParamList(req, res, error, filters, sort) {
+function getProductList(req, res, error, filters, sort) {
 	let query = filters.$and.length > 0 ? filters : {};
 	var recordsTotal = 0;
 	var recordsFiltered = 0;
 
-	AppParam.countDocuments({}, function (err, c) {
+	Product.countDocuments({}, function (err, c) {
 		recordsTotal = c;
-		AppParam.countDocuments(query, function (err, c) {
+		Product.countDocuments(query, function (err, c) {
 			recordsFiltered = c;
-			AppParam.aggregate([
+			Product.aggregate([
 				{ $match: query },
 				{ $sort: sort },
 				{ $skip: Number(req.body.start) },

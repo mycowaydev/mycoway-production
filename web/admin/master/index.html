@@ -11,8 +11,8 @@
 
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
-        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
+        crossorigin="anonymous">
     <link href="../vendors/nprogress/nprogress.css" rel="stylesheet">
     <link href="../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
     <link href="../vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
@@ -37,15 +37,17 @@
                 <div class="left_col scroll-view">
 
                     <div class="navbar nav_title" style="border: 0;">
-                        <img class="img-rounded" src="/logo/logo.png" style="max-height: 100%; max-width: 50%"
-                            alt="Coway">
+                        <img class="img-rounded" src="/logo/logo.png" style="max-height: 100%; max-width: 50%" alt="Coway">
                     </div>
 
                     <div class="clearfix"></div>
 
                     <div class="profile clearfix">
+
                         <div class="profile_pic">
-                            <img id="imgProfile" class='img-circle profile_img' src="" />
+
+                            <input type="image" img id="imgProfile" class='img-circle profile_img' src="" />
+                            <input type="file" id="upload_img" onchange="uploadProfileImg(this);" style="display: none;" />
                         </div>
                         <div class="profile_info">
                             <span>Welcome,</span>
@@ -65,30 +67,36 @@
                 <div class="nav_menu">
                     <nav>
                         <div class="nav toggle">
-                            <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                            <a id="menu_toggle">
+                                <i class="fa fa-bars"></i>
+                            </a>
                         </div>
                         <ul class="nav navbar-nav navbar-right">
                             <li class="">
-                                <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown"
-                                    aria-expanded="false">
+                                <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                     <i class="fas fa-caret-down"></i>
                                 </a>
                                 <ul class="dropdown-menu dropdown-usermenu pull-right">
 
-                                    <li><a href="admin-info.html" target="mainFrame"><i class="fas fa-user pull-right"></i> Personal Infomation</a>
-                                    <li><a href="admin-change-pass.html" target="mainFrame"><i class="fas fa-key pull-right"></i> Change Password</a>
-                                    <li><a id="btnLogout"><i class="fas fa-sign-out-alt pull-right"></i> Log Out</a>
-                                    </li>
+                                    <li>
+                                        <a href="admin-info.html" target="mainFrame">
+                                            <i class="fas fa-user pull-right"></i> Personal Infomation</a>
+                                        <li>
+                                            <a href="admin-change-pass.html" target="mainFrame">
+                                                <i class="fas fa-key pull-right"></i> Change Password</a>
+                                            <li>
+                                                <a id="btnLogout">
+                                                    <i class="fas fa-sign-out-alt pull-right"></i> Log Out</a>
+                                            </li>
                                 </ul>
-                            </li>
+                                </li>
                         </ul>
                     </nav>
                 </div>
             </div>
 
             <div class="right_col" role="main">
-                <iframe name="mainFrame" src="dashboard.html" frameborder="0" scrolling="no"
-                    style="min-height: 1000px; min-width: 100%"></iframe>
+                <iframe name="mainFrame" src="dashboard.html" frameborder="0" scrolling="no" style="min-height: 1000px; min-width: 100%"></iframe>
             </div>
 
             <footer>
@@ -114,6 +122,7 @@
         function init() {
             initCookies();
             initMenu();
+            initUploadImg();
         }
 
         function successHandler(result) {
@@ -155,6 +164,56 @@
                 img_src = 'https://ui-avatars.com/api/?background=2A3F54&color=ffffff&length=1&name=' + getCookieString('user_name');
             }
             $('#imgProfile').attr("src", img_src);
+        }
+
+        function initUploadImg() {
+            $("input[type='image']").click(function () {
+                $("input[id='upload_img']").click();
+            });
+        }
+
+        function uploadProfileImg(file) {
+
+            var formData = new FormData();
+            var files = document.getElementById('upload_img').files[0];
+            formData.append('profile_img', files);
+
+            if (typeof files == 'undefined') {
+                return;
+            }
+
+            fetch('/admin-profile-img-upd', { method: 'POST', body: formData })
+                .then(function (res) {
+                    if (res.ok) {
+                        return res.json();
+                    }
+                    notify_req_failed();
+                })
+                .then(function (result) {
+                    if (result.status_code == '100') {
+                        document.cookie = 'profile_img=' + result.data + ';expires=' + getCookieExpiresTime() + ';path=/';
+                        initCookies();
+                    } else {
+                        errorMessageHandler(result);
+                    }
+                })
+                .catch(function (err) {
+                    notify_server_err();
+                })
+        }
+
+        function getCookieExpiresTime() {
+            var d = new Date();
+            d.setTime(d.getTime() + (7 * 24 * 60 * 60 * 1000)); // 1 week
+            return d.toUTCString();
+        }
+
+        function errorMessageHandler(result) {
+            if (result.error && result.error.length > 0) {
+                notify_err(errors[0].message);
+            } else {
+                notify_server_err();
+            }
         }
 
         function getCookieString(cname) {

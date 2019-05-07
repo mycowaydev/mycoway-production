@@ -3,7 +3,7 @@
 const config = require('../../../../../config');
 const async = require('async');
 const cloudinary = require('cloudinary');
-const Admin = require('../../../model/admin');
+const Product = require('../../../model/product-master');
 
 module.exports = function (req, res) {
 	cloudinary.config({
@@ -19,16 +19,18 @@ module.exports = function (req, res) {
 		let resp = config.getResponse(res, 200, error, {}, null);
 		config.logApiCall(req, res, resp);
 	} else {
-		adminUpdateAdminPass(req, res, error, data);
+		updateProduct(req, res, error, data);
 	}
 }
 
 function getParam(req) {
 	var data = {};
 	data.admin_user_id = req.session.adminUserid;
-	data.admin_username = req.body['admin_username'];
-	data.email = req.body['email'] || '';
-	data.phone_no = req.body['phone_no'] || '';
+	data.id = req.body['id'];
+	data.key = req.body['key'];
+	data.value = req.body['value'];
+	data.status = req.body['status'];
+	data.remarks = req.body['remarks'];
 
 	return data;
 }
@@ -36,12 +38,11 @@ function getParam(req) {
 function validateParam(req, data) {
 	let error = [];
 
-	if (config.isEmpty(data.admin_user_id)) {
-		error.push(config.getErrorResponse('101A011', req));
+	if (config.isEmpty(data.key)) {
+		error.push(config.getErrorResponse('101A008', req));
 	}
-
-	if (config.isEmpty(data.admin_username)) {
-		error.push(config.getErrorResponse('101A012', req));
+	if (config.isEmpty(data.value)) {
+		error.push(config.getErrorResponse('101A005', req));
 	}
 
 	return error;
@@ -49,31 +50,33 @@ function validateParam(req, data) {
 
 function getReplacement(data) {
 	let replacement = {
-		'admin_username': data.admin_username,
-		'email': data.email,
-		'phone_no': data.phone_no,
+		'value': data.value,
+		'status': data.status,
+		'remarks': data.remarks,
 	};
-
-	replacement = config.appendCommonFields(replacement, 'ADMIN_UPD_INFO', data.admin_user_id);
+	replacement = config.appendCommonFields(replacement, 'PRODUCT_UPD', data.admin_user_id);
 	return replacement;
 }
 
 function getQuery(data) {
 	let query = {
-		'admin_user_id': data.admin_user_id
+		'_id': data.id
 	};
 	return query;
 }
 
-function adminUpdateAdminPass(req, res, error, data) {
+function updateProduct(req, res, error, data) {
 	async.series(
 		[
+			function (callback) {
+				return callback(null);
+			},
 			function (callback) {
 				let query = getQuery(data);
 				let set = { $set: getReplacement(data) };
 
 				let options = { upsert: false, returnNewDocument: true, returnOriginal: false, new: true };
-				Admin.findOneAndUpdate(query, set, options, function (err, result) {
+				Product.findOneAndUpdate(query, set, options, function (err, result) {
 					if (err) {
 						error.push(config.getErrorResponse('101Z012', req));
 						let resp = config.getResponse(res, 500, error, {}, err);
@@ -88,4 +91,3 @@ function adminUpdateAdminPass(req, res, error, data) {
 		]
 	);
 }
-
