@@ -12,9 +12,7 @@ const addressSchema = mongoose.Schema({
 });
 
 const schema = mongoose.Schema({
-    id: String,
-    email_addr: String,
-    status: String,
+    email: String,
     image_ic: String,
     image_card: String,
     image_signature: String,
@@ -23,10 +21,13 @@ const schema = mongoose.Schema({
     address: addressSchema,
     order_product: Array,
     order_date: { type: Number, default: config.getCurrentTimestamp() },
-    remarks: String,
-    opr_by: String,
-    opr_date: { type: Number, default: config.getCurrentTimestamp() },
-    opr_func: String
+	status: String,
+	remarks: String,
+	created_by: String,
+	created_date: { type: Number, default: config.getCurrentTimestamp() },
+	opr_by: String,
+	opr_date: { type: Number, default: config.getCurrentTimestamp() },
+	opr_func: String
     
 });
 module.exports = mongoose.model('Order', schema, config.DB['TBL_ORDER']);
