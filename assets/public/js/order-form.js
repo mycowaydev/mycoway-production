@@ -66,25 +66,27 @@ $(document).ready(function() {
     });
 });
 
+
 $(window).load(function(){
+    /** tooltips content **/
     $( "#ic_tooltips" ).tooltip({ content: '<img src="res/sample_ic.jpg" />' });
     $( "#card_tooltips" ).tooltip({ content: '<img src="res/sample_card.jpg" />' });
 
+    /** load cart item **/
     if (!sessionStorage.cart) {
         $( "#cart-detail" ).text('cart is empty');
         window.location.href = '/cart'
     } else {
-        var cart_text = "";
         var cart_list = JSON.parse(sessionStorage.cart);
         for (var cart_item of cart_list) {
-            var cart_line = "<p><b>" + cart_item.name + "</b> x " +  cart_item.quantity + " = RM " + (cart_item.price * cart_item.quantity) + "</p>";
-            $( "#cart-detail" ).append(cart_line);
+            var order_line = "<li>" + cart_item.name + " <span class=\"middle\">x " +  cart_item.quantity
+                + "</span> <span class=\"middle\">" + cart_item.payment_type  + "</span> <span class=\"last\">RM " + (cart_item.payment * cart_item.quantity) + "</span></li>"
+            $( "#order_box_ul" ).append(order_line);
         }
     }
 });
 
 /** call api **/
-
 function getModalFormData() {
     var addressFormData = new FormData();
 

@@ -1,8 +1,8 @@
 if (!sessionStorage.cart) {
     var cart_list = [];
-    var itemA = {id: '0001', name: 'water purifier A', quantity: 2, price: 120.00};
+    var itemA = {id: '0001', name: 'water purifier A', quantity: 2, payment: 120.00, payment_type: 'Rental'};
     cart_list.push(itemA);
-    var itemB = {id: '0002', name: 'water purifier B', quantity: 1, price: 135.00};
+    var itemB = {id: '0002', name: 'water purifier B', quantity: 1, payment: 135.00, payment_type: 'Retail'};
     cart_list.push(itemB);
     sessionStorage.cart = JSON.stringify(cart_list);
 }
@@ -12,21 +12,12 @@ if (sessionStorage.cart) {
     console.log('session.cart : ' + JSON.stringify(sessionStorage.cart));
 }
 
-var emptyRowContent = "<tr><td colspan='6'>No product in cart.<td></tr>"
+var emptyRowContent = "<tr><td colspan='7'>No product in cart.<td></tr>"
 
-function getDefaultRowContent(subtotal) {
-    return "<tr class='bottom_button' id='subtotal-row'>" +
-       "<td></td>" +
-       "<td></td>" +
-       "<td>" +
-           "<h5>Subtotal</h5>" +
-       "</td>" +
-       "<td colspan='2'>" +
-           "<h5 id='subtotal' class='cart_nowrap'>RM " + subtotal + "</h5>" +
-       "</td>" +
-   "</tr>" +
-   "<tr class='shipping_area'>" +
+function getDefaultRowContent() {
+    return "<tr class='shipping_area'>" +
        "<td class='d-none d-md-block'></td>" +
+       "<td></td>" +
        "<td></td>" +
        "<td>" +
            "<h5>Shipping</h5>" +
@@ -36,7 +27,7 @@ function getDefaultRowContent(subtotal) {
        "</td>" +
    "</tr>" +
    "<tr class='out_button_area'>" +
-       "<td colspan='5'>" +
+       "<td colspan='7'>" +
            "<div class='checkout_btn_inner d-flex align-items-center'>" +
                "<a class='gray_btn' href='/'>Continue Shopping</a>" +
                "<a class='primary-btn ml-2'  id='checkout' href='order-form'>Proceed to Order Detail</a>" +
@@ -45,7 +36,7 @@ function getDefaultRowContent(subtotal) {
    "</tr>"
 }
 
-function addQuantity(elementIndex, price) {
+function addQuantity(elementIndex) {
 	var result = document.getElementById('sst' + elementIndex);
 	var sst = result.value;
 	if( !isNaN( sst )){
@@ -54,12 +45,10 @@ function addQuantity(elementIndex, price) {
         var cart_list = JSON.parse(sessionStorage.cart);
         cart_list[elementIndex].quantity = result.value;
         sessionStorage.cart = JSON.stringify(cart_list);
-
-        updateSubtotal(cart_list);
 	}
 }
 
-function reduceQuantity(elementIndex, price) {
+function reduceQuantity(elementIndex) {
     var result = document.getElementById('sst' + elementIndex);
     var sst = result.value;
     if( !isNaN( sst ) && sst > 0 ){
@@ -68,8 +57,6 @@ function reduceQuantity(elementIndex, price) {
         var cart_list = JSON.parse(sessionStorage.cart);
         cart_list[elementIndex].quantity = result.value;
         sessionStorage.cart = JSON.stringify(cart_list);
-
-        updateSubtotal(cart_list);
     }
 }
 
@@ -87,28 +74,15 @@ function deleteItem(elementIndex) {
         });
         $('#checkout').addClass('button-disable');
     }
-
-    updateSubtotal(cart_list);
-}
-
-function updateSubtotal(cart_list) {
-    var subtotal = 0;
-    $.each( cart_list, function( index, obj ){
-        $("#item-total" + index).text('RM ' + (obj.quantity * obj.price));
-        subtotal += obj.quantity * obj.price;
-    });
-    $("#subtotal").text('RM ' + subtotal);
 }
 
 if (sessionStorage.cart) {
-    var subtotal = 0;
     var cart_list = JSON.parse(sessionStorage.cart);
 
     if (cart_list.length === 0) {
         $('tbody').append(emptyRowContent);
     } else {
         $.each( cart_list , function( index, obj ){
-            subtotal += (obj.price * obj.quantity);
             $('tbody').append(
                 "<tr id='cartItemRow" + index + "'>" +
                     "<td>" +
@@ -122,21 +96,24 @@ if (sessionStorage.cart) {
                         "</div>" +
                     "</td>" +
                     "<td>" +
-                        "<h5>RM&nbsp;" + obj.price + "</h5>" +
+                        "<h5>RM&nbsp;" + obj.payment + "</h5>" +
+                    "</td>" +
+                    "<td>" +
+                        "<h5>" + obj.payment_type + "</h5>" +
                     "</td>" +
                     "<td>" +
                         "<div class='product_count'>" +
                             "<input class='input-text qty' id='sst" + index + "' maxlength='12' name='qty' title='Quantity:' type='text' value='" + obj.quantity + "'>" +
-                            "<button class='increase items-count' onclick=\"addQuantity(" + index + ", " + obj.price + ")\" type='button'>" +
+                            "<button class='increase items-count' onclick=\"addQuantity(" + index + ", " + obj.payment + ")\" type='button'>" +
                                 "<i class='lnr lnr-chevron-up'></i>" +
                             "</button>" +
-                            "<button class='reduced items-count' onclick=\"reduceQuantity(" + index + ", " + obj.price +")\" type='button'>" +
+                            "<button class='reduced items-count' onclick=\"reduceQuantity(" + index + ", " + obj.payment +")\" type='button'>" +
                                 "<i class='lnr lnr-chevron-down'></i>" +
                             "</button>" +
                         "</div>" +
                     "</td>" +
                     "<td class='cart_nowrap'>" +
-                        "<h5 id='item-total" + index + "'>RM " + (obj.price * obj.quantity) + "</h5>" +
+                        "<h5 id='item-total" + index + "'>RM " + (obj.payment * obj.quantity) + "</h5>" +
                     "</td>" +
                     "<td><a onclick=\"deleteItem(" + index + ")\"><i class='far fa-trash-alt'></i></a></td>" +
                 "</tr>"
@@ -144,7 +121,7 @@ if (sessionStorage.cart) {
         });
     }
 
-    $('tbody').append(getDefaultRowContent(subtotal));
+    $('tbody').append(getDefaultRowContent());
 
     if (cart_list.length === 0) {
         $('#checkout').click(function(e) {
@@ -154,7 +131,7 @@ if (sessionStorage.cart) {
     }
 } else {
     $('tbody').append(emptyRowContent);
-    $('tbody').append(getDefaultRowContent('0'));
+    $('tbody').append(getDefaultRowContent());
     $('#checkout').click(function(e) {
         e.preventDefault();
     });
