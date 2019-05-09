@@ -91,11 +91,8 @@ function getModalFormData() {
     var addressFormData = new FormData();
 
     var formData = new FormData();
-//			todo: generate unique ID or take mongodb object ID
-    formData.set('id', '1');
     formData.append('email_addr', $("#email_address").val());
     formData.set('status', 'P');
-//			todo: wait for CK
     formData.set('image_ic', 'url');
     formData.set('image_card', 'url');
     formData.set('image_signature', 'url');
@@ -121,8 +118,8 @@ function getModalFormDataTesting() {
     var addressFormData = new FormData();
 
     var formData = new FormData();
-    formData.set('id', '1');
-    formData.set('email_addr', 'hello@email.com');
+
+    formData.set('email', 'hello@email.com');
     formData.set('status', 'P');
     formData.set('image_ic', 'url');
     formData.set('image_card', 'url');
@@ -140,6 +137,13 @@ function getModalFormDataTesting() {
     formData.set('order_product[1]', '2');
     formData.set('order_product[2]', '3');
     formData.set('remarks', 'remark');
+
+//    var files = document.getElementById('file_ic').files;
+//    for (var i = 0; i < files.length; i++) {
+//        var file = files[i];
+//        console.log('file : ' + JSON.stringify(file));
+//        formData.set('image_ic', file, file.name);
+//    }
 
     return formData;
 }

@@ -27,9 +27,7 @@ module.exports = function (req, res) {
 function getParam(req) {
 	var data = {};
 
-	data.id = req.body['id'];
-	data.email_addr = req.body['email_addr'];
-	data.status = req.body['status'];
+	data.email = req.body['email'];
 	data.image_ic = req.body['image_ic'];
 	data.image_card = req.body['image_card'];
 	data.image_signature = req.body['image_signature'];
@@ -38,6 +36,7 @@ function getParam(req) {
 	data.address = req.body['address'];
 	data.order_product = req.body['order_product'];
 	data.order_date = config.getCurrentTimestamp();
+	data.status = req.body['status'];
 	data.remarks = req.body['remarks'];
 
 	return data;
@@ -45,23 +44,17 @@ function getParam(req) {
 
 function validateParam(req, data) {
 	let error = [];
-
 //    todo: add validation
-//	if (config.isEmpty(data.key)) {
-//		error.push(config.getErrorResponse('101A008', req));
-//	}
-//	if (config.isEmpty(data.value)) {
-//		error.push(config.getErrorResponse('101A005', req));
-//	}
-
 	return error;
 }
 
 function action(req, res, error, data) {
+    let icImageUrl;
+    let insertData = config.appendCommonFields(data, 'ORDER_ADD', 'user', true);
 	async.series(
 		[
-			function (callback) {
-//			todo: wait for CK
+//			function (callback) {
+//			    let image = data.image_ic;
 //				if (typeof image !== 'undefined') {
 //                    let tmpPath = image.path;
 //                    let indexOfSeparator = tmpPath.lastIndexOf("/");
@@ -80,16 +73,14 @@ function action(req, res, error, data) {
 //                            config.logApiCall(req, res, resp);
 //                            return callback(true);
 //                        }
-//                        imageUrl = result['secure_url'];
+//                        icImageUrl = result['secure_url'];
 //                        return callback(null);
 //                    });
 //                } else {
 //                    return callback(null);
 //                }
-                return callback(null);
-			},
+//			},
 			function (callback) {
-				let insertData = config.appendCommonFields(data, 'ORDER_ADD', 'user', false);
 				Order.create(insertData, function (err, result) {
 					if (err) {
 						error.push(config.getErrorResponse('101Z012', req));
