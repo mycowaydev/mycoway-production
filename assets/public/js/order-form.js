@@ -91,11 +91,8 @@ function getModalFormData() {
     var addressFormData = new FormData();
 
     var formData = new FormData();
-    formData.append('email_addr', $("#email_address").val());
+    formData.append('email', $("#email_address").val());
     formData.set('status', 'P');
-    formData.set('image_ic', 'url');
-    formData.set('image_card', 'url');
-    formData.set('image_signature', 'url');
     formData.append('phone_no', $("#phone_number").val());
     formData.append('emergency_no', $("#emergency_phone_number").val());
     formData.set('address[first_line]', $("#first_line").val());
@@ -105,10 +102,17 @@ function getModalFormData() {
     formData.set('address[postcode]', $("#postcode").val() );
     formData.set('address[state]', $("#state").val() );
     formData.set('address[country]', $("#country").val() );
-    formData.set('order_product[0]', '1');
-    formData.set('order_product[1]', '2');
-    formData.set('order_product[2]', '3');
+    formData.set('order_product', JSON.stringify(sessionStorage.cart));
     formData.set('remarks', '');
+
+    var file_ic = $('#file_ic')[0].files[0];
+    formData.set('image_ic', file_ic, file_ic.name);
+
+    var file_card = $('#file_card')[0].files[0];
+    formData.set('image_card', file_card, file_card.name);
+
+    var file_sig = $('#file_sig')[0].files[0];
+    formData.set('image_signature', file_sig, file_sig.name);
 
     return formData;
 }
@@ -121,9 +125,6 @@ function getModalFormDataTesting() {
 
     formData.set('email', 'hello@email.com');
     formData.set('status', 'P');
-    formData.set('image_ic', 'url');
-    formData.set('image_card', 'url');
-    formData.set('image_signature', 'url');
     formData.set('phone_no', '0123334444');
     formData.set('emergency_no', '0123334444');
     formData.set('address[first_line]', 'first_line' );
@@ -133,23 +134,23 @@ function getModalFormDataTesting() {
     formData.set('address[postcode]', 'postcode' );
     formData.set('address[state]', 'state' );
     formData.set('address[country]', 'country' );
-    formData.set('order_product[0]', '1');
-    formData.set('order_product[1]', '2');
-    formData.set('order_product[2]', '3');
+    formData.set('order_product', JSON.stringify(sessionStorage.cart));
     formData.set('remarks', 'remark');
 
-//    var files = document.getElementById('file_ic').files;
-//    for (var i = 0; i < files.length; i++) {
-//        var file = files[i];
-//        console.log('file : ' + JSON.stringify(file));
-//        formData.set('image_ic', file, file.name);
-//    }
+    var file_ic = $('#file_ic')[0].files[0];
+    formData.set('image_ic', file_ic, file_ic.name);
+
+    var file_card = $('#file_card')[0].files[0];
+    formData.set('image_card', file_card, file_card.name);
+
+    var file_sig = $('#file_sig')[0].files[0];
+    formData.set('image_signature', file_sig, file_sig.name);
 
     return formData;
 }
 
 function addOrder() {
-    fetch('/order-add', { method: 'POST', body: getModalFormDataTesting() })
+    fetch('/user-order-add', { method: 'POST', body: getModalFormDataTesting() })
         .then(function (res) {
             if (res.ok) {
                 return res.json();
