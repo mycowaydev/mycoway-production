@@ -156,7 +156,7 @@ function action(req, res, error, data) {
 						config.logApiCall(req, res, resp);
 						return callback(true);
 					}
-					let resp = config.getResponse(res, 100, error, {});
+					let resp = config.getResponse(res, 100, error, result);
 					config.logApiCall(req, res, resp);
 					return callback(null);
 				});
