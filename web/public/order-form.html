@@ -14,6 +14,10 @@
     <body>
         include includes/header.html
 
+        <div id="pageloader">
+            <img src="http://cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.16.1/images/loader-large.gif" alt="processing..." />
+        </div>
+
         <!-- ================ start banner area ================= -->
         <section class="blog-banner-area" id="category">
             <div class="container h-100">
@@ -36,7 +40,7 @@
         <section class="cart_area">
             <div class="container">
                 <div class="cart_inner">
-                    <form method="POST">
+                    <form method="POST" id="order_detail_form">
                         <div class="form-row">
                             <div class="name"> Order Item(s) </div>
                             <div class="value">
@@ -141,8 +145,6 @@
                 </div>
             </div>
         </section>
-
-        <button class="payment-btn" id="test" onclick="addOrder()">Test API</button>
 
         include includes/footer.html
 

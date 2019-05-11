@@ -64,6 +64,13 @@ $(document).ready(function() {
             return false;
         }
     });
+
+    /***** form submit *****/
+    $( "#order_detail_form" ).submit(function( event ) {
+        event.preventDefault();
+        $("#pageloader").fadeIn();
+        addOrder();
+    });
 });
 
 
@@ -125,6 +132,9 @@ function getModalFormDataTesting() {
 
     formData.set('email', 'hello@email.com');
     formData.set('status', 'P');
+    formData.set('image_ic', 'url');
+    formData.set('image_card', 'url');
+    formData.set('image_signature', 'url');
     formData.set('phone_no', '0123334444');
     formData.set('emergency_no', '0123334444');
     formData.set('address[first_line]', 'first_line' );
@@ -137,20 +147,11 @@ function getModalFormDataTesting() {
     formData.set('order_product', JSON.stringify(sessionStorage.cart));
     formData.set('remarks', 'remark');
 
-    var file_ic = $('#file_ic')[0].files[0];
-    formData.set('image_ic', file_ic, file_ic.name);
-
-    var file_card = $('#file_card')[0].files[0];
-    formData.set('image_card', file_card, file_card.name);
-
-    var file_sig = $('#file_sig')[0].files[0];
-    formData.set('image_signature', file_sig, file_sig.name);
-
     return formData;
 }
 
 function addOrder() {
-    fetch('/user-order-add', { method: 'POST', body: getModalFormDataTesting() })
+    fetch('/user-order-add', { method: 'POST', body: getModalFormData() })
         .then(function (res) {
             if (res.ok) {
                 return res.json();
@@ -172,6 +173,6 @@ function addOrder() {
             notify_server_err();
         })
         .finally(function () {
-
+            $("#pageloader").fadeOut();
         });
 }
