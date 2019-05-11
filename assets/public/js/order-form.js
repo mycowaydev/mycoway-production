@@ -138,8 +138,8 @@ function getModalFormDataTesting() {
     formData.set('phone_no', '0123334444');
     formData.set('emergency_no', '0123334444');
     formData.set('address[first_line]', 'first_line' );
-    formData.set('address[second_line]', 'second_line' );
-    formData.set('address[third_line]', 'third_line' );
+//    formData.set('address[second_line]', 'second_line' );
+//    formData.set('address[third_line]', 'third_line' );
     formData.set('address[city]', 'city' );
     formData.set('address[postcode]', 'postcode' );
     formData.set('address[state]', 'state' );
@@ -157,20 +157,26 @@ function addOrder() {
                 return res.json();
             }
             notify_req_failed();
+            alert( "Submit order failed. Please try again." );
         })
         .then(function (result) {
             if (result.status_code == '100') {
                 notify_success('request successfully.');
+                sessionStorage.order_submitted = JSON.stringify(result.data);
+                window.location = '/order-confirmation';
             } else {
                 if (result.error && result.error.length > 0) {
                     notify_err(errors[0].message);
+                    alert( "Submit order failed. Please try again." + errors[0].message );
                 } else {
                     notify_server_err();
+                    alert( "Submit order failed. Please try again." );
                 }
             }
         })
         .catch(function (err) {
             notify_server_err();
+            alert( "Submit order failed. Please try again." );
         })
         .finally(function () {
             $("#pageloader").fadeOut();

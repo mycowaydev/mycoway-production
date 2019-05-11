@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Order Confirmation - Coway</title>
+    include includes/head
+</head>
+<body>
+    include includes/header.html
+
+    <!-- ================ start banner area ================= -->
+    <section class="blog-banner-area" id="category">
+        <div class="container h-100">
+            <div class="blog-banner">
+                <div class="text-center">
+                    <h1>Order Confirmation</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ================ end banner area ================= -->
+
+    <!--================Order Details Area =================-->
+    <section class="order_details section-margin--small">
+        <div class="container">
+            <p class="text-center billing-alert">Thank you. Your order has been received.</p>
+            <div class="row mb-5">
+                <div class="col-md-6 col-xl-4 mb-4 mb-xl-0">
+                    <div class="confirmation-card">
+                        <h3 class="billing-title">Order Info</h3>
+                        <table class="order-rable">
+                            <tr>
+                                <td>OrderNo</td>
+                                <td><div id="order_num"></div></td>
+                            </tr>
+                            <tr>
+                                <td>Date</td>
+                                <td><div id="date"></div></td>
+                            </tr>
+                            <tr>
+                                <td>Status</td>
+                                <td>Processing</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-4 mb-4 mb-xl-0">
+                    <div class="confirmation-card">
+                        <h3 class="billing-title">Personal Detail</h3>
+                        <table class="order-rable">
+                            <tr>
+                                <td>Phone Number</td>
+                                <td><div id="phone_no"></div></td>
+                            </tr>
+                            <tr>
+                                <td>Emergency Phone Number</td>
+                                <td><div id="emergency_phone_no"></div></td>
+                            </tr>
+                            <tr>
+                                <td>Email Address</td>
+                                <td><div id="email"></div></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-4 mb-4 mb-xl-0">
+                    <div class="confirmation-card">
+                        <h3 class="billing-title">Shipping Address</h3>
+                        <table class="order-rable">
+                            <tr>
+                                <td>First Line</td>
+                                <td><div id="first_line"></td>
+                            </tr>
+                            <tr>
+                                <td>Second Line</td>
+                                <td><div id="second_line"></div></td>
+                            </tr>
+                            <tr>
+                                <td>Third Line</td>
+                                <td><div id="third_line"></div></td>
+                            </tr>
+                            <tr>
+                                <td>City</td>
+                                <td><div id="city"></div></td>
+                            </tr>
+                            <tr>
+                                <td>Postcode</td>
+                                <td><div id="postcode"></div></td>
+                            </tr>
+                            <tr>
+                                <td>State</td>
+                                <td><div id="state"></div></td>
+                            </tr>
+                            <tr>
+                                <td>Country</td>
+                                <td><div id="country"></div></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="order_details_table">
+                <h2>Order Details</h2>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Product</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Payment Type</th>
+                                <th scope="col">Payment</th>
+                            </tr>
+                        </thead>
+                        <tbody id="product_list"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--================End Order Details Area =================-->
+
+    include includes/footer.html
+
+    <script src="vendors/jquery/jquery-3.2.1.min.js"></script>
+    <script src="vendors/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="vendors/skrollr.min.js"></script>
+    <script src="vendors/owl-carousel/owl.carousel.min.js"></script>
+    <script src="vendors/nice-select/jquery.nice-select.min.js"></script>
+    <script src="vendors/jquery.ajaxchimp.min.js"></script>
+    <script src="vendors/mail-script.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/order-confirmation.js"></script>
+</body>
+</html>
