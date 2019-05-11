@@ -19,7 +19,7 @@ const schema = mongoose.Schema({
     phone_no: String,
     emergency_no: String,
     address: addressSchema,
-    order_product: Array,
+    order_product: String,
     order_date: { type: Number, default: config.getCurrentTimestamp() },
     status: String,
     remarks: String,
