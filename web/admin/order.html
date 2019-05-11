@@ -157,10 +157,10 @@
                 },
                 columns: [
                     { data: '_id' },
-                    { data: 'name' },
+                    { data: 'email' },
+                    { data: 'phone_no' },
                     { data: 'status' },
-                    { data: 'email_address' },
-                    { data: 'rate' },
+                    { data: 'order_date' },
                 ],
                 columnDefs: [
                     { width: "20%", "targets": 0 },
@@ -323,10 +323,12 @@
 
             if (data) {
                 $("#formId").val(data._id);
-                $("#txtModal_Name").val(data.name);
+                $("#txtModal_OrderID").val(data._id);
+                $("#dtpModal_OrderDate").val(data.order_date);
                 $("#ddlModal_Status").val(data.status);
-                $("#txtModal_Email").val(data.email_address);
-                $("#ddlModal_Rate").val(data.rate);
+                $("#txtModal_Email").val(data.email);
+                $("#txtModal_Phone").val(data.phone_no);
+                $("#txtModal_EmergencyPhone").val(data.emergency_no);
                 $("#taModal_Description").val(data.desc);
                 $("#taModal_Remarks").val(data.remarks);
                 updateRecordMode();

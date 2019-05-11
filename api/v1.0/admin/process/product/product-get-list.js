@@ -22,12 +22,20 @@ function getParam(req) {
 	data.name = req.body['name'] || '';
 	data.type = req.body['type'] || '';
 	data.status = req.body['status'] || '';
+	data.publish_date = {
+		fdate: req.body['publish_date_from'] || '',
+		tdate: req.body['publish_date_to'] || '',
+	};
+	data.unpublish_date = {
+		fdate: req.body['unpublish_date_from'] || '',
+		tdate: req.body['unpublish_date_to'] || '',
+	};
 
 	return data;
 }
 
 function getSortFields() {
-	return { 1: "key", 2: "value" };
+	return { 1: "name", 2: "type", 3: "status", 4: "publish_date", 5: "unpublish_date" };
 }
 
 function getProductList(req, res, error, filters, sort) {
