@@ -19,13 +19,11 @@ setElementValue("#postcode", orderList.address.postcode);
 setElementValue("#state", orderList.address.state);
 setElementValue("#country", orderList.address.country);
 
-console.log("debug: " + JSON.parse(JSON.parse(orderList.order_product)));
-
-var orderProductItems = JSON.parse(JSON.parse(orderList.order_product));
+var orderProductItems = orderList.order_product;
 $.each( orderProductItems , function( index, obj ){
     $('#product_list').append(
         "<tr>" +
-            "<td><h5>" + obj.name + "</h5></td>" +
+            "<td><h5>" + obj.product_name + "</h5></td>" +
             "<td><p>" +  obj.quantity + "</p></td>" +
             "<td><p>" + obj.payment_type  + "</p></td>" +
             "<td><p>RM " + obj.payment + "</p></td>" +

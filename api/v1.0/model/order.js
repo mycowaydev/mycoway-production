@@ -11,6 +11,26 @@ const addressSchema = mongoose.Schema({
     country: String
 });
 
+const orderProductServiceSchema = mongoose.Schema({
+    name: String,
+    value: Number,
+    unit: String,
+    one_time_charge: Boolean,
+    remarks: String
+});
+
+const orderProductSchema = mongoose.Schema({
+    product_id: String,
+    product_name: String,
+    quantity: Number,
+    desc: String,
+    image: [String],
+    payment: Number,
+    payment_type: String,
+    service: [orderProductServiceSchema],
+    remarks: String
+});
+
 const schema = mongoose.Schema({
     email: String,
     image_ic: String,
@@ -19,7 +39,7 @@ const schema = mongoose.Schema({
     phone_no: String,
     emergency_no: String,
     address: addressSchema,
-    order_product: String,
+    order_product: [orderProductSchema],
     order_date: { type: Number, default: config.getCurrentTimestamp() },
     status: String,
     remarks: String,

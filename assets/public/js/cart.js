@@ -1,9 +1,59 @@
 if (!sessionStorage.cart) {
     var cart_list = [];
-    var itemA = {id: '0001', name: 'water purifier A', quantity: 2, payment: 120.00, payment_type: 'Rental'};
+    var itemA = {
+        product_id: '0001',
+        product_name: 'water purifier A',
+        desc: 'can filter water',
+        quantity: 2,
+        image: [
+            'url1',
+            'url2'
+        ],
+        payment: 120.00,
+        payment_type: 'Rental',
+        service: [
+            {
+                name: 'sst',
+                value: 6,
+                unit: '%',
+                per_order_charge: false,
+                remarks: 'this is services remarks'
+            },{
+                name: 'discount',
+                value: 20,
+                unit: 'RM',
+                per_order_charge: false,
+                remarks: 'this is services remarks'
+            }
+        ],
+        remarks: 'this product remarks'
+    };
     cart_list.push(itemA);
-    var itemB = {id: '0002', name: 'water purifier B', quantity: 1, payment: 135.00, payment_type: 'Retail'};
+
+    var itemB = {
+        product_id: '0002',
+        product_name: 'water purifier B',
+        desc: 'can filter water',
+        quantity: 1,
+        image: [
+            'url1',
+            'url2'
+        ],
+        payment: 135.00,
+        payment_type: 'Retail',
+        service: [
+            {
+                name: 'shipping',
+                value: 100,
+                unit: 'RM',
+                per_order_charge: true,
+                remarks: 'this is services remarks'
+            }
+        ],
+        remarks: 'this product remarks'
+    };
     cart_list.push(itemB);
+
     sessionStorage.cart = JSON.stringify(cart_list);
 }
 
@@ -91,7 +141,7 @@ if (sessionStorage.cart) {
                                 "<img alt='' src='img/cart/cart1.png'>" +
                             "</div>" +
                             "<div class='media-body'>" +
-                                "<p>" + obj.name + "</p>" +
+                                "<p>" + obj.product_name + "</p>" +
                             "</div>" +
                         "</div>" +
                     "</td>" +
