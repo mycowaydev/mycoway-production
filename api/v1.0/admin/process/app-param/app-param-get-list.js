@@ -19,9 +19,9 @@ module.exports = function (req, res) {
 
 function getParam(req) {
 	var data = {};
-	data.key = req.body['key'] ? req.body['key'] : '';
-	data.value = req.body['value'] ? req.body['value'] : '';
-	data.status = req.body['status'] ? req.body['status'] : '';
+	data.key = req.body['key'] || '';
+	data.value = req.body['value'] || '';
+	data.status = req.body['status'] || '';
 
 	return data;
 }

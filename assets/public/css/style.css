@@ -87,31 +87,31 @@ a {
 }
 
 .section-margin {
-	margin: 45px 0
+	margin: 45px
 }
 
 @media (min-width: 980px) {
 	.section-margin {
-		margin: 70px 0
+		margin: 70px
 	}
 }
 
 @media (min-width: 1100px) {
 	.section-margin {
-		margin: 120px 0
+		margin: 100px
 	}
 	.section-margin.calc-60px {
-		margin: 120px 0 70px 0
+		margin: 120px 80px 70px 80px
 	}
 }
 
 .section-margin--small {
-	margin: 35px 0
+	margin: 35px
 }
 
 @media (min-width: 1000px) {
 	.section-margin--small {
-		margin: 98px 0
+		margin: 98px
 	}
 }
 
@@ -722,7 +722,7 @@ a {
 	display: block;
 	width: 5%;
 	height: 100%;
-	background: #384aeb;
+	background: #81b0c9;
 	position: absolute;
 	top: 0;
 	left: 0
@@ -918,14 +918,9 @@ a {
 }
 
 .offer {
-	background: url("../img/home/parallax-bg.png") right center no-repeat;
-	background-size: cover
-}
-
-@media (min-width: 1200px) {
-	.offer {
-		background-size: 100% 100%
-	}
+	background: url("../img/coway/steps.png") right center no-repeat;
+	background-size: auto;
+	margin-bottom: 20px;
 }
 
 .offer__content {
@@ -3293,7 +3288,7 @@ a {
 	padding-bottom: 15px
 }
 
-.order_box .list li a {
+.order_box .list li {
 	font-size: 14px;
 	color: #777;
 	font-weight: normal;
@@ -3302,17 +3297,17 @@ a {
 	line-height: 42px
 }
 
-.order_box .list li a h4 {
+.order_box .list li h4 {
 	font-family: "Roboto", sans-serif;
 	font-size: 15px;
 	margin-top: 15px
 }
 
-.order_box .list li a span {
+.order_box .list li span {
 	float: right
 }
 
-.order_box .list li a .middle {
+.order_box .list li .middle {
 	float: none;
 	width: 50px;
 	text-align: right;
@@ -3321,22 +3316,22 @@ a {
 	color: #222
 }
 
-.order_box .list li:nth-child(4) a .middle {
+.order_box .list li:nth-child(4) .middle {
 	margin-left: 48px
 }
 
-.order_box .list_2 li a {
+.order_box .list_2 li {
 	text-transform: uppercase;
 	color: #222;
 	font-weight: 500
 }
 
-.order_box .list_2 li a span {
+.order_box .list_2 li span {
 	color: #777;
 	text-transform: capitalize
 }
 
-.order_box .list_2 li:last-child a span {
+.order_box .list_2 li:last-child span {
 	color: #222
 }
 
@@ -3402,7 +3397,7 @@ a {
 	color: #222
 }
 
-.order_box .creat_account a {
+.order_box .creat_account {
 	color: #c5322d
 }
 
@@ -3590,7 +3585,7 @@ a {
 	color: #000
 }
 
-.order_box .creat_account a {
+.order_box .creat_account {
 	font-size: 12px;
 	color: #384aeb
 }

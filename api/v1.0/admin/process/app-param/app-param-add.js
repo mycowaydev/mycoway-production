@@ -26,10 +26,10 @@ module.exports = function (req, res) {
 function getParam(req) {
 	var data = {};
 	data.admin_user_id = req.session.adminUserid;
-	data.key = req.body['key'];
-	data.value = req.body['value'];
-	data.status = req.body['status'];
-	data.remarks = req.body['remarks'];
+	data.key = req.body['key'] || '';
+	data.value = req.body['value'] || '';
+	data.status = req.body['status'] || '';
+	data.remarks = req.body['remarks'] || '';
 
 	return data;
 }

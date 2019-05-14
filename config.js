@@ -228,6 +228,29 @@ module.exports = Object.freeze({
 		}
 		return newInfo;
 	},
+	getOrderInfo: function (info) {
+		var newInfo = {};
+		if (!this.isEmptyJsonObject(info)) {
+			console.log("info :: " + JSON.stringify(info));
+			newInfo['email'] = info['email'];
+			newInfo['image_ic'] = info['image_ic'];
+			newInfo['image_card'] = info['image_card'];
+			newInfo['image_signature'] = info['image_signature'];
+			newInfo['phone_no'] = info['phone_no'];
+			newInfo['emergency_no'] = info['emergency_no'];
+			newInfo['address'] = info['address'];
+			newInfo['order_product'] = info['order_product'];
+			//newInfo['order_date'] = this.getFormattedDateTime(info['order_date'], 'YYYY-MM-DD');
+			newInfo['status'] = info['status'];
+			newInfo['remarks'] = info['remarks'];
+			newInfo['created_by'] = info['created_by'];
+			//newInfo['created_date'] = this.getFormattedDateTime(info['created_date'], 'YYYY-MM-DD');
+			newInfo['opr_by'] = info['opr_by'];
+			//newInfo['opr_date'] = this.getFormattedDateTime(info['opr_date'], 'YYYY-MM-DD');
+			newInfo['opr_func'] = info['opr_func'];
+		}
+		return newInfo;
+	},
 	isParamsExist: function (req, params) {
 		var isEmpty = true;
 		var isExists = true;
@@ -299,6 +322,9 @@ module.exports = Object.freeze({
 		return value ? value.replace(/\w(?=\w{4})/g, '*') : value;
 	},
 	getFormattedDateTime: function (timestamp, dateTimeFormat) {
+		console.log("timestamp" + timestamp);
+		console.log("dateTimeFormat" + dateTimeFormat);
+		console.log("String(moment(timestamp * 1000).format(dateTimeFormat)); :: " + String(moment(timestamp * 1000).format(dateTimeFormat)));
 		return String(moment(timestamp * 1000).format(dateTimeFormat));
 	},
 	getCurrentTimestamp: function () {

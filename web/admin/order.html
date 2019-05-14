@@ -4,21 +4,25 @@
 <head>
     <link href="../vendors/bootstrap-4/dist/css/bootstrap.css" rel="stylesheet">
     <link href="../vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
+    <link href="../vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
     <link href="../vendors/DataTables/datatables.css" />
     <link href="../vendors/pnotify/dist/pnotify.css" rel="stylesheet">
     <link href="../vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+    <link href="../vendors/dropzone/dist/min/dropzone.min.css" rel="stylesheet">
     <link href="../build/css/custom.css" rel="stylesheet">
 
     <script src="../vendors/jquery/dist/jquery.min.js"></script>
     <script src="../vendors/jquery/dist/popper.js"></script>
     <script src="../vendors/bootstrap-4/dist/js/bootstrap.min.js"></script>
     <script src="../vendors/moment/min/moment.min.js"></script>
-    <script src="../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
     <script src="../vendors/datatables.net/js/jquery.dataTables.js"></script>
     <script src="../vendors/jquery/dist/jquery.validate.min.js"></script>
     <script src="../vendors/pnotify/dist/pnotify.js"></script>
     <script src="../vendors/pnotify/dist/pnotify.buttons.js"></script>
+    <script src="../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
     <script src="../web-js/notify.js"></script>
+    <script src="../vendors/dropzone/dist/dropzone.js"></script>
     <script src="../build/js/custom.js"></script>
 
     <script>
@@ -41,10 +45,9 @@
                 getById: '/order-get-info',
                 mtparam: '/admin-get-mt-param-group',
             },
-            rateValue: {
-                min: 1,
-                max: 5
-            }
+            setting: {
+                dateFormat: 'YYYY-MM-DD'
+            },
         }
 
         var mtpStatus = getMTParam(app.mtparam.status).then(function (result) {
@@ -56,9 +59,11 @@
             initApp();
             initButton();
             initModal();
-            initDropdownList2();
             initDataTable();
             initDataTableBehavior();
+            initDateRangePicker();
+            initDateTimePicker();
+            initDropzone();
             initValidateInput();
             initSizeChange();
         }
@@ -100,16 +105,14 @@
             $('#modalCUWindow').on('hidden.bs.modal', function () {
                 resetAllModalInput();
             });
+            $('#modalCUWindow').on('show.bs.modal', function () {
+                $('#modalTab li:first-child a').tab('show');
+            });
         }
+
         function initDropdownList(target, data) {
             for (var row = 0; row < data.length; row++) {
                 $(target).append(new Option(data[row].value, data[row].code));
-            }
-        }
-
-        function initDropdownList2() {
-            for (var row = app.rateValue.min; row <= app.rateValue.max; row++) {
-                $("#ddlSearch_Rate,#ddlModal_Rate").append(new Option(row + " star(s)", row));
             }
         }
 
@@ -154,16 +157,17 @@
                 },
                 columns: [
                     { data: '_id' },
-                    { data: 'name' },
+                    { data: 'email' },
+                    { data: 'phone_no' },
                     { data: 'status' },
-                    { data: 'email_address' },
-                    { data: 'rate' },
+                    { data: 'order_date' },
                 ],
                 columnDefs: [
-                    { width: "0%", "targets": 0, "visible": false },
-                    { width: "30%", "targets": 1 },
+                    { width: "20%", "targets": 0 },
+                    { width: "20%", "targets": 1 },
+                    { width: "20%", "targets": 2 },
                     {
-                        width: "20%", "targets": 2, render: function (data, type, row) {
+                        width: "20%", "targets": 3, render: function (data, type, row) {
                             for (var row = 0; row < mtpStatus.length; row++) {
                                 if (mtpStatus[row].code == data) {
                                     return mtpStatus[row].value;
@@ -172,12 +176,7 @@
                             return data;
                         }
                     },
-                    { width: "30%", "targets": 3 },
-                    {
-                        width: "20%", "targets": 4, render: function (data, type, row) {
-                            return data + " star(s)";
-                        }
-                    },
+                    { width: "20%", "targets": 4 },
                 ],
                 order: [[0, 'desc']]
             });
@@ -188,6 +187,38 @@
                 var data = $('#dtSearch').DataTable().row(this).data();
                 if (typeof data !== "undefined") {
                     getDetailById(data["_id"]);
+                }
+            });
+        }
+
+        function initDateRangePicker() {
+            $('#dtpSearch_OrderDate').daterangepicker({
+                autoApply: true,
+                locale: {
+                    format: app.setting.dateFormat
+                }
+            });
+            $('#dtpSearch_OrderDate').val('');
+        }
+
+        function initDateTimePicker() {
+            $('#dtpModal_OrderDate').datetimepicker({
+                format: app.setting.dateFormat,
+                allowInputToggle: true
+            });
+        }
+
+        function initDropzone() {
+            Dropzone.autoDiscover = false;
+            $("div#dzModal_Ic,#dzModal_Card,#dzModal_Signature").dropzone({
+                url: "/file/post",
+                maxFiles: 1,
+                init: function () {
+                    this.on("maxfilesexceeded", function (file) {
+                        this.removeAllFiles();
+                        this.addFile(file);
+                        console.log(file);
+                    });
                 }
             });
         }
@@ -244,7 +275,10 @@
         }
 
         function disableElement(disable) {
-
+            $("#txtModal_OrderID").prop("disabled", true);
+            $("#btnModalDownload_Ic").prop("disabled", !disable);
+            $("#btnModalDownload_Card").prop("disabled", !disable);
+            $("#btnModalDownload_Signature").prop("disabled", !disable);
         }
 
         function resetAllSearchInput() {
@@ -256,6 +290,10 @@
         function resetAllModalInput() {
             $("form#modalForm :input").each(function () {
                 $(this).val('')
+            });
+            $('.dropzone').each(function (i, obj) {
+                var tempDz = Dropzone.forElement("#" + obj.id);
+                tempDz.removeAllFiles();
             });
             $('#modalForm').validate().resetForm();
         }
@@ -285,10 +323,12 @@
 
             if (data) {
                 $("#formId").val(data._id);
-                $("#txtModal_Name").val(data.name);
+                $("#txtModal_OrderID").val(data._id);
+                $("#dtpModal_OrderDate").val(data.order_date);
                 $("#ddlModal_Status").val(data.status);
-                $("#txtModal_Email").val(data.email_address);
-                $("#ddlModal_Rate").val(data.rate);
+                $("#txtModal_Email").val(data.email);
+                $("#txtModal_Phone").val(data.phone_no);
+                $("#txtModal_EmergencyPhone").val(data.emergency_no);
                 $("#taModal_Description").val(data.desc);
                 $("#taModal_Remarks").val(data.remarks);
                 updateRecordMode();
@@ -381,21 +421,46 @@
                         <div class="panel-body">
                             <form id="searchForm">
                                 <div class="form-group row">
+                                    <label for="txtSearch_OrderID"
+                                        class="col-sm-2 col-form-label col-form-label-sm">Order ID</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control form-control-sm" id="txtSearch_OrderID"
+                                            name="txtSearch_OrderID" placeholder="Order ID">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="txtSearch_Email"
+                                        class="col-sm-2 col-form-label col-form-label-sm">Email</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control form-control-sm" id="txtSearch_Email"
+                                            name="txtSearch_Email" placeholder="Email">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="txtSearch_Phone" class="col-sm-2 col-form-label col-form-label-sm">Phone
+                                        number</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control form-control-sm" id="txtSearch_Phone"
+                                            name="txtSearch_Phone" placeholder="Phone number">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
                                     <label for="ddlSearch_Status"
                                         class="col-sm-2 col-form-label col-form-label-sm">Status</label>
                                     <div class="col-sm-10">
                                         <select id="ddlSearch_Status" class="form-control form-control-sm"
                                             name="normal">
                                             <option value="">Please select</option>
-                                        </select> </div>
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="ddlSearch_Rate"
-                                        class="col-sm-2 col-form-label col-form-label-sm">Rate</label>
+                                    <label for="dtpSearch_OrderDate"
+                                        class="col-sm-2 col-form-label col-form-label-sm">Order date</label>
                                     <div class="col-sm-10">
-                                        <select id="ddlSearch_Rate" class="form-control form-control-sm" name="normal">
-                                            <option value="">Please select</option>
-                                        </select>
+                                        <input type="text" class="form-control form-control-sm"
+                                            name="dtpSearch_OrderDate" id="dtpSearch_OrderDate" value=""
+                                            placeholder="Please select" />
                                     </div>
                                 </div>
                             </form>
@@ -422,10 +487,10 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Name</th>
-                        <th>Status</th>
                         <th>Email</th>
-                        <th>Rate</th>
+                        <th>Phone no.</th>
+                        <th>Status</th>
+                        <th>Order date</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -457,21 +522,26 @@
                 <div class="modal-body">
                     <form id="modalForm">
                         <input type="hidden" id="formId">
+                        <input type="hidden" id="AddressId">
                         <div class="form-group row">
-                            <label for="txtModal_Name" class="col-sm-2 col-form-label col-form-label-sm">Name</label>
+                            <label for="txtModal_OrderID" class="col-sm-2 col-form-label col-form-label-sm">Order
+                                ID</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control form-control-sm" id="txtModal_Name"
-                                    name="txtModal_Name" placeholder="Name">
+                                <input type="text" class="form-control form-control-sm" id="txtModal_OrderID"
+                                    name="txtModal_OrderID" placeholder="Order ID">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="ddlModal_Status"
-                                class="col-sm-2 col-form-label col-form-label-sm">Status</label>
+                            <label for="dtpModal_OrderDate" class="col-sm-2 col-form-label col-form-label-sm">Order
+                                date</label>
                             <div class="col-sm-10">
-                                <select id="ddlModal_Status" class="form-control form-control-sm"
-                                    name="ddlModal_Status">
-                                    <option value="">Please select</option>
-                                </select>
+                                <div class='input-group date datepicker' id='dtpModal_OrderDate'>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                    <input type='text' class="form-control form-control-sm" name="dtpModal_OrderDate"
+                                        placeholder="Please select" />
+                                </div>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -481,28 +551,168 @@
                                     name="txtModal_Email" placeholder="Email">
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <label for="ddlModal_Rate" class="col-sm-2 col-form-label col-form-label-sm">Rate</label>
-                            <div class="col-sm-10">
-                                <select id="ddlModal_Rate" class="form-control form-control-sm" name="ddlModal_Rate">
-                                    <option value="">Please select</option>
-                                </select>
+                        <ul class="nav nav-tabs" id="modalTab">
+                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#detail">Detail</a>
+                            </li>
+                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#document">Document</a>
+                            </li>
+                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#productItems">Product
+                                    Items</a></li>
+                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#address">Address</a>
+                            </li>
+                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#remarks">Remarks</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div id="detail" class="tab-pane fade mt-4">
+                                <div class="form-group row">
+                                    <label for="ddlModal_Status"
+                                        class="col-sm-2 col-form-label col-form-label-sm">Status</label>
+                                    <div class="col-sm-10">
+                                        <select id="ddlModal_Status" class="form-control form-control-sm"
+                                            name="ddlModal_Status">
+                                            <option value="">Please select</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="txtModal_Phone" class="col-sm-2 col-form-label col-form-label-sm">Phone
+                                        number</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control form-control-sm" id="txtModal_Phone"
+                                            name="txtModal_Phone" placeholder="Phone number">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="txtModal_EmergencyPhone"
+                                        class="col-sm-2 col-form-label col-form-label-sm">Emergency number</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control form-control-sm"
+                                            id="txtModal_EmergencyPhone" name="txtModal_EmergencyPhone"
+                                            placeholder="Emergency number">
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="taModal_Description"
-                                class="col-sm-2 col-form-label col-form-label-sm">Description</label>
-                            <div class="col-sm-10">
-                                <textarea class="form-control form-control-sm" rows="5" id="taModal_Description"
-                                    name="taModal_Description" placeholder="Description"></textarea>
+                            <div id="document" class="tab-pane fade mt-4">
+                                <div class="form-group row">
+                                    <label for="dzModal_Ic" class="col-sm-2 col-form-label col-form-label-sm">Ic
+                                        image</label>
+                                    <div class="col-sm-8">
+                                        <div id="dzModal_Ic" class="dropzone"></div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <button type="button" class="btn btn-info btn-sm"
+                                            id="btnModalDownload_Ic">Download
+                                            file</button>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="dzModal_Card" class="col-sm-2 col-form-label col-form-label-sm">Card
+                                        image</label>
+                                    <div class="col-sm-8">
+                                        <div id="dzModal_Card" class="dropzone"></div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <button type="button" class="btn btn-info btn-sm"
+                                            id="btnModalDownload_Card">Download
+                                            file</button>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="dzModal_Signature"
+                                        class="col-sm-2 col-form-label col-form-label-sm">Signature image</label>
+                                    <div class="col-sm-8">
+                                        <div id="dzModal_Signature" class="dropzone"></div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <button type="button" class="btn btn-info btn-sm"
+                                            id="btnModalDownload_Signature">Download
+                                            file</button>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="taModal_Remarks" class="col-sm-2 col-form-label col-form-label-sm">Remarks
-                                (FOUO)</label>
-                            <div class="col-sm-10">
-                                <textarea class="form-control form-control-sm" rows="5" id="taModal_Remarks"
-                                    name="taModal_Remarks" placeholder="Remarks"></textarea>
+                            <div id="productItems" class="tab-pane fade mt-4">
+                            </div>
+                            <div id="address" class="tab-pane fade mt-4">
+                                <div class="form-group row">
+                                    <label for="txtModal_AddressName"
+                                        class="col-sm-2 col-form-label col-form-label-sm">Name</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control form-control-sm"
+                                            id="txtModal_AddressName" name="txtModal_AddressName" placeholder="Name">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="txtModal_AddressFirstLine"
+                                        class="col-sm-2 col-form-label col-form-label-sm">Address first line</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control form-control-sm"
+                                            id="txtModal_AddressFirstLine" name="txtModal_AddressFirstLine"
+                                            placeholder="First line">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="txtModal_AddressSecondLine"
+                                        class="col-sm-2 col-form-label col-form-label-sm">Address second line</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control form-control-sm"
+                                            id="txtModal_AddressSecondLine" name="txtModal_AddressSecondLine"
+                                            placeholder="Second Line">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="txtModal_AddressThirdLine"
+                                        class="col-sm-2 col-form-label col-form-label-sm">Address third line</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control form-control-sm"
+                                            id="txtModal_AddressThirdLine" name="txtModal_AddressThirdLine"
+                                            placeholder="Third line">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="txtModal_AddressCity"
+                                        class="col-sm-2 col-form-label col-form-label-sm">City</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control form-control-sm"
+                                            id="txtModal_AddressCity" name="txtModal_AddressCity" placeholder="City">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="txtModal_AddressPostcode"
+                                        class="col-sm-2 col-form-label col-form-label-sm">Postcode</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control form-control-sm"
+                                            id="txtModal_AddressPostcode" name="txtModal_AddressPostcode"
+                                            placeholder="Postcode">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="txtModal_AddressStates"
+                                        class="col-sm-2 col-form-label col-form-label-sm">State</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control form-control-sm"
+                                            id="txtModal_AddressState" name="txtModal_AddressState" placeholder="State">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="txtModal_AddressCountry"
+                                        class="col-sm-2 col-form-label col-form-label-sm">Country</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control form-control-sm"
+                                            id="txtModal_AddressCountry" name="txtModal_AddressCountry"
+                                            placeholder="Country">
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="remarks" class="tab-pane fade mt-4">
+                                <div class="form-group row">
+                                    <label for="taModal_Remarks"
+                                        class="col-sm-2 col-form-label col-form-label-sm">Remarks
+                                        (FOUO)</label>
+                                    <div class="col-sm-10">
+                                        <textarea class="form-control form-control-sm" rows="5" id="taModal_Remarks"
+                                            name="taModal_Remarks" placeholder="Remarks"></textarea>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </form>

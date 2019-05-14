@@ -29,7 +29,6 @@ function getParam(req) {
 	data.admin_username = req.body['admin_username'];
 	data.email = req.body['email'] || '';
 	data.phone_no = req.body['phone_no'] || '';
-	data.profile_img = req.body['profile_img'] || '';
 
 	return data;
 }
@@ -53,7 +52,6 @@ function getReplacement(data) {
 		'admin_username': data.admin_username,
 		'email': data.email,
 		'phone_no': data.phone_no,
-		'profile_img': data.profile_img,
 	};
 
 	replacement = config.appendCommonFields(replacement, 'ADMIN_UPD_INFO', data.admin_user_id);

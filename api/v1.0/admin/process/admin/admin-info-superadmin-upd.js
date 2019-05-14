@@ -29,7 +29,6 @@ function getParam(req) {
 	data.admin_username = req.body['admin_username'];
 	data.email = req.body['email'] || '';
 	data.phone_no = req.body['phone_no'] || '';
-	data.profile_img = req.body['profile_img'] || '';
 	data.role = req.body['role'] || '';
 	data.level = req.body['level'] || '';
 	data.group = req.body['group'] || '';
@@ -62,7 +61,6 @@ function getReplacement(data) {
 		'admin_username': data.admin_username,
 		'email': data.email,
 		'phone_no': data.phone_no,
-		'profile_img': data.profile_img,
 		'role': data.role,
 		'level': data.level,
 		'group': data.group,

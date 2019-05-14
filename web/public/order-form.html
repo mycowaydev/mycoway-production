@@ -14,6 +14,10 @@
     <body>
         include includes/header.html
 
+        <div id="pageloader">
+            <img src="http://cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.16.1/images/loader-large.gif" alt="processing..." />
+        </div>
+
         <!-- ================ start banner area ================= -->
         <section class="blog-banner-area" id="category">
             <div class="container h-100">
@@ -36,11 +40,16 @@
         <section class="cart_area">
             <div class="container">
                 <div class="cart_inner">
-                    <form method="POST">
+                    <form method="POST" id="order_detail_form">
                         <div class="form-row">
-                            <div class="name"> Payment </div>
+                            <div class="name"> Order Item(s) </div>
                             <div class="value">
                                 <div id="cart-detail"></div>
+                                <div class="order_box" id="order_box">
+                                    <ul class="list" id="order_box_ul">
+                                        <li><h4>Product <span>Payment</span></h4></li>
+                                    </ul>
+                                </div>
                                 <div class="label--desc">Double check your cart item before submit.</div>
                             </div>
                         </div>
@@ -124,7 +133,7 @@
                             <div class="name">Email address</div>
                             <div class="value">
                                 <div class="input-group">
-                                    <input class="input--style-6" type="email" name="email" placeholder="e.g. example@email.com" required>
+                                    <input class="input--style-6" type="email" name="email" id="email_address" placeholder="e.g. example@email.com" required>
                                 </div>
                             </div>
                         </div>
@@ -148,6 +157,11 @@
         <script src="vendors/owl-carousel/owl.carousel.min.js"></script>
         <script src="vendors/nice-select/jquery.nice-select.min.js"></script>
         <script src="vendors/jquery.ajaxchimp.min.js"></script>
+
+        <!-- api lib -->
+        <script src="../vendors/pnotify/dist/pnotify.js"></script>
+        <script src="../vendors/pnotify/dist/pnotify.buttons.js"></script>
+        <script src="../web-js/notify.js"></script>
 
         <script src="js/main.js"></script>
         <script src="js/order-form.js"></script>
