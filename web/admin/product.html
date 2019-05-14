@@ -1,160 +1,702 @@
-
 <!DOCTYPE html>
 <html lang="en">
-    include includes/document-head
 
-    <div class="container body">
-      <div class="main_container">
-        <!-- sidebar menu -->
-        include includes/left-navigation
-        <!-- /sidebar menu -->
+<head>
+    <link href="../vendors/bootstrap-4/dist/css/bootstrap.css" rel="stylesheet">
+    <link href="../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
+        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link href="../vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
+    <link href="../vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+    <link href="../vendors/summernote/summernote-bs4.css" rel="stylesheet">
+    <link href="../vendors/DataTables/datatables.css" />
+    <link href="../vendors/pnotify/dist/pnotify.css" rel="stylesheet">
+    <link href="../vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
+    <link href="../vendors/bootstrap-fileinput-master/css/fileinput.css" rel="stylesheet">
+    <link href="../build/css/custom.css" rel="stylesheet">
 
-        <!-- top navigation -->
-        include includes/header
-        <!-- /top navigation -->
-
-        <!-- page content -->
-        <div class="right_col" role="main">
-          <div class="">
-            <div class="page-title">
-              <div class="title_left">
-                <h3>Product List</h3>
-              </div>
-            </div>
-            <div class="clearfix"></div>
-
-            <div class="row">
-              <div class="col-md-12 col-sm-12 col-xs-12">
-                if success
-                  <div class="alert alert-success alert-dismissible fade in" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
-                    </button>
-                    <strong>Product was successfully added.</strong>
-                  </div>
-                if remove_success
-                  <div class="alert alert-success alert-dismissible fade in" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
-                    </button>
-                    <strong>Product was successfully removed.</strong>
-                  </div>
-
-                <div class="x_panel">
-                  <div class="x_title">
-                  </div>
-                  <div class="x_content">
-                    <!-- start accordion -->
-                    <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
-                      <div class="panel">
-                        <a class="panel-heading collapsed" role="tab" id="headingTwo" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                          <h4 class="panel-title"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span> Advanced Search</h4>
-                        </a>
-                        <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                          <div class="panel-body">
-                            <form data-parsley-validate class="form-horizontal">
-                              <div class="form-group">
-                                <label class="control-label col-md-2 col-sm-2 col-xs-12">Product ID</label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                  <input type="text" name="product_id" class="form-control col-md-7 col-xs-12">
-                                </div>
-                              </div>
-                              <div class="form-group">
-                                <label class="control-label col-md-2 col-sm-2 col-xs-12">Title</label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                  <input type="text" name="title" class="form-control col-md-7 col-xs-12">
-                                </div>
-                              </div>
-                              <div class="form-group">
-                                <label class="control-label col-md-2 col-sm-2 col-xs-12">From Date</label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                  <div class='input-group date datepicker'>
-                                      <span class="input-group-addon">
-                                         <span class="glyphicon glyphicon-calendar"></span>
-                                      </span>
-                                      <input type='text' class="form-control" name="fdate" />
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="form-group">
-                                <label class="control-label col-md-2 col-sm-2 col-xs-12">To Date</label>
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                  <div class='input-group date datepicker'>
-                                      <span class="input-group-addon">
-                                         <span class="glyphicon glyphicon-calendar"></span>
-                                      </span>
-                                      <input type='text' class="form-control" name="tdate" />
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="form-group">
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                  <button id="advanced_search" type="submit" class="btn btn-success">Search</button>
-                                </div>
-                              </div>
-                            </form>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <!-- end of accordion -->
-
-                    <br>
-
-                    <table id="table" class="table table-striped table-bordered bulk_action">
-                      <thead>
-                        <tr>
-                          <th>Action</th>
-                          <th>Product ID</th>
-                          <th>Title</th>
-                          <th>Created On</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-        <!-- /page content -->
-
-        <!-- footer content -->
-        include includes/footer.html
-        <!-- /footer content -->
-      </div>
-    </div>
-
-    <!-- jQuery -->
     <script src="../vendors/jquery/dist/jquery.min.js"></script>
-    <!-- Bootstrap -->
-    <script src="../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
-    <!-- Datatables -->
-    <script src="../vendors/datatables.net/js/jquery.dataTables.min.js"></script>
-    <script src="../vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-    <script src="../vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
-    <script src="../vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
-    <script src="../vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
-    <script src="../vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
-    <script src="../vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
-    <script src="../vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
-    <script src="../vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
-    <script src="../vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
-    <script src="../vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
-    <script src="../vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
-    <!-- bootstrap-datetimepicker -->
+    <script src="../vendors/jquery/dist/popper.js"></script>
+    <script src="../vendors/bootstrap-4/dist/js/bootstrap.min.js"></script>
     <script src="../vendors/moment/min/moment.min.js"></script>
-    <script src="../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
-    <!-- PNotify -->
+    <script src="../vendors/datatables.net/js/jquery.dataTables.js"></script>
+    <script src="../vendors/jquery/dist/jquery.validate.min.js"></script>
     <script src="../vendors/pnotify/dist/pnotify.js"></script>
     <script src="../vendors/pnotify/dist/pnotify.buttons.js"></script>
-
-    <!-- Custom Theme Scripts -->
+    <script src="../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script src="../vendors/summernote/summernote-bs4.js"></script>
+    <script src="../web-js/notify.js"></script>
+    <script src="../vendors/bootstrap-fileinput-master/js/fileinput.js"></script>
+    <script src="../vendors/bootstrap-fileinput-master/themes/fa/theme.js"></script>
     <script src="../build/js/custom.js"></script>
 
-    <!-- others plugins -->
-    <script src="../web-js/notify.js"></script>
-    <script src="../web-js/product.js"></script>
+    <script>
+        var app = {
+            name: "Product",
+            http: {
+                method: 'POST'
+            },
+            mtparam: {
+                status: 'DEFAULT_STATUS'
+            },
+            action: {
+                update: 'Update',
+                insert: 'Insert',
+            },
+            link: {
+                insert: '/product-add',
+                update: '/product-upd',
+                getList: '/product-get-list',
+                getById: '/product-get-info',
+                mtparam: '/admin-get-mt-param-group',
+            },
+            setting: {
+                dateFormat: 'YYYY-MM-DD'
+            },
+        }
 
-include includes/document-foot.html
+        var mtpStatus = getMTParam(app.mtparam.status).then(function (result) {
+            mtpStatus = result.data;
+            initDropdownList('#ddlSearch_Status,#ddlModal_Status', result.data);
+        });
+
+        function init() {
+            initApp();
+            initButton();
+            initModal();
+            initDataTable();
+            initDataTableBehavior();
+            initDateRangePicker();
+            initDateTimePicker();
+            initDropzone();
+            initValidateInput();
+            initWysiwyg();
+            initSizeChange();
+        }
+
+        function initApp() {
+            $('#app_title').text(app.name);
+        }
+
+        function initSizeChange() {
+            height = $('#main_panel').height();
+            window.parent.postMessage({ "height": height }, "*");
+        }
+
+        function initButton() {
+            $("#btnMainSearch").click(function (event) {
+                $("#dtSearch").DataTable().ajax.reload();
+            });
+            $("#btnMainReset").click(function (event) {
+                resetAllSearchInput();
+            });
+            $("#btnMainAdd").click(function (event) {
+                insertRecordMode();
+            });
+            $("#btnModalMainAction").click(function (event) {
+                actionModifyData();
+            });
+            $("#btnModalDismiss").click(function (event) {
+                $('#modalCUWindow').modal('hide')
+            });
+        }
+
+        function initModal() {
+            $('#modalLoad').modal({
+                backdrop: 'static', keyboard: true, show: false
+            });
+            $('#modalCUWindow').modal({
+                backdrop: 'static', keyboard: true, show: false
+            });
+            $('#modalCUWindow').on('hidden.bs.modal', function () {
+                resetAllModalInput();
+            });
+            $('#modalCUWindow').on('show.bs.modal', function () {
+                $('#modalTab li:first-child a').tab('show');
+            });
+        }
+
+        function initDropdownList(target, data) {
+            for (var row = 0; row < data.length; row++) {
+                $(target).append(new Option(data[row].value, data[row].code));
+            }
+        }
+
+        function getMTParam(group) {
+            return new Promise((resolve, reject) => {
+                fetch(app.link.mtparam, { method: app.http.method, body: group })
+                    .then(function (res) {
+                        if (res.ok) {
+                            return res.json();
+                        }
+                    })
+                    .then(function (result) {
+                        return resolve(result);
+                    })
+                    .catch(function (err) {
+                        return reject(err);
+                    })
+            });
+        }
+
+        function initDataTable() {
+            $('#dtSearch').DataTable().destroy();
+            $("#dtSearch").DataTable({
+                paging: true,
+                pageLength: 10,
+                serverSide: true,
+                searching: false,
+                deferLoading: 0,
+                ajax: {
+                    url: app.link.getList,
+                    type: app.http.method,
+                    data: function (dataValue) {
+                        dataValue.rate = $("#ddlSearch_Rate").val();
+                        dataValue.status = $("#ddlSearch_Status").val();
+                    },
+                    beforeSend: function (value) {
+                        $('#modalLoad').modal('show');
+                    },
+                    complete: function () {
+                        $('#modalLoad').modal('hide'); initSizeChange();
+                    },
+                },
+                columns: [
+                    { data: '_id' },
+                    { data: 'name' },
+                    { data: 'status' },
+                    { data: 'email_address' },
+                    { data: 'rate' },
+                ],
+                columnDefs: [
+                    { width: "20%", "targets": 0 },
+                    { width: "20%", "targets": 1 },
+                    { width: "20%", "targets": 2 },
+                    {
+                        width: "20%", "targets": 3, render: function (data, type, row) {
+                            for (var row = 0; row < mtpStatus.length; row++) {
+                                if (mtpStatus[row].code == data) {
+                                    return mtpStatus[row].value;
+                                }
+                            }
+                            return data;
+                        }
+                    },
+                    { width: "20%", "targets": 4 },
+                ],
+                order: [[0, 'desc']]
+            });
+        }
+
+        function initDataTableBehavior() {
+            $('#dtSearch tbody').on('dblclick', 'tr', function () {
+                var data = $('#dtSearch').DataTable().row(this).data();
+                if (typeof data !== "undefined") {
+                    getDetailById(data["_id"]);
+                }
+            });
+        }
+
+        function initDateRangePicker() {
+            $('#dtpSearch_PublishDate,#dtpSearch_UnpublishDate').daterangepicker({
+                autoApply: true,
+                locale: {
+                    format: app.setting.dateFormat
+                }
+            });
+            $('#dtpSearch_PublishDate,#dtpSearch_UnpublishDate').val('');
+        }
+
+        function initDateTimePicker() {
+            $('#dtpModal_PublishDate,#dtpModal_UnpublishDate').datetimepicker({
+                format: app.setting.dateFormat,
+                allowInputToggle: true
+            });
+        }
+
+        function initDropzone() {
+            $("#fuModal_ProductImage").fileinput({
+                theme: "fa",
+                initialPreview: [],
+                initialPreviewAsData: true,
+                initialPreviewConfig: [
+                ],
+                deleteUrl: "/site/file-delete",
+                overwriteInitial: false,
+                maxFileSize: 10000,
+                browseClass: "btn btn-primary btn-block",
+                showCaption: false,
+                showRemove: false,
+                showUpload: false,
+                showDrag: true,
+
+            });
+        }
+
+        function initWysiwyg() {
+            $('#wysModal_Description').summernote({
+                dialogsInBody: true,
+                height: 500,
+                popover: {
+                    image: [],
+                    link: [],
+                    air: []
+                }, toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'italic', 'underline', 'clear']],
+                    ['fontname', ['fontname']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['height', ['height']],
+                    ['table', ['table']],
+                    ['insert', ['link', 'picture', 'hr']]
+                ]
+            });
+        }
+        function initValidateInput() {
+            $("#modalForm").validate({
+                rules: {
+                    txtModal_Name: {
+                        required: true
+                    },
+                    ddlModal_Status: {
+                        required: {
+                            depends: function (element) {
+                                return $("#ddlModal_Status").val() === "";
+                            }
+                        }
+                    },
+                    ddlModal_Rate: {
+                        required: {
+                            depends: function (element) {
+                                return $("#ddlModal_Rate").val() === "";
+                            }
+                        }
+                    }
+                },
+                messages: {
+                    txtModal_Name: {
+                        required: "Please enter name."
+                    },
+                    ddlModal_Status: {
+                        required: "Please select status."
+                    },
+                    ddlModal_Rate: {
+                        required: "Please select rate."
+                    }
+                }
+            });
+        }
+
+        function insertRecordMode() {
+            var mode = app.action.insert;
+            $('#modalTitle').text(mode + ' ' + app.name);
+            $('#btnModalMainActionText').text(mode);
+            disableElement(false);
+            $('#modalCUWindow').modal('show')
+        }
+
+        function updateRecordMode() {
+            var mode = app.action.update;
+            $('#modalTitle').text(mode + ' ' + app.name);
+            $('#btnModalMainActionText').text(mode);
+            disableElement(true);
+            $('#modalCUWindow').modal('show')
+        }
+
+        function disableElement(disable) {
+            $("#txtModal_OrderID").prop("disabled", true);
+            $("#btnModalDownload_Ic").prop("disabled", !disable);
+            $("#btnModalDownload_Card").prop("disabled", !disable);
+            $("#btnModalDownload_Signature").prop("disabled", !disable);
+        }
+
+        function resetAllSearchInput() {
+            $("form#searchForm :input").each(function () {
+                $(this).val('')
+            });
+        }
+
+        function resetAllModalInput() {
+            $("form#modalForm :input").each(function () {
+                $(this).val('')
+            });
+            $('.dropzone').each(function (i, obj) {
+                var tempDz = Dropzone.forElement("#" + obj.id);
+                tempDz.removeAllFiles();
+            });
+            $('#modalForm').validate().resetForm();
+        }
+
+        function getModalFormData() {
+            var formData = new FormData();
+
+            formData.append('id', $("#formId").val());
+            formData.append('name', $("#txtModal_Name").val());
+            formData.append('status', $("#ddlModal_Status").val());
+            formData.append('email_address', $("#txtModal_Email").val());
+            formData.append('rate', $("#ddlModal_Rate").val());
+            formData.append('desc', $("#taModal_Description").val());
+            formData.append('remarks', $("#taModal_Remarks").val());
+
+            return formData;
+        }
+
+        function successHandler(mode) {
+            notify_success(mode + ' successfully.');
+            $('#btnMainSearch').click();
+            $('#modalCUWindow').modal('hide');
+        }
+
+        function editHandler(result) {
+            var data = result.data;
+
+            if (data) {
+                $("#formId").val(data._id);
+                $("#txtModal_Name").val(data.name);
+                $("#ddlModal_Status").val(data.status);
+                $("#txtModal_Email").val(data.email_address);
+                $("#ddlModal_Rate").val(data.rate);
+                $("#taModal_Description").val(data.desc);
+                $("#taModal_Remarks").val(data.remarks);
+                updateRecordMode();
+            }
+        }
+
+        function errorMessageHandler(result) {
+            if (result.error && result.error.length > 0) {
+                notify_err(errors[0].message);
+            } else {
+                notify_server_err();
+            }
+        }
+
+        function getDetailById(id) {
+            $('#modalLoad').modal('show');
+            var formData = new FormData();
+            formData.append('id', id);
+
+            fetch(app.link.getById, { method: app.http.method, body: formData })
+                .then(function (res) {
+                    if (res.ok) {
+                        return res.json();
+                    }
+                    notify_req_failed();
+                })
+                .then(function (result) {
+                    if (result.status_code == '100') {
+                        editHandler(result);
+                    } else {
+                        errorMessageHandler(result);
+                    }
+                })
+                .catch(function (err) {
+                    notify_server_err();
+                })
+                .finally(function () {
+                    $('#modalLoad').modal('hide');
+                });
+        }
+
+        function actionModifyData() {
+            if ($("#modalForm").valid()) {
+                $('#modalLoad').modal('show');
+
+                var mode = $('#btnModalMainActionText').text();
+                var path = (mode === app.action.update ? app.link.update : app.link.insert);
+
+                fetch(path, { method: app.http.method, body: getModalFormData() })
+                    .then(function (res) {
+                        if (res.ok) {
+                            return res.json();
+                        }
+                        notify_req_failed();
+                    })
+                    .then(function (result) {
+                        if (result.status_code == '100') {
+                            successHandler(mode);
+                        } else {
+                            errorMessageHandler(result);
+                        }
+                    })
+                    .catch(function (err) {
+                        notify_server_err();
+                    })
+                    .finally(function () {
+                        $('#modalLoad').modal('hide');
+                    });
+            }
+        }
+
+        $(document).ready(function () {
+            init();
+        });
+    </script>
+</head>
+
+<body>
+    <div id="main_panel" class="x_panel">
+        <div class="x_content mb-2">
+            <!-- ACCORDION START -->
+            <div class="accordion" id="accordion">
+                <div class="panel border">
+                    <a class="panel-heading" role="tab" id="headerPanel" data-toggle="collapse" data-parent="#accordion"
+                        href="#collapsePanel" aria-expanded="false" aria-controls="collapsePanel">
+                        <h4 id="app_title" class="panel-title"><span class="glyphicon glyphicon-chevron-down"
+                                aria-hidden="false"></span></h4>
+                    </a>
+                    <div id="collapsePanel" class="panel-collapse show m-3" role="">
+                        <div class="panel-body">
+                            <form id="searchForm">
+                                <div class="form-group row">
+                                    <label for="txtSearch_ProductID"
+                                        class="col-sm-2 col-form-label col-form-label-sm">Product ID</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control form-control-sm" id="txtSearch_ProductID"
+                                            name="txtSearch_ProductID" placeholder="Product ID">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="txtSearch_ProductName"
+                                        class="col-sm-2 col-form-label col-form-label-sm">Product name</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control form-control-sm"
+                                            id="txtSearch_ProductName" name="txtSearch_ProductName"
+                                            placeholder="Product name">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="ddlSearch_Type"
+                                        class="col-sm-2 col-form-label col-form-label-sm">Type</label>
+                                    <div class="col-sm-10">
+                                        <select id="ddlSearch_Type" class="form-control form-control-sm" name="normal">
+                                            <option value="">Please select</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="ddlSearch_Status"
+                                        class="col-sm-2 col-form-label col-form-label-sm">Status</label>
+                                    <div class="col-sm-10">
+                                        <select id="ddlSearch_Status" class="form-control form-control-sm"
+                                            name="normal">
+                                            <option value="">Please select</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="dtpSearch_PublishDate"
+                                        class="col-sm-2 col-form-label col-form-label-sm">Publish date</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control form-control-sm"
+                                            name="dtpSearch_PublishDate" id="dtpSearch_PublishDate" value=""
+                                            placeholder="Please select" />
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="dtpSearch_UnpublishDate"
+                                        class="col-sm-2 col-form-label col-form-label-sm">Un-Publish date</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control form-control-sm"
+                                            name="dtpSearch_UnpublishDate" id="dtpSearch_UnpublishDate" value=""
+                                            placeholder="Please select" />
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="text-right">
+                                <button id="btnMainReset" class="btn btn-secondary btn-sm"
+                                    id="btnMainReset">Reset</button>
+                                <button id="btnMainSearch" class="btn btn-success btn-sm"
+                                    id="btnMainSearch">Search</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ACCORDION END -->
+        </div>
+
+        <div class="mb-2">
+            <button class="btn btn-success btn-sm" id="btnMainAdd">Add</button>
+        </div>
+
+        <!-- RESULT TABLE START -->
+        <div>
+            <table id="dtSearch" class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Status</th>
+                        <th>Publish date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <!-- RESULT TABLE END -->
+
+        <br />
+        <br />
+        <br />
+        <br />
+    </div>
+
+    <!-- PROMPT MODAL START -->
+    <!-- PROMPT MODAL START -->
+    <!-- PROMPT MODAL START -->
+    <!-- PROMPT MODAL START -->
+    <div class="modal fade bd-example-modal-lg" id="modalCUWindow" tabindex="-1" role="dialog"
+        aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"><span id="modalTitle"></span></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="modalForm">
+                        <input type="hidden" id="formId">
+                        <input type="hidden" id="AddressId">
+                        <div class="form-group row">
+                            <label for="txtModal_ProductID" class="col-sm-2 col-form-label col-form-label-sm">Product
+                                ID</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control form-control-sm" id="txtModal_ProductID"
+                                    name="txtModal_ProductID" placeholder="Product ID">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="txtModal_ProductName" class="col-sm-2 col-form-label col-form-label-sm">Product
+                                name</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control form-control-sm" id="txtModal_ProductName"
+                                    name="txtModal_ProductName" placeholder="Product number">
+                            </div>
+                        </div>
+                        <ul class="nav nav-tabs" id="modalTab">
+                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#detail">Detail</a>
+                            </li>
+                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#image">Image</a>
+                            </li>
+                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#service">Service</a></li>
+                            <li class="nav-item"><a class="nav-link" data-toggle="tab"
+                                    href="#description">Description</a>
+                            </li>
+                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#remarks">Remarks</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div id="detail" class="tab-pane fade mt-4">
+                                <div class="form-group row">
+                                    <label for="ddlModal_Status"
+                                        class="col-sm-2 col-form-label col-form-label-sm">Status</label>
+                                    <div class="col-sm-10">
+                                        <select id="ddlModal_Status" class="form-control form-control-sm"
+                                            name="ddlModal_Status">
+                                            <option value="">Please select</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="ddlModal_Type"
+                                        class="col-sm-2 col-form-label col-form-label-sm">Type</label>
+                                    <div class="col-sm-10">
+                                        <select id="ddlModal_Type" class="form-control form-control-sm"
+                                            name="ddlModal_Type">
+                                            <option value="">Please select</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="dtpModal_PublishDate"
+                                        class="col-sm-2 col-form-label col-form-label-sm">Publish Date</label>
+                                    <div class="col-sm-10">
+                                        <div class='input-group date datepicker' id='dtpModal_PublishDate'>
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                            <input type='text' class="form-control form-control-sm"
+                                                name="dtpModal_PublishDate" placeholder="Please select" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="dtpModal_UnpublishDate"
+                                        class="col-sm-2 col-form-label col-form-label-sm">Un-Publish Date</label>
+                                    <div class="col-sm-10">
+                                        <div class='input-group date datepicker' id='dtpModal_UnpublishDate'>
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                            <input type='text' class="form-control form-control-sm"
+                                                name="dtpModal_UnpublishDate" placeholder="Please select" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="image" class="tab-pane fade mt-4">
+                                <div class="file-loading">
+                                    <input id="fuModal_ProductImage" name="fuModal_ProductImage[]" type="file" multiple>
+                                </div>
+                            </div>
+                            <div id="service" class="tab-pane fade mt-4">
+                            </div>
+                            <div id="description" class="tab-pane fade mt-4">
+                                <div id="wysModal_Description"></div>
+                            </div>
+                            <div id="remarks" class="tab-pane fade mt-4">
+                                <div class="form-group row">
+                                    <label for="taModal_Remarks"
+                                        class="col-sm-2 col-form-label col-form-label-sm">Remarks
+                                        (FOUO)</label>
+                                    <div class="col-sm-10">
+                                        <textarea class="form-control form-control-sm" rows="5" id="taModal_Remarks"
+                                            name="taModal_Remarks" placeholder="Remarks"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" id="btnModalDismiss">Close</button>
+                    <button type="button" class="btn btn-primary btn-sm" id="btnModalMainAction">
+                        <span id="btnModalMainActionText"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- PROMPT MODAL END -->
+    <!-- PROMPT MODAL END -->
+    <!-- PROMPT MODAL END -->
+    <!-- PROMPT MODAL END -->
+
+    <!-- LOADING START -->
+    <!-- LOADING START -->
+    <!-- LOADING START -->
+    <!-- LOADING START -->
+    <div class="modal fade bd-example-modal-sm" id="modalLoad" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- LOADING END -->
+    <!-- LOADING END -->
+    <!-- LOADING END -->
+    <!-- LOADING END -->
+</body>
+
+</html>
