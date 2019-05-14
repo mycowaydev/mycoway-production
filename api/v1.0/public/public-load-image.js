@@ -14,9 +14,10 @@ module.exports = function(req, res) {
 		}
 		if (result) {
 		result = config.getImage(result);
-		console.log(result);
-		req.session['publicProductImage'] = result['image'];	
-		// console.log("log" + req.session['publicProductImage']);
+		// console.log(result);
+		// req.session['publicProductImage'] = result['image'];	
+		localStorage['publicProductImage'] = result['image'];
+		console.log("log" + localStorage['publicProductImage']);
 		let resp = config.getResponse(res, 100, error, { 'image_info': result });
 		config.logApiCall(req, res, resp);
 		return;

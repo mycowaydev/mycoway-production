@@ -176,20 +176,6 @@ module.exports = function (apiVersion) {
             console.error(err)
         }
     });
-
-	router.get('/water-purifier', function (req, res) {
-		let localVar = {
-			product_image: req.session['publicProductImage']
-			//product_image: 'https://res.cloudinary.com/dp1opv9ke/image/upload/v1553603677/coway/healthy-tips/jH35AEN2sVRFp23ta1nwXMae.png'
-		};
-		res.render(path.join(__dirname, '/web/public/water-purifier'), localVar);
-		//res.sendFile(path.join(__dirname, '/web/public/water-purifier.html'));
-	});
-
-//	router.get('/air-purifier', function (req, res) {
-//		res.sendFile(path.join(__dirname, '/web/public/air-purifier.html'));
-//	});
-
 	router.get('*', function (req, res) {
 		res.redirect('/404');
 	});
