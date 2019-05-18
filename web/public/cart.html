@@ -12,7 +12,7 @@
             <div class="container h-100">
                 <div class="blog-banner">
                     <div class="text-center">
-                        <h1>Cart List</h1>
+                        <h1 class="string_cart_list">Cart List</h1>
                     </div>
                 </div>
             </div>
@@ -27,11 +27,11 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th scope="col">Product</th>
-                                    <th scope="col">Payment</th>
-                                    <th scope="col">Payment Type</th>
-                                    <th scope="col">Quantity</th>
-                                    <th scope="col">Total</th>
+                                    <th scope="col" class="string_product">Product</th>
+                                    <th scope="col" class="string_payment">Payment</th>
+                                    <th scope="col" class="string_payment_type">Payment Type</th>
+                                    <th scope="col" class="string_quantity">Quantity</th>
+                                    <th scope="col" class="string_total">Total</th>
                                     <th scope="col"></th>
                                 </tr>
                             </thead>
@@ -56,5 +56,8 @@
         <script src="vendors/mail-script.js"></script>
         <script src="js/main.js"></script>
         <script src="js/cart.js"></script>
+
+        include includes/language
+        include includes/messenger.html
     </body>
 </html>

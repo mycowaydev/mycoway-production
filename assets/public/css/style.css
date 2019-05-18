@@ -3303,7 +3303,7 @@ a {
 	margin-top: 15px
 }
 
-.order_box .list li span {
+.order_box .list li .last {
 	float: right
 }
 
@@ -4781,4 +4781,8 @@ a {
     padding-top: 90px;
     padding-bottom: 55px;
     min-height: 400px;
+}
+
+.dropdown-menu .flag-icon {
+    margin-left: 10px;
 }

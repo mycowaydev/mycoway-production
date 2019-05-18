@@ -12,7 +12,7 @@
         <div class="container h-100">
             <div class="blog-banner">
                 <div class="text-center">
-                    <h1>Order Confirmation</h1>
+                    <h1 class="string_order_confirmation">Order Confirmation</h1>
                 </div>
             </div>
         </div>
@@ -22,22 +22,22 @@
     <!--================Order Details Area =================-->
     <section class="order_details section-margin--small">
         <div class="container">
-            <p class="text-center billing-alert">Thank you. Your order has been received.</p>
+            <p class="text-center billing-alert string_thank_you_order_confirmation">Thank you. Your order has been received.</p>
             <div class="row mb-5">
                 <div class="col-md-6 col-xl-4 mb-4 mb-xl-0">
                     <div class="confirmation-card">
-                        <h3 class="billing-title">Order Info</h3>
+                        <h3 class="billing-title string_order_info">Order Info</h3>
                         <table class="order-rable">
                             <tr>
-                                <td>OrderNo</td>
+                                <td class="string_orderno">OrderNo</td>
                                 <td><div id="order_num"></div></td>
                             </tr>
                             <tr>
-                                <td>Date</td>
+                                <td class="string_date">Date</td>
                                 <td><div id="date"></div></td>
                             </tr>
                             <tr>
-                                <td>Status</td>
+                                <td class="string_status">Status</td>
                                 <td>Processing</td>
                             </tr>
                         </table>
@@ -45,18 +45,18 @@
                 </div>
                 <div class="col-md-6 col-xl-4 mb-4 mb-xl-0">
                     <div class="confirmation-card">
-                        <h3 class="billing-title">Personal Detail</h3>
+                        <h3 class="billing-title string_personal_detail">Personal Detail</h3>
                         <table class="order-rable">
                             <tr>
-                                <td>Phone Number</td>
+                                <td class="string_phone_number">Phone Number</td>
                                 <td><div id="phone_no"></div></td>
                             </tr>
                             <tr>
-                                <td>Emergency Phone Number</td>
+                                <td class="string_emergency_phone_number">Emergency Phone Number</td>
                                 <td><div id="emergency_phone_no"></div></td>
                             </tr>
                             <tr>
-                                <td>Email Address</td>
+                                <td class="string_email_address">Email Address</td>
                                 <td><div id="email"></div></td>
                             </tr>
                         </table>
@@ -64,34 +64,34 @@
                 </div>
                 <div class="col-md-6 col-xl-4 mb-4 mb-xl-0">
                     <div class="confirmation-card">
-                        <h3 class="billing-title">Shipping Address</h3>
+                        <h3 class="billing-title string_shipping_address">Shipping Address</h3>
                         <table class="order-rable">
                             <tr>
-                                <td>First Line</td>
+                                <td class="string_first_line">First Line</td>
                                 <td><div id="first_line"></td>
                             </tr>
                             <tr>
-                                <td>Second Line</td>
+                                <td class="string_second_line">Second Line</td>
                                 <td><div id="second_line"></div></td>
                             </tr>
                             <tr>
-                                <td>Third Line</td>
+                                <td class="string_third_line">Third Line</td>
                                 <td><div id="third_line"></div></td>
                             </tr>
                             <tr>
-                                <td>City</td>
+                                <td class="string_city">City</td>
                                 <td><div id="city"></div></td>
                             </tr>
                             <tr>
-                                <td>Postcode</td>
+                                <td class="string_postcode">Postcode</td>
                                 <td><div id="postcode"></div></td>
                             </tr>
                             <tr>
-                                <td>State</td>
+                                <td class="string_state">State</td>
                                 <td><div id="state"></div></td>
                             </tr>
                             <tr>
-                                <td>Country</td>
+                                <td class="string_country">Country</td>
                                 <td><div id="country"></div></td>
                             </tr>
                         </table>
@@ -99,15 +99,15 @@
                 </div>
             </div>
             <div class="order_details_table">
-                <h2>Order Details</h2>
+                <h2 class="string_order_details">Order Details</h2>
                 <div class="table-responsive">
                     <table class="table">
                         <thead>
                             <tr>
-                                <th scope="col">Product</th>
-                                <th scope="col">Quantity</th>
-                                <th scope="col">Payment Type</th>
-                                <th scope="col">Payment</th>
+                                <th scope="col" class="string_product">Product</th>
+                                <th scope="col" class="string_quantity">Quantity</th>
+                                <th scope="col" class="string_payment_type">Payment Type</th>
+                                <th scope="col" class="string_payment">Payment</th>
                             </tr>
                         </thead>
                         <tbody id="product_list"></tbody>
@@ -129,5 +129,8 @@
     <script src="vendors/mail-script.js"></script>
     <script src="js/main.js"></script>
     <script src="js/order-confirmation.js"></script>
+
+    include includes/language
+    include includes/messenger.html
 </body>
 </html>
