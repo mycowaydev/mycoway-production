@@ -106,12 +106,12 @@ a {
 }
 
 .section-margin--small {
-	margin: 35px
+	margin: 15px
 }
 
 @media (min-width: 1000px) {
 	.section-margin--small {
-		margin: 98px
+		margin: 20px
 	}
 }
 

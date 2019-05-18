@@ -1,0 +1,17 @@
+{
+  "pageTitle": "Water Purifier - Coway",
+  "title": "Water Purifier",
+  "titleDescription": "Enhance your wellbeing.",
+  "pageDescription": "Enjoy a glass of perfection from our series of water dispensers that come with advanced water filtration systems to give you the best purified water.",
+  "setting": {
+    "http": {
+      "method": "POST"
+    },
+    "link": {
+      "getAllProduct": "/public-load-all-product"
+    }
+  },
+  "search": {
+    "type": "W"
+  }
+}
