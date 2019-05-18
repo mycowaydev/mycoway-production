@@ -1,0 +1,22 @@
+{
+  "pageTitle": "Promotion - Coway",
+  "title": "Promotion",
+  "titleDescription": "Get our product with best deal!",
+  "pageDescription": "Best deal just for you, with limited time and unit. Grab one for yourself!",
+  "setting": {
+    "http": {
+      "method": "POST"
+    },
+    "link": {
+      "getAllProduct": "/public-load-all-product"
+    }
+  },
+  "search": {
+    "type": "P"
+  },
+  "error": {
+    "title": "Opsss!",
+    "message": "Our webpage having some issues.",
+    "solution": "Please try again later."
+  }
+}

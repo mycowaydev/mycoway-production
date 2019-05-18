@@ -13,5 +13,10 @@
   },
   "search": {
     "type": "A"
+  },
+  "error": {
+    "title": "Opsss!",
+    "message": "Our webpage having some issues.",
+    "solution": "Please try again later."
   }
 }
