@@ -93,6 +93,13 @@ $(window).load(function(){
     }
 });
 
+function setProductOrder(formData, key, value) {
+    if (value){
+        formData.set(key, value);
+    }
+    return formData;
+}
+
 /** call api **/
 function getModalFormData() {
     var addressFormData = new FormData();
@@ -122,23 +129,24 @@ function getModalFormData() {
 
     var cart_list = JSON.parse(sessionStorage.cart);
     $.each( cart_list , function( index, order_item ){
-        formData.set('order_product[' + index + '][product_id]', order_item.product_id);
-        formData.set('order_product[' + index + '][product_name]', order_item.product_name);
-        formData.set('order_product[' + index + '][quantity]', order_item.quantity);
-        formData.set('order_product[' + index + '][desc]', order_item.desc);
+        setProductOrder(formData, 'order_product[' + index + '][product_id]', order_item.product_id);
+        setProductOrder(formData, 'order_product[' + index + '][product_name]', order_item.product_name);
+        setProductOrder(formData, 'order_product[' + index + '][quantity]', order_item.quantity);
+        setProductOrder(formData, 'order_product[' + index + '][desc]', order_item.desc);
         $.each( order_item.image , function( imageIndex, imageUrl ){
-            formData.set('order_product[' + index + '][image][' + imageIndex + ']', imageUrl);
+            setProductOrder(formData, 'order_product[' + index + '][image][' + imageIndex + ']', imageUrl);
         });
-        formData.set('order_product[' + index + '][payment]', order_item.payment);
-        formData.set('order_product[' + index + '][payment_type]', order_item.payment_type);
+        setProductOrder(formData, 'order_product[' + index + '][price]', order_item.price);
+        setProductOrder(formData, 'order_product[' + index + '][payment]', order_item.payment);
+        setProductOrder(formData, 'order_product[' + index + '][payment_type]', order_item.payment_type);
         $.each( order_item.service , function( serviceIndex, orderService ){
-            formData.set('order_product[' + index + '][service][' + serviceIndex + '][name]', orderService.name);
-            formData.set('order_product[' + index + '][service][' + serviceIndex + '][value]', orderService.value);
-            formData.set('order_product[' + index + '][service][' + serviceIndex + '][unit]', orderService.unit);
-            formData.set('order_product[' + index + '][service][' + serviceIndex + '][per_order_charge]', orderService.per_order_charge);
-            formData.set('order_product[' + index + '][service][' + serviceIndex + '][remarks]', orderService.remarks);
+            setProductOrder(formData, 'order_product[' + index + '][service][' + serviceIndex + '][name]', orderService.name);
+            setProductOrder(formData, 'order_product[' + index + '][service][' + serviceIndex + '][value]', orderService.value);
+            setProductOrder(formData, 'order_product[' + index + '][service][' + serviceIndex + '][unit]', orderService.unit);
+            setProductOrder(formData, 'order_product[' + index + '][service][' + serviceIndex + '][per_order_charge]', orderService.per_order_charge);
+            setProductOrder(formData, 'order_product[' + index + '][service][' + serviceIndex + '][remarks]', orderService.remarks);
         });
-        formData.set('order_product[' + index + '][remarks]', order_item.remarks);
+        setProductOrder(formData, 'order_product[' + index + '][remarks]', order_item.remarks);
     });
 
     return formData;
@@ -173,6 +181,7 @@ function getModalFormDataTesting() {
     formData.set('order_product[0][desc]', 'desc1');
     formData.set('order_product[0][image][0]', 'url1');
     formData.set('order_product[0][image][1]', 'url2');
+    formData.set('order_product[0][price]', 100);
     formData.set('order_product[0][payment]', 1200);
     formData.set('order_product[0][payment_type]', 'rental');
     formData.set('order_product[0][service][0][name]', 'service1');

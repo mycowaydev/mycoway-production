@@ -9,6 +9,7 @@ if (!sessionStorage.cart) {
             'url1',
             'url2'
         ],
+        price: 114.50,
         payment: 120.00,
         payment_type: 'Rental',
         service: [

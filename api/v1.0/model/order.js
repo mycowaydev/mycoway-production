@@ -25,6 +25,7 @@ const orderProductSchema = mongoose.Schema({
     quantity: Number,
     desc: String,
     image: [String],
+    price: Number,
     payment: Number,
     payment_type: String,
     service: [orderProductServiceSchema],
