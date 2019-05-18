@@ -145,8 +145,11 @@
                     url: app.link.getList,
                     type: app.http.method,
                     data: function (dataValue) {
-                        dataValue.rate = $("#ddlSearch_Rate").val();
+                        dataValue.id = $("#txtSearch_OrderID").val();
+                        dataValue.email = $("#txtSearch_Email").val();
+                        dataValue.phone_no = $("#txtSearch_Phone").val();
                         dataValue.status = $("#ddlSearch_Status").val();
+                        dataValue.order_date = $("#dtpSearch_OrderDate").val();
                     },
                     beforeSend: function (value) {
                         $('#modalLoad').modal('show');
@@ -304,7 +307,7 @@
             formData.append('id', $("#formId").val());
             formData.append('name', $("#txtModal_Name").val());
             formData.append('status', $("#ddlModal_Status").val());
-            formData.append('email_address', $("#txtModal_Email").val());
+            formData.append('email', $("#txtModal_Email").val());
             formData.append('rate', $("#ddlModal_Rate").val());
             formData.append('desc', $("#taModal_Description").val());
             formData.append('remarks', $("#taModal_Remarks").val());

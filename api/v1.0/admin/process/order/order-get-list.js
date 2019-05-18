@@ -9,6 +9,7 @@ module.exports = function (req, res) {
 	let filters = config.getFilter(data);
 	let sort = config.getSort(req.body.order, getSortFields());
 
+	console.log("req.body['order_date_from'] :: " + req.body['order_date']);
 	if (error && error.length > 0) {
 		let resp = config.getResponse(res, 200, error, {}, null);
 		config.logApiCall(req, res, resp);
