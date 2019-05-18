@@ -128,54 +128,60 @@ module.exports = function (apiVersion) {
 	});
 
 	router.get('/', function (req, res) {
-	    let localVar = {
-            selected_tab: 'tab-home'
-        };
+		let localVar = {
+			selected_tab: 'tab-home'
+		};
 		res.render(path.join(__dirname, '/web/public/index'), localVar);
 	});
 
 	router.get('/*', function (req, res) {
-	    let page = req.params[0];
+		let page = req.params[0];
 
-        let localVar = {
-            selected_tab: 'tab-home'
-        };
+		let localVar = {
+			selected_tab: 'tab-home'
+		};
 
-	    switch (page) {
-	        case 'index':
-	            localVar['selected_tab'] = 'tab-home';
-	            break;
-	        case 'air-purifier':
-            case 'water-purifier':
-                localVar['selected_tab'] = 'tab-shop';
-                break;
-            case 'promotion':
-                localVar['selected_tab'] = 'tab-promotion';
-                break;
-            case 'order-tracking':
-                localVar['selected_tab'] = 'tab-tracking';
-                break;
-            case 'faq':
-                localVar['selected_tab'] = 'tab-faq';
-                break;
-            default:
-                localVar['selected_tab'] = '';
-                break;
-        }
+		switch (page) {
+			case 'index':
+				localVar['selected_tab'] = 'tab-home';
+				break;
+			case 'air-purifier':
+				req.url = "/product";
+				localVar['selected_tab'] = 'tab-shop';
+				localVar['getJsonFile'] = 'res/air-purifier.json';
+				break;
+			case 'water-purifier':
+				req.url = "/product";
+				localVar['selected_tab'] = 'tab-shop';
+				localVar['getJsonFile'] = 'res/water-purifier.json';
+				break;
+			case 'promotion':
+				localVar['selected_tab'] = 'tab-promotion';
+				break;
+			case 'order-tracking':
+				localVar['selected_tab'] = 'tab-tracking';
+				break;
+			case 'faq':
+				localVar['selected_tab'] = 'tab-faq';
+				break;
+			default:
+				localVar['selected_tab'] = '';
+				break;
+		}
 
-	    let reqFile = path.join(__dirname, `/web/public${req.url}.html`);
-	    let reqFileReal = path.join(__dirname, `/web/public${req.url}`);
+		let reqFile = path.join(__dirname, `/web/public${req.url}.html`);
+		let reqFileReal = path.join(__dirname, `/web/public${req.url}`);
 
-        try {
-            if (fs.existsSync(reqFile)) {
-                res.render(reqFileReal, localVar);
-            } else {
-                res.render(path.join(__dirname, `/web/public/404`));
-            }
-        } catch (err) {
-            console.error(err)
-        }
-    });
+		try {
+			if (fs.existsSync(reqFile)) {
+				res.render(reqFileReal, localVar);
+			} else {
+				res.render(path.join(__dirname, `/web/public/404`));
+			}
+		} catch (err) {
+			console.error(err)
+		}
+	});
 	router.get('*', function (req, res) {
 		res.redirect('/404');
 	});
