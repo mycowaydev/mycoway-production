@@ -78,8 +78,12 @@ function displayFooter(displayFlag) {
 }
 
 function loadProductList(productList) {
-    if(productList.length <= 0) {
-        $('#txtPageDesc').text("We are sorry. No record found.");
+    if (productList.length <= 0) {
+        $('#txtTotalRecord').text("We are sorry. No record found.");
+    } else if (productList.length == 1) {
+        $('#txtTotalRecord').text("Total " + productList.length + " record found.");
+    } else {
+        $('#txtTotalRecord').text("Total " + productList.length + " records found.");
     }
 
     productList.forEach(product => {
@@ -87,7 +91,7 @@ function loadProductList(productList) {
             '<div class="col-md-6 col-lg-4">' +
             '<a href="#"><div class="card text-center card-product">' +
             '<div class= "card-product__img" >' +
-            '<img class="card-img" src="' + product.image[0] + '" onerror="this.src=\'img/imageNotFound.png\'">' +
+            '<img class="card-img" style="height:100; width:100%" src="' + product.image[0] + '" onerror="this.src=\'img/imageNotFound.png\'">' +
             '</div>' +
             '<div class="card-body">' +
             '<h4 class="card-product__title">' + product.name + '</h4>' +
