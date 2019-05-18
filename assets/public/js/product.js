@@ -7,6 +7,7 @@ function setupPage() {
         'dataType': "json",
         'success': function (data) {
             setTitle(data);
+            setErrorMessage(data);
             setElementInfo(data);
             getProductList(data);
         }
@@ -33,46 +34,72 @@ function getProductList(data) {
             if (res.ok) {
                 return res.json();
             }
-            //notify_req_failed();
         })
         .then(function (result) {
             if (result.status_code == '100') {
-                loadProductList(result.data)
+                loadProductList(result.data);
+                showProduct();
             } else {
-                console.log(result);
+                showError();
             }
         })
         .catch(function (err) {
-            console.log(err);
-        })
-        .finally(function () {
-            showPage();
+            showError();
         })
 }
 
-function showPage() {
+function showProduct() {
     document.getElementById("loader").style.display = "none";
     document.getElementById("productPanel").style.display = "block";
-  }
+    displayFooter(true);
+}
+
+function setErrorMessage(data) {
+    $('#txtErrorMessage').text(data.error.title);
+    $('#txtErrorMessageDesc').text(data.error.message);
+    $('#txtErrorPageDesc').text(data.error.solution);
+}
+
+function showError() {
+    document.getElementById("loader").style.display = "none";
+    document.getElementById("messagePanel").style.display = "block";
+    displayFooter(true);
+}
+
+function displayFooter(displayFlag) {
+    if (displayFlag) {
+        document.getElementsByClassName("footer-area footer-only")[0].style.display = "block";
+        document.getElementsByClassName("footer-bottom")[0].style.display = "block";
+    } else {
+        document.getElementsByClassName("footer-area footer-only")[0].style.display = "none";
+        document.getElementsByClassName("footer-bottom")[0].style.display = "none";
+
+    }
+}
+
 function loadProductList(productList) {
+    if(productList.length <= 0) {
+        $('#txtPageDesc').text("We are sorry. No record found.");
+    }
+
     productList.forEach(product => {
         $('#productList').append(
             '<div class="col-md-6 col-lg-4">' +
-            '<div class="card text-center card-product">' +
+            '<a href="#"><div class="card text-center card-product">' +
             '<div class= "card-product__img" >' +
-            '<img class="card-img" src="' + product.image[0] + '" alt="">' +
+            '<img class="card-img" src="' + product.image[0] + '" onerror="this.src=\'img/imageNotFound.png\'">' +
             '</div>' +
             '<div class="card-body">' +
-            '<p>' + product.name + '</p>' +
-            '<h4 class="card-product__title"><a href="#">' + product.name + '</a></h4>' +
+            '<h4 class="card-product__title">' + product.name + '</h4>' +
             '<p class="card-product__price">$150.00</p>' +
             '</div>' +
-            '</div >' +
-            '</div > '
+            '</div></a>' +
+            '</div>'
         );
     });
 }
 
 $(document).ready(function () {
+    displayFooter(false);
     setupPage();
 });
