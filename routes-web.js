@@ -123,28 +123,32 @@ module.exports = function (apiVersion) {
 		}
 	});
 
+	let localVar = {
+        selected_tab: '',
+        getJsonFile: '',
+        order_id: ''
+    };
+
 	router.get('/404', function (req, res) {
-		res.render(path.join(__dirname, '/web/public/404'));
+		res.render(path.join(__dirname, '/web/public/404'), localVar);
 	});
 
 	router.get('/', function (req, res) {
-		let localVar = {
-			selected_tab: 'tab-home'
-		};
-		res.render(path.join(__dirname, '/web/public/index'), localVar);
+        localVar['selected_tab'] = 'tab-home';
+        res.render(path.join(__dirname, '/web/public/index'), localVar);
+    });
+
+	router.get('/order-status?*', function (req, res) {
+	    localVar['order_id'] = req.query.id;
+		res.render(path.join(__dirname, '/web/public/order-status'), localVar);
 	});
 
 	router.get('/*', function (req, res) {
 		let page = req.params[0];
 
-		let localVar = {
-			selected_tab: 'tab-home'
-		};
-
 		switch (page) {
 			case 'index':
 				localVar['selected_tab'] = 'tab-home';
-				localVar['getJsonFile'] = '';
 				break;
 			case 'air-purifier':
 				req.url = "/product";
@@ -163,15 +167,11 @@ module.exports = function (apiVersion) {
 				break;
 			case 'order-tracking':
 				localVar['selected_tab'] = 'tab-tracking';
-				localVar['getJsonFile'] = '';
 				break;
 			case 'faq':
 				localVar['selected_tab'] = 'tab-faq';
-				localVar['getJsonFile'] = '';
 				break;
 			default:
-				localVar['selected_tab'] = '';
-				localVar['getJsonFile'] = '';
 				break;
 		}
 
@@ -188,6 +188,7 @@ module.exports = function (apiVersion) {
 			console.error(err)
 		}
 	});
+
 	router.get('*', function (req, res) {
 		res.redirect('/404');
 	});

@@ -7,12 +7,6 @@ const cloudinary = require('cloudinary');
 const Order = require('../model/order');
 
 module.exports = function (req, res) {
-	/*cloudinary.config({
-		cloud_name: config.CDN['NAME'],
-		api_key: config.CDN['API_KEY'],
-		api_secret: config.CDN['API_SECRET']
-	});*/
-
 	let data = getParam(req);
 	let error = validateParam(req, data);
 
@@ -27,21 +21,21 @@ module.exports = function (req, res) {
 function getParam(req) {
 	var data = {};
 
-	data.id = req.body['id'];
+	data.id = req.body['order_id'];
 
 	return data;
 }
 
 function validateParam(req, data) {
 	let error = [];
-
-//    todo: add validation
-
+    if (config.isEmpty(data.id)) {
+		error.push(config.getErrorResponse('101A008', req));
+	}
 	return error;
 }
 
 function getQuery(data) {
-	let query = { 'id': data.id };
+	let query = { '_id': data.id };
 	return query;
 }
 
@@ -53,7 +47,8 @@ function action(req, res, error, data) {
             config.logApiCall(req, res, resp);
             return;
         }
-        let resp = config.getResponse(res, 100, error, result);
+//        console.log(Object.entries(result._doc.status))
+        let resp = config.getResponse(res, 100, error, result._doc.status);
         config.logApiCall(req, res, resp);
         return;
     });

@@ -158,6 +158,7 @@ function action(req, res, error, data) {
 					}
 					let resp = config.getResponse(res, 100, error, result);
 					config.logApiCall(req, res, resp);
+					// todo send email
 					return callback(null);
 				});
 			}
