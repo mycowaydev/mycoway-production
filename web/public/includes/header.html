@@ -8,7 +8,7 @@
         <nav class="navbar navbar-expand-lg navbar-light">
             <div class="container">
                 <a class="navbar-brand logo_h" href="/"><img alt="" src="img/logo.png"></a>
-                <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbarSupportedContent" data-toggle="collapse" type="button">
+                <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbarSupportedContent" data-toggle="collapse" type="button" id="nav-toggler-button-min">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -27,19 +27,18 @@
                         <li class="nav-item" id="tab-promotion"><a class="nav-link string_promotion" href="promotion">Promotion</a></li>
                         <!--<li class="nav-item" id="tab-tracking"><a class="nav-link" href="order-tracking">Order Tracking</a></li>-->
                         <li class="nav-item" id="tab-faq"><a class="nav-link string_faq" href="faq">FAQ</a></li>
+                        <li class="nav-item nav-hidden" id="tab-cart"><a class="nav-link string_cart" href="cart">Cart</a></li>
+                        <li class="nav-item nav-hidden" id="tab-language"><a class="nav-link" data-toggle="modal" data-target="#myModal" onclick="toggleNav()">Language</a></li>
                     </ul>
-
                     <ul class="nav-shop">
-                        <!--<li class="nav-item">-->
-                            <!--<button><i class="ti-search"></i></button>-->
-                        <!--</li>-->
-                        <li class="nav-item">
-                            <a class="nav-link" href="cart"><button ><i class="ti-shopping-cart"></i><span class="nav-shop__circle">3</span></button></a>
-                        </li>
-                        <!--<li class="nav-item"><a class="button button-header" href="#">Buy Now</a></li>-->
+                        <a class="nav-link" href="cart">
+                            <button>
+                                <i class="ti-shopping-cart"></i>
+                                <span class="nav-shop__circle">3</span>
+                            </button>
+                        </a>
                     </ul>
-
-                    <ul id="language">
+                    <ul id="language" class="nav-language">
                         <li class="dropdown language-selector">
                             <span class="string_language">Language:</span>
                             <a href class="dropdown-toggle" data-toggle="dropdown" data-close-others="true">
@@ -68,9 +67,27 @@
                         </li>
                     </ul>
                 </div>
-                </div>
+
             </div>
         </nav>
     </div>
 </header>
 <!--================ End Header Menu Area =================-->
+
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-body">
+                <a href onclick="changeLanguage('en')">English</a>
+            </div>
+            <div class="modal-body">
+                <a href onclick="changeLanguage('cn')">Chinese</a>
+            </div>
+            <div class="modal-body">
+                <a href onclick="changeLanguage('my')">Malay</a>
+            </div>
+        </div>
+    </div>
+</div>
