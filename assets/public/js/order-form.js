@@ -158,7 +158,7 @@ function getModalFormDataTesting() {
 
     var formData = new FormData();
 
-    formData.set('email', 'hello@email.com');
+    formData.set('email', 'squareq.test1@gmail.com');
     formData.set('status', 'P');
     formData.set('image_ic', 'url');
     formData.set('image_card', 'url');
@@ -197,6 +197,10 @@ function getModalFormDataTesting() {
     formData.set('order_product[0][remarks]', 'remark1');
 
     formData.set('order_product[1][product_id]', 'product_id2');
+    formData.set('order_product[1][product_name]', 'product_name2');
+    formData.set('order_product[1][quantity]', 2);
+    formData.set('order_product[1][payment]', 22200);
+    formData.set('order_product[1][payment_type]', 'rental');
 
     formData.set('order_product[2][product_id]', 'product_id3');
 
@@ -204,7 +208,7 @@ function getModalFormDataTesting() {
 }
 
 function addOrder() {
-    fetch('/user-order-add', { method: 'POST', body: getModalFormData() })
+    fetch('/user-order-add', { method: 'POST', body: getModalFormDataTesting() })
         .then(function (res) {
             if (res.ok) {
                 return res.json();

@@ -37,6 +37,15 @@ module.exports = Object.freeze({
 		API_KEY: isProduction ? process.env['CDN_API_KEY_PRODUCTION'] : process.env['CDN_API_KEY'],
 		API_SECRET: isProduction ? process.env['CDN_API_SECRET_PRODUCTION'] : process.env['CDN_API_SECRET']
 	},
+	MAIL: {
+	    SERVICE: process.env['MAIL_SERVICE'],
+	    HOST: process.env['MAIL_HOST'],
+        USER: process.env['MAIL_USER'],
+        PASSWORD: process.env['MAIL_PASSWORD'],
+        CLIENT_ID: process.env['MAIL_CLIENT_ID'],
+        CLIENT_SECRET: process.env['MAIL_CLIENT_SECRET'],
+        CLIENT_REFRESH_TOKEN: process.env['MAIL_CLIENT_REFRESH_TOKEN']
+    },
 	DB: {
 		URI: process.env['DB_URI'] || process.env['DB_DEVELOPMENT_URI'],
 		TBL_ADMIN: 'tbl_admin',
