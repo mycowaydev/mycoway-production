@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link href="order-form.css" rel="stylesheet" media="all">
+</head>
+<body>
+    <!-- ================ start banner area ================= -->
+    <section class="blog-banner-area" id="category">
+        <div class="container h-100">
+            <div class="blog-banner">
+                <div class="text-center">
+                    <h1 class="string_order_confirmation">Order Confirmation</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ================ end banner area ================= -->
+
+    <!--================Order Details Area =================-->
+    <section class="order_details section-margin--small">
+        <div class="container">
+            <p class="text-center billing-alert string_thank_you_order_confirmation">Thank you. Your order has been received.</p>
+            <div class="row mb-5">
+                <div class="col-md-6 col-xl-4 mb-4 mb-xl-0">
+                    <div class="confirmation-card">
+                        <h3 class="billing-title string_order_info">Order Info</h3>
+                        <table class="order-rable">
+                            <tr>
+                                <td class="string_orderno">OrderNo</td>
+                                <td><div id="order_num">{{order_num}}</div></td>
+                            </tr>
+                            <tr>
+                                <td class="string_date">Date</td>
+                                <td><div id="date">{{date}}</div></td>
+                            </tr>
+                            <tr>
+                                <td class="string_status">Status</td>
+                                <td>Processing</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-4 mb-4 mb-xl-0">
+                    <div class="confirmation-card">
+                        <h3 class="billing-title string_personal_detail">Personal Detail</h3>
+                        <table class="order-rable">
+                            <tr>
+                                <td class="string_phone_number">Phone Number</td>
+                                <td><div id="phone_no">{{phone_no}}</div></td>
+                            </tr>
+                            <tr>
+                                <td class="string_emergency_phone_number">Emergency Phone Number</td>
+                                <td><div id="emergency_phone_no">{{emergency_phone_no}}</div></td>
+                            </tr>
+                            <tr>
+                                <td class="string_email_address">Email Address</td>
+                                <td><div id="email">{{email}}</div></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-4 mb-4 mb-xl-0">
+                    <div class="confirmation-card">
+                        <h3 class="billing-title string_shipping_address">Shipping Address</h3>
+                        <table class="order-rable">
+                            <tr>
+                                <td class="string_first_line">First Line</td>
+                                <td><div id="first_line">{{first_line}}</div></td>
+                            </tr>
+                            <tr>
+                                <td class="string_second_line">Second Line</td>
+                                <td><div id="second_line">{{second_line}}</div></td>
+                            </tr>
+                            <tr>
+                                <td class="string_third_line">Third Line</td>
+                                <td><div id="third_line">{{third_line}}</div></td>
+                            </tr>
+                            <tr>
+                                <td class="string_city">City</td>
+                                <td><div id="city">{{city}}</div></td>
+                            </tr>
+                            <tr>
+                                <td class="string_postcode">Postcode</td>
+                                <td><div id="postcode">{{postcode}}</div></td>
+                            </tr>
+                            <tr>
+                                <td class="string_state">State</td>
+                                <td><div id="state">{{state}}</div></td>
+                            </tr>
+                            <tr>
+                                <td class="string_country">Country</td>
+                                <td><div id="country">{{country}}</div></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="order_details_table">
+                <h2 class="string_order_details">Order Details</h2>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="string_product">Product</th>
+                                <th scope="col" class="string_quantity">Quantity</th>
+                                <th scope="col" class="string_payment_type">Payment Type</th>
+                                <th scope="col" class="string_payment">Payment</th>
+                            </tr>
+                        </thead>
+                        <tbody id="product_list">
+                            {{#each product_list}}
+                                <tr>
+                                    <td>{{product_name}}</td>
+                                    <td>{{quantity}}</td>
+                                    <td>{{payment_type}}</td>
+                                    <td>{{payment}}</td>
+                                </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--================End Order Details Area =================-->
+</body>
+</html>

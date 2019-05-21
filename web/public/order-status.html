@@ -16,7 +16,7 @@
             <div class="container h-100">
                 <div class="blog-banner">
                     <div class="text-center">
-                        <h1>Order Tracking</h1>
+                        <h1>Order Status</h1>
                     </div>
                 </div>
             </div>
@@ -27,18 +27,8 @@
         <section class="tracking_box_area section-margin--small">
             <div class="container">
                 <div class="tracking_box_inner">
-                    <p>To track your order please enter your Order ID in the box below and press the "Track" button. This was given to you on your receipt and in the confirmation email you should have received.</p>
-                    <form class="row tracking_form" action="#" method="post" novalidate="novalidate">
-                        <div class="col-md-12 form-group">
-                            <input type="text" class="form-control" id="order" name="order" placeholder="Order ID" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Order ID'">
-                        </div>
-                        <!--<div class="col-md-12 form-group">-->
-                            <!--<input type="email" class="form-control" id="email" name="email" placeholder="Billing Email Address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Billing Email Address'">-->
-                        <!--</div>-->
-                        <div class="col-md-12 form-group">
-                            <button type="submit" value="submit" class="button button-tracking">Track Order</button>
-                        </div>
-                    </form>
+                    <p><span>Order No: </span> <span id="order_no"></span></p>
+                    <p><span>Order Status: </span> <span id="order_status"></span></p>
                 </div>
             </div>
         </section>
@@ -53,6 +43,13 @@
         <script src="vendors/nice-select/jquery.nice-select.min.js"></script>
         <script src="vendors/jquery.ajaxchimp.min.js"></script>
         <script src="vendors/mail-script.js"></script>
+
+        <!-- server notify api lib -->
+        <script src="../vendors/pnotify/dist/pnotify.js"></script>
+        <script src="../vendors/pnotify/dist/pnotify.buttons.js"></script>
+        <script src="../web-js/notify.js"></script>
+
         <script src="js/main.js"></script>
+        <script src="js/order-status.js"></script>
     </body>
 </html>

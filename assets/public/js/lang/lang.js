@@ -38,3 +38,7 @@ $(document).ready(function(){
     }
     changeLanguage(lang)
 });
+
+function toggleNav(){
+    $('#nav-toggler-button-min').trigger('click');
+}

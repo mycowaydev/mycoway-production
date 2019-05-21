@@ -162,6 +162,10 @@ a {
 	display: inline-block
 }
 
+.header_area .navbar .nav .nav-hidden {
+    display: none;
+}
+
 @media (min-width: 991px) {
 	.header_area .navbar .nav .nav-item .nav-link {
 		padding: 32px 0px
@@ -415,25 +419,25 @@ a {
 	transition: all 0.3s ease 0s
 }
 
-.nav-shop li {
+.nav-shop {
 	display: inline-block;
 	margin-right: 15px
 }
 
-.nav-shop li i,
-.nav-shop li span {
+.nav-shop i,
+.nav-shop span {
 	font-size: 16px;
 	color: #222
 }
 
-.nav-shop li button {
+.nav-shop button {
 	padding: 0;
 	border: 0;
 	background: transparent;
 	position: relative
 }
 
-.nav-shop li button .nav-shop__circle {
+.nav-shop button .nav-shop__circle {
 	font-size: 9px;
 	display: inline-block;
 	background: #384aeb;
@@ -443,10 +447,6 @@ a {
 	position: absolute;
 	top: -8px;
 	right: -12px
-}
-
-.nav-shop li:last-child {
-	margin-left: 40px
 }
 
 @media (max-width: 1619px) {
@@ -474,7 +474,8 @@ a {
 		padding: 0px;
 		cursor: pointer;
 		margin-top: 27px;
-		margin-bottom: 23px
+		margin-bottom: 23px;
+		left: 5px
 	}
 	.header_area .navbar {
 		background: #ffffff
@@ -527,9 +528,15 @@ a {
 		border-bottom: 1px solid #ededed33;
 		border-radius: 0px
 	}
+	.header_area .navbar .nav .nav-hidden {
+        display: inline-block;
+    }
 	.header_area .navbar .nav-shop {
-		padding-bottom: 40px
+	    display: none;
 	}
+	.header_area .navbar .nav-language {
+        display: none;
+    }
 	.header_area .navbar .search {
 		margin-left: 0px
 	}
@@ -4786,4 +4793,21 @@ a {
 
 .dropdown-menu .flag-icon {
     margin-left: 10px;
+}
+
+#pageloader {
+  background: rgba( 255, 255, 255, 0.8 );
+  display: none;
+  height: 100%;
+  position: fixed;
+  width: 100%;
+  z-index: 9999;
+}
+
+#pageloader img {
+  left: 50%;
+  margin-left: -32px;
+  margin-top: -32px;
+  position: absolute;
+  top: 50%;
 }

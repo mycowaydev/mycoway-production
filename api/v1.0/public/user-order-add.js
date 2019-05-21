@@ -6,6 +6,22 @@ const async = require('async');
 const cloudinary = require('cloudinary');
 const Order = require('../model/order');
 
+const nodemailer = require("nodemailer");
+const handlebars = require('handlebars');
+const fs = require('fs');
+
+var readHTMLFile = function(path, callback) {
+    fs.readFile(path, {encoding: 'utf-8'}, function (err, html) {
+        if (err) {
+            throw err;
+            callback(err);
+        }
+        else {
+            callback(null, html);
+        }
+    });
+};
+
 module.exports = function (req, res) {
 	cloudinary.config({
 		cloud_name: config.CDN['NAME'],
@@ -48,106 +64,172 @@ function validateParam(req, data) {
 	return error;
 }
 
+async function sendEmail(order_detail){
+    let transporter;
+
+    if (config.MAIL['SERVICE']=='gmail'){
+        transporter = nodemailer.createTransport({
+            host: config.MAIL['HOST'], //smtp.gmail.com
+            port: 465,
+            secure: true,
+            auth: {
+                type: 'OAuth2',
+                user: config.MAIL['USER'],
+                clientId : config.MAIL['CLIENT_ID'],
+                clientSecret: config.MAIL['CLIENT_SECRET'],
+                refreshToken: config.MAIL['CLIENT_REFRESH_TOKEN']
+            }
+        });
+    } else {
+        transporter = nodemailer.createTransport({
+            host: config.MAIL['HOST'], // smtp-mail.outlook.com
+            secureConnection: false,
+            port: 587,
+            auth: {
+                user: config.MAIL['USER'],
+                pass: config.MAIL['PASSWORD']
+            },
+            tls: {
+                ciphers:'SSLv3'
+            }
+        });
+    }
+
+    readHTMLFile(__dirname + '/order-confirmation-mail.html', function(err, html) {
+        var template = handlebars.compile(html);
+        var replacements = {
+             order_num: order_detail._id,
+             date: order_detail.order_date,
+             phone_no: order_detail.phone_no,
+             emergency_phone_no: order_detail.emergency_no,
+             email: order_detail.email,
+             first_line: order_detail.address.first_line,
+             second_line: order_detail.address.second_line,
+             third_line: order_detail.address.third_line,
+             city: order_detail.address.city,
+             postcode: order_detail.address.postcode,
+             state: order_detail.address.state,
+             country: order_detail.address.country,
+             product_list: order_detail.order_product
+        };
+        var htmlToSend = template(replacements);
+
+        var mailOptions = {
+            from: config.MAIL['USER'],
+            to: order_detail.email,
+            subject: "Coway Order Confirmation",
+            html: htmlToSend
+        };
+        transporter.sendMail(mailOptions, function (error, response) {
+            if (error) {
+                console.log(error);
+            } else if(response.messageId){
+                console.log("Message sent: %s", response.messageId);
+            }
+        });
+    });
+}
+
 function action(req, res, error, data) {
     let insertData = config.appendCommonFields(data, 'ORDER_ADD', 'user', true);
 	async.series(
 		[
-			function (callback) {
-                var image = data.image_ic;
-                if (typeof image !== 'undefined') {
-                    let tmpPath = image.path;
-                    let indexOfSeparator = tmpPath.lastIndexOf("/");
-                    if (indexOfSeparator <= 0) {
-                        indexOfSeparator = tmpPath.lastIndexOf("\\");
-                    }
-                    let indexOfDot = tmpPath.lastIndexOf(".");
-                    if (indexOfDot <= 0) {
-                        indexOfDot = tmpPath.length;
-                    }
-                    let filename = tmpPath.substring(indexOfSeparator + 1, tmpPath.length - (tmpPath.length - indexOfDot));
-                    cloudinary.v2.uploader.upload(tmpPath,
-                        {
-                            public_id: config.GLOBAL['APP_NAME'].toLowerCase() + '/order/' + filename,
-                            resource_type: "auto"
-                        },
-                        function(err, result) {
-                        if (err) {
-                            error.push(config.getErrorResponse('101Z012', req));
-                            let resp = config.getResponse(res, 500, error, {}, err);
-                            config.logApiCall(req, res, resp);
-                            return callback(true);
-                        }
-                        insertData['image_ic'] = result['secure_url'];
-                        return callback(null);
-                    });
-                } else {
-                    return callback(null);
-                }
-			},
-			function (callback) {
-                var image = data.image_card;
-                if (typeof image !== 'undefined') {
-                    let tmpPath = image.path;
-                    let indexOfSeparator = tmpPath.lastIndexOf("/");
-                    if (indexOfSeparator <= 0) {
-                        indexOfSeparator = tmpPath.lastIndexOf("\\");
-                    }
-                    let indexOfDot = tmpPath.lastIndexOf(".");
-                    if (indexOfDot <= 0) {
-                        indexOfDot = tmpPath.length;
-                    }
-                    let filename = tmpPath.substring(indexOfSeparator + 1, tmpPath.length - (tmpPath.length - indexOfDot));
-                    cloudinary.v2.uploader.upload(tmpPath,
-                        {
-                            public_id: config.GLOBAL['APP_NAME'].toLowerCase() + '/order/' + filename,
-                            resource_type: "auto"
-                        },
-                        function(err, result) {
-                        if (err) {
-                            error.push(config.getErrorResponse('101Z012', req));
-                            let resp = config.getResponse(res, 500, error, {}, err);
-                            config.logApiCall(req, res, resp);
-                            return callback(true);
-                        }
-                        insertData['image_card'] = result['secure_url'];
-                        return callback(null);
-                    });
-                } else {
-                    return callback(null);
-                }
-			},
-			function (callback) {
-                var image = data.image_signature;
-                if (typeof image !== 'undefined') {
-                    let tmpPath = image.path;
-                    let indexOfSeparator = tmpPath.lastIndexOf("/");
-                    if (indexOfSeparator <= 0) {
-                        indexOfSeparator = tmpPath.lastIndexOf("\\");
-                    }
-                    let indexOfDot = tmpPath.lastIndexOf(".");
-                    if (indexOfDot <= 0) {
-                        indexOfDot = tmpPath.length;
-                    }
-                    let filename = tmpPath.substring(indexOfSeparator + 1, tmpPath.length - (tmpPath.length - indexOfDot));
-                    cloudinary.v2.uploader.upload(tmpPath,
-                        {
-                            public_id: config.GLOBAL['APP_NAME'].toLowerCase() + '/order/' + filename,
-                            resource_type: "auto"
-                        },
-                        function(err, result) {
-                        if (err) {
-                            error.push(config.getErrorResponse('101Z012', req));
-                            let resp = config.getResponse(res, 500, error, {}, err);
-                            config.logApiCall(req, res, resp);
-                            return callback(true);
-                        }
-                        insertData['image_signature'] = result['secure_url'];
-                        return callback(null);
-                    });
-                } else {
-                    return callback(null);
-                }
-            },
+//			function (callback) {
+//                var image = data.image_ic;
+//                if (typeof image !== 'undefined') {
+//                    let tmpPath = image.path;
+//                    let indexOfSeparator = tmpPath.lastIndexOf("/");
+//                    if (indexOfSeparator <= 0) {
+//                        indexOfSeparator = tmpPath.lastIndexOf("\\");
+//                    }
+//                    let indexOfDot = tmpPath.lastIndexOf(".");
+//                    if (indexOfDot <= 0) {
+//                        indexOfDot = tmpPath.length;
+//                    }
+//                    let filename = tmpPath.substring(indexOfSeparator + 1, tmpPath.length - (tmpPath.length - indexOfDot));
+//                    cloudinary.v2.uploader.upload(tmpPath,
+//                        {
+//                            public_id: config.GLOBAL['APP_NAME'].toLowerCase() + '/order/' + filename,
+//                            resource_type: "auto"
+//                        },
+//                        function(err, result) {
+//                        if (err) {
+//                            error.push(config.getErrorResponse('101Z012', req));
+//                            let resp = config.getResponse(res, 500, error, {}, err);
+//                            config.logApiCall(req, res, resp);
+//                            return callback(true);
+//                        }
+//                        insertData['image_ic'] = result['secure_url'];
+//                        return callback(null);
+//                    });
+//                } else {
+//                    return callback(null);
+//                }
+//			},
+//			function (callback) {
+//                var image = data.image_card;
+//                if (typeof image !== 'undefined') {
+//                    let tmpPath = image.path;
+//                    let indexOfSeparator = tmpPath.lastIndexOf("/");
+//                    if (indexOfSeparator <= 0) {
+//                        indexOfSeparator = tmpPath.lastIndexOf("\\");
+//                    }
+//                    let indexOfDot = tmpPath.lastIndexOf(".");
+//                    if (indexOfDot <= 0) {
+//                        indexOfDot = tmpPath.length;
+//                    }
+//                    let filename = tmpPath.substring(indexOfSeparator + 1, tmpPath.length - (tmpPath.length - indexOfDot));
+//                    cloudinary.v2.uploader.upload(tmpPath,
+//                        {
+//                            public_id: config.GLOBAL['APP_NAME'].toLowerCase() + '/order/' + filename,
+//                            resource_type: "auto"
+//                        },
+//                        function(err, result) {
+//                        if (err) {
+//                            error.push(config.getErrorResponse('101Z012', req));
+//                            let resp = config.getResponse(res, 500, error, {}, err);
+//                            config.logApiCall(req, res, resp);
+//                            return callback(true);
+//                        }
+//                        insertData['image_card'] = result['secure_url'];
+//                        return callback(null);
+//                    });
+//                } else {
+//                    return callback(null);
+//                }
+//			},
+//			function (callback) {
+//                var image = data.image_signature;
+//                if (typeof image !== 'undefined') {
+//                    let tmpPath = image.path;
+//                    let indexOfSeparator = tmpPath.lastIndexOf("/");
+//                    if (indexOfSeparator <= 0) {
+//                        indexOfSeparator = tmpPath.lastIndexOf("\\");
+//                    }
+//                    let indexOfDot = tmpPath.lastIndexOf(".");
+//                    if (indexOfDot <= 0) {
+//                        indexOfDot = tmpPath.length;
+//                    }
+//                    let filename = tmpPath.substring(indexOfSeparator + 1, tmpPath.length - (tmpPath.length - indexOfDot));
+//                    cloudinary.v2.uploader.upload(tmpPath,
+//                        {
+//                            public_id: config.GLOBAL['APP_NAME'].toLowerCase() + '/order/' + filename,
+//                            resource_type: "auto"
+//                        },
+//                        function(err, result) {
+//                        if (err) {
+//                            error.push(config.getErrorResponse('101Z012', req));
+//                            let resp = config.getResponse(res, 500, error, {}, err);
+//                            config.logApiCall(req, res, resp);
+//                            return callback(true);
+//                        }
+//                        insertData['image_signature'] = result['secure_url'];
+//                        return callback(null);
+//                    });
+//                } else {
+//                    return callback(null);
+//                }
+//            },
 			function (callback) {
 				Order.create(insertData, function (err, result) {
 					if (err) {
@@ -158,6 +240,7 @@ function action(req, res, error, data) {
 					}
 					let resp = config.getResponse(res, 100, error, result);
 					config.logApiCall(req, res, resp);
+					sendEmail(result._doc).catch(console.error);
 					return callback(null);
 				});
 			}
