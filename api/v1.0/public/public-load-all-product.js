@@ -42,7 +42,7 @@ function getQuery(data) {
 }
 
 function getField() {
-    let field = {name: true, image: true};
+    let field = {_id: true, name: true, image: true};
     return field;
 }
 

@@ -1,8 +1,8 @@
 {
-  "pageTitle": "Promotion - Coway",
-  "title": "Promotion",
-  "titleDescription": "Get our product with best deal!",
-  "pageDescription": "Best deal just for you, with limited time and unit. Grab one for yourself!",
+  "page": "Promotion - Coway",
+  "pageTitle": "string_promotion",
+  "pageSlogan": "string_promotion_slogan",
+  "pageMessage": "string_promotion_message",
   "setting": {
     "http": {
       "method": "POST"
@@ -13,10 +13,5 @@
   },
   "search": {
     "type": "P"
-  },
-  "error": {
-    "title": "Opsss!",
-    "message": "Our webpage having some issues.",
-    "solution": "Please try again later."
   }
 }

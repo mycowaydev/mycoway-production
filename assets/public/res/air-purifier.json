@@ -1,8 +1,8 @@
 {
-  "pageTitle": "Air Purifier - Coway",
-  "title": "Air Purifier",
-  "titleDescription": "Breathe the freshness.",
-  "pageDescription": "Keep you and your loved ones safe from bacteria, viruses, and haze with our air purifier cleaners that's equipped with HEPA & other anti-virus filters.",
+  "page": "Air Purifier - Coway",
+  "pageTitle": "string_air_purifier",
+  "pageSlogan": "string_air_purifier_slogan",
+  "pageMessage": "string_air_purifier_message",
   "setting": {
     "http": {
       "method": "POST"
@@ -13,10 +13,5 @@
   },
   "search": {
     "type": "A"
-  },
-  "error": {
-    "title": "Opsss!",
-    "message": "Our webpage having some issues.",
-    "solution": "Please try again later."
   }
 }

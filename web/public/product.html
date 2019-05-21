@@ -14,14 +14,14 @@
         <div id="loaderPanel">
             <div id="loader"></div>
         </div>
-        <div id="messagePanel" style="display:none;" class="animate-bottom">
+        <div id="errorPanel" style="display:none;" class="animate-bottom">
             <section class="blog-banner-area" id="category">
                 <div class="container h-100">
                     <div class="blog-banner">
                         <div class="text-center">
-                            <h1 id="txtErrorMessage" style="text-align: center; color: #fff"></h1>
-                            <p id="txtErrorMessageDesc" style="text-align: center; color: #fff"></p>
-                            <p id="txtErrorPageDesc" style="text-align: center; color: #fff"></p>
+                            <h1 class="string_error_title" style="text-align: center; color: #fff"></h1>
+                            <p class="string_error_message" style="text-align: center; color: #fff"></p>
+                            <p class="string_error_solution" style="text-align: center; color: #fff"></p>
                         </div>
                     </div>
                 </div>
@@ -32,9 +32,9 @@
                 <div class="container h-100">
                     <div class="blog-banner">
                         <div class="text-center">
-                            <h1 id="txtTitle" style="text-align: center; color: #fff"></h1>
-                            <p id="txtTitleDesc" style="text-align: center; color: #fff"></p>
-                            <p id="txtPageDesc" style="text-align: center; color: #fff"></p>
+                            <h1 id="txtPageTitle" style="text-align: center; color: #fff"></h1>
+                            <p id="txtPageSlogan" style="text-align: center; color: #fff"></p>
+                            <p id="txtPageMessage" style="text-align: center; color: #fff"></p>
                         </div>
                     </div>
                 </div>
@@ -68,6 +68,9 @@
     <script src="vendors/mail-script.js"></script>
     <script src="js/main.js"></script>
     <script src="js/product.js"></script>
+
+    include includes/language
+    include includes/messenger.html
 </body>
 
 </html>

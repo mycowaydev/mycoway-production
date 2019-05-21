@@ -7,7 +7,6 @@ function setupPage() {
         'dataType': "json",
         'success': function (data) {
             setTitle(data);
-            setErrorMessage(data);
             setElementInfo(data);
             getProductList(data);
         }
@@ -16,13 +15,14 @@ function setupPage() {
 }
 
 function setElementInfo(data) {
-    $('#txtTitle').text(data.title);
-    $('#txtTitleDesc').text(data.titleDescription);
-    $('#txtPageDesc').text(data.pageDescription);
+    $('#txtPageTitle').addClass(data.pageTitle);
+    $('#txtPageSlogan').addClass(data.pageSlogan);
+    $('#txtPageMessage').addClass(data.pageMessage);
+    $('#txtTotalRecord').addClass("string_no_record_found");
 }
 
 function setTitle(data) {
-    document.title = data.pageTitle;
+    document.title = data.page;
 }
 
 function getProductList(data) {
@@ -54,15 +54,9 @@ function showProduct() {
     displayFooter(true);
 }
 
-function setErrorMessage(data) {
-    $('#txtErrorMessage').text(data.error.title);
-    $('#txtErrorMessageDesc').text(data.error.message);
-    $('#txtErrorPageDesc').text(data.error.solution);
-}
-
 function showError() {
     document.getElementById("loader").style.display = "none";
-    document.getElementById("messagePanel").style.display = "block";
+    document.getElementById("errorPanel").style.display = "block";
     displayFooter(true);
 }
 
@@ -78,18 +72,16 @@ function displayFooter(displayFlag) {
 }
 
 function loadProductList(productList) {
-    if (productList.length <= 0) {
-        $('#txtTotalRecord').text("We are sorry. No record found.");
-    } else if (productList.length == 1) {
-        $('#txtTotalRecord').text("Total " + productList.length + " record found.");
-    } else {
-        $('#txtTotalRecord').text("Total " + productList.length + " records found.");
+    if (productList.length == 1) {
+        $('#txtTotalRecord').text( $('#txtPageTitle').text() + ' x ' +  productList.length);
+    } else if (productList.length > 1) {
+        $('#txtTotalRecord').text(productList.length);
     }
 
     productList.forEach(product => {
         $('#productList').append(
             '<div class="col-md-6 col-lg-4">' +
-            '<a href="#"><div class="card text-center card-product">' +
+            '<a href="/product-detail?id=' + product._id + '"><div class="card text-center card-product">' +
             '<div class= "card-product__img" >' +
             '<img class="card-img" style="height:100; width:100%" src="' + product.image[0] + '" onerror="this.src=\'img/imageNotFound.png\'">' +
             '</div>' +

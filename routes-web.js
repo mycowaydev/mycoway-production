@@ -151,6 +151,7 @@ module.exports = function (apiVersion) {
 				localVar['selected_tab'] = 'tab-shop';
 				localVar['getJsonFile'] = 'res/air-purifier.json';
 				break;
+			case 'product':
 			case 'water-purifier':
 				req.url = "/product";
 				localVar['selected_tab'] = 'tab-shop';
@@ -160,6 +161,11 @@ module.exports = function (apiVersion) {
 				req.url = "/product";
 				localVar['selected_tab'] = 'tab-promotion';
 				localVar['getJsonFile'] = 'res/promotion.json';
+				break;
+			case 'product-detail':
+				req.url = "/product-detail";
+				localVar['selected_tab'] = 'tab-shop';
+				localVar['getJsonFile'] = '';
 				break;
 			case 'order-tracking':
 				localVar['selected_tab'] = 'tab-tracking';
@@ -188,6 +194,7 @@ module.exports = function (apiVersion) {
 			console.error(err)
 		}
 	});
+
 	router.get('*', function (req, res) {
 		res.redirect('/404');
 	});
