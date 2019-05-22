@@ -2,7 +2,7 @@
 
 const config = require('../../../config');
 const async = require('async');
-const Order = require('../model/order');
+const MtParam = require('../model/mt-param');
 
 module.exports = function (req, res) {
 	let data = getParam(req);
@@ -18,33 +18,39 @@ module.exports = function (req, res) {
 
 function getParam(req) {
 	var data = {};
-	data.id = req.body['order_id'];
+	data.group = req.body['group'];
+	data.code = req.body['code'];
 	return data;
 }
 
 function validateParam(req, data) {
 	let error = [];
-    if (config.isEmpty(data.id)) {
+    if (config.isEmpty(data.group)) {
 		error.push(config.getErrorResponse('101A008', req));
+	} else if (config.isEmpty(data.code)) {
+        error.push(config.getErrorResponse('101A008', req));
 	}
 	return error;
 }
 
 function getQuery(data) {
-	let query = { '_id': data.id };
+	let query = {
+	    'group': data.group,
+	    'code': data.code
+    };
 	return query;
 }
 
 function action(req, res, error, data) {
-	Order.findOne(getQuery(data), function (err, result) {
+	MtParam.findOne(getQuery(data), function (err, result) {
         if (err) {
             error.push(config.getErrorResponse('101Z012', req));
             let resp = config.getResponse(res, 500, error, {}, err);
             config.logApiCall(req, res, resp);
             return;
         }
-//        console.log(Object.entries(result._doc.status))
-        let resp = config.getResponse(res, 100, error, result._doc.status);
+//        console.log(Object.entries(result._doc.value))
+        let resp = config.getResponse(res, 100, error, result._doc.value);
         config.logApiCall(req, res, resp);
         return;
     });

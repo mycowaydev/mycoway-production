@@ -110,7 +110,8 @@ async function sendEmail(order_detail){
              postcode: order_detail.address.postcode,
              state: order_detail.address.state,
              country: order_detail.address.country,
-             product_list: order_detail.order_product
+             product_list: order_detail.order_product,
+             order_status_url: 'http://localhost:3000/order-status?id=' + order_detail._id
         };
         var htmlToSend = template(replacements);
 

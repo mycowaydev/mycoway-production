@@ -1,6 +1,6 @@
 function getOrderByID(id) {
     var formData = new FormData();
-    formData.append('order_id', id);
+    formData.set('order_id', id);
 
     fetch('/user-order-get-status', { method: 'POST', body: formData })
         .then(function (res) {
@@ -13,8 +13,7 @@ function getOrderByID(id) {
         .then(function (result) {
             if (result.status_code == '100') {
                 notify_success('request successfully.');
-                // todo show meaningful status
-                $('#order_status').html(result.data)
+                getValueByCode(result.data);
             } else {
                 notify_err(errors[0].message);
                 alert( "Request Failed. " + errors[0].message );
@@ -26,6 +25,37 @@ function getOrderByID(id) {
         })
         .finally(function () {
              $("#pageloader").fadeOut();
+        })
+}
+
+function getValueByCode(code) {
+    console.log('debug - code: ' + code);
+    var formData = new FormData();
+    formData.set('group', 'ORDER_STATUS');
+    formData.set('code', code);
+
+    fetch('/user-get-mt-param-value', { method: 'POST', body: formData })
+        .then(function (res) {
+            if (res.ok) {
+                return res.json();
+            }
+            notify_req_failed();
+            alert( "Request Failed.");
+        })
+        .then(function (result) {
+            if (result.status_code == '100') {
+                notify_success('request successfully.');
+                $('#order_status').html(result.data)
+            } else {
+                notify_err(errors[0].message);
+                alert( "Request Failed. " + errors[0].message );
+            }
+        })
+        .catch(function (err) {
+            notify_server_err();
+            alert( "Request Failed.");
+        })
+        .finally(function () {
         })
 }
 
