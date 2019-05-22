@@ -3,28 +3,45 @@
     <head>
         <title>Home - Coway</title>
         include includes/head
+        <link href="css/home.css" rel="stylesheet">
     </head>
     <body>
         include includes/header.html
 
-        <main class="site-main">
-
-            <section class="offer" id="parallax-1" data-anchor-target="#parallax-1">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-xl-5">
-                            <div class="offer__content text-center">
-                                <h3></h3>
-                                <h4 class="string_slogan">Live Pure Together with Us</h4>
-                                <p></p>
-                                <a class="button button--active mt-3 mt-xl-4 string_shop_now" href="water-purifier">Shop Now</a>
+        <div class="modal-display-template modal fade video-modal" id="partial-1m-home-brand-tvc">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a class="btn-close-blue pull-right close-modal" data-dismiss="modal" title="Close">&nbsp;</a>
+                    </div>
+                    <div class="modal-body">
+                        <div class="main-content">
+                            <div class="container youtube-tvc">
+                                <h4 class="sim-row-edit" data-type="title">COWAY 1 MILLION HOMES IN MALAYSIA TVC</h4><br>
+                                <div class="row">
+                                    <div class="col-sm-8 col-sm-offset-2">
+                                        <div class="embed-responsive embed-responsive-16by9 sim-row-edit" data-type="text">
+                                            <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/hRMOmLgDp6w"></iframe>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <main class="site-main">
+
+            <section class="main-banner">
+                <img src="img/coway-1million-home-in-malaysia-text.png" class="main-banner-text">
+                <p>
+                    <a class="btn-rounded sim-row-edit" data-target="#partial-1m-home-brand-tvc" data-type="modals" href="#" title="1 Million Homes In Malaysia Brand TVC" target="" data-anchor="" data-toggle="modal" data-genre="modal" style="margin-right: 7px;" data-titlehash="" tabindex="0">BRAND TVC</a>
+                </p>
             </section>
 
-            <section class="section-margin mt-0">
+            <section class="quick-link-img mt-0 mb-4">
                 <div class="owl-carousel owl-theme hero-carousel">
                     <div class="hero-carousel__slide">
                         <img src="img/coway/water-purifier-intro.jpg" alt="" class="img-fluid">

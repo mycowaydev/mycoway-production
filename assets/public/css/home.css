@@ -1,0 +1,124 @@
+a {
+    cursor: pointer;
+}
+
+.main-banner {
+    text-align: center;
+    background-color: #fff;
+    background-image: url("../img/coway-malaysia-1million-homes-in-malaysia-bg.jpg");
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.main-banner-text {
+    margin-top: 5%;
+    margin-left: 40%;
+    max-width: 40%;
+    height: auto;
+}
+
+.btn-rounded {
+    margin: 5% auto 10% 40%;
+    display: inline-block;
+    padding: 20px 35px;
+    border: 1px solid rgba(70,70,70,.5);
+    color: rgba(70,70,70,.8);
+    font-size: 20px;
+    line-height: 1;
+    background-color: transparent;
+    text-transform: uppercase;
+    -moz-border-radius: 40px;
+    border-radius: 40px;
+    text-align: center;
+    transition: 0.3s;
+}
+
+.btn-rounded:hover {
+  background-color: rgba(70,70,70,.8);
+  color: #fff
+}
+
+@media only screen and (max-width: 600px){
+    .btn-rounded {
+        padding: 12px 20px;
+        font-size: 12px;
+        line-height: inherit;
+    }
+}
+
+.modal-backdrop {
+    opacity:0.5 !important;
+}
+
+.modal-dialog {
+    position: relative;
+    width: auto;
+    max-width: 100%;
+    margin: 150px 20%;
+    pointer-events: none;
+}
+
+.main-content {
+    text-align: center;
+    padding: 20px;
+}
+
+.main-content .row {
+    text-align: center;
+}
+
+.col-sm-8 {
+    -ms-flex: none;
+    flex: none;
+    max-width: none;
+}
+
+.modal-header {
+    display: block;
+    border: 0;
+    background-color: transparent;
+    padding: 0;
+}
+
+.btn-close-blue {
+    width: 32px;
+    height: auto;
+    background-image: url(../img/btn-close-black.png);
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+.pull-right {
+    float: right!important;
+}
+
+.modal-body {
+    padding: none;
+}
+
+.quick-link-img {
+    width: 70%;
+    text-align: center;
+    margin: 0 15% 0 15%;
+}
+
+.hero-carousel__slideOverlay {
+    padding: 23px 50px 23px 23px;
+    right: 0;
+}
+
+@media only screen and (max-width: 900px){
+    .hero-carousel__slideOverlay {
+        padding: 13px 30px 13px 13px;
+    }
+    .hero-carousel__slideOverlay h3 {
+        font-size: 15px;
+    }
+    .hero-carousel__slideOverlay p {
+        font-size: 9px;
+    }
+}
