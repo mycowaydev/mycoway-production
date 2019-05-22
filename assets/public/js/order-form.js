@@ -152,6 +152,40 @@ function getModalFormData() {
     return formData;
 }
 
+function addOrder() {
+    fetch('/user-order-add', { method: 'POST', body: getModalFormData() })
+        .then(function (res) {
+            if (res.ok) {
+                return res.json();
+            }
+            notify_req_failed();
+            alert( "Submit order failed. Please try again." );
+        })
+        .then(function (result) {
+            if (result.status_code == '100') {
+                notify_success('request successfully.');
+                sessionStorage.order_submitted = JSON.stringify(result.data);
+                sessionStorage.removeItem("cart");
+                window.location = '/order-confirmation';
+            } else {
+                if (result.error && result.error.length > 0) {
+                    notify_err(errors[0].message);
+                    alert( "Submit order failed. Please try again." + errors[0].message );
+                } else {
+                    notify_server_err();
+                    alert( "Submit order failed. Please try again." );
+                }
+            }
+        })
+        .catch(function (err) {
+            notify_server_err();
+            alert( "Submit order failed. Please try again." );
+        })
+        .finally(function () {
+            $("#pageloader").fadeOut();
+        });
+}
+
 /** testing purpose **/
 function getModalFormDataTesting() {
     var addressFormData = new FormData();
@@ -207,8 +241,8 @@ function getModalFormDataTesting() {
     return formData;
 }
 
-function addOrder() {
-    fetch('/user-order-add', { method: 'POST', body: getModalFormDataTesting() })
+function addOrderTesting() {
+    fetch('/user-order-add-test', { method: 'POST', body: getModalFormDataTesting() })
         .then(function (res) {
             if (res.ok) {
                 return res.json();
@@ -220,6 +254,7 @@ function addOrder() {
             if (result.status_code == '100') {
                 notify_success('request successfully.');
                 sessionStorage.order_submitted = JSON.stringify(result.data);
+                sessionStorage.removeItem("cart");
                 window.location = '/order-confirmation';
             } else {
                 if (result.error && result.error.length > 0) {

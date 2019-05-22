@@ -1,4 +1,7 @@
-if (!sessionStorage.cart) {
+testing = false;
+
+if (!sessionStorage.cart && testing) {
+    console.log('******* testing ******** add dummy item to session storage cart')
     var cart_list = [];
     var itemA = {
         product_id: '0001',
@@ -6,7 +9,7 @@ if (!sessionStorage.cart) {
         desc: 'can filter water',
         quantity: 2,
         image: [
-            'url1',
+            'https://res.cloudinary.com/dp1opv9ke/image/upload/v1557500225/coway/order/1ip6WsESyXIMm6ZB-etw2alN.jpg',
             'url2'
         ],
         price: 114.50,
@@ -139,7 +142,7 @@ if (sessionStorage.cart) {
                     "<td>" +
                         "<div class='media'>" +
                             "<div class='d-flex'>" +
-                                "<img alt='' src='img/cart/cart1.png'>" +
+                                "<img class='cart-product-img' alt='' src='" + obj.image[0] + "'>" +
                             "</div>" +
                             "<div class='media-body'>" +
                                 "<p>" + obj.product_name + "</p>" +
