@@ -77,5 +77,10 @@ var language_cn = {
     placeholder_city: "市",
     placeholder_postcode: "邮编 例如：99000",
     placeholder_state: "州",
-    placeholder_country: "国家"
+    placeholder_country: "国家",
+    string_continue_shopping: "继续购物",
+    string_proceed_order_detail: "填寫订购信息",
+    string_no_product_selected: "购物车中没有产品。",
+    string_order_no: "订单号",
+    string_order_status: "订单状态"
 }

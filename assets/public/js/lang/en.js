@@ -77,5 +77,10 @@ var language_en = {
     placeholder_city: "City",
     placeholder_postcode: "Postcode e.g. 99000",
     placeholder_state: "State",
-    placeholder_country: "Country"
+    placeholder_country: "Country",
+    string_continue_shopping: "Continue Shopping",
+    string_proceed_order_detail: "Proceed to Order Detail",
+    string_no_product_selected: "No product in cart.",
+    string_order_no: "Order No",
+    string_order_status: "Order Status"
 }

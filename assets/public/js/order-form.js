@@ -37,11 +37,11 @@ var phone_number = document.getElementById("phone_number")
   , emergency_phone_number = document.getElementById("emergency_phone_number");
 
 function validatePassword(){
-  if(phone_number.value == emergency_phone_number.value) {
-    emergency_phone_number.setCustomValidity("Emergency phone number should different from phone number.");
-  } else {
-    emergency_phone_number.setCustomValidity('');
-  }
+    if(phone_number.value == emergency_phone_number.value) {
+        emergency_phone_number.setCustomValidity("Emergency phone number should different from phone number.");
+    } else {
+        emergency_phone_number.setCustomValidity('');
+    }
 }
 
 phone_number.onchange = validatePassword;
