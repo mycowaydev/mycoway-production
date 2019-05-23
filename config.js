@@ -44,7 +44,8 @@ module.exports = Object.freeze({
         PASSWORD: process.env['MAIL_PASSWORD'],
         CLIENT_ID: process.env['MAIL_CLIENT_ID'],
         CLIENT_SECRET: process.env['MAIL_CLIENT_SECRET'],
-        CLIENT_REFRESH_TOKEN: process.env['MAIL_CLIENT_REFRESH_TOKEN']
+        CLIENT_REFRESH_TOKEN: process.env['MAIL_CLIENT_REFRESH_TOKEN'],
+        DOMAIN_SITE: process.env['DOMAIN_SITE']
     },
 	DB: {
 		URI: process.env['DB_URI'] || process.env['DB_DEVELOPMENT_URI'],
