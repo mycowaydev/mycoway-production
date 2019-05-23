@@ -60,7 +60,33 @@ function getParam(req) {
 
 function validateParam(req, data) {
 	let error = [];
-//    todo: add validation
+    if (config.isEmpty(data.email)) {
+        error.push(config.getErrorResponse('101A008 email', req));
+    }
+    if (config.isEmpty(data.image_ic)) {
+        error.push(config.getErrorResponse('101A008 image_ic', req));
+    }
+    if (config.isEmpty(data.image_card)) {
+        error.push(config.getErrorResponse('101A008 image_card', req));
+    }
+    if (config.isEmpty(data.image_signature)) {
+        error.push(config.getErrorResponse('101A008 image_signature', req));
+    }
+    if (config.isEmpty(data.phone_no)) {
+        error.push(config.getErrorResponse('101A008 phone_no', req));
+    }
+    if (config.isEmpty(data.address)) {
+        error.push(config.getErrorResponse('101A008 address', req));
+    }
+    if (config.isEmpty(data.order_product)) {
+        error.push(config.getErrorResponse('101A008 order_product', req));
+    }
+    if (config.isEmpty(data.order_date)) {
+        error.push(config.getErrorResponse('101A008 order_date', req));
+    }
+    if (config.isEmpty(data.status)) {
+        error.push(config.getErrorResponse('101A008 status', req));
+    }
 	return error;
 }
 
