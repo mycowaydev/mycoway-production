@@ -51,3 +51,16 @@ $(document).ready(function() {
         console.log("selected_tab: none");
     }
 });
+
+function refreshCartNumber(){
+    var quantity = Number(0);
+    if (sessionStorage.cart){
+        var cart_list = JSON.parse(sessionStorage.cart);
+        $.each( cart_list , function( index, obj ){
+            quantity = quantity + Number(obj.quantity);
+        })
+    }
+    $('#cart_quantity').html(quantity);
+}
+
+refreshCartNumber();

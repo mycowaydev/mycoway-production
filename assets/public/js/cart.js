@@ -103,6 +103,7 @@ function addQuantity(elementIndex) {
         cart_list[elementIndex].quantity = result.value;
         sessionStorage.cart = JSON.stringify(cart_list);
 	}
+	refreshCartNumber();
 }
 
 function reduceQuantity(elementIndex) {
@@ -115,6 +116,7 @@ function reduceQuantity(elementIndex) {
         cart_list[elementIndex].quantity = result.value;
         sessionStorage.cart = JSON.stringify(cart_list);
     }
+    refreshCartNumber();
 }
 
 function deleteItem(elementIndex) {
