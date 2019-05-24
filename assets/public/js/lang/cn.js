@@ -82,5 +82,6 @@ var language_cn = {
     string_proceed_order_detail: "填寫订购信息",
     string_no_product_selected: "购物车中没有产品。",
     string_order_no: "订单号",
-    string_order_status: "订单状态"
+    string_order_status: "订单状态",
+    string_review: "評分"
 }

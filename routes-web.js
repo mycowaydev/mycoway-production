@@ -177,6 +177,12 @@ module.exports = function (apiVersion) {
 			case 'faq':
 				localVar['selected_tab'] = 'tab-faq';
 				break;
+            case 'cart':
+                localVar['selected_tab'] = 'tab-cart';
+                break;
+            case 'review':
+                localVar['selected_tab'] = 'tab-review';
+                break;
 			default:
 				break;
 		}

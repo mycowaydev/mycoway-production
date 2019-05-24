@@ -82,5 +82,6 @@ var language_en = {
     string_proceed_order_detail: "Proceed to Order Detail",
     string_no_product_selected: "No product in cart.",
     string_order_no: "Order No",
-    string_order_status: "Order Status"
+    string_order_status: "Order Status",
+    string_review: "Review"
 }

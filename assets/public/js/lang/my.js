@@ -82,5 +82,6 @@ var language_my = {
     string_proceed_order_detail: "Teruskan ke Butiran Pesanan",
     string_no_product_selected: "Tiada produk dalam troli",
     string_order_no: "Pesanan No",
-    string_order_status: "Pesanan Status"
+    string_order_status: "Pesanan Status",
+    string_review: "komen"
 }
