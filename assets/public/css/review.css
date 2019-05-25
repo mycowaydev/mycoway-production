@@ -1,0 +1,62 @@
+.content_area {
+    margin: 2% 8% 2% 20%;
+}
+
+.total_rate .box_total {
+	background: #f1f6f7;
+	text-align: center;
+	padding-top: 20px;
+	padding-bottom: 20px
+}
+
+.total_rate .box_total h4 {
+	font-size: 48px;
+	font-weight: bold;
+	color: #384aeb
+}
+
+.total_rate .box_total h5 {
+	color: #333333;
+	margin-bottom: 0px;
+	font-size: 24px
+}
+
+.total_rate .box_total h6 {
+	font-family: "Roboto", sans-serif;
+	margin-bottom: 0px;
+	font-size: 14px;
+	color: #555555;
+	font-weight: normal
+}
+
+.total_rate .rating_list {
+	margin-bottom: 30px
+}
+
+.total_rate .rating_list h3 {
+	font-size: 18px;
+	color: #222;
+	font-weight: 500;
+	margin-bottom: 10px
+}
+
+.total_rate .rating_list .list li a {
+	font-size: 15px;
+	color: #555555
+}
+
+.total_rate .rating_list .list li a i {
+	color: #fbd600
+}
+
+.total_rate .rating_list .list li a i:first-child {
+	margin-left: 15px
+}
+
+.total_rate .rating_list .list li a i:last-child {
+	margin-right: 15px
+}
+
+.total_rate .rating_list .list li:nth-child a i:last-child {
+	color: #eeeeee
+}

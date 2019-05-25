@@ -27,8 +27,8 @@
         <section class="tracking_box_area section-margin--small" style="margin-bottom: 110px;">
             <div class="container">
                 <div class="tracking_box_inner">
-                    <p><span>Order No: </span> <span id="order_no"></span></p>
-                    <p><span>Order Status: </span> <b><span id="order_status"></span></b></p>
+                    <p><span class="string_order_no"></span><span>: </span> <span id="order_no"></span></p>
+                    <p><span class="string_order_status"></span><span>: </span> <b><span id="order_status"></span></b></p>
                 </div>
             </div>
         </section>
@@ -36,20 +36,12 @@
 
         include includes/footer.html
 
-        <script src="vendors/jquery/jquery-3.2.1.min.js"></script>
-        <script src="vendors/bootstrap/bootstrap.bundle.min.js"></script>
-        <script src="vendors/skrollr.min.js"></script>
-        <script src="vendors/owl-carousel/owl.carousel.min.js"></script>
-        <script src="vendors/nice-select/jquery.nice-select.min.js"></script>
-        <script src="vendors/jquery.ajaxchimp.min.js"></script>
-        <script src="vendors/mail-script.js"></script>
+        include includes/script
+        include includes/script-notify
 
-        <!-- server notify api lib -->
-        <script src="../vendors/pnotify/dist/pnotify.js"></script>
-        <script src="../vendors/pnotify/dist/pnotify.buttons.js"></script>
-        <script src="../web-js/notify.js"></script>
-
-        <script src="js/main.js"></script>
         <script src="js/order-status.js"></script>
+
+        include includes/language
+        include includes/messenger.html
     </body>
 </html>

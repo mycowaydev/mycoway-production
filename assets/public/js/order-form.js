@@ -37,11 +37,11 @@ var phone_number = document.getElementById("phone_number")
   , emergency_phone_number = document.getElementById("emergency_phone_number");
 
 function validatePassword(){
-  if(phone_number.value == emergency_phone_number.value) {
-    emergency_phone_number.setCustomValidity("Emergency phone number should different from phone number.");
-  } else {
-    emergency_phone_number.setCustomValidity('');
-  }
+    if(phone_number.value == emergency_phone_number.value) {
+        emergency_phone_number.setCustomValidity("Emergency phone number should different from phone number.");
+    } else {
+        emergency_phone_number.setCustomValidity('');
+    }
 }
 
 phone_number.onchange = validatePassword;
@@ -65,21 +65,11 @@ $(document).ready(function() {
         }
     });
 
-    /***** form submit *****/
-    $( "#order_detail_form" ).submit(function( event ) {
-        event.preventDefault();
-        $("#pageloader").fadeIn();
-        addOrder();
-    });
-});
-
-
-$(window).load(function(){
-    /** tooltips content **/
+    //** tooltips content **//
     $( "#ic_tooltips" ).tooltip({ content: '<img src="res/sample_ic.jpg" />' });
     $( "#card_tooltips" ).tooltip({ content: '<img src="res/sample_card.jpg" />' });
 
-    /** load cart item **/
+    //** load cart item **//
     if (!sessionStorage.cart) {
         $( "#cart-detail" ).text('cart is empty');
         window.location.href = '/cart'
@@ -91,6 +81,13 @@ $(window).load(function(){
             $( "#order_box_ul" ).append(order_line);
         }
     }
+
+    /***** form submit *****/
+    $( "#order_detail_form" ).submit(function( event ) {
+        event.preventDefault();
+        $("#pageloader").fadeIn();
+        addOrder();
+    });
 });
 
 function setProductOrder(formData, key, value) {

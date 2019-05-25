@@ -1,4 +1,4 @@
-testing = false;
+testing = true;
 
 if (!sessionStorage.cart && testing) {
     console.log('******* testing ******** add dummy item to session storage cart')
@@ -66,52 +66,57 @@ if (sessionStorage.cart) {
     console.log('session.cart : ' + JSON.stringify(sessionStorage.cart));
 }
 
-var emptyRowContent = "<tr><td colspan='7'>No product in cart.<td></tr>"
+var emptyRowContent = "<tr><td colspan='7' class='string_no_product_selected'><td></tr>"
+
+function getOrderCharges(name, value, unit) {
+    return "<tr class='shipping_area'>" +
+           "<td class='d-none d-md-block'></td>" +
+           "<td></td>" +
+           "<td></td>" +
+           "<td>" +
+               "<h5>" + name + "</h5>" +
+           "</td>" +
+           "<td colspan='2'>" +
+               "<h7>" + unit + " " + value + "</h7>" +
+           "</td>" +
+       "</tr>"
+}
 
 function getDefaultRowContent() {
-    return "<tr class='shipping_area'>" +
-       "<td class='d-none d-md-block'></td>" +
-       "<td></td>" +
-       "<td></td>" +
-       "<td>" +
-           "<h5>Shipping</h5>" +
-       "</td>" +
-       "<td colspan='2'>" +
-           "<h7>Free</h7>" +
-       "</td>" +
-   "</tr>" +
-   "<tr class='out_button_area'>" +
+    return "<tr class='out_button_area'>" +
        "<td colspan='7'>" +
            "<div class='checkout_btn_inner d-flex align-items-center'>" +
-               "<a class='gray_btn' href='/'>Continue Shopping</a>" +
-               "<a class='primary-btn ml-2'  id='checkout' href='order-form'>Proceed to Order Detail</a>" +
+               "<a class='gray_btn string_continue_shopping' href='/'></a>" +
+               "<a class='primary-btn ml-2 string_proceed_order_detail' id='checkout' href='order-form'></a>" +
            "</div>" +
        "</td>" +
    "</tr>"
 }
 
 function addQuantity(elementIndex) {
-	var result = document.getElementById('sst' + elementIndex);
-	var sst = result.value;
-	if( !isNaN( sst )){
+	var result = document.getElementById('qty' + elementIndex);
+	var qty = result.value;
+	if( !isNaN( qty )){
 	    result.value++;
 
         var cart_list = JSON.parse(sessionStorage.cart);
         cart_list[elementIndex].quantity = result.value;
         sessionStorage.cart = JSON.stringify(cart_list);
 	}
+	refreshCartNumber();
 }
 
 function reduceQuantity(elementIndex) {
-    var result = document.getElementById('sst' + elementIndex);
-    var sst = result.value;
-    if( !isNaN( sst ) && sst > 0 ){
+    var result = document.getElementById('qty' + elementIndex);
+    var qty = result.value;
+    if( !isNaN( qty ) && qty > 0 ){
         result.value--;
 
         var cart_list = JSON.parse(sessionStorage.cart);
         cart_list[elementIndex].quantity = result.value;
         sessionStorage.cart = JSON.stringify(cart_list);
     }
+    refreshCartNumber();
 }
 
 function deleteItem(elementIndex) {
@@ -136,7 +141,15 @@ if (sessionStorage.cart) {
     if (cart_list.length === 0) {
         $('tbody').append(emptyRowContent);
     } else {
+//        var orderChargesStrings = [];
+
         $.each( cart_list , function( index, obj ){
+//            $.each( obj.service , function( index_service, obj_service ){
+//                if (obj_service.per_order_charge){
+//                    orderChargesStrings.push(getOrderCharges(obj_service.name, obj_service.value, obj_service.unit));
+//                }
+//            });
+
             $('tbody').append(
                 "<tr id='cartItemRow" + index + "'>" +
                     "<td>" +
@@ -157,7 +170,7 @@ if (sessionStorage.cart) {
                     "</td>" +
                     "<td>" +
                         "<div class='product_count'>" +
-                            "<input class='input-text qty' id='sst" + index + "' maxlength='12' name='qty' title='Quantity:' type='text' value='" + obj.quantity + "'>" +
+                            "<input class='input-text qty' id='qty" + index + "' maxlength='12' name='qty' title='Quantity:' type='text' value='" + obj.quantity + "'>" +
                             "<button class='increase items-count' onclick=\"addQuantity(" + index + ", " + obj.payment + ")\" type='button'>" +
                                 "<i class='lnr lnr-chevron-up'></i>" +
                             "</button>" +
@@ -173,6 +186,10 @@ if (sessionStorage.cart) {
                 "</tr>"
             );
         });
+
+//        $.each( orderChargesStrings , function( index, obj ){
+//            $('tbody').append(orderChargesStrings);
+//        });
     }
 
     $('tbody').append(getDefaultRowContent());

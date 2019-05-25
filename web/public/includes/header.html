@@ -18,38 +18,33 @@
                 </button>
                 <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
                     <ul class="nav navbar-nav menu_nav ml-auto mr-auto">
-                        <li class="nav-item" id="tab-home"><a class="nav-link string_home" href="/index">Home</a></li>
+                        <li class="nav-item" id="tab-home"><a class="nav-link string_home" href="/index"></a></li>
                         <li class="nav-item submenu dropdown" id="tab-shop">
-                            <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle string_shop"
-                                data-toggle="dropdown" href role="button">Shop</a>
+                            <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle string_shop" data-toggle="dropdown" href role="button"></a>
                             <ul class="dropdown-menu">
-                                <li class="nav-item"><a class="nav-link string_water_purifier"
-                                        href="/water-purifier">Water Purifier</a></li>
-                                <li class="nav-item"><a class="nav-link string_air_purifier" href="/air-purifier">Air
-                                        Purifier</a></li>
+                                <li class="nav-item"><a class="nav-link string_water_purifier" href="/water-purifier"></a></li>
+                                <li class="nav-item"><a class="nav-link string_air_purifier" href="/air-purifier"></a></li>
                             </ul>
                         </li>
 
-                        <li class="nav-item" id="tab-promotion"><a class="nav-link string_promotion"
-                                href="/promotion">Promotion</a></li>
-                        <!--<li class="nav-item" id="tab-tracking"><a class="nav-link" href="order-tracking">Order Tracking</a></li>-->
-                        <li class="nav-item" id="tab-faq"><a class="nav-link string_faq" href="/faq">FAQ</a></li>
-                        <li class="nav-item nav-hidden" id="tab-cart"><a class="nav-link string_cart"
-                                href="cart">Cart</a></li>
-                        <li class="nav-item nav-hidden" id="tab-language"><a class="nav-link string_language"
-                                data-toggle="modal" data-target="#myModal" onclick="toggleNav()">Language</a></li>
+                        <li class="nav-item" id="tab-promotion"><a class="nav-link string_promotion" href="/promotion"></a></li>
+                        <!--<li class="nav-item" id="tab-tracking"><a class="nav-link" href="/order-tracking">Order Tracking</a></li>-->
+                        <li class="nav-item" id="tab-review"><a class="nav-link string_review" href="/review"></a></li>
+                        <li class="nav-item" id="tab-faq"><a class="nav-link string_faq" href="/faq"></a></li>
+                        <li class="nav-item nav-hidden" id="tab-cart"><a class="nav-link string_cart" href="/cart"></a></li>
+                        <li class="nav-item nav-hidden" id="tab-language"><a class="nav-link string_language" data-toggle="modal" data-target="#myModal" onclick="toggleNav()"></a></li>
                     </ul>
                     <ul class="nav-shop">
-                        <a class="nav-link" href="cart">
+                        <a class="nav-link" href="/cart">
                             <button>
                                 <i class="ti-shopping-cart"></i>
-                                <span class="nav-shop__circle">3</span>
+                                <span class="nav-shop__circle" id="cart_quantity">3</span>
                             </button>
                         </a>
                     </ul>
                     <ul id="language" class="nav-language">
                         <li class="dropdown language-selector">
-                            <span class="string_language">Language:</span>
+                            <span class="string_language"></span>
                             <a href class="dropdown-toggle" data-toggle="dropdown" data-close-others="true">
                                 <span id="selected_language" class="flag-icon flag-icon-gb flag-icon-squared"></span>
                             </a>
@@ -57,19 +52,19 @@
                                 <li>
                                     <a href onclick="changeLanguage('en')">
                                         <span class="flag-icon flag-icon-gb flag-icon-squared"></span>
-                                        <span class="string_english">English</span>
+                                        <span class="string_english"></span>
                                     </a>
                                 </li>
                                 <li class="active">
                                     <a href onclick="changeLanguage('cn')">
                                         <span class="flag-icon flag-icon-cn flag-icon-squared"></span>
-                                        <span class="string_chinese">Chinese</span>
+                                        <span class="string_chinese"></span>
                                     </a>
                                 </li>
                                 <li>
                                     <a href onclick="changeLanguage('my')">
                                         <span class="flag-icon flag-icon-my flag-icon-squared"></span>
-                                        <span class="string_malay">Malay</span>
+                                        <span class="string_malay"></span>
                                     </a>
                                 </li>
                             </ul>
@@ -89,13 +84,13 @@
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-body">
-                <a href onclick="changeLanguage('en')">English</a>
+                <a href onclick="changeLanguage('en')" class="string_english"></a>
             </div>
             <div class="modal-body">
-                <a href onclick="changeLanguage('cn')">Chinese</a>
+                <a href onclick="changeLanguage('cn')" class="string_chinese"></a>
             </div>
             <div class="modal-body">
-                <a href onclick="changeLanguage('my')">Malay</a>
+                <a href onclick="changeLanguage('my')" class="string_malay"></a>
             </div>
         </div>
     </div>

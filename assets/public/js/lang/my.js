@@ -77,5 +77,11 @@ var language_my = {
     placeholder_city: "City",
     placeholder_postcode: "Postcode e.g. 99000",
     placeholder_state: "Negeri",
-    placeholder_country: "Negara"
+    placeholder_country: "Negara",
+    string_continue_shopping: "Terus membeli-belah",
+    string_proceed_order_detail: "Teruskan ke Butiran Pesanan",
+    string_no_product_selected: "Tiada produk dalam troli",
+    string_order_no: "Pesanan No",
+    string_order_status: "Pesanan Status",
+    string_review: "komen"
 }

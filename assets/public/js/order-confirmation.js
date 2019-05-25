@@ -31,11 +31,11 @@ $.each( orderProductItems , function( index, obj ){
     );
 });
 
-$('#product_list').append(
-    "<tr>" +
-         "<td><h4>Shipping</h4></td>" +
-         "<td><h5></h5></td>" +
-         "<td><h5></h5></td>" +
-         "<td><p>Free</p></td>" +
-     "</tr>"
-);
+//$('#product_list').append(
+//    "<tr>" +
+//         "<td><h4>Shipping</h4></td>" +
+//         "<td><h5></h5></td>" +
+//         "<td><h5></h5></td>" +
+//         "<td><p>Free</p></td>" +
+//     "</tr>"
+//);
