@@ -169,7 +169,7 @@ module.exports = function (apiVersion) {
 			case 'product-detail':
 				req.url = "/product-detail";
 				localVar['selected_tab'] = 'tab-shop';
-				localVar['getJsonFile'] = '';
+				localVar['getJsonFile'] = 'res/product-detail.json';
 				break;
 			case 'order-tracking':
 				localVar['selected_tab'] = 'tab-tracking';

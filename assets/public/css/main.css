@@ -4174,12 +4174,12 @@ a {
 }
 
 .product_image_area {
-	padding-top: 50px
+	padding-top: 0px
 }
 
 @media (min-width: 1000px) {
 	.product_image_area {
-		padding-top: 100px
+		padding-top: x0px
 	}
 }
 
