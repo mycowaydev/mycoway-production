@@ -1,0 +1,11 @@
+{
+  "page": "Product Detail - Coway",
+  "setting": {
+    "http": {
+      "method": "POST"
+    },
+    "link": {
+      "getProductDetail": "/public-load-product-detail"
+    }
+  }
+}
