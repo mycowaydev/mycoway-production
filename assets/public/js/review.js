@@ -1,3 +1,15 @@
+function updateUserRatingStar(num){
+    var starNum = Number(num);
+    for (i = 1; i < starNum+1; i++) {
+        $("." + i + "-star").removeClass('far fa-star');
+        $("." + i + "-star").addClass('fas fa-star');
+    }
+    for (i = starNum+1; i < 6; i++) {
+        $("." + i + "-star").removeClass('fas fa-star');
+        $("." + i + "-star").addClass('far fa-star');
+    }
+}
+
 function getStar(num){
     var starHtml = "";
     for (i = 0; i < num; i++) {
@@ -13,7 +25,7 @@ function getReviewItem(name, star, comment){
     return "<div class=\"review_item\">" +
         "<div class=\"media\">" +
             "<div class=\"d-flex\">" +
-                "<img src=\"img/product/review-2.png\" alt=\"\">" +
+                "<img src=\"img/coway/unknown_profile.png\" alt=\"\">" +
             "</div>" +
             "<div class=\"media-body\">" +
                 "<h4>" + name + "</h4>" +

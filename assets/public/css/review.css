@@ -60,3 +60,7 @@
 .total_rate .rating_list .list li:nth-child a i:last-child {
 	color: #eeeeee
 }
+
+.review_box li:hover {
+    color: #ffeb7a;
+}
