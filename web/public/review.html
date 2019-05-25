@@ -7,6 +7,7 @@
     </head>
     <body>
         include includes/header.html
+        include includes/loader.html
 
         <section class="content_area">
             <div class="" id="review">
@@ -16,58 +17,68 @@
                             <div class="col-6">
                                 <div class="box_total">
                                     <h5>Overall</h5>
-                                    <h4>4.0</h4>
-                                    <h6>(03 Reviews)</h6>
+                                    <h4 id="overall_rating"></h4>
+                                    <h6>(<span class="review_count"></span> Reviews)</h6>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="rating_list">
-                                    <h3>Based on 3 Reviews</h3>
+                                    <h3>Based on <span class="review_count"></span> Reviews</h3>
                                     <ul class="list">
                                         <li>
-                                            <a href="#">5 Star
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i> 01
+                                            <span>5 Star</span>
+                                            <a href>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
                                             </a>
+                                            <span id="5_star_count"></span>
                                         </li>
                                         <li>
-                                            <a href="#">4 Star
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i> 01
+                                            <span>4 Star</span>
+                                            <a href>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="far fa-star"></i>
                                             </a>
+                                            <span id="4_star_count"></span>
                                         </li>
                                         <li>
-                                            <a href="#">3 Star
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i> 01
+                                            <span>3 Star</span>
+                                            <a href>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
                                             </a>
+                                            <span id="3_star_count"></span>
                                         </li>
                                         <li>
-                                            <a href="#">2 Star
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i> 01
+                                            <span>2 Star</span>
+                                            <a href>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
                                             </a>
+                                            <span id="2_star_count"></span>
                                         </li>
                                         <li>
-                                            <a href="#">1 Star
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i> 01
+                                            <span>1 Star</span>
+                                            <a href>
+                                                <i class="fas fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                <i class="far fa-star"></i>
                                             </a>
+                                            <span id="1_star_count"></span>
                                         </li>
                                     </ul>
                                 </div>
@@ -82,7 +93,7 @@
                             <h4>Add a Review</h4>
                             <p>Your Rating:</p>
                             <ul class="list">
-                                <li><a href="#"><i class="fa fa-star"></i></a></li>
+                                <li><a href="#"><i class="fa fa-star checked"></i></a></li>
                                 <li><a href="#"><i class="fa fa-star"></i></a></li>
                                 <li><a href="#"><i class="fa fa-star"></i></a></li>
                                 <li><a href="#"><i class="fa fa-star"></i></a></li>

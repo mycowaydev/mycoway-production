@@ -39,11 +39,43 @@ function getReviews() {
             if (result.status_code == '100') {
                 notify_success('request successfully.');
 
+                var totalRating = 0;
+                var fiveStarCount = 0;
+                var fourStarCount = 0;
+                var threeStarCount = 0;
+                var twoStarCount = 0;
+                var oneStarCount = 0;
+
+                $('.review_count').html(result.data.length);
                 $.each( result.data , function( index, obj ){
-                    var string = getReviewItem(obj.name, Number(obj.rate), obj.desc);
-                    console.log(string)
-                    $('#review_list').append(string);
+                    $('#review_list').append(getReviewItem(obj.name, Number(obj.rate), obj.desc));
+                    totalRating = totalRating + Number(obj.rate);
+                    switch(Number(obj.rate)) {
+                        case 5:
+                            fiveStarCount = fiveStarCount + 1;
+                            break;
+                        case 4:
+                            fourStarCount = fourStarCount + 1;
+                            break;
+                        case 3:
+                            threeStarCount = threeStarCount + 1;
+                            break;
+                        case 2:
+                            twoStarCount = twoStarCount + 1;
+                            break;
+                        case 1:
+                            oneStarCount = oneStarCount + 1;
+                            break;
+                    }
                 });
+                if (totalRating>0){
+                    $("#overall_rating").html(Number(totalRating/Number(result.data.length)).toFixed(1));
+                }
+                $("#5_star_count").html(fiveStarCount);
+                $("#4_star_count").html(fourStarCount);
+                $("#3_star_count").html(threeStarCount);
+                $("#2_star_count").html(twoStarCount);
+                $("#1_star_count").html(oneStarCount);
             } else {
                 notify_err(errors[0].message);
                 alert( "Request Failed. " + errors[0].message );
@@ -54,7 +86,9 @@ function getReviews() {
             alert( "Request Failed.");
         })
         .finally(function () {
+            $("#pageloader").fadeOut();
         })
 }
 
+$("#pageloader").fadeIn()
 getReviews();
