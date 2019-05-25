@@ -50,30 +50,30 @@
                      <h1 id="txtProductName"><</h1>
                      <h2 id="txtComparePrice">
                         <s>
-                           <span>Original Price : RM</span>
+                           <span class="string_original_price"></span>
                            <span id="txtComparePrice"></span>
                         </s>
                      </h2>
                      <h2 id="oriPrice">
-                        <span>Monthly Rental : RM</span>
+                        <span class="string_rental_price"></span>
                         <span id="txtOriPrice"></span>
                      </h2>
                      <h2 id="purchasePrice">
-                        <span>Retail Price : RM</span>
+                        <span class="string_retail_price"></span>
                         <span id="txtPurchasePrice"></span>
                      </h2>
                      <div class='product_count'>
-                        <span for="qty">Quantity:</span>
-                         <input class='input-text qty' id='txtProductQty' maxlength='3' name='qty' title='Quantity:' type='text' value='1'>
-                         <button class='increase items-count' id="btnIncProductQty" type='button'>
-                             <i class='lnr lnr-chevron-up'></i>
-                         </button>
-                         <button class='reduced items-count' id="btnDecProductQty" type='button'>
-                             <i class='lnr lnr-chevron-down'></i>
-                         </button>
-                     </div>
+                        <span for="qty" class="string_quantity"></span>
+                        <input class='input-text qty' id='txtProductQty' maxlength='3' name='qty' title='Quantity:' type='text' value='1'>
+                        <button class='increase items-count' id="btnIncProductQty" type='button'>
+                           <i class='lnr lnr-chevron-up'></i>
+                        </button>
+                        <button class='reduced items-count' id="btnDecProductQty" type='button'>
+                           <i class='lnr lnr-chevron-down'></i>
+                        </button>
+                        </div>
                      <div>
-                        <button type="button" class="button primary-btn" id="btnAddCart">Add to Cart</button>
+                        <button type="button" class="button primary-btn string_add_to_cart" id="btnAddCart"></button>
                      </div>
                   </div>
                </div>
@@ -86,10 +86,10 @@
          <div class="container">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                <li class="nav-item">
-                  <a class="nav-link active" id="description-tab" data-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="false">Description</a>
+                  <a class="nav-link active string_description" id="description-tab" data-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="false"></a>
                </li>
                <li class="nav-item">
-                  <a class="nav-link" id="gallery-tab" data-toggle="tab" href="#gallery" role="tab" aria-controls="gallery" aria-selected="false">Gallery</a>
+                  <a class="nav-link string_gallery" id="gallery-tab" data-toggle="tab" href="#gallery" role="tab" aria-controls="gallery" aria-selected="false"></a>
                </li>
             </ul>
             <div class="tab-content" id="myTabContent">
@@ -114,14 +114,14 @@
                   <table style="width: 100%">
                      <tr>
                         <td>
-                           <p>Added to your cart.</p>
+                           <p class="string_added_cart"></p>
                         </td>
                      </tr>
                      <tr>
                         <td style="text-align: right">
                            <div>
-                              <a href='/'>Continue Shopping</a>
-                              <a class='gray_btn' href='/cart'>Proceed to Cart</a>
+                              <a class="string_continue_shopping" href='/'></a>
+                              <a class='gray_btn string_proceed_cart' href='/cart'></a>
                            </div>
                         </td>
                      </tr>
