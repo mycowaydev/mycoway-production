@@ -16,18 +16,18 @@
                         <div class="row total_rate">
                             <div class="col-6">
                                 <div class="box_total">
-                                    <h5>Overall</h5>
+                                    <h5 class="string_overall">Overall</h5>
                                     <h4 id="overall_rating"></h4>
-                                    <h6>(<span class="review_count"></span> Reviews)</h6>
+                                    <h6>(<span class="review_count"></span> <span class="string_reviews"></span>)</h6>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="rating_list">
-                                    <h3>Based on <span class="review_count"></span> Reviews</h3>
+                                    <h3><span class="string_based_on"></span> <span class="review_count"></span> <span class="string_reviews"></span></h3>
                                     <ul class="list">
                                         <li>
-                                            <span>5 Star</span>
-                                            <a href>
+                                            <span>5</span> <span class="string_star"></span>
+                                            <a>
                                                 <i class="fas fa-star"></i>
                                                 <i class="fas fa-star"></i>
                                                 <i class="fas fa-star"></i>
@@ -37,8 +37,8 @@
                                             <span id="5_star_count"></span>
                                         </li>
                                         <li>
-                                            <span>4 Star</span>
-                                            <a href>
+                                            <span>4</span> <span class="string_star"></span>
+                                            <a>
                                                 <i class="fas fa-star"></i>
                                                 <i class="fas fa-star"></i>
                                                 <i class="fas fa-star"></i>
@@ -48,8 +48,8 @@
                                             <span id="4_star_count"></span>
                                         </li>
                                         <li>
-                                            <span>3 Star</span>
-                                            <a href>
+                                            <span>3</span> <span class="string_star"></span>
+                                            <a>
                                                 <i class="fas fa-star"></i>
                                                 <i class="fas fa-star"></i>
                                                 <i class="fas fa-star"></i>
@@ -59,8 +59,8 @@
                                             <span id="3_star_count"></span>
                                         </li>
                                         <li>
-                                            <span>2 Star</span>
-                                            <a href>
+                                            <span>2</span> <span class="string_star"></span>
+                                            <a>
                                                 <i class="fas fa-star"></i>
                                                 <i class="fas fa-star"></i>
                                                 <i class="far fa-star"></i>
@@ -70,8 +70,8 @@
                                             <span id="2_star_count"></span>
                                         </li>
                                         <li>
-                                            <span>1 Star</span>
-                                            <a href>
+                                            <span>1</span> <span class="string_star"></span>
+                                            <a>
                                                 <i class="fas fa-star"></i>
                                                 <i class="far fa-star"></i>
                                                 <i class="far fa-star"></i>
@@ -90,8 +90,8 @@
                     </div>
                     <div class="col-lg-6">
                         <div class="review_box">
-                            <h4>Add a Review</h4>
-                            <p>Your Rating:</p>
+                            <h4 class="string_add_review"></h4>
+                            <p><span class="string_your_rating"></span>:</p>
                             <ul class="list">
                                 <li><a onclick="updateUserRatingStar(1)"><i class="far fa-star 1-star"></i></a></li>
                                 <li><a onclick="updateUserRatingStar(2)"><i class="far fa-star 2-star"></i></a></li>
@@ -113,7 +113,7 @@
                                     <textarea class="form-control different-control w-100" name="textarea" id="textarea" cols="30" rows="5" placeholder="Enter Message"></textarea>
                                 </div>
                                 <div class="form-group text-center text-md-right mt-3">
-                                    <button type="submit" class="button button--active button-review">Submit Now</button>
+                                    <button type="submit" class="button button--active button-review string_submit_now"></button>
                                 </div>
                             </form>
                         </div>

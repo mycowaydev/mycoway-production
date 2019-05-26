@@ -92,5 +92,12 @@ var language_my = {
     string_retail_price: "Harga runcit: RM ",
     string_order_no: "Pesanan No",
     string_order_status: "Pesanan Status",
-    string_review: "komen"
+    string_review: "Komen",
+    string_overall: "Keseluruhan",
+    string_reviews: "Komen",
+    string_star: "bintang",
+    string_add_review: "Tambah komen",
+    string_your_rating: "Penilaian Anda",
+    string_submit_now: "Hantar sekarang",
+    string_based_on: "berdasarkan"
 }

@@ -92,5 +92,12 @@ var language_cn = {
     string_retail_price: "零售价: RM ",
     string_order_no: "订单号",
     string_order_status: "订单状态",
-    string_review: "評分"
+    string_review: "評分",
+    string_overall:"总体",
+    string_reviews: "评论",
+    string_star: "星",
+    string_add_review: "添加评论",
+    string_your_rating: "你的评分",
+    string_submit_now: "现在提交",
+    string_based_on: "基于"
 }

@@ -92,5 +92,12 @@ var language_en = {
     string_retail_price: "Retail Price: RM ",
     string_order_no: "Order No",
     string_order_status: "Order Status",
-    string_review: "Review"
+    string_review: "Review",
+    string_overall: "Overall",
+    string_reviews: "Reviews",
+    string_star: "Star",
+    string_add_review: "Add a Review",
+    string_your_rating: "Your Rating",
+    string_submit_now: "Submit Now",
+    string_based_on: "Based on"
 }
