@@ -96,7 +96,7 @@ async function sendEmail(order_detail){
     }
 
     readHTMLFile(__dirname + '/order-confirmation-mail.html', function(err, html) {
-        var date_str = new Date(Number(order_detail.order_date))
+        var date_str = new Date(Number(order_detail.order_date)*1000)
         var template = handlebars.compile(html);
         var replacements = {
              order_num: order_detail._id,
