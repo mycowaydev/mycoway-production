@@ -27,7 +27,7 @@ function getReviewItem(name, star, comment, date){
     return "<div class=\"review_item\">" +
         "<div class=\"media\">" +
             "<div class=\"d-flex\">" +
-                "<img src=\"img/coway/unknown_profile.png\" alt=\"\">" +
+                "<img src=\"https://ui-avatars.com/api/?name=" + name + "&rounded=true\" alt=\"\">" +
             "</div>" +
             "<div class=\"media-body\">" +
                 "<h4>" + name + "</h4>" +
