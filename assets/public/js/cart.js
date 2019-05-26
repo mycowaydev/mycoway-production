@@ -14,7 +14,8 @@ if (!sessionStorage.cart && testing) {
         ],
         price: 114.50,
         payment: 120.00,
-        payment_type: 'Rental',
+        payment_type: 'R',
+        payment_type_value: 'Rental',
         service: [
             {
                 name: 'sst',
@@ -44,7 +45,8 @@ if (!sessionStorage.cart && testing) {
             'url2'
         ],
         payment: 135.00,
-        payment_type: 'Retail',
+        payment_type: 'P',
+        payment_type_value: 'Retail',
         service: [
             {
                 name: 'shipping',
@@ -166,7 +168,7 @@ if (sessionStorage.cart) {
                         "<h5>RM&nbsp;" + obj.payment + "</h5>" +
                     "</td>" +
                     "<td>" +
-                        "<h5>" + obj.payment_type + "</h5>" +
+                        "<h5>" + obj.payment_type_value + "</h5>" +
                     "</td>" +
                     "<td>" +
                         "<div class='product_count'>" +

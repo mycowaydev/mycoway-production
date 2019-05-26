@@ -77,7 +77,7 @@ $(document).ready(function() {
         var cart_list = JSON.parse(sessionStorage.cart);
         for (var cart_item of cart_list) {
             var order_line = "<li>" + cart_item.product_name + " <span class=\"middle\">x " +  cart_item.quantity
-                + "</span> <span class=\"middle\">" + cart_item.payment_type  + "</span> <span class=\"last\">RM " + (cart_item.payment * cart_item.quantity) + "</span></li>"
+                + "</span> <span class=\"middle\">" + cart_item.payment_type_value  + "</span> <span class=\"last\">RM " + (cart_item.payment * cart_item.quantity) + "</span></li>"
             $( "#order_box_ul" ).append(order_line);
         }
     }
@@ -149,8 +149,17 @@ function getModalFormData() {
     return formData;
 }
 
-function addOrder() {
-    fetch('/user-order-add', { method: 'POST', body: getModalFormData() })
+function addOrder(testing) {
+    var formData = new FormData();
+    var apiUrl = '/user-order-add';
+    if (testing){
+        apiUrl = '/user-order-add-test';
+        formData = getModalFormDataTesting()
+    } else {
+        formData = getModalFormData()
+    }
+
+    fetch(apiUrl, { method: 'POST', body: formData })
         .then(function (res) {
             if (res.ok) {
                 return res.json();
@@ -203,7 +212,6 @@ function getModalFormDataTesting() {
     formData.set('address[postcode]', 'postcode' );
     formData.set('address[state]', 'state' );
     formData.set('address[country]', 'country' );
-//    formData.set('order_product', JSON.stringify(sessionStorage.cart));
     formData.set('remarks', 'remark');
 
     formData.set('order_product[0][product_id]', 'product_id1');
@@ -212,62 +220,27 @@ function getModalFormDataTesting() {
     formData.set('order_product[0][desc]', 'desc1');
     formData.set('order_product[0][image][0]', 'url1');
     formData.set('order_product[0][image][1]', 'url2');
-    formData.set('order_product[0][price]', 100);
+    formData.set('order_product[0][price]', 1200);
     formData.set('order_product[0][payment]', 1200);
-    formData.set('order_product[0][payment_type]', 'rental');
-    formData.set('order_product[0][service][0][name]', 'service1');
-    formData.set('order_product[0][service][0][value]', 10);
-    formData.set('order_product[0][service][0][unit]', 'RM');
-    formData.set('order_product[0][service][0][sum_up]', true);
-    formData.set('order_product[0][service][0][remarks]', 'service.remark');
-    formData.set('order_product[0][service][1][name]', 'service1');
-    formData.set('order_product[0][service][1][value]', 10);
-    formData.set('order_product[0][service][1][unit]', 'RM');
-    formData.set('order_product[0][service][1][sum_up]', true);
-    formData.set('order_product[0][service][1][remarks]', 'service.remark');
+    formData.set('order_product[0][payment_type]', 'P');
+//    formData.set('order_product[0][service][0][name]', 'service1');
+//    formData.set('order_product[0][service][0][value]', 10);
+//    formData.set('order_product[0][service][0][unit]', 'RM');
+//    formData.set('order_product[0][service][0][sum_up]', true);
+//    formData.set('order_product[0][service][0][remarks]', 'service.remark');
+//    formData.set('order_product[0][service][1][name]', 'service1');
+//    formData.set('order_product[0][service][1][value]', 10);
+//    formData.set('order_product[0][service][1][unit]', 'RM');
+//    formData.set('order_product[0][service][1][sum_up]', true);
+//    formData.set('order_product[0][service][1][remarks]', 'service.remark');
     formData.set('order_product[0][remarks]', 'remark1');
 
     formData.set('order_product[1][product_id]', 'product_id2');
     formData.set('order_product[1][product_name]', 'product_name2');
     formData.set('order_product[1][quantity]', 2);
+    formData.set('order_product[0][price]', 22200);
     formData.set('order_product[1][payment]', 22200);
-    formData.set('order_product[1][payment_type]', 'rental');
-
-//    formData.set('order_product[2][product_id]', 'product_id3');
+    formData.set('order_product[1][payment_type]', 'R');
 
     return formData;
-}
-
-function addOrderTesting() {
-    fetch('/user-order-add-test', { method: 'POST', body: getModalFormDataTesting() })
-        .then(function (res) {
-            if (res.ok) {
-                return res.json();
-            }
-            notify_req_failed();
-            alert( "Submit order failed. Please try again." );
-        })
-        .then(function (result) {
-            if (result.status_code == '100') {
-                notify_success('request successfully.');
-                sessionStorage.order_submitted = JSON.stringify(result.data);
-                sessionStorage.removeItem("cart");
-                window.location = '/order-confirmation';
-            } else {
-                if (result.error && result.error.length > 0) {
-                    notify_err(errors[0].message);
-                    alert( "Submit order failed. Please try again." + errors[0].message );
-                } else {
-                    notify_server_err();
-                    alert( "Submit order failed. Please try again." );
-                }
-            }
-        })
-        .catch(function (err) {
-            notify_server_err();
-            alert( "Submit order failed. Please try again." );
-        })
-        .finally(function () {
-            $("#pageloader").fadeOut();
-        });
 }

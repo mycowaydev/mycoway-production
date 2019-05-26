@@ -5,6 +5,7 @@ const config = require('../../../config');
 const async = require('async');
 const cloudinary = require('cloudinary');
 const Order = require('../model/order');
+const MtParam = require('../model/mt-param');
 
 const nodemailer = require("nodemailer");
 const handlebars = require('handlebars');
@@ -64,8 +65,17 @@ function validateParam(req, data) {
 	return error;
 }
 
-async function sendEmail(order_detail){
+async function sendEmail(returnedObj){
     let transporter;
+    var order_detail = returnedObj.order;
+    var payment_type_map = returnedObj.payment_type.reduce(function(map, obj) {
+        map[obj.code] = obj.value;
+        return map;
+    }, {});
+
+    order_detail.order_product.forEach(obj => {
+        obj['payment_type_value'] = payment_type_map[obj.payment_type];
+    });
 
     if (config.MAIL['SERVICE']=='gmail'){
         transporter = nodemailer.createTransport({
@@ -133,6 +143,7 @@ async function sendEmail(order_detail){
 }
 
 function action(req, res, error, data) {
+    var returnVal = {};
     let insertData = config.appendCommonFields(data, 'ORDER_ADD', 'user', true);
 	async.series(
 		[
@@ -144,10 +155,20 @@ function action(req, res, error, data) {
 						config.logApiCall(req, res, resp);
 						return callback(true);
 					}
-					let resp = config.getResponse(res, 100, error, result);
-					config.logApiCall(req, res, resp);
-					sendEmail(result._doc).catch(console.error);
-					return callback(null);
+                    returnVal['order'] = result;
+                    MtParam.find({'group': 'PRODUCT_PAYMENT'} , function (err, result) {
+                        if (err) {
+                            error.push(config.getErrorResponse('101Z012', req));
+                            let resp = config.getResponse(res, 500, error, {}, err);
+                            config.logApiCall(req, res, resp);
+                            return;
+                        }
+                        returnVal['payment_type'] = result;
+                        let resp = config.getResponse(res, 100, error, returnVal);
+                        config.logApiCall(req, res, resp);
+					    sendEmail(returnVal).catch(console.error);
+                        return;
+                    });
 				});
 			}
 		]

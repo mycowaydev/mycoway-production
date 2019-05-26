@@ -1,4 +1,11 @@
-var orderList = JSON.parse(sessionStorage.order_submitted)
+var orderReturned = JSON.parse(sessionStorage.order_submitted)
+
+var orderList = orderReturned.order;
+var paymentTypeList = orderReturned.payment_type;
+var paymentTypeMap = paymentTypeList.reduce(function(map, obj) {
+    map[obj.code] = obj.value;
+    return map;
+}, {});
 
 function setElementValue(element, value){
     if(value){
@@ -25,7 +32,7 @@ $.each( orderProductItems , function( index, obj ){
         "<tr>" +
             "<td><h5>" + obj.product_name + "</h5></td>" +
             "<td><p>" +  obj.quantity + "</p></td>" +
-            "<td><p>" + obj.payment_type  + "</p></td>" +
+            "<td><p>" + paymentTypeMap[obj.payment_type]  + "</p></td>" +
             "<td><p>RM " + obj.payment + "</p></td>" +
         "</tr>"
     );
