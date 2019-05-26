@@ -46,7 +46,6 @@ function getProductDetail(data) {
         })
         .then(function (result) {
             if (result.status_code == '100') {
-                console.log(result);
                 loadProductDetail(result.data);
                 showProduct();
             } else {
@@ -100,11 +99,28 @@ function loadProductDetail(productList) {
         });
 
         $('#txtProductName').text(product.name)
-        $('#txtPurchasePrice').text('100.00')
         $('#description').append(product.desc);
+
+        if (product.price.originalPrice)
+            addPriceInfo('string_original_price', product.price.originalPrice, true);
+        if (product.price.retailPrice)
+            addPriceInfo('string_retail_price', product.price.retailPrice, false);
+        if (product.price.rentalPrice)
+            addPriceInfo('string_rental_price', product.price.rentalPrice, false);
 
         productDetail = product;
     });
+}
+
+function addPriceInfo(priceTag, price, strikeFlag) {
+    $('#priceInfo').append(
+        '<h2>' +
+        (strikeFlag ? '<strike>' : '') +
+        '<span>' + getStringById(priceTag) + '</span>' +
+        '<span>' + price + '</span>' +
+        (strikeFlag ? '</strike>' : '') +
+        '</h2 >'
+    );
 }
 
 function inputBehavior() {
@@ -137,6 +153,7 @@ function addToCart() {
         addProductToCart(productDetail);
     }
 
+    refreshCartNumber();
     $('#modalAlertAddCart').modal('show');
     $('#modalAlertAddCart').css('zIndex', 9999);
 }
@@ -156,10 +173,11 @@ function addProductToCart(product) {
         product_id: product._id,
         product_name: product.name,
         quantity: $('#txtProductQty').val(),
-        image: product.image[0],
+        image: product.image,
         price: 100,
         payment: 120.00,
-        payment_type: 'Rental',
+        payment_type: 'R',
+        payment_type_value: 'Rental',
     };
     cartList.push(cart);
 
@@ -177,10 +195,11 @@ function increaseCartQuantity(product) {
                 cart.product_id = product._id;
                 cart.product_name = product.name;
                 cart.quantity = parseInt(cart.quantity) + parseInt($('#txtProductQty').val());
-                cart.image = product.image[0];
+                cart.image = product.image;
                 cart.price = 100;
                 cart.payment = 120;
                 cart.payment_type = 'Rental';
+                cart.payment_type_value = 'Rental';
             }
             newCartList.push(cart);
         });

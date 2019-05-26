@@ -9,17 +9,6 @@
       <!--================ Start Header Menu Area =================-->
        include includes/header.html
       <!--================ End Header Menu Area =================-->
-      <!-- ================ start banner area ================= -->
-      <section class="blog-banner-area" id="category">
-         <div class="container h-100">
-            <div class="blog-banner">
-               <div class="text-center">
-                  <h1 class="string_product_detail"></h1>
-               </div>
-            </div>
-         </div>
-      </section>
-      <!-- ================ end banner area ================= -->
       <!--================Single Product Area =================-->
       <div id="loaderPanel">
          <div id="loader"></div>
@@ -38,7 +27,16 @@
          </section>
       </div>
       <div id="productPanel" style="display:none;" class="animate-bottom">
-      <div class="product_image_area">
+         <section class="blog-banner-area" id="category">
+            <div class="container h-100">
+               <div class="blog-banner">
+                  <div class="text-center">
+                     <h1 class="string_product_detail"></h1>
+                  </div>
+               </div>
+            </div>
+         </section>
+         <div class="product_image_area">
          <div class="container">
             <div class="row s_product_inner">
                <div class="col-lg-6">
@@ -47,21 +45,8 @@
                </div>
                <div class="col-lg-5 offset-lg-1">
                   <div class="s_product_text">
-                     <h1 id="txtProductName"><</h1>
-                     <h2 id="txtComparePrice">
-                        <s>
-                           <span class="string_original_price"></span>
-                           <span id="txtComparePrice"></span>
-                        </s>
-                     </h2>
-                     <h2 id="oriPrice">
-                        <span class="string_rental_price"></span>
-                        <span id="txtOriPrice"></span>
-                     </h2>
-                     <h2 id="purchasePrice">
-                        <span class="string_retail_price"></span>
-                        <span id="txtPurchasePrice"></span>
-                     </h2>
+                     <h1 id="txtProductName"></h1>
+                     <div id="priceInfo"></div>
                      <div class='product_count'>
                         <span for="qty" class="string_quantity"></span>
                         <input class='input-text qty' id='txtProductQty' maxlength='3' name='qty' title='Quantity:' type='text' value='1'>
@@ -79,28 +64,26 @@
                </div>
             </div>
          </div>
-      </div>
-      <!--================End Single Product Area =================-->
-      <!--================Product Description Area =================-->
-      <section class="product_description_area">
-         <div class="container">
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
-               <li class="nav-item">
-                  <a class="nav-link active string_description" id="description-tab" data-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="false"></a>
-               </li>
-               <li class="nav-item">
-                  <a class="nav-link string_gallery" id="gallery-tab" data-toggle="tab" href="#gallery" role="tab" aria-controls="gallery" aria-selected="false"></a>
-               </li>
-            </ul>
-            <div class="tab-content" id="myTabContent">
-               <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
-               </div>
-               <div class="tab-pane fade" id="gallery" role="tabpanel" aria-labelledby="gallery-tab">
+         </div>
+         <section class="product_description_area">
+            <div class="container">
+               <ul class="nav nav-tabs" id="myTab" role="tablist">
+                  <li class="nav-item">
+                     <a class="nav-link active string_description" id="description-tab" data-toggle="tab" href="#description" role="tab" aria-controls="description" aria-selected="false"></a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link string_gallery" id="gallery-tab" data-toggle="tab" href="#gallery" role="tab" aria-controls="gallery" aria-selected="false"></a>
+                  </li>
+               </ul>
+               <div class="tab-content" id="myTabContent">
+                  <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
+                  </div>
+                  <div class="tab-pane fade" id="gallery" role="tabpanel" aria-labelledby="gallery-tab">
 
+                  </div>
                </div>
             </div>
-         </div>
-      </section>
+         </section>
       </div>
       <!--================End Product Description Area =================-->
       <!--======================Alert Modal Area =======================-->
