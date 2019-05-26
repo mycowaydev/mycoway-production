@@ -63,4 +63,10 @@ function refreshCartNumber(){
     $('#cart_quantity').html(quantity);
 }
 
+function getDateFormattedString(epouch){
+    var convertedDate = new Date(epouch);
+    return convertedDate.getFullYear() + "/" + convertedDate.getMonth() + "/" + convertedDate.getDate()
+           + " " + convertedDate.getHours() + ":" + convertedDate.getMinutes();
+}
+
 refreshCartNumber();

@@ -21,7 +21,8 @@ function getStar(num){
     return starHtml;
 }
 
-function getReviewItem(name, star, comment){
+function getReviewItem(name, star, comment, date){
+
     return "<div class=\"review_item\">" +
         "<div class=\"media\">" +
             "<div class=\"d-flex\">" +
@@ -30,6 +31,7 @@ function getReviewItem(name, star, comment){
             "<div class=\"media-body\">" +
                 "<h4>" + name + "</h4>" +
                 getStar(star) +
+                "<h5>" + getDateFormattedString(date) + "</h5>" +
             "</div>" +
         "</div>" +
         "<p>" + comment + "</p>" +
@@ -60,7 +62,7 @@ function getReviews() {
 
                 $('.review_count').html(result.data.length);
                 $.each( result.data , function( index, obj ){
-                    $('#review_list').append(getReviewItem(obj.name, Number(obj.rate), obj.desc));
+                    $('#review_list').append(getReviewItem(obj.name, Number(obj.rate), obj.desc, obj.review_date));
                     totalRating = totalRating + Number(obj.rate);
                     switch(Number(obj.rate)) {
                         case 5:

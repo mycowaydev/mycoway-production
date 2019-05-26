@@ -7,7 +7,7 @@ function setElementValue(element, value){
 }
 
 setElementValue("#order_num", orderList._id);
-setElementValue("#date", orderList.order_date);
+setElementValue("#date", getDateFormattedString(orderList.order_date));
 setElementValue("#phone_no", orderList.phone_no);
 setElementValue("#emergency_phone_no", orderList.emergency_no);
 setElementValue("#email", orderList.email);
