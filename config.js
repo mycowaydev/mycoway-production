@@ -62,6 +62,7 @@ module.exports = Object.freeze({
 		TBL_MENU: 'tbl_menu',
 		TBL_REVIEW: 'tbl_review',
 		TBL_SERVICE: 'tbl_service',
+		TBL_ORDER: 'tbl_order'
 	},
 	translate: function (key, req) {
 		let value;
