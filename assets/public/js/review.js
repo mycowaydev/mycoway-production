@@ -1,4 +1,5 @@
 function updateUserRatingStar(num){
+    $("#reviewer_rate").val(Number(num))
     var starNum = Number(num);
     for (i = 1; i < starNum+1; i++) {
         $("." + i + "-star").removeClass('far fa-star');
@@ -104,5 +105,53 @@ function getReviews() {
         })
 }
 
-$("#pageloader").fadeIn()
+function addReview(){
+    $("#pageloader").fadeIn();
+
+    var formData = new FormData();
+    formData.append('name', $("#reviewer_name").val());
+    formData.append('status', 'P');
+    formData.append('email_address', $("#reviewer_email").val());
+    formData.append('rate', $("#reviewer_rate").val());
+    formData.append('desc', $("#reviewer_desc").val());
+    formData.append('remarks', '');
+
+    fetch('/user-review-add', { method: 'POST', body: formData })
+        .then(function (res) {
+            if (res.ok) {
+                return res.json();
+            }
+            notify_req_failed();
+            alert( "Submit Review failed. Please try again." );
+        })
+        .then(function (result) {
+            if (result.status_code == '100') {
+                notify_success('request successfully.');
+                alert( "Your review had been send to us and we will take it seriously." );
+            } else {
+                if (result.error && result.error.length > 0) {
+                    notify_err(errors[0].message);
+                    alert( "Submit Review failed. Please try again." + errors[0].message );
+                } else {
+                    notify_server_err();
+                    alert( "Submit Review failed. Please try again." );
+                }
+            }
+        })
+        .catch(function (err) {
+            notify_server_err();
+            alert( "Submit Review failed. Please try again." );
+        })
+        .finally(function () {
+            $("#pageloader").fadeOut();
+        });
+}
+
+$( "#review_form" ).submit(function( event ) {
+    event.preventDefault();
+    addReview();
+});
+
+$("#pageloader").fadeIn();
+updateUserRatingStar(5);
 getReviews();

@@ -98,19 +98,21 @@
                                 <li><a onclick="updateUserRatingStar(3)"><i class="far fa-star 3-star"></i></a></li>
                                 <li><a onclick="updateUserRatingStar(4)"><i class="far fa-star 4-star"></i></a></li>
                                 <li><a onclick="updateUserRatingStar(5)"><i class="far fa-star 5-star"></i></a></li>
+
                             </ul>
-                            <form action="#/" class="form-contact form-review mt-3">
+                            <form class="form-contact form-review mt-3" id="review_form" method="POST">
                                 <div class="form-group">
-                                    <input class="form-control" name="name" type="text" placeholder="Enter your name" required>
+                                    <input class="form-control" name="name" type="text" placeholder="Enter your name" id="reviewer_name" required>
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" name="email" type="email" placeholder="Enter email address" required>
+                                    <input class="form-control" name="email" type="email" placeholder="Enter email address" id="reviewer_email" required>
                                 </div>
+                                <input class="form-control" type="number" id="reviewer_rate" hidden>
+                                <!--<div class="form-group">-->
+                                    <!--<input class="form-control" name="subject" type="text" placeholder="Enter Subject">-->
+                                <!--</div>-->
                                 <div class="form-group">
-                                    <input class="form-control" name="subject" type="text" placeholder="Enter Subject">
-                                </div>
-                                <div class="form-group">
-                                    <textarea class="form-control different-control w-100" name="textarea" id="textarea" cols="30" rows="5" placeholder="Enter Message"></textarea>
+                                    <textarea class="form-control different-control w-100" name="textarea" id="reviewer_desc" cols="30" rows="5" placeholder="Enter Message" required></textarea>
                                 </div>
                                 <div class="form-group text-center text-md-right mt-3">
                                     <button type="submit" class="button button--active button-review string_submit_now"></button>
