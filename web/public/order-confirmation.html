@@ -3,6 +3,7 @@
 <head>
     <title>Order Confirmation - Coway</title>
     include includes/head
+    <link href="css/order-confirmation.css" rel="stylesheet" media="all">
 </head>
 <body>
     include includes/header.html
@@ -27,14 +28,14 @@
                 <div class="col-md-6 col-xl-4 mb-4 mb-xl-0">
                     <div class="confirmation-card">
                         <h3 class="billing-title string_order_info"></h3>
-                        <table class="order-rable">
+                        <table class="order-table">
                             <tr>
                                 <td class="string_orderno"></td>
-                                <td><div id="order_num"></div></td>
+                                <td><span id="order_num"></span></td>
                             </tr>
                             <tr>
                                 <td class="string_date"></td>
-                                <td><div id="date"></div></td>
+                                <td><span id="date"></span></td>
                             </tr>
                             <tr>
                                 <td class="string_status"></td>
@@ -46,18 +47,18 @@
                 <div class="col-md-6 col-xl-4 mb-4 mb-xl-0">
                     <div class="confirmation-card">
                         <h3 class="billing-title string_personal_detail"></h3>
-                        <table class="order-rable">
+                        <table class="order-table">
                             <tr>
                                 <td class="string_phone_number"></td>
-                                <td><div id="phone_no"></div></td>
+                                <td><span id="phone_no"></span></td>
                             </tr>
                             <tr>
                                 <td class="string_emergency_phone_number"></td>
-                                <td><div id="emergency_phone_no"></div></td>
+                                <td><span id="emergency_phone_no"></span></td>
                             </tr>
                             <tr>
                                 <td class="string_email_address"></td>
-                                <td><div id="email"></div></td>
+                                <td><span id="email"></span></td>
                             </tr>
                         </table>
                     </div>
@@ -65,34 +66,34 @@
                 <div class="col-md-6 col-xl-4 mb-4 mb-xl-0">
                     <div class="confirmation-card">
                         <h3 class="billing-title string_shipping_address"></h3>
-                        <table class="order-rable">
+                        <table class="order-table">
                             <tr>
                                 <td class="string_first_line"></td>
-                                <td><div id="first_line"></td>
+                                <td><span id="first_line"></span></td>
                             </tr>
                             <tr>
                                 <td class="string_second_line"></td>
-                                <td><div id="second_line"></div></td>
+                                <td><span id="second_line"></span></td>
                             </tr>
                             <tr>
                                 <td class="string_third_line"></td>
-                                <td><div id="third_line"></div></td>
+                                <td><span id="third_line"></span></td>
                             </tr>
                             <tr>
                                 <td class="string_city"></td>
-                                <td><div id="city"></div></td>
+                                <td><span id="city"></span></td>
                             </tr>
                             <tr>
                                 <td class="string_postcode"></td>
-                                <td><div id="postcode"></div></td>
+                                <td><span id="postcode"></span></td>
                             </tr>
                             <tr>
                                 <td class="string_state"></td>
-                                <td><div id="state"></div></td>
+                                <td><span id="state"></span></td>
                             </tr>
                             <tr>
                                 <td class="string_country"></td>
-                                <td><div id="country"></div></td>
+                                <td><span id="country"></span></td>
                             </tr>
                         </table>
                     </div>
