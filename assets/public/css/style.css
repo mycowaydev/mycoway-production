@@ -2987,12 +2987,12 @@ a {
 }
 
 .order_details_table .table tbody tr:last-child td {
-	border-top: 1px solid #ddd;
+	/*border-top: 1px solid #ddd;*/
 	padding-bottom: 0
 }
 
 .order_details_table .table tbody tr:last-child td p {
-	color: #222
+	/*color: #222*/
 }
 
 .tracking_box_area .tracking_box_inner p {
@@ -3510,11 +3510,11 @@ a {
 }
 
 .order_details_table .table tbody tr:last-child td {
-	border-top: 1px solid #ddd
+	/*border-top: 1px solid #ddd*/
 }
 
 .order_details_table .table tbody tr:last-child td p {
-	color: #222
+	/*color: #222*/
 }
 
 .radion_btn input[type=radio] {

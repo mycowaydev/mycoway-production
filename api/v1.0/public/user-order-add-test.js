@@ -96,10 +96,11 @@ async function sendEmail(order_detail){
     }
 
     readHTMLFile(__dirname + '/order-confirmation-mail.html', function(err, html) {
+        var date_str = new Date(Number(order_detail.order_date))
         var template = handlebars.compile(html);
         var replacements = {
              order_num: order_detail._id,
-             date: order_detail.order_date,
+             date: date_str,
              phone_no: order_detail.phone_no,
              emergency_phone_no: order_detail.emergency_no,
              email: order_detail.email,
@@ -111,7 +112,7 @@ async function sendEmail(order_detail){
              state: order_detail.address.state,
              country: order_detail.address.country,
              product_list: order_detail.order_product,
-             order_status_url: 'http://localhost:3000/order-status?id=' + order_detail._id
+             order_status_url: config.MAIL['DOMAIN_SITE'] + 'order-status?id=' + order_detail._id
         };
         var htmlToSend = template(replacements);
 

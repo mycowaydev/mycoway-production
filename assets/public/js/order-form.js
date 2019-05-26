@@ -233,7 +233,7 @@ function getModalFormDataTesting() {
     formData.set('order_product[1][payment]', 22200);
     formData.set('order_product[1][payment_type]', 'rental');
 
-    formData.set('order_product[2][product_id]', 'product_id3');
+//    formData.set('order_product[2][product_id]', 'product_id3');
 
     return formData;
 }

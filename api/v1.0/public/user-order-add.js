@@ -122,10 +122,11 @@ async function sendEmail(order_detail){
     }
 
     readHTMLFile(__dirname + '/order-confirmation-mail.html', function(err, html) {
+        var date_str = new Date(Number(order_detail.order_date))
         var template = handlebars.compile(html);
         var replacements = {
              order_num: order_detail._id,
-             date: order_detail.order_date,
+             date: date_str,
              phone_no: order_detail.phone_no,
              emergency_phone_no: order_detail.emergency_no,
              email: order_detail.email,
