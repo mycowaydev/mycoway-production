@@ -13,7 +13,6 @@ function getOrderByID(id) {
         .then(function (result) {
             if (result.status_code == '100') {
                 notify_success('request successfully.');
-                // todo show success text
             } else {
                 notify_err(errors[0].message);
                 alert( "Request Failed. " + errors[0].message );

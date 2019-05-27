@@ -48,7 +48,7 @@ function getReviews() {
                 return res.json();
             }
             notify_req_failed();
-            alert( "Request Failed.");
+            alert(getStringById('alert_request_review_fail'));
         })
         .then(function (result) {
             if (result.status_code == '100') {
@@ -93,12 +93,12 @@ function getReviews() {
                 $("#1_star_count").html(oneStarCount);
             } else {
                 notify_err(errors[0].message);
-                alert( "Request Failed. " + errors[0].message );
+                alert( getStringById('alert_request_review_fail') + errors[0].message );
             }
         })
         .catch(function (err) {
             notify_server_err();
-            alert( "Request Failed.");
+            alert( getStringById('alert_request_review_fail'));
         })
         .finally(function () {
             $("#pageloader").fadeOut();
@@ -122,25 +122,25 @@ function addReview(){
                 return res.json();
             }
             notify_req_failed();
-            alert( "Submit Review failed. Please try again." );
+            alert( getStringById('alert_submit_review_fail'));
         })
         .then(function (result) {
             if (result.status_code == '100') {
                 notify_success('request successfully.');
-                alert( "Your review had been send to us and we will take it seriously." );
+                alert(getStringById('alert_submit_review_success'));
             } else {
                 if (result.error && result.error.length > 0) {
                     notify_err(errors[0].message);
-                    alert( "Submit Review failed. Please try again." + errors[0].message );
+                    alert( getStringById('alert_submit_review_fail') + errors[0].message );
                 } else {
                     notify_server_err();
-                    alert( "Submit Review failed. Please try again." );
+                    alert( getStringById('alert_submit_review_fail') );
                 }
             }
         })
         .catch(function (err) {
             notify_server_err();
-            alert( "Submit Review failed. Please try again." );
+            alert( getStringById('alert_submit_review_fail') );
         })
         .finally(function () {
             $("#pageloader").fadeOut();

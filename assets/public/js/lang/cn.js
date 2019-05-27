@@ -99,5 +99,22 @@ var language_cn = {
     string_add_review: "添加评论",
     string_your_rating: "你的评分",
     string_submit_now: "现在提交",
-    string_based_on: "基于"
+    string_based_on: "基于",
+    placeholder_enter_name: "输入你的名字",
+    placeholder_enter_email: "输入电邮地址",
+    placeholder_enter_message: "输入消息",
+    alert_empty_ic: "請選擇IC的图像文件",
+    alert_empty_card: "請選擇信用卡/借記卡的图像文件",
+    alert_empty_signature: "請選擇簽名的图像文件",
+    alert_submit_order_fail: "提交订单失敗。請再試一次。",
+    alert_request_fail: "提取失敗",
+    alert_request_review_fail: "提取評論失敗",
+    alert_submit_review_fail: "提交評語失敗。 請再試一次。",
+    alert_submit_review_success: "評語已提交，我們會認真接受及處理您的回應。",
+    validation_emergency_phone_number: "紧急电话号码应与电话号码不同。",
+    string_cart_is_empty: "购物车是空的",
+    validation_require_field: "必須填寫",
+    validation_postcode: "Please only enter 5 digits",
+    validation_phone_number: "Please enter valid phone number in format 012-3456789",
+    validation_email: "Please enter a valid email address"
 }

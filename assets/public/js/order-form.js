@@ -19,7 +19,7 @@
                     }
 
                     if(fileName == "") {
-                        info.text("No file chosen");
+                        info.text(getStringById('string_no_file_chosen'));
                     } else {
                         info.text(fileName);
                     }
@@ -32,36 +32,77 @@
     }
 })(jQuery);
 
-/****** emergency phone number validation ******/
-var phone_number = document.getElementById("phone_number")
-  , emergency_phone_number = document.getElementById("emergency_phone_number");
+$('.focus_center').focus(function(){
+    var center = $(window).height()/2;
+    var top = $(this).offset().top ;
+    if (top > center){
+        $(window).scrollTop(top-center);
+    }
+});
 
-function validatePassword(){
-    if(phone_number.value == emergency_phone_number.value) {
-        emergency_phone_number.setCustomValidity("Emergency phone number should different from phone number.");
+/****** emergency phone number validation ******/
+
+function validatePhoneNumber(element){
+    if (phone_number.value == emergency_phone_number.value) {
+        $('#emergency_phone_number')[0].setCustomValidity(getStringById('validation_emergency_phone_number'));
     } else {
-        emergency_phone_number.setCustomValidity('');
+        $('#emergency_phone_number')[0].setCustomValidity('');
     }
 }
 
-phone_number.onchange = validatePassword;
-emergency_phone_number.onkeyup = validatePassword;
+function clearError(){
+    var formElements = $('#order_detail_form')[0].elements;
+    for (var index = 0, len = formElements.length; index < len; index++) {
+        var element = formElements[index];
+        element.setCustomValidity('');
+    }
+}
+
+$('#phone_number').change(validatePhoneNumber);
+$('#emergency_phone_number').keyup(validatePhoneNumber);
+$('#order_detail_form').keydown(clearError);
 
 $(document).ready(function() {
     
     /****** file validation ******/
     $('#upload').bind("click",function() {
         if ($('#file_ic').val()=='') {
-            alert("Empty image file for IC.");
+            alert(getStringById('alert_empty_ic'));
             return false;
         }
         if ($('#file_card').val()=='') {
-            alert("Empty image file for card");
-            return false; 
+            alert(getStringById('alert_empty_card'));
+            return false;
         }
         if ($('#file_sig').val()=='') {
-            alert("Empty image file for signature");
+            alert(getStringById('alert_empty_signature'));
             return false;
+        }
+        var formElements = $('#order_detail_form')[0].elements;
+
+        for (var index = 0, len = formElements.length; index < len; index++) {
+            var element = formElements[index];
+            if (element.validity.valid !== true){
+                var errorMsg = element.validationMessage;
+                if (element.validity.valueMissing === true){
+                    errorMsg = getStringById('validation_require_field');
+                } else if (element.validity.patternMismatch === true) {
+                    if (element.id == 'postcode'){
+                        errorMsg = getStringById('validation_postcode');
+                    } else if (element.id == 'phone_number'){
+                        errorMsg = getStringById('validation_phone_number');
+                    } else if (element.id == 'emergency_phone_number'){
+                        errorMsg = getStringById('validation_phone_number');
+                    }
+                } else if (element.validity.typeMismatch === true) {
+                    if (element.nodeName == 'INPUT' && element.type === 'email') {
+                        errorMsg = getStringById('validation_email')
+                    } else if (element.nodeName == 'INPUT' && element.type === 'tel') {
+                        errorMsg = getStringById('validation_phone_number');
+                    }
+                }
+                element.setCustomValidity(errorMsg);
+            }
         }
     });
 
@@ -71,13 +112,14 @@ $(document).ready(function() {
 
     //** load cart item **//
     if (!sessionStorage.cart) {
-        $( "#cart-detail" ).text('cart is empty');
+        $( "#cart-detail" ).text(getStringById('string_cart_is_empty'));
         window.location.href = '/cart'
     } else {
         var cart_list = JSON.parse(sessionStorage.cart);
         for (var cart_item of cart_list) {
             var order_line = "<li>" + cart_item.product_name + " <span class=\"middle\">x " +  cart_item.quantity
-                + "</span> <span class=\"middle\">" + cart_item.payment_type_value  + "</span> <span class=\"last\">RM " + (cart_item.payment * cart_item.quantity) + "</span></li>"
+                + "</span> <span class=\"middle\">" + cart_item.payment_type_value  + "</span> <span class=\"last\">RM "
+                + (cart_item.payment * cart_item.quantity) + "</span></li>"
             $( "#order_box_ul" ).append(order_line);
         }
     }
@@ -165,7 +207,7 @@ function addOrder(testing) {
                 return res.json();
             }
             notify_req_failed();
-            alert( "Submit order failed. Please try again." );
+            alert(getStringById('alert_submit_order_fail'));
         })
         .then(function (result) {
             if (result.status_code == '100') {
@@ -176,16 +218,16 @@ function addOrder(testing) {
             } else {
                 if (result.error && result.error.length > 0) {
                     notify_err(errors[0].message);
-                    alert( "Submit order failed. Please try again." + errors[0].message );
+                    alert( getStringById('alert_submit_order_fail') + errors[0].message );
                 } else {
                     notify_server_err();
-                    alert( "Submit order failed. Please try again." );
+                    alert( getStringById('alert_submit_order_fail') );
                 }
             }
         })
         .catch(function (err) {
             notify_server_err();
-            alert( "Submit order failed. Please try again." );
+            alert( getStringById('alert_submit_order_fail') );
         })
         .finally(function () {
             $("#pageloader").fadeOut();
