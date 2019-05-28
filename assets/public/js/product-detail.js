@@ -108,6 +108,14 @@ function loadProductDetail(productList) {
         if (product.price.rentalPrice)
             addPriceInfo('string_rental_price', product.price.rentalPrice, false);
 
+        var paymentType = getStringById('string_payment_method')
+        product.payment_type.forEach(payment => {
+            if (paymentType[payment]) {
+                $('#ddlPayment').append('<option value="' + payment + '">' + paymentType[payment] + '</option>');
+            }
+        });
+        $('#ddlPayment').niceSelect('update');
+
         productDetail = product;
     });
 }
@@ -158,6 +166,10 @@ function addToCart() {
     $('#modalAlertAddCart').css('zIndex', 9999);
 }
 
+function getPrice(product) {
+    return $('#ddlPayment').val() == 'P' ? product.price.retailPrice : product.price.rentalPrice;
+}
+
 function addProductToCart(product) {
     var cartList = [];
 
@@ -174,10 +186,9 @@ function addProductToCart(product) {
         product_name: product.name,
         quantity: $('#txtProductQty').val(),
         image: product.image,
-        price: 100,
-        payment: 120.00,
-        payment_type: 'R',
-        payment_type_value: 'Rental',
+        price: getPrice(product),
+        payment: getPrice(product),
+        payment_type: $('#ddlPayment').val(),
     };
     cartList.push(cart);
 
@@ -196,10 +207,9 @@ function increaseCartQuantity(product) {
                 cart.product_name = product.name;
                 cart.quantity = parseInt(cart.quantity) + parseInt($('#txtProductQty').val());
                 cart.image = product.image;
-                cart.price = 100;
-                cart.payment = 120;
-                cart.payment_type = 'Rental';
-                cart.payment_type_value = 'Rental';
+                cart.price = getPrice(product);
+                cart.payment = getPrice(product);
+                cart.payment_type = $('#ddlPayment').val();
             }
             newCartList.push(cart);
         });
@@ -217,7 +227,7 @@ function cartContainExistProduct(product) {
         var cartList = JSON.parse(sessionStorage.cart);
 
         cartList.forEach(cart => {
-            if (cart.product_id === product._id) {
+            if (cart.product_id === product._id && cart.payment_type === $('#ddlPayment').val()) {
                 containFlag = true;
                 return containFlag;
             }
