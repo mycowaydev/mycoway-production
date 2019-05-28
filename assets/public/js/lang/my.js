@@ -90,6 +90,10 @@ var language_my = {
     string_original_price: "Harga asal: RM ",
     string_rental_price: "Sewa bulanan: RM ",
     string_retail_price: "Harga runcit: RM ",
+    string_payment_method: {
+        'P': 'Beli',
+        'R': 'Sewa'
+    },
     string_order_no: "Pesanan No",
     string_order_status: "Pesanan Status",
     string_review: "Komen",

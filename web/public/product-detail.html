@@ -45,18 +45,47 @@
                </div>
                <div class="col-lg-5 offset-lg-1">
                   <div class="s_product_text">
-                     <h1 id="txtProductName"></h1>
-                     <div id="priceInfo"></div>
-                     <div class='product_count'>
-                        <span for="qty" class="string_quantity"></span>
-                        <input class='input-text qty' id='txtProductQty' maxlength='3' name='qty' title='Quantity:' type='text' value='1'>
-                        <button class='increase items-count' id="btnIncProductQty" type='button'>
-                           <i class='lnr lnr-chevron-up'></i>
-                        </button>
-                        <button class='reduced items-count' id="btnDecProductQty" type='button'>
-                           <i class='lnr lnr-chevron-down'></i>
-                        </button>
-                        </div>
+                     <h1 id="txtProductName" style="margin-bottom: 10px"></h1>
+                     <div id="priceInfo" style="margin-bottom: 10px"></div>
+                     <div class='product_payment' style="margin-bottom: 10px">
+                        <table>
+                           <tr>
+                              <td>
+                                 <span for="payment" class="string_payment_type"></span>
+                              </td>
+                              <td>
+                                 <span style="margin: 10px"></span>
+                              </td>
+                              <td>
+                                 <select name="payment" id="ddlPayment">
+                                 </select>
+                              </td>
+                           </tr>
+                        </table>
+                     </div>
+                     <div class='product_count' style="margin-bottom: 10px">
+                        <table>
+                           <tr>
+                              <td>
+                                 <span for="qty" class="string_quantity"></span>
+                              </td>
+                              <td>
+                                 <span style="margin: 10px"></span>
+                              </td>
+                              <td>
+                                 <div>
+                                    <input class='input-text qty' style="height: 42px" id='txtProductQty' maxlength='3' name='qty' title='Quantity:' type='text' value='1'>
+                                    <button class='increase items-count' id="btnIncProductQty" type='button'>
+                                       <i class='lnr lnr-chevron-up'></i>
+                                    </button>
+                                    <button class='reduced items-count' id="btnDecProductQty" type='button'>
+                                       <i class='lnr lnr-chevron-down'></i>
+                                    </button>
+                                 </div>
+                              </td>
+                           </tr>
+                        </table>
+                     </div>
                      <div>
                         <button type="button" class="button primary-btn string_add_to_cart" id="btnAddCart"></button>
                      </div>

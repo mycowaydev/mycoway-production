@@ -90,6 +90,10 @@ var language_cn = {
     string_original_price: "原价: RM ",
     string_rental_price: "每月租金: RM ",
     string_retail_price: "零售价: RM ",
+    string_payment_method: {
+        'P': '购买',
+        'R': '租'
+    },
     string_order_no: "订单号",
     string_order_status: "订单状态",
     string_review: "評分",

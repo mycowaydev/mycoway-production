@@ -16,7 +16,7 @@ module.exports = function (req, res) {
 }
 
 function getParam(req) {
-    var data = {};
+	var data = {};
 
 	data.productType = req.body['productType'] || '';
 
@@ -37,13 +37,13 @@ function validateParam(req, data) {
 }
 
 function getQuery(data) {
-	let query = { 'type': data.productType };
+	let query = { 'type': data.productType, 'status': 'A', 'publish_date': { $lt: config.getCurrentTimestamp() }, 'unpublish_date': { $gt: config.getCurrentTimestamp() } };
 	return query;
 }
 
 function getField() {
-    let field = {_id: true, name: true, image: true};
-    return field;
+	let field = { _id: true, name: true, image: true };
+	return field;
 }
 
 function getProductList(req, res, error, data) {

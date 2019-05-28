@@ -1,7 +1,7 @@
 var language_en = {
-    string_welcome : "Welcome",
-    string_goodbye : "Good Bye",
-    string_goodmorning : "Good Morning",
+    string_welcome: "Welcome",
+    string_goodbye: "Good Bye",
+    string_goodmorning: "Good Morning",
     string_slogan: "Live Pure Together with Us",
     string_shop_now: "Shop Now",
     string_home: "Home",
@@ -90,6 +90,10 @@ var language_en = {
     string_original_price: "Original Price: RM ",
     string_rental_price: "Monthly Rental: RM ",
     string_retail_price: "Retail Price: RM ",
+    string_payment_method: {
+        'P': 'Retail',
+        'R': 'Rental'
+    },
     string_order_no: "Order No",
     string_order_status: "Order Status",
     string_review: "Review",
