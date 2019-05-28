@@ -1,48 +1,53 @@
-(function ($) {
-    'use strict';
+/****** file selection *******/
+try {
+    var file_input_container = $('.js-input-file');
+    if (file_input_container[0]) {
+        file_input_container.each(function () {
+            var that = $(this);
+            var fileInput = that.find(".input-file");
+            var info = that.find(".input-file__info");
 
-    /****** file selection *******/
-    try {
-        var file_input_container = $('.js-input-file');
-        if (file_input_container[0]) {
-            file_input_container.each(function () {
-                var that = $(this);
-                var fileInput = that.find(".input-file");
-                var info = that.find(".input-file__info");
+            fileInput.on("change", function () {
+                var fileName;
+                fileName = $(this).val();
 
-                fileInput.on("change", function () {
-                    var fileName;
-                    fileName = $(this).val();
+                if (fileName.substring(3,11) == 'fakepath') {
+                    fileName = fileName.substring(12);
+                }
 
-                    if (fileName.substring(3,11) == 'fakepath') {
-                        fileName = fileName.substring(12);
-                    }
-
-                    if(fileName == "") {
-                        info.text(getStringById('string_no_file_chosen'));
-                    } else {
-                        info.text(fileName);
-                    }
-                })
-            });
-        }
+                if(fileName == "") {
+                    info.text(getStringById('string_no_file_chosen'));
+                } else {
+                    info.text(fileName);
+                }
+            })
+        });
     }
-    catch (e) {
-        console.log(e);
+} catch (e) {
+    console.log(e);
+}
+
+//** tooltips content **//
+$( "#ic_tooltips" ).tooltip({ content: '<img src="res/sample_ic.jpg" />' });
+$( "#card_tooltips" ).tooltip({ content: '<img src="res/sample_card.jpg" />' });
+
+//** load cart item **//
+if (!sessionStorage.cart) {
+    $( "#cart-detail" ).text(getStringById('string_cart_is_empty'));
+    window.location.href = '/cart'
+} else {
+    var cart_list = JSON.parse(sessionStorage.cart);
+    for (var cart_item of cart_list) {
+        var order_line = "<li>" + cart_item.product_name + " <span class=\"middle\">x " +  cart_item.quantity
+            + "</span> <span class=\"middle\">" + cart_item.payment_type_value  + "</span> <span class=\"last\">RM "
+            + (cart_item.payment * cart_item.quantity) + "</span></li>"
+        $( "#order_box_ul" ).append(order_line);
     }
-})(jQuery);
+}
 
-$('.focus_center').focus(function(){
-    var center = $(window).height()/2;
-    var top = $(this).offset().top ;
-    if (top > center){
-        $(window).scrollTop(top-center);
-    }
-});
+/****** Validation ******/
 
-/****** emergency phone number validation ******/
-
-function validatePhoneNumber(element){
+function validatePhoneNumber(){
     if (phone_number.value == emergency_phone_number.value) {
         $('#emergency_phone_number')[0].setCustomValidity(getStringById('validation_emergency_phone_number'));
     } else {
@@ -51,85 +56,112 @@ function validatePhoneNumber(element){
 }
 
 function clearError(){
+    $('.validation-message').remove();
     var formElements = $('#order_detail_form')[0].elements;
     for (var index = 0, len = formElements.length; index < len; index++) {
         var element = formElements[index];
         element.setCustomValidity('');
+        element.style.borderColor = '#cccccc';
     }
 }
+
+function validationMessageFor(element) {
+    var name = element.nodeName,
+        type = element.type,
+        id = element.id;
+
+    if (element.validity.patternMismatch === true) {
+        if (id == 'postcode') {
+            return getStringById('validation_postcode');
+        } else if (id == 'phone_number') {
+            return getStringById('validation_phone_number');
+        } else if (id == 'emergency_phone_number') {
+            return getStringById('validation_phone_number');
+        }
+    } else if (element.validity.typeMismatch === true) {
+        if (name == 'INPUT' && type === 'email') {
+            return getStringById('validation_email');
+        } else if (name == 'INPUT' && type === 'tel') {
+            return getStringById('validation_phone_number');
+        } else {
+            return element.validationMessage;
+        }
+    } else if (element.validity.valueMissing === true) {
+        if (id == 'file_ic') {
+            return getStringById('alert_empty_ic');
+        } else if (id == 'file_card') {
+            return getStringById('alert_empty_card');
+        } else if (id == 'file_sig') {
+            return getStringById('alert_empty_signature');
+        } else if (name == 'INPUT' && type === 'email') {
+            return getStringById('validation_email');
+        } else {
+            return getStringById('validation_require_field');;
+        }
+    } else if (element.validity.rangeOverflow === true || element.validity.rangeUnderflow === true) {
+        var max = element.getAttribute('max'),
+        min = element.getAttribute('min');
+        return "Please input a value between " + min + " and " + max + ".";
+    } else {
+        return element.validationMessage;
+    }
+};
+
+function validateForm(submitEvent) {
+    $('.validation-message').remove();
+    if (!submitEvent.target.checkValidity()) {
+        submitEvent.preventDefault();
+        submitEvent.stopImmediatePropagation();
+        submitEvent.stopPropagation();
+
+        var form     = submitEvent.target,
+            elements = form.elements;
+
+        /* Loop through the elements, looking for an invalid one. */
+        for (var index = 0, len = elements.length; index < len; index++) {
+            var element = elements[index];
+
+            if (element.willValidate === true && element.validity.valid !== true) {
+                var message = validationMessageFor(element),
+                    parent  = element.parentNode,
+                    div     = document.createElement('div');
+                div.appendChild(document.createTextNode(message));
+                div.style.fontSize = '0.8em';
+                div.style.color = '#ff0000';
+                div.style.width = '100%';
+                div.classList.add('validation-message');
+
+                if (element.nodeName == 'INPUT' && element.type === 'file'){
+                    var grandparent = parent.parentNode;
+                    grandparent.insertBefore(div, parent.nextSibling);
+                    parent.focus();
+                } else {
+                    parent.insertBefore(div, element.nextSibling);
+                    element.focus();
+                    element.style.borderColor = '#ff0000';
+                }
+
+                break;
+            }
+        }
+    } else {
+        return true;
+    }
+};
 
 $('#phone_number').change(validatePhoneNumber);
 $('#emergency_phone_number').keyup(validatePhoneNumber);
 $('#order_detail_form').keydown(clearError);
+$('.input-file').click(clearError);
+$('#order_detail_form')[0].noValidate = true;
+$('#order_detail_form')[0].addEventListener('submit', validateForm);
 
-$(document).ready(function() {
-    
-    /****** file validation ******/
-    $('#upload').bind("click",function() {
-        if ($('#file_ic').val()=='') {
-            alert(getStringById('alert_empty_ic'));
-            return false;
-        }
-        if ($('#file_card').val()=='') {
-            alert(getStringById('alert_empty_card'));
-            return false;
-        }
-        if ($('#file_sig').val()=='') {
-            alert(getStringById('alert_empty_signature'));
-            return false;
-        }
-        var formElements = $('#order_detail_form')[0].elements;
-
-        for (var index = 0, len = formElements.length; index < len; index++) {
-            var element = formElements[index];
-            if (element.validity.valid !== true){
-                var errorMsg = element.validationMessage;
-                if (element.validity.valueMissing === true){
-                    errorMsg = getStringById('validation_require_field');
-                } else if (element.validity.patternMismatch === true) {
-                    if (element.id == 'postcode'){
-                        errorMsg = getStringById('validation_postcode');
-                    } else if (element.id == 'phone_number'){
-                        errorMsg = getStringById('validation_phone_number');
-                    } else if (element.id == 'emergency_phone_number'){
-                        errorMsg = getStringById('validation_phone_number');
-                    }
-                } else if (element.validity.typeMismatch === true) {
-                    if (element.nodeName == 'INPUT' && element.type === 'email') {
-                        errorMsg = getStringById('validation_email')
-                    } else if (element.nodeName == 'INPUT' && element.type === 'tel') {
-                        errorMsg = getStringById('validation_phone_number');
-                    }
-                }
-                element.setCustomValidity(errorMsg);
-            }
-        }
-    });
-
-    //** tooltips content **//
-    $( "#ic_tooltips" ).tooltip({ content: '<img src="res/sample_ic.jpg" />' });
-    $( "#card_tooltips" ).tooltip({ content: '<img src="res/sample_card.jpg" />' });
-
-    //** load cart item **//
-    if (!sessionStorage.cart) {
-        $( "#cart-detail" ).text(getStringById('string_cart_is_empty'));
-        window.location.href = '/cart'
-    } else {
-        var cart_list = JSON.parse(sessionStorage.cart);
-        for (var cart_item of cart_list) {
-            var order_line = "<li>" + cart_item.product_name + " <span class=\"middle\">x " +  cart_item.quantity
-                + "</span> <span class=\"middle\">" + cart_item.payment_type_value  + "</span> <span class=\"last\">RM "
-                + (cart_item.payment * cart_item.quantity) + "</span></li>"
-            $( "#order_box_ul" ).append(order_line);
-        }
-    }
-
-    /***** form submit *****/
-    $( "#order_detail_form" ).submit(function( event ) {
-        event.preventDefault();
-        $("#pageloader").fadeIn();
-        addOrder();
-    });
+/***** form submit *****/
+$( "#order_detail_form" ).submit(function( event ) {
+    console.log('form validation done');
+    event.preventDefault();
+    $("#pageloader").fadeIn();
+    addOrder();
 });
 
 function setProductOrder(formData, key, value) {

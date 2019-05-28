@@ -61,8 +61,8 @@
                                 <i id="ic_tooltips" href title="" class="fa fa-info-circle" style="font-size:12px;vertical-align: text-top;margin-left: 10px;" ></i>
                             </div>
                             <div class="value">
-                                <div class="input-group js-input-file">
-                                    <input class="input-file focus_center" type="file" id="file_ic">
+                                <div class="input-group js-input-file" tabindex="0">
+                                    <input class="input-file focus_center" type="file" id="file_ic" required>
                                     <label class="label--file string_choose_file" for="file_ic"></label>
                                     <span class="input-file__info string_no_file_chosen"></span>
                                 </div>
@@ -75,8 +75,8 @@
                                 <i id="card_tooltips" href title="" class="fa fa-info-circle" style="font-size:12px;vertical-align: text-top;margin-left: 10px;"></i>
                             </div>
                             <div class="value">
-                                <div class="input-group js-input-file">
-                                    <input class="input-file focus_center" type="file" id="file_card">
+                                <div class="input-group js-input-file" tabindex="0">
+                                    <input class="input-file focus_center" type="file" id="file_card" required>
                                     <label class="label--file string_choose_file" for="file_card"></label>
                                     <span class="input-file__info string_no_file_chosen"></span>
                                 </div>
@@ -88,8 +88,8 @@
                                 <span class="string_signature"></span>
                             </div>
                             <div class="value">
-                                <div class="input-group js-input-file">
-                                    <input class="input-file focus_center" type="file" id="file_sig">
+                                <div class="input-group js-input-file" tabindex="0">
+                                    <input class="input-file focus_center" type="file" id="file_sig" required>
                                     <label class="label--file string_choose_file" for="file_sig"></label>
                                     <span class="input-file__info string_no_file_chosen"></span>
                                 </div>
@@ -131,7 +131,7 @@
                         <div class="form-row">
                             <div class="name string_emergency_phone_number"></div>
                             <div class="value">
-                                <input class="input--style-6 focus_center" type="tel" name="emergency_phone_number" id="emergency_phone_number" placeholder="e.g. 012-3456789" required>
+                                <input class="input--style-6 focus_center" type="tel" pattern='^\d{3}-\d{7,8}$' name="emergency_phone_number" id="emergency_phone_number" placeholder="e.g. 012-3456789" required>
                             </div>
                         </div>
                         <div class="form-row last-row">

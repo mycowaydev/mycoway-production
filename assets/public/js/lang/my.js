@@ -114,7 +114,7 @@ var language_my = {
     validation_emergency_phone_number: "Nombor telefon kecemasan harus berbeza dari nombor telefon.",
     string_cart_is_empty: "senarai membeli-belah kosong",
     validation_require_field: "Bidang ini memerlukan",
-    validation_postcode: "Please only enter 5 digits",
-    validation_phone_number: "Please enter valid phone number in format 012-3456789",
-    validation_email: "Please enter a valid email address"
+    validation_postcode: "Sila masukkan hanya 5 digit",
+    validation_phone_number: "Sila masukkan nombor telefon yang sah dalam format 012-3456789",
+    validation_email: "Sila masukkan alamat emel yang sah"
 }

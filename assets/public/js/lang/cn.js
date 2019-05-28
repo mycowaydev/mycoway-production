@@ -114,7 +114,7 @@ var language_cn = {
     validation_emergency_phone_number: "紧急电话号码应与电话号码不同。",
     string_cart_is_empty: "购物车是空的",
     validation_require_field: "必須填寫",
-    validation_postcode: "Please only enter 5 digits",
-    validation_phone_number: "Please enter valid phone number in format 012-3456789",
-    validation_email: "Please enter a valid email address"
+    validation_postcode: "请只输入5位数字",
+    validation_phone_number: "请输入格式为012-3456789的有效电话号码",
+    validation_email: "请输入有效的电子邮件地址"
 }
