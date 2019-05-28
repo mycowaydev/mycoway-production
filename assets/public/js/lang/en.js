@@ -103,5 +103,22 @@ var language_en = {
     string_add_review: "Add a Review",
     string_your_rating: "Your Rating",
     string_submit_now: "Submit Now",
-    string_based_on: "Based on"
+    string_based_on: "Based on",
+    placeholder_enter_name: "Enter your name",
+    placeholder_enter_email: "Enter email address",
+    placeholder_enter_message: "Enter Message",
+    alert_empty_ic: "Empty image file for IC",
+    alert_empty_card: "Empty image file for card",
+    alert_empty_signature: "Empty image file for signature",
+    alert_submit_order_fail: "Submit order failed. Please try again.",
+    alert_request_fail: "Request Failed.",
+    alert_request_review_fail: "Request Reviews Failed.",
+    alert_submit_review_fail: "Submit Review failed. Please try again.",
+    alert_submit_review_success: "Komen anda telah dihantar kepada kami dan kami akan proses dengan serius.",
+    validation_emergency_phone_number: "Emergency phone number should different from phone number.",
+    string_cart_is_empty: "cart is empty",
+    validation_require_field: "Please fill out this field",
+    validation_postcode: "Please only enter 5 digits",
+    validation_phone_number: "Please enter valid phone number in format 012-3456789",
+    validation_email: "Please enter a valid email address"
 }

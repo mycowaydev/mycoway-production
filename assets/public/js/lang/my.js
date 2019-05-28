@@ -103,5 +103,22 @@ var language_my = {
     string_add_review: "Tambah komen",
     string_your_rating: "Penilaian Anda",
     string_submit_now: "Hantar sekarang",
-    string_based_on: "berdasarkan"
+    string_based_on: "berdasarkan",
+    placeholder_enter_name: "Masukkan nama anda",
+    placeholder_enter_email: "Masukkan alamat email",
+    placeholder_enter_message: "Masukkan Mesej",
+    alert_empty_ic: "Sila pilih imej file untuk IC",
+    alert_empty_card: "Sila pilih imej file untuk Credit Card/Debit Card",
+    alert_empty_signature: "Sila pilih imej file untuk Tandatangan",
+    alert_submit_order_fail: "Hantar pesanan gagal. Sila cuba lagi.",
+    alert_request_fail: "Permintaan Gagal.",
+    alert_request_review_fail: "Komens Permintaan Gagal.",
+    alert_submit_review_fail: "Hantar Komen gagal. Sila cuba lagi.",
+    alert_submit_review_success: "Your review had been send to us and we will take it seriously.",
+    validation_emergency_phone_number: "Nombor telefon kecemasan harus berbeza dari nombor telefon.",
+    string_cart_is_empty: "senarai membeli-belah kosong",
+    validation_require_field: "Bidang ini memerlukan",
+    validation_postcode: "Please only enter 5 digits",
+    validation_phone_number: "Please enter valid phone number in format 012-3456789",
+    validation_email: "Please enter a valid email address"
 }

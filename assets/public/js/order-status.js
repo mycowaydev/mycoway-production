@@ -8,7 +8,7 @@ function getOrderByID(id) {
                 return res.json();
             }
             notify_req_failed();
-            alert( "Request Failed.");
+            alert(getStringById('alert_request_fail'));
         })
         .then(function (result) {
             if (result.status_code == '100') {
@@ -16,12 +16,12 @@ function getOrderByID(id) {
                 getValueByCode(result.data);
             } else {
                 notify_err(errors[0].message);
-                alert( "Request Failed. " + errors[0].message );
+                alert( getStringById('alert_request_fail') + errors[0].message );
             }
         })
         .catch(function (err) {
             notify_server_err();
-            alert( "Request Failed.");
+            alert( getStringById('alert_request_fail'));
         })
         .finally(function () {
              $("#pageloader").fadeOut();
@@ -40,7 +40,7 @@ function getValueByCode(code) {
                 return res.json();
             }
             notify_req_failed();
-            alert( "Request Failed.");
+            alert( getStringById('alert_request_fail'));
         })
         .then(function (result) {
             if (result.status_code == '100') {
@@ -48,12 +48,12 @@ function getValueByCode(code) {
                 $('#order_status').html(result.data)
             } else {
                 notify_err(errors[0].message);
-                alert( "Request Failed. " + errors[0].message );
+                alert( getStringById('alert_request_fail') + errors[0].message );
             }
         })
         .catch(function (err) {
             notify_server_err();
-            alert( "Request Failed.");
+            alert( getStringById('alert_request_fail'));
         })
         .finally(function () {
         })
