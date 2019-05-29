@@ -39,7 +39,7 @@ if (!sessionStorage.cart) {
     var cart_list = JSON.parse(sessionStorage.cart);
     for (var cart_item of cart_list) {
         var order_line = "<li>" + cart_item.product_name + " <span class=\"middle\">x " +  cart_item.quantity
-            + "</span> <span class=\"middle\">" + cart_item.payment_type_value  + "</span> <span class=\"last\">RM "
+            + "</span> <span class=\"middle\">" + getStringById('string_payment_method')[cart_item.payment_type]  + "</span> <span class=\"last\">RM "
             + (cart_item.payment * cart_item.quantity) + "</span></li>"
         $( "#order_box_ul" ).append(order_line);
     }
