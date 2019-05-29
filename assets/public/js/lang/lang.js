@@ -20,7 +20,7 @@ function changeLanguage(lang) {
             element = $('.'+k)
             if (lang_array[k]){
                 if (element){
-                    if (k.startsWith("string_")){
+                    if (k.startsWith("string_") || k.startsWith("validation_") || k.startsWith("alert_")){
                         element.html(lang_array[k])
                     } else if (k.startsWith("placeholder_")){
                         element.attr("placeholder", lang_array[k]);
@@ -31,12 +31,16 @@ function changeLanguage(lang) {
     }
 }
 
-$(document).ready(function(){
+function showString(){
     var lang = "en"
     if (window.sessionStorage.getItem("language") != null){
         lang = window.sessionStorage.getItem("language")
     }
     changeLanguage(lang)
+}
+
+$(document).ready(function(){
+    showString();
 });
 
 function toggleNav(){
