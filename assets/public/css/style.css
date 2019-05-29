@@ -4791,8 +4791,9 @@ a {
     min-height: 400px;
 }
 
-.dropdown-menu .flag-icon {
+.dropdown-menu li {
     margin-left: 10px;
+    margin-right: 10px;
 }
 
 #pageloader {
@@ -4810,4 +4811,8 @@ a {
   margin-top: -32px;
   position: absolute;
   top: 50%;
+}
+
+.dropdown-menu {
+    min-width: 10.5rem;
 }
