@@ -4816,3 +4816,11 @@ a {
 .dropdown-menu {
     min-width: 10.5rem;
 }
+
+a {
+    cursor: pointer;
+}
+
+a span {
+    color: #0961ef;
+}
