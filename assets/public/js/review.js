@@ -170,7 +170,7 @@ $('#review_form')[0].addEventListener('submit', validateForm);
 $( "#review_form" ).submit(function( event ) {
     event.preventDefault();
     if (getRating()==0){
-        alert('Minimum rate is one star.');
+        alert(getStringById('string_minimum_rating'));
     } else {
         addReview();
     }

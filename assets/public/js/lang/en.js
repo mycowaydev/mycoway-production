@@ -120,5 +120,6 @@ var language_en = {
     validation_require_field: "Please fill out this field",
     validation_postcode: "Please only enter 5 digits",
     validation_phone_number: "Please enter valid phone number in format 012-3456789",
-    validation_email: "Please enter a valid email address"
+    validation_email: "Please enter a valid email address",
+    string_minimum_rating: "Minimum rate is one star."
 }
