@@ -55,104 +55,14 @@ function validatePhoneNumber(){
     }
 }
 
-function clearError(){
-    $('.validation-message').remove();
-    var formElements = $('#order_detail_form')[0].elements;
-    for (var index = 0, len = formElements.length; index < len; index++) {
-        var element = formElements[index];
-        element.setCustomValidity('');
-        element.style.borderColor = '#cccccc';
-    }
+function clear(){
+    clearError($('#order_detail_form')[0])
 }
-
-function validationMessageFor(element) {
-    var name = element.nodeName,
-        type = element.type,
-        id = element.id;
-
-    if (element.validity.patternMismatch === true) {
-        if (id == 'postcode') {
-            return getStringById('validation_postcode');
-        } else if (id == 'phone_number') {
-            return getStringById('validation_phone_number');
-        } else if (id == 'emergency_phone_number') {
-            return getStringById('validation_phone_number');
-        }
-    } else if (element.validity.typeMismatch === true) {
-        if (name == 'INPUT' && type === 'email') {
-            return getStringById('validation_email');
-        } else if (name == 'INPUT' && type === 'tel') {
-            return getStringById('validation_phone_number');
-        } else {
-            return element.validationMessage;
-        }
-    } else if (element.validity.valueMissing === true) {
-        if (id == 'file_ic') {
-            return getStringById('alert_empty_ic');
-        } else if (id == 'file_card') {
-            return getStringById('alert_empty_card');
-        } else if (id == 'file_sig') {
-            return getStringById('alert_empty_signature');
-        } else if (name == 'INPUT' && type === 'email') {
-            return getStringById('validation_email');
-        } else {
-            return getStringById('validation_require_field');;
-        }
-    } else if (element.validity.rangeOverflow === true || element.validity.rangeUnderflow === true) {
-        var max = element.getAttribute('max'),
-        min = element.getAttribute('min');
-        return "Please input a value between " + min + " and " + max + ".";
-    } else {
-        return element.validationMessage;
-    }
-};
-
-function validateForm(submitEvent) {
-    $('.validation-message').remove();
-    if (!submitEvent.target.checkValidity()) {
-        submitEvent.preventDefault();
-        submitEvent.stopImmediatePropagation();
-        submitEvent.stopPropagation();
-
-        var form     = submitEvent.target,
-            elements = form.elements;
-
-        /* Loop through the elements, looking for an invalid one. */
-        for (var index = 0, len = elements.length; index < len; index++) {
-            var element = elements[index];
-
-            if (element.willValidate === true && element.validity.valid !== true) {
-                var message = validationMessageFor(element),
-                    parent  = element.parentNode,
-                    div     = document.createElement('div');
-                div.appendChild(document.createTextNode(message));
-                div.style.fontSize = '0.8em';
-                div.style.color = '#ff0000';
-                div.style.width = '100%';
-                div.classList.add('validation-message');
-
-                if (element.nodeName == 'INPUT' && element.type === 'file'){
-                    var grandparent = parent.parentNode;
-                    grandparent.insertBefore(div, parent.nextSibling);
-                    parent.focus();
-                } else {
-                    parent.insertBefore(div, element.nextSibling);
-                    element.focus();
-                    element.style.borderColor = '#ff0000';
-                }
-
-                break;
-            }
-        }
-    } else {
-        return true;
-    }
-};
 
 $('#phone_number').change(validatePhoneNumber);
 $('#emergency_phone_number').keyup(validatePhoneNumber);
-$('#order_detail_form').keydown(clearError);
-$('.input-file').click(clearError);
+$('#order_detail_form').keydown(clear);
+$('.input-file').click(clear);
 $('#order_detail_form')[0].noValidate = true;
 $('#order_detail_form')[0].addEventListener('submit', validateForm);
 

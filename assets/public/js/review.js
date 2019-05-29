@@ -11,6 +11,16 @@ function updateUserRatingStar(num){
     }
 }
 
+function getRating(){
+    var active_star_count = 0;
+    for (i = 1; i < 6; i++) {
+        if ($("." + i + "-star").hasClass('fas fa-star')){
+            active_star_count = active_star_count + 1;
+        }
+    }
+    return active_star_count;
+}
+
 function getStar(num){
     var starHtml = "";
     for (i = 0; i < num; i++) {
@@ -128,6 +138,8 @@ function addReview(){
             if (result.status_code == '100') {
                 notify_success('request successfully.');
                 alert(getStringById('alert_submit_review_success'));
+                $('#review_form').trigger("reset");
+                updateUserRatingStar(0);
             } else {
                 if (result.error && result.error.length > 0) {
                     notify_err(errors[0].message);
@@ -147,11 +159,23 @@ function addReview(){
         });
 }
 
+function clear(){
+    clearError($('#review_form')[0])
+}
+
+$('#review_form').keydown(clear);
+$('#review_form')[0].noValidate = true;
+$('#review_form')[0].addEventListener('submit', validateForm);
+
 $( "#review_form" ).submit(function( event ) {
     event.preventDefault();
-    addReview();
+    if (getRating()==0){
+        alert('Minimum rate is one star.');
+    } else {
+        addReview();
+    }
 });
 
 $("#pageloader").fadeIn();
-updateUserRatingStar(5);
+updateUserRatingStar(0);
 getReviews();

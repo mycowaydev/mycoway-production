@@ -41,6 +41,99 @@ $(function () {
     });
 });
 
+function clearError(form){
+    $('.validation-message').remove();
+    var formElements = form.elements;
+    for (var index = 0, len = formElements.length; index < len; index++) {
+        var element = formElements[index];
+        element.setCustomValidity('');
+        element.style.borderColor = '#cccccc';
+    }
+}
+
+function validationMessageFor(element) {
+    var name = element.nodeName,
+        type = element.type,
+        id = element.id;
+
+    if (element.validity.patternMismatch === true) {
+        if (id == 'postcode') {
+            return getStringById('validation_postcode');
+        } else if (id == 'phone_number') {
+            return getStringById('validation_phone_number');
+        } else if (id == 'emergency_phone_number') {
+            return getStringById('validation_phone_number');
+        }
+    } else if (element.validity.typeMismatch === true) {
+        if (name == 'INPUT' && type === 'email') {
+            return getStringById('validation_email');
+        } else if (name == 'INPUT' && type === 'tel') {
+            return getStringById('validation_phone_number');
+        } else {
+            return element.validationMessage;
+        }
+    } else if (element.validity.valueMissing === true) {
+        if (id == 'file_ic') {
+            return getStringById('alert_empty_ic');
+        } else if (id == 'file_card') {
+            return getStringById('alert_empty_card');
+        } else if (id == 'file_sig') {
+            return getStringById('alert_empty_signature');
+        } else if (name == 'INPUT' && type === 'email') {
+            return getStringById('validation_email');
+        } else {
+            return getStringById('validation_require_field');;
+        }
+    } else if (element.validity.rangeOverflow === true || element.validity.rangeUnderflow === true) {
+        var max = element.getAttribute('max'),
+        min = element.getAttribute('min');
+        return "Please input a value between " + min + " and " + max + ".";
+    } else {
+        return element.validationMessage;
+    }
+};
+
+function validateForm(submitEvent) {
+    clearError(submitEvent.target);
+    if (!submitEvent.target.checkValidity()) {
+        submitEvent.preventDefault();
+        submitEvent.stopImmediatePropagation();
+        submitEvent.stopPropagation();
+
+        var form     = submitEvent.target,
+            elements = form.elements;
+
+        /* Loop through the elements, looking for an invalid one. */
+        for (var index = 0, len = elements.length; index < len; index++) {
+            var element = elements[index];
+
+            if (element.willValidate === true && element.validity.valid !== true) {
+                var message = validationMessageFor(element),
+                    parent  = element.parentNode,
+                    div     = document.createElement('div');
+                div.appendChild(document.createTextNode(message));
+                div.style.fontSize = '0.8em';
+                div.style.color = '#ff0000';
+                div.style.width = '100%';
+                div.classList.add('validation-message');
+
+                if (element.nodeName == 'INPUT' && element.type === 'file'){
+                    var grandparent = parent.parentNode;
+                    grandparent.insertBefore(div, parent.nextSibling);
+                    parent.focus();
+                } else {
+                    parent.insertBefore(div, element.nextSibling);
+                    element.focus();
+                    element.style.borderColor = '#ff0000';
+                }
+                break;
+            }
+        }
+    } else {
+        return true;
+    }
+};
+
 $(document).ready(function () {
     if (typeof selected_tab !== 'undefined') {
         if (selected_tab) {
