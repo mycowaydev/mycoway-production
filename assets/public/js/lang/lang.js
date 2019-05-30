@@ -26,11 +26,26 @@ function showStringByArray(lang_array){
     }
 }
 
+function changeFlag(lang){
+    $('#selected_language').removeClass('flag-icon-gb')
+    $('#selected_language').removeClass('flag-icon-cn')
+    $('#selected_language').removeClass('flag-icon-my')
+
+    if (lang == "my"){
+        $('#selected_language').addClass('flag-icon-my')
+    } else if (lang == "cn") {
+        $('#selected_language').addClass('flag-icon-cn')
+    } else {
+        $('#selected_language').addClass('flag-icon-gb')
+    }
+}
+
 function showString(){
     var lang = "en"
     if (window.sessionStorage.getItem("language") != null){
         lang = window.sessionStorage.getItem("language")
     }
+    changeFlag(lang)
     showStringByArray(getArray(lang))
 }
 
@@ -42,22 +57,14 @@ function refreshFaq(){
      }
  }
 
-function changeLanguage(lang) {
-    if (lang){
-        $('#selected_language').removeClass('flag-icon-gb')
-        $('#selected_language').removeClass('flag-icon-cn')
-        $('#selected_language').removeClass('flag-icon-my')
-        if (lang == "my"){
-            sessionStorage.setItem("language", "my");
-            $('#selected_language').addClass('flag-icon-my')
-        } else if (lang == "cn") {
-            sessionStorage.setItem("language", "cn");
-            $('#selected_language').addClass('flag-icon-cn')
-        } else {
-            sessionStorage.setItem("language", "en");
-            $('#selected_language').addClass('flag-icon-gb')
+function changeLanguage(in_lang) {
+    var lang = 'en'
+    if (in_lang){
+        if (in_lang == "my" || in_lang == "cn" || in_lang == "en"){
+            lang = in_lang
         }
     }
+    sessionStorage.setItem("language", lang)
     showString()
     refreshFaq()
 }
