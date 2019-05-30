@@ -29,6 +29,8 @@ var language_cn = {
     string_contact_us: "联系我们",
     string_phone_number: "电话号码",
     string_email: "电子邮件",
+    string_gallery_image: "产品图片",
+    string_gallery_video: "产品视频",
     string_cart_list: "购物清单",
     string_product: "产品",
     string_product_detail: "产品详情",

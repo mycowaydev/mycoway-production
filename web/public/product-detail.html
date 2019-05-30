@@ -2,8 +2,9 @@
 <html lang="en">
    <head>
       include includes/head
-      <link href="css/product-loader.css" rel="stylesheet">
+      <link href="css/loader.css" rel="stylesheet">
       <link href="css/owl-carousel.css" rel="stylesheet">
+      <link href="css/lightbox.css" rel="stylesheet">
    </head>
    <body>
       <!--================ Start Header Menu Area =================-->
@@ -26,7 +27,7 @@
              </div>
          </section>
       </div>
-      <div id="productPanel" style="display:none;" class="animate-bottom">
+      <div id="mainPanel" style="display:none;" class="animate-bottom">
          <section class="blog-banner-area" id="category">
             <div class="container h-100">
                <div class="blog-banner">
@@ -108,7 +109,13 @@
                   <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
                   </div>
                   <div class="tab-pane fade" id="gallery" role="tabpanel" aria-labelledby="gallery-tab">
-
+                     <div id="galleryImage" class="s_gallery_text">
+                        <h2 class="string_gallery_image">Image</h2>
+                     </div>
+                     <br/>
+                     <div id="galleryVideo" class="s_product_text">
+                        <h2 class="string_gallery_video">Video</h2>
+                     </div>
                   </div>
                </div>
             </div>
@@ -153,6 +160,7 @@
       <script src="vendors/nice-select/jquery.nice-select.min.js"></script>
       <script src="vendors/jquery.ajaxchimp.min.js"></script>
       <script src="vendors/mail-script.js"></script>
+      <script src="vendors/lightbox-master/dist/ekko-lightbox.js"></script>
       <script src="js/main.js"></script>
       <script src="js/product-detail.js"></script>
 

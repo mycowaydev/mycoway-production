@@ -29,6 +29,8 @@ var language_my = {
     string_contact_us: "Hubungi Kami",
     string_phone_number: "Nombor telefon",
     string_email: "E-mel",
+    string_gallery_image: "Imej produk",
+    string_gallery_video: "Video produk",
     string_cart_list: "senarai membeli-belah",
     string_product: "Produk",
     string_product_detail: "Butiran Produk",

@@ -50,7 +50,7 @@ function getProductList(data) {
 
 function showProduct() {
     document.getElementById("loader").style.display = "none";
-    document.getElementById("productPanel").style.display = "block";
+    document.getElementById("mainPanel").style.display = "block";
     displayFooter(true);
 }
 
@@ -67,7 +67,6 @@ function displayFooter(displayFlag) {
     } else {
         document.getElementsByClassName("footer-area footer-only")[0].style.display = "none";
         document.getElementsByClassName("footer-bottom")[0].style.display = "none";
-
     }
 }
 

@@ -59,7 +59,7 @@ function getProductDetail(data) {
 
 function showProduct() {
     document.getElementById("loader").style.display = "none";
-    document.getElementById("productPanel").style.display = "block";
+    document.getElementById("mainPanel").style.display = "block";
     displayFooter(true);
 }
 
@@ -85,7 +85,7 @@ function loadProductDetail(productList) {
         for (var row = 0; row < product.image.length; row++) {
             $('#owlProductImage').append(
                 '<div class="item">' +
-                '<img class="img-fluid" style="height:100; width:100%" src="' + product.image[row] + '" onerror="this.src=\'img/imageNotFound.png\'">' +
+                '<img class="img-fluid" src="' + product.image[row] + '" onerror="this.src=\'img/imageNotFound.png\'">' +
                 '</div>'
             );
         }
@@ -116,6 +116,15 @@ function loadProductDetail(productList) {
         });
         $('#ddlPayment').niceSelect('update');
 
+        product.gallery.forEach(gallery => {
+            var youtubeVideoId = gallery.match(/(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/);
+            if (youtubeVideoId != null) {
+                var video_thumbnail = 'https://img.youtube.com/vi/' + youtubeVideoId[1] + '/0.jpg';
+                $('#galleryVideo').append('<a href="' + gallery + '" data-toggle="lightbox" data-gallery="productGalleryVideo" class="col-sm-3"><img class="img-fluid" src="' + video_thumbnail + '" /></a>');
+            } else {
+                $('#galleryImage').append('<a href="' + gallery + '" data-toggle="lightbox" data-gallery="productGalleryImage" class="col-sm-3"><img class="img-fluid" src="' + gallery + '" /></a>');
+            }
+        });
         productDetail = product;
     });
 }
@@ -249,7 +258,15 @@ function reduceProductQuantity() {
     $('#txtProductQty').val(newQty > 1 ? newQty : 1);
 }
 
-$(document).ready(function () {
+$(document).ready(function ($) {
     displayFooter(false);
     setupPage();
+
+    $(document).on('click', '[data-toggle="lightbox"]', function (event) {
+        event.preventDefault();
+        $(this).ekkoLightbox({
+            alwaysShowClose: true,
+        });
+        $('.arrows').show();  //show your previous and next buttons 
+    });
 });
