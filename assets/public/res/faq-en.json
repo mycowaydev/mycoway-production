@@ -1,0 +1,109 @@
+[
+  {
+    "title": "1. PRODUCT INFORMATION",
+    "qa": [
+      {
+        "question": " I am interested in Coway products, how can I get more product information? ",
+        "answer": [
+          {
+            "line": "Our product information is readily available at:"
+          },
+          {
+            "line": "<ul><li><a href='/water-purifier'>Water Purifier</a></li><li><a href='/air-purifier'>Air Purifier</a></li></ul>"
+          },
+          {
+            "line": "If you need more information, <a href='tel:1800888111'>call us</a> or leave us your number and we will call you!"
+          }
+        ]
+      }, {
+        "question": " How can I get Coway products? ",
+        "answer": [
+          {
+            "line": "There are two ways to own a Coway product—Rental and Outright Purchase:"
+          },
+          {
+            "line": "1. Rental"
+          }, {
+            "line": "<ul><li>A Rental Registration Fee of RM200 and a one-month advance rental payment is all you need to get started.</li><li>Our service team, Coway Lady (CODY) will provide complimentary periodic maintenance service throughout your rental period.</li><li>The minimum contract is 3 years, but you can rent the product for up to 5 years. After 5 years, no rental payment will be charged and the product will officially belong to you.</li><li>Should you require maintenance service after 5 years, you may subscribe to our Service Membership.</li></ul>"
+          }, {
+            "line": "2. Outright Purchase"
+          }, {
+            "line": "<ul><li>No installation fee is needed and you can opt for a 0% interest instalment for up to 36 months.</li><li>CODY Service is complimentary for the first year and you may choose to subscribe to our Service Membership after one year.</li></ul>"
+          }
+        ]
+      }
+    ]
+  }, {
+    "title": "2. SERVICE MEMBERSHIP",
+    "qa": [
+      {
+        "question": " What benefits does a Service Membership include? ",
+        "answer": [
+          {
+            "line": "By subscribing to our Service Membership, you are entitled to CODY's periodic maintenance service (Heart Service) which includes filter change and sanitation. All types of repairs (After Service) will be provided by Coway Technician (CT) and the spare parts will also come at no extra cost."
+          }
+        ]
+      }, {
+        "question": " How do I renew my Service Membership? ",
+        "answer": [
+          {
+            "line": "Simply provide us your details <a href=\"https://www.coway.com.my/loyalty-programme\">here</a> and our service team will contact you as soon as possible for your renewal request. You may also contact your respective CODY for service membership renewal assistance."
+          }
+        ]
+      }, {
+        "question": " How frequently will my Coway product be serviced? ",
+        "answer": [
+          {
+            "line": "The service period varies for each category of Coway product:"
+          }, {
+            "line": "<ul><li>Water purifier, air purifier (1 Year 6 times) — Wash and Sanitation Every 2 months & Change Filter Every 4-6 months</li></ul>"
+          }
+        ]
+      }
+    ]
+  }, {
+    "title": "3. PAYMENT INFORMATION",
+    "qa": [
+      {
+        "question": " What are the payment options for my monthly rental? ",
+        "answer": [
+          {
+            "line": "<ol><li>Auto debit—Deduction via customer's debit/credit card</li><li>Direct debit—Deduction via customer's saving/current account</li><li>JomPAY—code: 9928</li><li>Maybank Cash Deposit Machine: Payee Code: 016</li><li>CIMB (Virtual Account) dedicated account</li><li>CIMB Bill Payment—Coway (M) Sdn Bhd</li><li>Regular payment by cash to CODY during Heart Service</li></ol>"
+          }, {
+            "line": "A processing fee of RM 10 will be charged if you’re not using auto debit (Depending on the order number)."
+          }
+        ]
+      }, {
+        "question": " When does Coway normally perform the deduction from my credit card/direct debit account? ",
+        "answer": [
+          {
+            "line": "On the 1st week of the month, usually between 3rd and 5th (Varies depending on the bank)."
+          }
+        ]
+      }, {
+        "question": " Why am I receiving the same SMS every month stating that my account has been charged RM10? ",
+        "answer": [
+          {
+            "line": "When the rental payment fails to be deducted from your account, a Rental Handling Fee of RM10 will be charged."
+          }
+        ]
+      }, {
+        "question": " I have applied for auto debit deduction but I’m still receiving SMS stating that my rental fee has failed to be deducted. ",
+        "answer": [
+          {
+            "line": "There could be a number of reasons as to why you are still receiving the SMS despite having submitted the auto debit form:"
+          }, {
+            "line": "<ol><li>The signature on the auto debit form and the card holder are not identical, therefore your application could have been rejected by the bank. In such events, you might need to fill up another form.</li><li>The form is still being processed by the bank and the auto debit transaction will only go through upon approval from the bank.</li></ol>"
+          }
+        ]
+      }, {
+        "question": " Why has my account been switched back to regular payment mode? ",
+        "answer": [
+          {
+            "line": "If your bill has been overdue for 3 months, your auto debit account will automatically be reverted back to regular payment mode. If you still wish to proceed with auto debit mode, kindly provide us with your card number, expiry date, issuing bank and card type to proceed."
+          }
+        ]
+      }
+    ]
+  }
+]

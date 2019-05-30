@@ -41,17 +41,6 @@ $(function () {
     });
 });
 
-$(document).ready(function () {
-    if (typeof selected_tab !== 'undefined') {
-        if (selected_tab) {
-            console.log("selected_tab: " + selected_tab);
-            $('#' + selected_tab).addClass("active");
-        }
-    } else {
-        console.log("selected_tab: none");
-    }
-});
-
 function refreshCartNumber() {
     var quantity = Number(0);
     if (sessionStorage.cart) {
@@ -89,5 +78,110 @@ function getStringById(id) {
         return language_en[id];
     }
 }
+
+function clearError(form){
+    $('.validation-message').remove();
+    var formElements = form.elements;
+    for (var index = 0, len = formElements.length; index < len; index++) {
+        var element = formElements[index];
+        element.setCustomValidity('');
+        element.style.borderColor = '#cccccc';
+    }
+}
+
+function validationMessageIDFor(element) {
+    var name = element.nodeName,
+        type = element.type,
+        id = element.id;
+
+    if (element.validity.patternMismatch === true) {
+        if (id == 'postcode') {
+            return 'validation_postcode';
+        } else if (id == 'phone_number') {
+            return 'validation_phone_number';
+        } else if (id == 'emergency_phone_number') {
+            return 'validation_phone_number';
+        }
+    } else if (element.validity.typeMismatch === true) {
+        if (name == 'INPUT' && type === 'email') {
+            return 'validation_email';
+        } else if (name == 'INPUT' && type === 'tel') {
+            return 'validation_phone_number';
+        } else {
+            return element.validationMessage;
+        }
+    } else if (element.validity.valueMissing === true) {
+        if (id == 'file_ic') {
+            return 'alert_empty_ic';
+        } else if (id == 'file_card') {
+            return 'alert_empty_card';
+        } else if (id == 'file_sig') {
+            return 'alert_empty_signature';
+        } else if (name == 'INPUT' && type === 'email') {
+            return 'validation_email';
+        } else {
+            return 'validation_require_field';
+        }
+    } else {
+        return element.validationMessage;
+    }
+};
+
+function validateForm(submitEvent) {
+    clearError(submitEvent.target);
+    if (!submitEvent.target.checkValidity()) {
+        submitEvent.preventDefault();
+        submitEvent.stopImmediatePropagation();
+        submitEvent.stopPropagation();
+
+        var form     = submitEvent.target,
+            elements = form.elements;
+
+        for (var index = 0, len = elements.length; index < len; index++) {
+            var element = elements[index];
+
+            if (element.willValidate === true && element.validity.valid !== true) {
+                var parent  = element.parentNode,
+                    div     = document.createElement('div');
+                div.style.fontSize = '0.8em';
+                div.style.color = '#ff0000';
+                div.style.width = '100%';
+                div.classList.add('validation-message');
+
+                var string_classname = validationMessageIDFor(element);
+                if (getStringById(string_classname)){
+                    div.classList.add(validationMessageIDFor(element));
+                } else {
+                    div.appendChild(document.createTextNode(string_classname));
+                }
+
+                if (element.nodeName == 'INPUT' && element.type === 'file'){
+                    var grandparent = parent.parentNode;
+                    grandparent.insertBefore(div, parent.nextSibling);
+                    parent.focus();
+                } else {
+                    parent.insertBefore(div, element.nextSibling);
+                    element.focus();
+                    element.style.borderColor = '#ff0000';
+                }
+                showString();
+                break;
+            }
+        }
+    } else {
+        return true;
+    }
+};
+
+$(document).ready(function () {
+    if (typeof selected_tab !== 'undefined') {
+        if (selected_tab) {
+            console.log("selected_tab: " + selected_tab);
+            $('#' + selected_tab).addClass("active");
+        }
+    } else {
+        console.log("selected_tab: none");
+    }
+});
 
 refreshCartNumber();

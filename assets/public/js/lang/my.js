@@ -122,5 +122,6 @@ var language_my = {
     validation_require_field: "Bidang ini memerlukan",
     validation_postcode: "Sila masukkan hanya 5 digit",
     validation_phone_number: "Sila masukkan nombor telefon yang sah dalam format 012-3456789",
-    validation_email: "Sila masukkan alamat emel yang sah"
+    validation_email: "Sila masukkan alamat emel yang sah",
+    string_minimum_rating: "Kadar minimum adalah satu bintang."
 }

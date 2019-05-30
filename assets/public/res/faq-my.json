@@ -1,0 +1,100 @@
+[
+  {
+    "title": "1. Informasi Produk",
+    "qa": [
+      {
+        "question": " Saya berminat dengan produk Coway, bolehkah saya dapatkan maklumat lanjut mengenai produk? ",
+        "answer": [
+          {
+            "line": "Informasi produk sedia ada:"
+          },
+          {
+            "line": "<ul><li><a href='/water-purifier'>Penapis Air</a></li><li><a href='/air-purifier'>Penapis Udara</a></li></ul>"
+          }
+        ]
+      }, {
+        "question": " Bagaimana saya boleh beli produk Coway  ",
+        "answer": [
+          {
+            "line": "Product Coway boleh dibeli melalaui 2 cara — Sewa dan Beli Terus:"
+          },
+          {
+            "line": "1. Sewa"
+          }, {
+            "line": "<ul><li>Yuran Pendaftaraan Sewa produk sebanyak RM200 dan bayaran pendahuluan untuk bulan pertama.</li><li>Team servis kita Coway Lady (CODY) akan memberikan servis pembersihan secara rutin sepanjang tempoh sewa untuk percuma.</li><li>Kontrak minima untuk 3 tahun, produk boleh disewa selama 5 tahun. Selepas 5 tahun, sewa tidak dikenakan lagi serta produk menyadi hakmilik anda.</li><li>Jika anda memerlukan servis selepas 5 tahun, anda boleh melanggan program Servis Membership Coway.</li></ul>"
+          }, {
+            "line": "2. Pembelian terus"
+          }, {
+            "line": "<ul><li>Pemasangan adalah percuma dan anda boleh buat pilihan untuk ansuran 0% faedah sehingga 36 bulan.</li><li>Servis CODY percuma selama 1 tahun dan anda boleh melanggan Servis Membership selepas satu tahun.</li></ul>"
+          }
+        ]
+      }
+    ]
+  }, {
+    "title": "2. Membership Servis",
+    "qa": [
+      {
+        "question": " Apakah kebaikan membership servis? ",
+        "answer": [
+          {
+            "line": "Dengan melanggan membership servis Coway, anda boleh dapat servis rutin (Heart Service) termasuk penukaran filter dan pembersihan. Pembaikian secara menyeluruh (After Service) akan dibekalkan oleh Teknician Coway (CT) dan alat ganti mesin tidak akan dikenakan."
+          }
+        ]
+      }, {
+        "question": " Bagaimana saya boleh memperbaharui Membership Servis? ",
+        "answer": [
+          {
+            "line": "Sila sertakan maklumat berkaitan dan pihak berkenaan akan hubungi anda secepat mungkin untuk pembaharuan servis. Anda juga boleh menghubungi pihak CODY servis untuk membantu memperbaharu membership servis anda."
+          }
+        ]
+      }, {
+        "question": " Berapa kerap produk Coway akan diservis? ",
+        "answer": [
+          {
+            "line": "<ul><li>Penapis air, penapis udara (Setahun 6 kali) – Cuci dan Sanitasi Setiap 2 bulan & Tukar Penapis Setiap 4-6 bulan</li></ul>"
+          }
+        ]
+      }
+    ]
+  }, {
+    "title": "3. Informasi Pembayaran",
+    "qa": [
+      {
+        "question": " Apakah jenis pembayaran yang boleh dipilih untuk membayar sewa? ",
+        "answer": [
+          {
+            "line": "<ol><li>Auto debit—Penolakan melalui kad debit’credit pelanggan</li><li>Direct Debit—Penolakan melalui akaun simpanan/current akaun</li><li>JomPAY—kod:9928</li><li>JomPAY—kod:9928</li><li>CIMB (Virtual Account) akaun tertentu</li><li>CIMB (Akaun Virtual) akaun tertentu— Coway (M) Sdn Bhd</li><li>Pembayaran rutin dengan membayar tunai kepada pihak CODY semasa Heart Servis</li></ol>"
+          }
+        ]
+      }, {
+        "question": " Bilakah Coway akan membuat penolakan dari credi kad/bebit kad saya? ",
+        "answer": [
+          {
+            "line": "Kebiasaannya pada minggu pertama setiap bulan, pada Tarikh 3  hingga 5 haribulan (bergantung kepada panelbank juga)."
+          }
+        ]
+      }, {
+        "question": " Mengapakah saya menerima SMS yang sama setiap bulan yang menyatakan akaun saya dikenakan pembayaran untuk RM10? ",
+        "answer": [
+          {
+            "line": "Keadaan ini berlaku disebabkan pihak kita tidak dapat membuat penolakan dalam bank kad, kita akan mengenakan servis caj untuk yuran pengendalian untuk sewa."
+          }
+        ]
+      }, {
+        "question": " Saya telah mendaftar untuk membuat penolakan secara auto debit dengan bank tetapi saya masih menerima SMS menyatakan penolakan sewa gagal untuk ditolak. ",
+        "answer": [
+          {
+            "line": "<ol><li>Keadaan ini berlaku kemungkinan tandatangan untuk boring  auto debit dan bank kad berlainan. Ini boleh diselesaikan dengan mengisi borang sekali lagi.</li><li>Borang permohonan auto debit masih dalam proses oleh pihak bank dan penolakan secara auto debit akan diaktifkan selepas permohonan diluluskan.</li></ol>"
+          }
+        ]
+      }, {
+        "question": " Mengapakah akaun pembayaran saya bertukar menjadi pembayaran secara rutin? ",
+        "answer": [
+          {
+            "line": "Bil tunggakan yang melebihi 3 bulan, pembayaran auto debit akan dibatalkan secara automatic dan pembayaran perlu dibuat secara rutin. Untuk mengaktifkan balik pembayaran auto debit, sila senaraikan nombor kad bank anda, Tarikh luput  kad, nama bank dan jenis kad  yang akan membuat pembayaran kepada kami untuk membuat permohonan balik."
+          }
+        ]
+      }
+    ]
+  }
+]

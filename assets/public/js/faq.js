@@ -1,3 +1,12 @@
+var faq_json_url = 'res/faq-en.json';
+if (window.sessionStorage.getItem("language") == "cn"){
+    faq_json_url = 'res/faq-en.json';
+} else if (window.sessionStorage.getItem("language") == "my") {
+    faq_json_url = 'res/faq-my.json';
+} else {
+    faq_json_url = 'res/faq-en.json';
+}
+
 /** load json into accordion **/
 
 var faqJson = (function() {
@@ -5,7 +14,7 @@ var faqJson = (function() {
     $.ajax({
         'async': false,
         'global': false,
-        'url': "res/faq.json",
+        'url': faq_json_url,
         'dataType': "json",
         'success': function (data) {
             json = data;
