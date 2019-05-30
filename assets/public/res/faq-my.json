@@ -9,7 +9,7 @@
             "line": "Informasi produk sedia ada:"
           },
           {
-            "line": "<ul><li><a href='https://www.coway.com.my/products/water-purifier'>Penapis Air</a></li><li><a href='https://www.coway.com.my/products/air-purifier'>Penapis Udara</a></li></ul>"
+            "line": "<ul><li><a href='/water-purifier'>Penapis Air</a></li><li><a href='/air-purifier'>Penapis Udara</a></li></ul>"
           }
         ]
       }, {

@@ -9,7 +9,7 @@
             "line": "Our product information is readily available at:"
           },
           {
-            "line": "<ul><li><a href='https://www.coway.com.my/products/water-purifier'>Water Purifier</a></li><li><a href='https://www.coway.com.my/products/air-purifier'>Air Purifier</a></li></ul>"
+            "line": "<ul><li><a href='/water-purifier'>Water Purifier</a></li><li><a href='/air-purifier'>Air Purifier</a></li></ul>"
           },
           {
             "line": "If you need more information, <a href='tel:1800888111'>call us</a> or leave us your number and we will call you!"
