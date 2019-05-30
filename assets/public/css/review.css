@@ -64,3 +64,16 @@
 .review_box li:hover {
     color: #ffeb7a;
 }
+
+
+@media (max-width: 600px) {
+    .content_area {
+        margin: 2% 10% 2% 10%;
+    }
+
+    .col-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+        margin-bottom: 10px;
+    }
+}
