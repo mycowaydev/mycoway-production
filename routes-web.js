@@ -3,6 +3,7 @@ const config = require('./config');
 const express = require('express');
 const path = require('path');
 const fs = require('fs')
+const useragent = require('useragent');
 
 module.exports = function (apiVersion) {
 	let router = express.Router();
@@ -124,28 +125,34 @@ module.exports = function (apiVersion) {
 	});
 
 	let localVar = {
-        selected_tab: '',
-        getJsonFile: '',
-        order_id: ''
-    };
+		selected_tab: '',
+		getJsonFile: '',
+		order_id: ''
+	};
 
 	router.get('/404', function (req, res) {
 		res.render(path.join(__dirname, '/web/public/404'), localVar);
 	});
 
 	router.get('/', function (req, res) {
-        localVar['selected_tab'] = 'tab-home';
-        res.render(path.join(__dirname, '/web/public/index'), localVar);
-    });
+		localVar['selected_tab'] = 'tab-home';
+		res.render(path.join(__dirname, '/web/public/index'), localVar);
+	});
 
 	router.get('/order-status?*', function (req, res) {
-	    localVar['order_id'] = req.query.id;
+		localVar['order_id'] = req.query.id;
 		res.render(path.join(__dirname, '/web/public/order-status'), localVar);
 	});
 
 	router.get('/*', function (req, res) {
 		let page = req.params[0];
+		var agent = useragent.parse(req.headers['user-agent']);
 
+		console.log(agent.os.toString());
+		console.log(agent.os.toVersion());
+		console.log(agent.toAgent());
+		console.log(agent.device.toString());
+		console.log(agent.device.toVersion());
 		switch (page) {
 			case 'index':
 				localVar['selected_tab'] = 'tab-home';
@@ -177,12 +184,12 @@ module.exports = function (apiVersion) {
 			case 'faq':
 				localVar['selected_tab'] = 'tab-faq';
 				break;
-            case 'cart':
-                localVar['selected_tab'] = 'tab-cart';
-                break;
-            case 'review':
-                localVar['selected_tab'] = 'tab-review';
-                break;
+			case 'cart':
+				localVar['selected_tab'] = 'tab-cart';
+				break;
+			case 'review':
+				localVar['selected_tab'] = 'tab-review';
+				break;
 			default:
 				break;
 		}

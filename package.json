@@ -32,7 +32,8 @@
     "passport": "^0.4.0",
     "passport-facebook-token": "^3.3.0",
     "path": "^0.12.7",
-    "pug": "^2.0.3"
+    "pug": "^2.0.3",
+    "useragent": "^2.3.0"
   },
   "devDependencies": {
     "request": "^2.81.0",
