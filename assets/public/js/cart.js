@@ -1,4 +1,4 @@
-testing = true;
+testing = false;
 
 if (!sessionStorage.cart && testing) {
     console.log('******* testing ******** add dummy item to session storage cart')
