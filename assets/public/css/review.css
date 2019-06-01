@@ -65,6 +65,11 @@
     color: #ffeb7a;
 }
 
+.review-img {
+    max-width: 50px;
+    height: 50px;
+}
+
 
 @media (max-width: 600px) {
     .content_area {

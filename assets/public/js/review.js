@@ -32,27 +32,36 @@ function getStar(num){
     return starHtml;
 }
 
-function getReviewItem(name, star, comment, date){
 
+function getReviewImage(images){
+    var image_content = '';
+    images.forEach(image => {
+        image_content = image_content.concat('<a href="' + image + '" data-toggle="lightbox" data-gallery="reviewGalleryImage" class="col-sm-1"><img class="img-fluid review-img" src="' + image + '" /></a>')
+    });
+    return image_content
+}
+
+function getReviewItem(obj){
     return "<div class=\"review_item\">" +
         "<div class=\"media\">" +
             "<div class=\"d-flex\">" +
-                "<img src=\"https://ui-avatars.com/api/?name=" + name + "&rounded=true\" alt=\"\">" +
+                "<img src=\"https://ui-avatars.com/api/?name=" + obj.name + "&rounded=true\" alt=\"\">" +
             "</div>" +
             "<div class=\"media-body\">" +
                 "<h4>" + name + "</h4>" +
-                getStar(star) +
-                "<h5>" + getDateFormattedString(date) + "</h5>" +
+                getStar(Number(obj.rate)) +
+                "<h5>" + getDateFormattedString(obj.review_date) + "</h5>" +
             "</div>" +
         "</div>" +
-        "<p>" + comment + "</p>" +
+        "<p>" + obj.desc + "</p>" +
+        "<p>" + getReviewImage(obj.images) + "</p>" +
     "</div>";
 }
 
 function getReviews() {
     var formData = new FormData();
 
-    fetch('/public-get-reviews', { method: 'POST', body: formData })
+    fetch('/public-reviews-get', { method: 'POST', body: formData })
         .then(function (res) {
             if (res.ok) {
                 return res.json();
@@ -73,7 +82,7 @@ function getReviews() {
 
                 $('.review_count').html(result.data.length);
                 $.each( result.data , function( index, obj ){
-                    $('#review_list').append(getReviewItem(obj.name, Number(obj.rate), obj.desc, obj.review_date));
+                    $('#review_list').append(getReviewItem(obj));
                     totalRating = totalRating + Number(obj.rate);
                     switch(Number(obj.rate)) {
                         case 5:
@@ -179,3 +188,11 @@ $( "#review_form" ).submit(function( event ) {
 $("#pageloader").fadeIn();
 updateUserRatingStar(0);
 getReviews();
+
+$(document).on('click', '[data-toggle="lightbox"]', function (event) {
+    event.preventDefault();
+    $(this).ekkoLightbox({
+        alwaysShowClose: true,
+    });
+    $('.arrows').show();  //show your previous and next buttons
+});

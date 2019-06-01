@@ -26,6 +26,7 @@ function getParam(req) {
 	data.email_address = req.body['email_address'];
 	data.rate = req.body['rate'];
 	data.desc = req.body['desc'];
+	data.image = [];
 	data.remarks = req.body['remarks'];
 	data.review_date = config.getCurrentTimestamp();
 

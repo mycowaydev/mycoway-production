@@ -7,6 +7,7 @@ const schema = mongoose.Schema({
 	rate: String,
 	desc: String,
 	review_date: { type: Number, default: config.getCurrentTimestamp() },
+	images: [String],
 	remarks: String,
 	opr_by: String,
 	opr_date: { type: Number, default: config.getCurrentTimestamp() },
