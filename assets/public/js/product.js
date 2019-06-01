@@ -86,7 +86,7 @@ function loadProductList(productList) {
             '</div>' +
             '<div class="card-body">' +
             '<h4 class="card-product__title">' + product.name + '</h4>' +
-            '<p class="card-product__price">$150.00</p>' +
+            '<p class="card-product__price">RM ' + product.price.rentalPrice + ' </p>' +
             '</div>' +
             '</div></a>' +
             '</div>'

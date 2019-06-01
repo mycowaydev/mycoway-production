@@ -153,6 +153,9 @@ module.exports = function (apiVersion) {
 		console.log(agent.toAgent());
 		console.log(agent.device.toString());
 		console.log(agent.device.toVersion());
+		const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+		console.log(ip);
+
 		switch (page) {
 			case 'index':
 				localVar['selected_tab'] = 'tab-home';
