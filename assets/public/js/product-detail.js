@@ -209,9 +209,8 @@ function increaseCartQuantity(product) {
 
     if (sessionStorage.cart) {
         var previousCartList = JSON.parse(sessionStorage.cart);
-
         previousCartList.forEach(cart => {
-            if (cart.product_id === product._id) {
+            if (cart.product_id == product._id && cart.payment_type == product.payment_type) {
                 cart.product_id = product._id;
                 cart.product_name = product.name;
                 cart.quantity = parseInt(cart.quantity) + parseInt($('#txtProductQty').val());
@@ -222,30 +221,25 @@ function increaseCartQuantity(product) {
             }
             newCartList.push(cart);
         });
+        sessionStorage.cart = JSON.stringify(newCartList);
     } else {
         addProductToCart(productDetail);
     }
-
-    sessionStorage.cart = JSON.stringify(newCartList);
 }
 
 function cartContainExistProduct(product) {
-    containFlag = false;
-
+    exist = false
     if (sessionStorage.cart) {
-        var cartList = JSON.parse(sessionStorage.cart);
+        var cartList = JSON.parse(sessionStorage.cart)
 
         cartList.forEach(cart => {
-            if (cart.product_id === product._id && cart.payment_type === $('#ddlPayment').val()) {
-                containFlag = true;
-                return containFlag;
+            if (cart.product_id == product._id && cart.payment_type == $('#ddlPayment').val()) {
+                exist = true
+                return exist
             }
         });
-    } else {
-        addProductToCart(productDetail);
     }
-
-    return containFlag;
+    return exist
 }
 
 function addProductQuantity() {
