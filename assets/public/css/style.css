@@ -803,7 +803,8 @@ a {
 }
 
 .hero-carousel__slide {
-	position: relative
+	position: relative;
+	cursor: pointer
 }
 
 .hero-carousel__slide::after {
