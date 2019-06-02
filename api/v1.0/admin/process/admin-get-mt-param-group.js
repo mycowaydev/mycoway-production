@@ -14,8 +14,16 @@ module.exports = function (req, res) {
 	adminGetMTParamGroup(req, res, error, group);
 }
 
+function getQuery(group) {
+	let query = {
+		'status': 'A',
+		'group': group
+	};
+	return query;
+}
+
 function adminGetMTParamGroup(req, res, error, group) {
-	MtParam.find({ 'group': group }).sort({ order_no: 1 }).exec( function (err, result) {
+	MtParam.find(getQuery(group)).sort({ order_no: 1 }).exec(function (err, result) {
 		if (err) {
 			error.push(config.getErrorResponse('101Z012', req));
 			let resp = config.getResponse(res, 500, error, {}, err);

@@ -19,23 +19,27 @@ module.exports = function (req, res) {
 
 function getParam(req) {
 	var data = {};
+	data._id = req.body['id'] || '';
 	data.name = req.body['name'] || '';
-	data.type = req.body['type'] || '';
+	data.product_type = req.body['product_type'] || '';
 	data.status = req.body['status'] || '';
+
+	let publish_date = req.body['publish_date'].split(' - ');
+	let unpublish_date = req.body['unpublish_date'].split(' - ');
+
 	data.publish_date = {
-		fdate: req.body['publish_date_from'] || '',
-		tdate: req.body['publish_date_to'] || '',
+		fdate: publish_date[0] || '',
+		tdate: publish_date[1] || '',
 	};
 	data.unpublish_date = {
-		fdate: req.body['unpublish_date_from'] || '',
-		tdate: req.body['unpublish_date_to'] || '',
+		fdate: unpublish_date[0] || '',
+		tdate: unpublish_date[1] || '',
 	};
-
 	return data;
 }
 
 function getSortFields() {
-	return { 1: "name", 2: "type", 3: "status", 4: "publish_date", 5: "unpublish_date" };
+	return { 1: "_id", 2: "name", 3: "product_type", 4: "status", 5: "publish_date" };
 }
 
 function getProductList(req, res, error, filters, sort) {
@@ -58,6 +62,13 @@ function getProductList(req, res, error, filters, sort) {
 					let resp = config.getResponse(res, 500, error, {}, err);
 					config.logApiCall(req, res, resp);
 					return;
+				}
+				if (results && results.length > 0) {
+					for (let i = 0; i < results.length; i++) {
+						results[i] = config.getProductInfo(results[i]);
+					}
+				} else {
+					results = [];
 				}
 
 				let resp = config.getResponseP(res, 100, error, req.body.draw, recordsFiltered, recordsTotal, results);

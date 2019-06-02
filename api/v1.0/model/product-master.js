@@ -1,11 +1,19 @@
 const config = require('./../../../config');
 const mongoose = require('mongoose');
+
+const priceSchema = mongoose.Schema({
+    original_price: Number,
+    rental_price: Number,
+    retail_price: Number
+});
+
 const schema = mongoose.Schema({
     name: String,
-    type: String,
-    detail: Array,
+    product_type: String,
+    price: Object,
+    payment_type: Array,
     image: Array,
-    service: Array,
+    gallery: Array,
     desc: String,
     publish_date: { type: Number, default: config.getCurrentTimestamp() },
     unpublish_date: { type: Number, default: config.getCurrentTimestamp() },

@@ -49,10 +49,6 @@
             initDropdownList('#ddlSearch_Status,#ddlModal_Status', result.data);
         });
 
-        var groupParamResult = getGroupParam().then(function (result) {
-            groupParamResult = result.data;
-            initGroupAutoComplete(groupParamResult);
-        });
 
         function init() {
             initApp();
@@ -60,6 +56,7 @@
             initModal();
             initDataTable();
             initDataTableBehavior();
+            initGroupAutoComplete();
             initValidateInput();
             initSizeChange();
         }
@@ -106,9 +103,11 @@
             })
         }
 
-        function initGroupAutoComplete(groupList) {
-            autocomplete(document.getElementById("txtModal_Group"), groupList);
-            autocomplete(document.getElementById("txtSearch_Group"), groupList);
+        function initGroupAutoComplete() {
+            var groupParamResult = getGroupParam().then(function (result) {
+                autocomplete(document.getElementById("txtModal_Group"), result.data);
+                autocomplete(document.getElementById("txtSearch_Group"), result.data);
+            });
         }
 
         function initDropdownList(target, data) {
@@ -305,6 +304,7 @@
 
         function successHandler(mode) {
             notify_success(mode + ' successfully.');
+            initGroupAutoComplete();
             $('#btnMainSearch').click();
             $('#modalCUWindow').modal('hide');
         }

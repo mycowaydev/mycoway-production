@@ -38,15 +38,15 @@ module.exports = Object.freeze({
 		API_SECRET: isProduction ? process.env['CDN_API_SECRET_PRODUCTION'] : process.env['CDN_API_SECRET']
 	},
 	MAIL: {
-	    SERVICE: process.env['MAIL_SERVICE'],
-	    HOST: process.env['MAIL_HOST'],
-        USER: process.env['MAIL_USER'],
-        PASSWORD: process.env['MAIL_PASSWORD'],
-        CLIENT_ID: process.env['MAIL_CLIENT_ID'],
-        CLIENT_SECRET: process.env['MAIL_CLIENT_SECRET'],
-        CLIENT_REFRESH_TOKEN: process.env['MAIL_CLIENT_REFRESH_TOKEN'],
-        DOMAIN_SITE: process.env['DOMAIN_SITE']
-    },
+		SERVICE: process.env['MAIL_SERVICE'],
+		HOST: process.env['MAIL_HOST'],
+		USER: process.env['MAIL_USER'],
+		PASSWORD: process.env['MAIL_PASSWORD'],
+		CLIENT_ID: process.env['MAIL_CLIENT_ID'],
+		CLIENT_SECRET: process.env['MAIL_CLIENT_SECRET'],
+		CLIENT_REFRESH_TOKEN: process.env['MAIL_CLIENT_REFRESH_TOKEN'],
+		DOMAIN_SITE: process.env['DOMAIN_SITE']
+	},
 	DB: {
 		URI: process.env['DB_URI'] || process.env['DB_DEVELOPMENT_URI'],
 		TBL_ADMIN: 'tbl_admin',
@@ -262,6 +262,29 @@ module.exports = Object.freeze({
 		}
 		return newInfo;
 	},
+	getProductInfo: function (info) {
+		var newInfo = {};
+		if (!this.isEmptyJsonObject(info)) {
+			newInfo['_id'] = info['_id'];
+			newInfo['name'] = info['name'];
+			newInfo['product_type'] = info['product_type'];
+			newInfo['price'] = info['price'];
+			newInfo['payment_type'] = info['payment_type'];
+			newInfo['image'] = info['image'];
+			newInfo['gallery'] = info['gallery'];
+			newInfo['desc'] = info['desc'];
+			newInfo['publish_date'] = this.getFormattedDateTime(info['publish_date'], 'YYYY-MM-DD hh:mm');
+			newInfo['unpublish_date'] = this.getFormattedDateTime(info['unpublish_date'], 'YYYY-MM-DD hh:mm');
+			newInfo['status'] = info['status'];
+			newInfo['remarks'] = info['remarks'];
+			newInfo['created_by'] = info['created_by'];
+			newInfo['created_date'] = this.getFormattedDateTime(info['created_date'], 'YYYY-MM-DD');
+			newInfo['opr_by'] = info['opr_by'];
+			newInfo['opr_date'] = this.getFormattedDateTime(info['opr_date'], 'YYYY-MM-DD');
+			newInfo['opr_func'] = info['opr_func'];
+		}
+		return newInfo;
+	},
 	isParamsExist: function (req, params) {
 		var isEmpty = true;
 		var isExists = true;
@@ -333,9 +356,6 @@ module.exports = Object.freeze({
 		return value ? value.replace(/\w(?=\w{4})/g, '*') : value;
 	},
 	getFormattedDateTime: function (timestamp, dateTimeFormat) {
-		console.log("timestamp" + timestamp);
-		console.log("dateTimeFormat" + dateTimeFormat);
-		console.log("String(moment(timestamp * 1000).format(dateTimeFormat)); :: " + String(moment(timestamp * 1000).format(dateTimeFormat)));
 		return String(moment(timestamp * 1000).format(dateTimeFormat));
 	},
 	getCurrentTimestamp: function () {

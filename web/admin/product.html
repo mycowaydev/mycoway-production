@@ -4,9 +4,9 @@
 <head>
     <link href="../vendors/bootstrap-4/dist/css/bootstrap.css" rel="stylesheet">
     <link href="../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
-        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-    <link href="../vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
+        crossorigin="anonymous">
+    <link href="../vendors/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.css" rel="stylesheet">
     <link href="../vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
     <link href="../vendors/summernote/summernote-bs4.css" rel="stylesheet">
     <link href="../vendors/DataTables/datatables.css" />
@@ -23,13 +23,14 @@
     <script src="../vendors/jquery/dist/jquery.validate.min.js"></script>
     <script src="../vendors/pnotify/dist/pnotify.js"></script>
     <script src="../vendors/pnotify/dist/pnotify.buttons.js"></script>
-    <script src="../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="../vendors/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.js"></script>
     <script src="../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
     <script src="../vendors/summernote/summernote-bs4.js"></script>
     <script src="../web-js/notify.js"></script>
     <script src="../vendors/bootstrap-fileinput-master/js/fileinput.js"></script>
     <script src="../vendors/bootstrap-fileinput-master/themes/fa/theme.js"></script>
     <script src="../build/js/custom.js"></script>
+
 
     <script>
         var app = {
@@ -38,7 +39,9 @@
                 method: 'POST'
             },
             mtparam: {
-                status: 'DEFAULT_STATUS'
+                status: 'PRODUCT.STATUS',
+                payment_type: 'PRODUCT_PAYMENT',
+                product_type: 'PRODUCT_TYPE'
             },
             action: {
                 update: 'Update',
@@ -52,13 +55,25 @@
                 mtparam: '/admin-get-mt-param-group',
             },
             setting: {
-                dateFormat: 'YYYY-MM-DD'
+                dateFormat: 'YYYY-MM-DD HH:mm'
             },
         }
 
+        var checkbox_list = [];
+        var product_img_list_old = [];
         var mtpStatus = getMTParam(app.mtparam.status).then(function (result) {
             mtpStatus = result.data;
             initDropdownList('#ddlSearch_Status,#ddlModal_Status', result.data);
+        });
+
+        var mtpProductType = getMTParam(app.mtparam.product_type).then(function (result) {
+            mtpProductType = result.data;
+            initDropdownList('#ddlSearch_ProductType,#ddlModal_ProductType', result.data);
+        });
+
+        var mtpPaymentType = getMTParam(app.mtparam.payment_type).then(function (result) {
+            mtpPaymentType = result.data;
+            initCheckBox('ddlModal_PaymentType', result.data);
         });
 
         function init() {
@@ -69,7 +84,6 @@
             initDataTableBehavior();
             initDateRangePicker();
             initDateTimePicker();
-            initDropzone();
             initValidateInput();
             initWysiwyg();
             initSizeChange();
@@ -92,6 +106,7 @@
                 resetAllSearchInput();
             });
             $("#btnMainAdd").click(function (event) {
+                initDropzone();
                 insertRecordMode();
             });
             $("#btnModalMainAction").click(function (event) {
@@ -120,6 +135,37 @@
         function initDropdownList(target, data) {
             for (var row = 0; row < data.length; row++) {
                 $(target).append(new Option(data[row].value, data[row].code));
+            }
+        }
+
+        function initCheckBox(target, data) {
+
+            var myDiv = document.getElementById(target);
+
+            for (var row = 0; row < data.length; row++) {
+                // creating checkbox element 
+                var node = document.createElement("LI");
+                var checkbox = document.createElement('input');
+
+                // Assigning the attributes to created checkbox 
+                checkbox.type = "checkbox";
+                checkbox.name = "cb_" + data[row].code;
+                checkbox.value = data[row].value;
+                checkbox.id = "cb_" + data[row].code;
+
+                checkbox_list.push(data[row].code);
+
+                // creating label for checkbox 
+                var label = document.createElement('label');
+                // assigning attributes for the created label tag   
+                label.htmlFor = "cb_" + data[row].code;
+
+                // appending the created text to the created label tag  
+                label.appendChild(document.createTextNode(data[row].value));
+
+                myDiv.appendChild(node);
+                node.appendChild(checkbox);
+                node.appendChild(label);
             }
         }
 
@@ -152,8 +198,12 @@
                     url: app.link.getList,
                     type: app.http.method,
                     data: function (dataValue) {
-                        dataValue.rate = $("#ddlSearch_Rate").val();
+                        dataValue.id = $("#txtSearch_ProductID").val();
+                        dataValue.name = $("#txtSearch_ProductName").val();
+                        dataValue.product_type = $("#ddlSearch_ProductType").val();
                         dataValue.status = $("#ddlSearch_Status").val();
+                        dataValue.publish_date = $("#dtpSearch_PublishDate").val();
+                        dataValue.unpublish_date = $("#dtpSearch_UnpublishDate").val();
                     },
                     beforeSend: function (value) {
                         $('#modalLoad').modal('show');
@@ -165,14 +215,23 @@
                 columns: [
                     { data: '_id' },
                     { data: 'name' },
+                    { data: 'product_type' },
                     { data: 'status' },
-                    { data: 'email_address' },
-                    { data: 'rate' },
+                    { data: 'publish_date' },
                 ],
                 columnDefs: [
                     { width: "20%", "targets": 0 },
                     { width: "20%", "targets": 1 },
-                    { width: "20%", "targets": 2 },
+                    {
+                        width: "20%", "targets": 2, render: function (data, type, row) {
+                            for (var row = 0; row < mtpProductType.length; row++) {
+                                if (mtpProductType[row].code == data) {
+                                    return mtpProductType[row].value;
+                                }
+                            }
+                            return data;
+                        }
+                    },
                     {
                         width: "20%", "targets": 3, render: function (data, type, row) {
                             for (var row = 0; row < mtpStatus.length; row++) {
@@ -201,6 +260,8 @@
         function initDateRangePicker() {
             $('#dtpSearch_PublishDate,#dtpSearch_UnpublishDate').daterangepicker({
                 autoApply: true,
+                timePicker: true,
+                timePicker24Hour: true,
                 locale: {
                     format: app.setting.dateFormat
                 }
@@ -208,21 +269,47 @@
             $('#dtpSearch_PublishDate,#dtpSearch_UnpublishDate').val('');
         }
 
-        function initDateTimePicker() {
+        function initDateTimePicker(data) {
             $('#dtpModal_PublishDate,#dtpModal_UnpublishDate').datetimepicker({
-                format: app.setting.dateFormat,
-                allowInputToggle: true
+                autoclose: true,
             });
         }
 
-        function initDropzone() {
+        function initDropzone(data) {
+
+            var preview = [];
+            var previewConfig = [];
+
+            try {
+                if (data) {
+                    let imgLst = (data + '').split(",");
+                    for (let i = 0; i < imgLst.length; i++) {
+                        product_img_list_old.push(imgLst[i]);
+                        var configs = {};
+                        //configs['caption'] = "caption";
+                        configs['downloadUrl'] = imgLst[i];
+                        // configs['size'] = "123456";
+                        // configs['width'] = "123";
+                        // configs['key'] = imgLst[i];
+                        preview.push(imgLst[i] + '');
+                        previewConfig.push(configs);
+                    }
+                }
+            } catch (ex) {
+                console.log("error :: " + ex);
+            }
+
+            $('#fuModal_ProductImage').fileinput('destroy');
             $("#fuModal_ProductImage").fileinput({
                 theme: "fa",
-                initialPreview: [],
+                initialPreview: preview,
                 initialPreviewAsData: true,
-                initialPreviewConfig: [
-                ],
-                deleteUrl: "/site/file-delete",
+                // initialPreviewConfig: [
+                // 'https://res.cloudinary.com/dp1opv9ke/image/upload/v1553603677/coway/healthy-tips/jH35AEN2sVRFp23ta1nwXMae1.png',
+                // 'https://res.cloudinary.com/dp1opv9ke/image/upload/v1553603677/coway/healthy-tips/jH35AEN2sVRFp23ta1nwXMae.png'
+                //                 ],
+                initialPreviewConfig: previewConfig,
+                deleteUrl: "/product-img-delete",
                 overwriteInitial: false,
                 maxFileSize: 10000,
                 browseClass: "btn btn-primary btn-block",
@@ -230,8 +317,14 @@
                 showRemove: false,
                 showUpload: false,
                 showDrag: true,
-
-            });
+            })
+                .on('filepredelete', function (event, key, jqXHR, data) {
+                    product_img_list_old.splice(product_img_list_old.indexOf(key), 1);
+                }
+                );
+            // $('#fuModal_ProductImage.remove').on('click', function () {
+            //     $(this).closest('.fileinput').fileinput('clear');
+            // });
         }
 
         function initWysiwyg() {
@@ -256,9 +349,10 @@
             });
         }
         function initValidateInput() {
+
             $("#modalForm").validate({
                 rules: {
-                    txtModal_Name: {
+                    txtModal_ProductName: {
                         required: true
                     },
                     ddlModal_Status: {
@@ -268,24 +362,36 @@
                             }
                         }
                     },
-                    ddlModal_Rate: {
+                    ddlModal_ProductType: {
                         required: {
                             depends: function (element) {
                                 return $("#ddlModal_Rate").val() === "";
                             }
                         }
-                    }
+                    },
+                    dtpModal_PublishDate: {
+                        required: true
+                    },
+                    dtpModal_UnpublishDate: {
+                        required: true
+                    },
                 },
                 messages: {
-                    txtModal_Name: {
+                    txtModal_ProductName: {
                         required: "Please enter name."
                     },
                     ddlModal_Status: {
                         required: "Please select status."
                     },
-                    ddlModal_Rate: {
-                        required: "Please select rate."
-                    }
+                    ddlModal_ProductType: {
+                        required: "Please select product type."
+                    },
+                    dtpModal_PublishDate: {
+                        required: "Please enter publish date."
+                    },
+                    dtpModal_UnpublishDate: {
+                        required: "Please enter unpublish date."
+                    },
                 }
             });
         }
@@ -294,7 +400,9 @@
             var mode = app.action.insert;
             $('#modalTitle').text(mode + ' ' + app.name);
             $('#btnModalMainActionText').text(mode);
-            disableElement(false);
+            document.getElementById("txtModal_ProductID_label").style.display = 'none';
+            document.getElementById("txtModal_ProductID").style.display = 'none';
+            disableElement(true);
             $('#modalCUWindow').modal('show')
         }
 
@@ -302,15 +410,14 @@
             var mode = app.action.update;
             $('#modalTitle').text(mode + ' ' + app.name);
             $('#btnModalMainActionText').text(mode);
+            //$('#txtModal_ProductID_div').style.visibility = 'visible';
+            document.getElementById("txtModal_ProductID_label").style.display = 'block';
+            document.getElementById("txtModal_ProductID").style.display = 'block';
             disableElement(true);
             $('#modalCUWindow').modal('show')
         }
-
         function disableElement(disable) {
-            $("#txtModal_OrderID").prop("disabled", true);
-            $("#btnModalDownload_Ic").prop("disabled", !disable);
-            $("#btnModalDownload_Card").prop("disabled", !disable);
-            $("#btnModalDownload_Signature").prop("disabled", !disable);
+            $("#txtModal_ProductID").prop("disabled", true);
         }
 
         function resetAllSearchInput() {
@@ -327,18 +434,78 @@
                 var tempDz = Dropzone.forElement("#" + obj.id);
                 tempDz.removeAllFiles();
             });
+            $('#wysModal_Description').summernote('code', '');
+            setAllCheckBox();
             $('#modalForm').validate().resetForm();
+        }
+
+        function setAllCheckBox(input) {
+
+            // Reset all to uncheck
+            if (typeof input === 'undefined') {
+                for (let i = 0; i < checkbox_list.length; i++) {
+                    document.getElementById("cb_" + checkbox_list[i]).checked = false;
+                }
+                return;
+            }
+
+            // Reset based on data
+            let data = input.payment_type;
+            for (let i = 0; i < checkbox_list.length; i++) {
+                document.getElementById("cb_" + checkbox_list[i]).checked = (data.indexOf(checkbox_list[i]) >= 0);
+            }
+
+        }
+
+        function getCheckedBox() {
+            let checked_box = [];
+
+            for (let i = 0; i < checkbox_list.length; i++) {
+                if (document.getElementById("cb_" + checkbox_list[i]).checked) {
+                    checked_box.push(checkbox_list[i]);
+                }
+            }
+            return checked_box;
         }
 
         function getModalFormData() {
             var formData = new FormData();
 
             formData.append('id', $("#formId").val());
-            formData.append('name', $("#txtModal_Name").val());
+            formData.append('name', $("#txtModal_ProductName").val());
             formData.append('status', $("#ddlModal_Status").val());
-            formData.append('email_address', $("#txtModal_Email").val());
-            formData.append('rate', $("#ddlModal_Rate").val());
-            formData.append('desc', $("#taModal_Description").val());
+
+            // Detail
+            formData.append('product_type', $("#ddlModal_ProductType").val());
+            formData.append('publish_date', moment($("#dtpModal_PublishDate").val()).unix());
+            formData.append('unpublish_date', moment($("#dtpModal_UnpublishDate").val()).unix());
+
+            // Image
+            formData.append('product_img_list_old', product_img_list_old);
+            var files = document.getElementById('fuModal_ProductImage').files;
+            if (typeof files != 'undefined') {
+                let fileLength = files.length;
+                formData.append('file_length', fileLength);
+                for (let a = 0; a < fileLength; a++) {
+                    formData.append('image[' + a + ']', files[a]);
+                }
+            }
+
+            // Gallery
+            formData.append('gallery', $("#txtModal_Gallery").val());
+
+            // Payment & Price
+            let checked_box = getCheckedBox();
+            formData.append('payment_type', checked_box);
+            formData.append('original_price', $("#txtModal_OriginalPrice").val());
+            formData.append('rental_price', $("#txtModal_RentalPrice").val());
+            formData.append('retail_price', $("#txtModal_RetailPrice").val());
+
+            // Description
+            var html = $('#wysModal_Description').summernote('code');
+            formData.append('desc', html);
+
+            // Remarks
             formData.append('remarks', $("#taModal_Remarks").val());
 
             return formData;
@@ -353,14 +520,46 @@
         function editHandler(result) {
             var data = result.data;
 
+            setAllCheckBox();
+            product_img_list_old = [];
             if (data) {
-                $("#formId").val(data._id);
-                $("#txtModal_Name").val(data.name);
-                $("#ddlModal_Status").val(data.status);
-                $("#txtModal_Email").val(data.email_address);
-                $("#ddlModal_Rate").val(data.rate);
-                $("#taModal_Description").val(data.desc);
-                $("#taModal_Remarks").val(data.remarks);
+
+                try {
+
+
+                    $("#formId").val(data._id);
+                    $("#txtModal_ProductID").val(data._id);
+                    $("#txtModal_ProductName").val(data.name);
+                    $("#ddlModal_Status").val(data.status);
+
+                    // Detail
+                    $("#ddlModal_ProductType").val(data.product_type);
+                    $("#dtpModal_PublishDate").val(moment(data.publish_date * 1000).format('YYYY-MM-DD hh:mm'));
+                    $("#dtpModal_UnpublishDate").val(moment(data.unpublish_date * 1000).format('YYYY-MM-DD hh:mm'));
+
+                    // Image
+                    initDropzone(data.image);
+
+                    // Gallery
+                    $("#txtModal_Gallery").val(data.gallery);
+
+                    // Payment & Price
+                    setAllCheckBox(data);
+                    $("#txtModal_OriginalPrice").val(data.price.original_price);
+                    $("#txtModal_RentalPrice").val(data.price.rental_price);
+                    $("#txtModal_RetailPrice").val(data.price.retail_price);
+
+                    console.log("data.desc :: "+ data.desc);
+                    // Description
+                    $('#wysModal_Description').summernote('code', data.desc);
+
+                    // Remark
+                    $("#taModal_Remarks").val(data.remarks);
+
+                } catch (err) {
+
+                    console.log("err : " + err);
+                }
                 updateRecordMode();
             }
         }
@@ -403,10 +602,8 @@
         function actionModifyData() {
             if ($("#modalForm").valid()) {
                 $('#modalLoad').modal('show');
-
                 var mode = $('#btnModalMainActionText').text();
                 var path = (mode === app.action.update ? app.link.update : app.link.insert);
-
                 fetch(path, { method: app.http.method, body: getModalFormData() })
                     .then(function (res) {
                         if (res.ok) {
@@ -442,74 +639,61 @@
             <!-- ACCORDION START -->
             <div class="accordion" id="accordion">
                 <div class="panel border">
-                    <a class="panel-heading" role="tab" id="headerPanel" data-toggle="collapse" data-parent="#accordion"
-                        href="#collapsePanel" aria-expanded="false" aria-controls="collapsePanel">
-                        <h4 id="app_title" class="panel-title"><span class="glyphicon glyphicon-chevron-down"
-                                aria-hidden="false"></span></h4>
+                    <a class="panel-heading" role="tab" id="headerPanel" data-toggle="collapse" data-parent="#accordion" href="#collapsePanel"
+                        aria-expanded="false" aria-controls="collapsePanel">
+                        <h4 id="app_title" class="panel-title">
+                            <span class="glyphicon glyphicon-chevron-down" aria-hidden="false"></span>
+                        </h4>
                     </a>
                     <div id="collapsePanel" class="panel-collapse show m-3" role="">
                         <div class="panel-body">
                             <form id="searchForm">
                                 <div class="form-group row">
-                                    <label for="txtSearch_ProductID"
-                                        class="col-sm-2 col-form-label col-form-label-sm">Product ID</label>
+                                    <label for="txtSearch_ProductID" class="col-sm-2 col-form-label col-form-label-sm">Product ID</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control form-control-sm" id="txtSearch_ProductID"
-                                            name="txtSearch_ProductID" placeholder="Product ID">
+                                        <input type="text" class="form-control form-control-sm" id="txtSearch_ProductID" name="txtSearch_ProductID" placeholder="Product ID">
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="txtSearch_ProductName"
-                                        class="col-sm-2 col-form-label col-form-label-sm">Product name</label>
+                                    <label for="txtSearch_ProductName" class="col-sm-2 col-form-label col-form-label-sm">Product name</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control form-control-sm"
-                                            id="txtSearch_ProductName" name="txtSearch_ProductName"
-                                            placeholder="Product name">
+                                        <input type="text" class="form-control form-control-sm" id="txtSearch_ProductName" name="txtSearch_ProductName" placeholder="Product name">
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="ddlSearch_Type"
-                                        class="col-sm-2 col-form-label col-form-label-sm">Type</label>
+                                    <label for="ddlSearch_ProductType" class="col-sm-2 col-form-label col-form-label-sm">Product Type</label>
                                     <div class="col-sm-10">
-                                        <select id="ddlSearch_Type" class="form-control form-control-sm" name="normal">
+                                        <select id="ddlSearch_ProductType" class="form-control form-control-sm" name="normal">
                                             <option value="">Please select</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="ddlSearch_Status"
-                                        class="col-sm-2 col-form-label col-form-label-sm">Status</label>
+                                    <label for="ddlSearch_Status" class="col-sm-2 col-form-label col-form-label-sm">Status</label>
                                     <div class="col-sm-10">
-                                        <select id="ddlSearch_Status" class="form-control form-control-sm"
-                                            name="normal">
+                                        <select id="ddlSearch_Status" class="form-control form-control-sm" name="normal">
                                             <option value="">Please select</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="dtpSearch_PublishDate"
-                                        class="col-sm-2 col-form-label col-form-label-sm">Publish date</label>
+                                    <label for="dtpSearch_PublishDate" class="col-sm-2 col-form-label col-form-label-sm">Publish date</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control form-control-sm"
-                                            name="dtpSearch_PublishDate" id="dtpSearch_PublishDate" value=""
+                                        <input type="text" class="form-control form-control-sm" name="dtpSearch_PublishDate" id="dtpSearch_PublishDate" value=""
                                             placeholder="Please select" />
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="dtpSearch_UnpublishDate"
-                                        class="col-sm-2 col-form-label col-form-label-sm">Un-Publish date</label>
+                                    <label for="dtpSearch_UnpublishDate" class="col-sm-2 col-form-label col-form-label-sm">Un-Publish date</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control form-control-sm"
-                                            name="dtpSearch_UnpublishDate" id="dtpSearch_UnpublishDate" value=""
+                                        <input type="text" class="form-control form-control-sm" name="dtpSearch_UnpublishDate" id="dtpSearch_UnpublishDate" value=""
                                             placeholder="Please select" />
                                     </div>
                                 </div>
                             </form>
                             <div class="text-right">
-                                <button id="btnMainReset" class="btn btn-secondary btn-sm"
-                                    id="btnMainReset">Reset</button>
-                                <button id="btnMainSearch" class="btn btn-success btn-sm"
-                                    id="btnMainSearch">Search</button>
+                                <button id="btnMainReset" class="btn btn-secondary btn-sm" id="btnMainReset">Reset</button>
+                                <button id="btnMainSearch" class="btn btn-success btn-sm" id="btnMainSearch">Search</button>
                             </div>
                         </div>
                     </div>
@@ -529,7 +713,7 @@
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
-                        <th>Type</th>
+                        <th>Product Type</th>
                         <th>Status</th>
                         <th>Publish date</th>
                     </tr>
@@ -550,12 +734,14 @@
     <!-- PROMPT MODAL START -->
     <!-- PROMPT MODAL START -->
     <!-- PROMPT MODAL START -->
-    <div class="modal fade bd-example-modal-lg" id="modalCUWindow" tabindex="-1" role="dialog"
-        aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal fade bd-example-modal-lg" id="modalCUWindow" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel"><span id="modalTitle"></span></h5>
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        <span id="modalTitle"></span>
+                    </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -563,80 +749,70 @@
                 <div class="modal-body">
                     <form id="modalForm">
                         <input type="hidden" id="formId">
-                        <input type="hidden" id="AddressId">
                         <div class="form-group row">
-                            <label for="txtModal_ProductID" class="col-sm-2 col-form-label col-form-label-sm">Product
-                                ID</label>
+                            <label id="txtModal_ProductID_label" for="txtModal_ProductID" class="col-sm-2 col-form-label col-form-label-sm">Product ID
+                            </label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control form-control-sm" id="txtModal_ProductID"
-                                    name="txtModal_ProductID" placeholder="Product ID">
+                                <input type="text" class="form-control form-control-sm" id="txtModal_ProductID" name="txtModal_ProductID" disable placeholder="Product ID">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="txtModal_ProductName" class="col-sm-2 col-form-label col-form-label-sm">Product
-                                name</label>
+                            <label for="txtModal_ProductName" class="col-sm-2 col-form-label col-form-label-sm">Product name
+                            </label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control form-control-sm" id="txtModal_ProductName"
-                                    name="txtModal_ProductName" placeholder="Product number">
+                                <input type="text" class="form-control form-control-sm" id="txtModal_ProductName" name="txtModal_ProductName" placeholder="Product name">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="ddlModal_Status" class="col-sm-2 col-form-label col-form-label-sm">Status</label>
+                            <div class="col-sm-10">
+                                <select id="ddlModal_Status" class="form-control form-control-sm" name="ddlModal_Status">
+                                    <option value="">Please select</option>
+                                </select>
                             </div>
                         </div>
                         <ul class="nav nav-tabs" id="modalTab">
-                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#detail">Detail</a>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#detail">Detail</a>
                             </li>
-                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#image">Image</a>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#image">Image</a>
                             </li>
-                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#service">Service</a></li>
-                            <li class="nav-item"><a class="nav-link" data-toggle="tab"
-                                    href="#description">Description</a>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#gallery">Gallery</a>
                             </li>
-                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#remarks">Remarks</a></li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#payment_price">Payment & Price</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#description">Description</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#remarks">Remarks</a>
+                            </li>
                         </ul>
                         <div class="tab-content">
                             <div id="detail" class="tab-pane fade mt-4">
                                 <div class="form-group row">
-                                    <label for="ddlModal_Status"
-                                        class="col-sm-2 col-form-label col-form-label-sm">Status</label>
+                                    <label for="ddlModal_ProductType" class="col-sm-2 col-form-label col-form-label-sm">Product Type</label>
                                     <div class="col-sm-10">
-                                        <select id="ddlModal_Status" class="form-control form-control-sm"
-                                            name="ddlModal_Status">
+                                        <select id="ddlModal_ProductType" class="form-control form-control-sm" name="ddlModal_ProductType">
                                             <option value="">Please select</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="ddlModal_Type"
-                                        class="col-sm-2 col-form-label col-form-label-sm">Type</label>
+                                    <label for="dtpModal_PublishDate" class="col-sm-2 col-form-label col-form-label-sm">Publish Date</label>
                                     <div class="col-sm-10">
-                                        <select id="ddlModal_Type" class="form-control form-control-sm"
-                                            name="ddlModal_Type">
-                                            <option value="">Please select</option>
-                                        </select>
+                                        <input type="text" class="form-control form-control-sm" name="dtpModal_PublishDate" id="dtpModal_PublishDate" readonly value=""
+                                            placeholder="Please select" />
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="dtpModal_PublishDate"
-                                        class="col-sm-2 col-form-label col-form-label-sm">Publish Date</label>
+                                    <label for="dtpModal_UnpublishDate" class="col-sm-2 col-form-label col-form-label-sm">Un-Publish Date</label>
                                     <div class="col-sm-10">
-                                        <div class='input-group date datepicker' id='dtpModal_PublishDate'>
-                                            <span class="input-group-addon">
-                                                <span class="glyphicon glyphicon-calendar"></span>
-                                            </span>
-                                            <input type='text' class="form-control form-control-sm"
-                                                name="dtpModal_PublishDate" placeholder="Please select" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="dtpModal_UnpublishDate"
-                                        class="col-sm-2 col-form-label col-form-label-sm">Un-Publish Date</label>
-                                    <div class="col-sm-10">
-                                        <div class='input-group date datepicker' id='dtpModal_UnpublishDate'>
-                                            <span class="input-group-addon">
-                                                <span class="glyphicon glyphicon-calendar"></span>
-                                            </span>
-                                            <input type='text' class="form-control form-control-sm"
-                                                name="dtpModal_UnpublishDate" placeholder="Please select" />
-                                        </div>
+                                        <input type="text" class="form-control form-control-sm" name="dtpModal_UnpublishDate" id="dtpModal_UnpublishDate" readonly
+                                            value="" placeholder="Please select" />
                                     </div>
                                 </div>
                             </div>
@@ -645,19 +821,50 @@
                                     <input id="fuModal_ProductImage" name="fuModal_ProductImage[]" type="file" multiple>
                                 </div>
                             </div>
-                            <div id="service" class="tab-pane fade mt-4">
+                            <div id="gallery" class="tab-pane fade mt-4">
+                                <div class="form-group row">
+                                    <label for="txtModal_Gallery" class="col-sm-2 col-form-label col-form-label-sm">Gallery</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control form-control-sm" id="txtModal_Gallery" name="txtModal_Gallery" placeholder="Gallery">
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="payment_price" class="tab-pane fade mt-4">
+                                <div class="form-group row">
+                                    <label for="ddlModal_PaymentType" class="col-sm-2 col-form-label col-form-label-sm">Payment Type</label>
+                                    <div class="col-sm-10" id="ddlModal_PaymentType_div">
+                                        <ul id="ddlModal_PaymentType" class="ks-cboxtags">
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="txtModal_OriginalPrice" class="col-sm-2 col-form-label col-form-label-sm">Original Price</label>
+                                    <div class="col-sm-10">
+                                        <input type="number" class="form-control form-control-sm" id="txtModal_OriginalPrice" name="txtModal_OriginalPrice" placeholder="Original Price">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="txtModal_RentalPrice" class="col-sm-2 col-form-label col-form-label-sm">Rental Price</label>
+                                    <div class="col-sm-10">
+                                        <input type="number" class="form-control form-control-sm" id="txtModal_RentalPrice" name="txtModal_RentalPrice" placeholder="Rental Price">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="txtModal_RetailPrice" class="col-sm-2 col-form-label col-form-label-sm">Retail Price</label>
+                                    <div class="col-sm-10">
+                                        <input type="number" class="form-control form-control-sm" id="txtModal_RetailPrice" name="txtModal_RetailPrice" placeholder="Retail Price">
+                                    </div>
+                                </div>
                             </div>
                             <div id="description" class="tab-pane fade mt-4">
                                 <div id="wysModal_Description"></div>
                             </div>
                             <div id="remarks" class="tab-pane fade mt-4">
                                 <div class="form-group row">
-                                    <label for="taModal_Remarks"
-                                        class="col-sm-2 col-form-label col-form-label-sm">Remarks
-                                        (FOUO)</label>
+                                    <label for="taModal_Remarks" class="col-sm-2 col-form-label col-form-label-sm">Remarks (FOUO)
+                                    </label>
                                     <div class="col-sm-10">
-                                        <textarea class="form-control form-control-sm" rows="5" id="taModal_Remarks"
-                                            name="taModal_Remarks" placeholder="Remarks"></textarea>
+                                        <textarea class="form-control form-control-sm" rows="5" id="taModal_Remarks" name="taModal_Remarks" placeholder="Remarks"></textarea>
                                     </div>
                                 </div>
                             </div>
