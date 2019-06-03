@@ -54,3 +54,10 @@ for (i = 0; i < acc.length; i++) {
         }
     });
 }
+
+// for tel phone number
+if(typeof const_array !== 'undefined'){
+    if (typeof const_array.const_phone_number !== 'undefined') {
+        $('.call-us').attr("href", 'tel:' + const_array.const_phone_number)
+    }
+}
