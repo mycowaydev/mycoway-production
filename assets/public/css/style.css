@@ -3916,7 +3916,7 @@ a {
 }
 
 .cart_inner .table tbody tr td .product_count .increase {
-	top: -2px
+	top: 0.2%
 }
 
 .cart_inner .table tbody tr td .product_count .increase:before {
@@ -3940,7 +3940,7 @@ a {
 }
 
 .cart_inner .table tbody tr td .product_count .reduced {
-	bottom: -6px
+	bottom: 0.2%
 }
 
 .cart_inner .table tbody tr.bottom_button .button {
@@ -4181,12 +4181,12 @@ a {
 }
 
 .product_image_area {
-	padding-top: 0px
+	padding-top: 20px
 }
 
 @media (min-width: 1000px) {
 	.product_image_area {
-		padding-top: 0px
+		padding-top: 20px
 	}
 }
 
@@ -4381,11 +4381,11 @@ a {
 }
 
 .product_count .increase {
-	top: -4px
+	top: -1%
 }
 
 .product_count .reduced {
-	bottom: -8px
+	bottom: -10%;
 }
 
 .product_description_area {

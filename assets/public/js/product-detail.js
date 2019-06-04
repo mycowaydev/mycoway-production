@@ -95,18 +95,19 @@ function loadProductDetail(productList) {
             singleItem: true,
             items: 1,
             nav: true,
-            navText: ['<i class="fa fa-angle-left" aria-hidden="true"></i>', '<i class="fa fa-angle-right" aria-hidden="true"></i>']
+            navText: ['<i class="fa fa-angle-left" aria-hidden="true"></i>',
+                '<i class="fa fa-angle-right" aria-hidden="true"></i>']
         });
 
         $('#txtProductName').text(product.name)
-        $('#description').append(product.desc);
+        $('#description').append(product.desc)
 
         if (product.price.originalPrice)
-            addPriceInfo('string_original_price', product.price.originalPrice, true);
+            addPriceInfo('string_original_price', product.price.originalPrice, true)
         if (product.price.retailPrice)
-            addPriceInfo('string_retail_price', product.price.retailPrice, false);
+            addPriceInfo('string_retail_price', product.price.retailPrice, false)
         if (product.price.rentalPrice)
-            addPriceInfo('string_rental_price', product.price.rentalPrice, false);
+            addPriceInfo('string_rental_price', product.price.rentalPrice, false)
 
         var paymentType = getStringById('string_payment_method')
         product.payment_type.forEach(payment => {

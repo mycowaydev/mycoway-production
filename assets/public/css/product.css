@@ -1,0 +1,23 @@
+.modal-body {
+    text-align: left;
+    margin-left: 2%;
+    margin-right: 2%;
+}
+
+.string_proceed_cart {
+    margin-left: 4%;
+}
+
+.card-img {
+    height:300px;
+    width:100%
+}
+
+.owl-carousel .owl-item img {
+    display: block;
+    width: auto;
+}
+
+.product_image_area {
+
+}

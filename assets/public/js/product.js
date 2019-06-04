@@ -82,7 +82,7 @@ function loadProductList(productList) {
             '<div class="col-md-6 col-lg-4">' +
             '<a href="/product-detail?id=' + product._id + '"><div class="card text-center card-product">' +
             '<div class= "card-product__img" >' +
-            '<img class="card-img" style="height:100; width:100%" src="' + product.image[0] + '" onerror="this.src=\'img/imageNotFound.png\'">' +
+            '<img class="card-img" src="' + product.image[0] + '" onerror="this.src=\'img/imageNotFound.png\'">' +
             '</div>' +
             '<div class="card-body">' +
             '<h4 class="card-product__title">' + product.name + '</h4>' +
