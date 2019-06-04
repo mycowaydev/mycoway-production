@@ -59,6 +59,7 @@ module.exports = Object.freeze({
 		TBL_APPPARAM: 'tbl_app_param',
 		TBL_MTPARAM: 'tbl_mt_param',
 		TBL_PRODUCT_MASTER: 'tbl_product_master',
+		TBL_PUBLIC_ACCESS_LOG: 'tbl_public_access_log',
 		TBL_MENU: 'tbl_menu',
 		TBL_REVIEW: 'tbl_review',
 		TBL_SERVICE: 'tbl_service',

@@ -3,7 +3,8 @@ const config = require('./config');
 const express = require('express');
 const path = require('path');
 const fs = require('fs')
-const useragent = require('useragent');
+const public_log = require('./api/v1.0/public/public-insert-access-log')
+
 
 module.exports = function (apiVersion) {
 	let router = express.Router();
@@ -136,6 +137,7 @@ module.exports = function (apiVersion) {
 
 	router.get('/', function (req, res) {
 		localVar['selected_tab'] = 'tab-home';
+		public_log(req, res, 'index');
 		res.render(path.join(__dirname, '/web/public/index'), localVar);
 	});
 
@@ -146,52 +148,52 @@ module.exports = function (apiVersion) {
 
 	router.get('/*', function (req, res) {
 		let page = req.params[0];
-		var agent = useragent.parse(req.headers['user-agent']);
-
-		console.log(agent.os.toString());
-		console.log(agent.os.toVersion());
-		console.log(agent.toAgent());
-		console.log(agent.device.toString());
-		console.log(agent.device.toVersion());
-		const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-		console.log(ip);
 
 		switch (page) {
 			case 'index':
 				localVar['selected_tab'] = 'tab-home';
+				public_log(req, res, 'index');
 				break;
 			case 'air-purifier':
 				req.url = "/product";
 				localVar['selected_tab'] = 'tab-shop';
 				localVar['getJsonFile'] = 'res/air-purifier.json';
+				public_log(req, res, 'air purifier');
 				break;
 			case 'product':
 			case 'water-purifier':
 				req.url = "/product";
 				localVar['selected_tab'] = 'tab-shop';
 				localVar['getJsonFile'] = 'res/water-purifier.json';
+				public_log(req, res, 'water purifier');
 				break;
 			case 'promotion':
 				req.url = "/product";
 				localVar['selected_tab'] = 'tab-promotion';
 				localVar['getJsonFile'] = 'res/promotion.json';
+				public_log(req, res, 'promotion');
 				break;
 			case 'product-detail':
 				req.url = "/product-detail";
 				localVar['selected_tab'] = 'tab-shop';
 				localVar['getJsonFile'] = 'res/product-detail.json';
+				public_log(req, res, 'product detail');
 				break;
 			case 'order-tracking':
 				localVar['selected_tab'] = 'tab-tracking';
+				public_log(req, res, 'order tracking');
 				break;
 			case 'faq':
 				localVar['selected_tab'] = 'tab-faq';
+				public_log(req, res, 'faq');
 				break;
 			case 'cart':
 				localVar['selected_tab'] = 'tab-cart';
+				public_log(req, res, 'cart');
 				break;
 			case 'review':
 				localVar['selected_tab'] = 'tab-review';
+				public_log(req, res, 'review');
 				break;
 			default:
 				break;
