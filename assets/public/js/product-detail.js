@@ -104,10 +104,10 @@ function loadProductDetail(productList) {
 
         if (product.price.originalPrice)
             addPriceInfo('string_original_price', product.price.originalPrice, true)
-        if (product.price.retailPrice)
-            addPriceInfo('string_retail_price', product.price.retailPrice, false)
-        if (product.price.rentalPrice)
-            addPriceInfo('string_rental_price', product.price.rentalPrice, false)
+        if (product.price.retail_price)
+            addPriceInfo('string_retail_price', product.price.retail_price, false)
+        if (product.price.rental_price)
+            addPriceInfo('string_rental_price', product.price.rental_price, false)
 
         var paymentType = getStringById('string_payment_method')
         product.payment_type.forEach(payment => {
@@ -177,7 +177,7 @@ function addToCart() {
 }
 
 function getPrice(product) {
-    return $('#ddlPayment').val() == 'P' ? product.price.retailPrice : product.price.rentalPrice;
+    return $('#ddlPayment').val() == 'P' ? product.price.retail_price : product.price.rental_price;
 }
 
 function addProductToCart(product) {
@@ -211,7 +211,7 @@ function increaseCartQuantity(product) {
     if (sessionStorage.cart) {
         var previousCartList = JSON.parse(sessionStorage.cart);
         previousCartList.forEach(cart => {
-            if (cart.product_id == product._id && cart.payment_type == product.payment_type) {
+            if (cart.product_id == product._id && cart.payment_type == $('#ddlPayment').val()) {
                 cart.product_id = product._id;
                 cart.product_name = product.name;
                 cart.quantity = parseInt(cart.quantity) + parseInt($('#txtProductQty').val());

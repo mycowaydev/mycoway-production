@@ -40,7 +40,7 @@ if (!sessionStorage.cart) {
     for (var cart_item of cart_list) {
         var order_line = "<li>" + cart_item.product_name + " <span class=\"middle\">x " +  cart_item.quantity
             + "</span> <span class=\"middle\">" + getStringById('string_payment_method')[cart_item.payment_type]  + "</span> <span class=\"last\">RM "
-            + (cart_item.payment * cart_item.quantity) + "</span></li>"
+            + (cart_item.price * cart_item.quantity) + "</span></li>"
         $( "#order_box_ul" ).append(order_line);
     }
 }
@@ -118,7 +118,7 @@ function getModalFormData() {
             setProductOrder(formData, 'order_product[' + index + '][image][' + imageIndex + ']', imageUrl);
         });
         setProductOrder(formData, 'order_product[' + index + '][price]', order_item.price);
-        setProductOrder(formData, 'order_product[' + index + '][payment]', order_item.payment);
+        setProductOrder(formData, 'order_product[' + index + '][payment]', order_item.price);
         setProductOrder(formData, 'order_product[' + index + '][payment_type]', order_item.payment_type);
         $.each( order_item.service , function( serviceIndex, orderService ){
             setProductOrder(formData, 'order_product[' + index + '][service][' + serviceIndex + '][name]', orderService.name);

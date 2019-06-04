@@ -158,7 +158,7 @@ if (sessionStorage.cart) {
                         "</div>" +
                     "</td>" +
                     "<td>" +
-                        "<h5>RM&nbsp;" + obj.payment + "</h5>" +
+                        "<h5>RM&nbsp;" + obj.price + "</h5>" +
                     "</td>" +
                     "<td>" +
                         "<h5>" + getStringById('string_payment_method')[obj.payment_type] + "</h5>" +
@@ -166,16 +166,16 @@ if (sessionStorage.cart) {
                     "<td>" +
                         "<div class='product_count'>" +
                             "<input class='input-text qty' id='qty" + index + "' maxlength='12' name='qty' title='Quantity:' type='text' value='" + obj.quantity + "'>" +
-                            "<button class='increase items-count' onclick=\"addQuantity(" + index + ", " + obj.payment + ")\" type='button'>" +
+                            "<button class='increase items-count' onclick=\"addQuantity(" + index + ", " + obj.price + ")\" type='button'>" +
                                 "<i class='lnr lnr-chevron-up'></i>" +
                             "</button>" +
-                            "<button class='reduced items-count' onclick=\"reduceQuantity(" + index + ", " + obj.payment +")\" type='button'>" +
+                            "<button class='reduced items-count' onclick=\"reduceQuantity(" + index + ", " + obj.price +")\" type='button'>" +
                                 "<i class='lnr lnr-chevron-down'></i>" +
                             "</button>" +
                         "</div>" +
                     "</td>" +
                     "<td class='cart_nowrap'>" +
-                        "<h5 id='item-total" + index + "'>RM " + (obj.payment * obj.quantity) + "</h5>" +
+                        "<h5 id='item-total" + index + "'>RM " + (obj.price * obj.quantity) + "</h5>" +
                     "</td>" +
                     "<td><a onclick=\"deleteItem(" + index + ")\"><i class='far fa-trash-alt'></i></a></td>" +
                 "</tr>"
