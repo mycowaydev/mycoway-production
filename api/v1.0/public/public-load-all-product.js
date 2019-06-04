@@ -37,7 +37,7 @@ function validateParam(req, data) {
 }
 
 function getQuery(data) {
-	let query = { 'type': data.productType, 'status': 'A', 'publish_date': { $lt: config.getCurrentTimestamp() }, 'unpublish_date': { $gt: config.getCurrentTimestamp() } };
+	let query = { 'product_type': data.productType, 'status': 'A' };
 	return query;
 }
 
