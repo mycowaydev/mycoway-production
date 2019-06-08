@@ -243,7 +243,7 @@ module.exports = Object.freeze({
 	getOrderInfo: function (info) {
 		var newInfo = {};
 		if (!this.isEmptyJsonObject(info)) {
-			console.log("info :: " + JSON.stringify(info));
+			newInfo['_id'] = info['_id'];
 			newInfo['email'] = info['email'];
 			newInfo['image_ic'] = info['image_ic'];
 			newInfo['image_card'] = info['image_card'];
@@ -252,13 +252,13 @@ module.exports = Object.freeze({
 			newInfo['emergency_no'] = info['emergency_no'];
 			newInfo['address'] = info['address'];
 			newInfo['order_product'] = info['order_product'];
-			//newInfo['order_date'] = this.getFormattedDateTime(info['order_date'], 'YYYY-MM-DD');
+			newInfo['order_date'] = this.getFormattedDateTime(info['order_date'], 'YYYY-MM-DD');
 			newInfo['status'] = info['status'];
 			newInfo['remarks'] = info['remarks'];
 			newInfo['created_by'] = info['created_by'];
-			//newInfo['created_date'] = this.getFormattedDateTime(info['created_date'], 'YYYY-MM-DD');
+			newInfo['created_date'] = this.getFormattedDateTime(info['created_date'], 'YYYY-MM-DD');
 			newInfo['opr_by'] = info['opr_by'];
-			//newInfo['opr_date'] = this.getFormattedDateTime(info['opr_date'], 'YYYY-MM-DD');
+			newInfo['opr_date'] = this.getFormattedDateTime(info['opr_date'], 'YYYY-MM-DD');
 			newInfo['opr_func'] = info['opr_func'];
 		}
 		return newInfo;

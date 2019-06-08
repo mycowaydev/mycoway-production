@@ -279,6 +279,7 @@
 
             var preview = [];
             var previewConfig = [];
+            product_img_list_old = [];
 
             try {
                 if (data) {
@@ -290,7 +291,7 @@
                         configs['downloadUrl'] = imgLst[i];
                         // configs['size'] = "123456";
                         // configs['width'] = "123";
-                        // configs['key'] = imgLst[i];
+                        configs['key'] = imgLst[i];
                         preview.push(imgLst[i] + '');
                         previewConfig.push(configs);
                     }
@@ -300,7 +301,7 @@
             }
 
             $('#fuModal_ProductImage').fileinput('destroy');
-            $("#fuModal_ProductImage").fileinput({
+            $("#fuModal_ProductImage").fileinput('destroy').fileinput({
                 theme: "fa",
                 initialPreview: preview,
                 initialPreviewAsData: true,
@@ -319,12 +320,12 @@
                 showDrag: true,
             })
                 .on('filepredelete', function (event, key, jqXHR, data) {
-                    product_img_list_old.splice(product_img_list_old.indexOf(key), 1);
+                    if (key && product_img_list_old.indexOf(key) != -1) {
+                        product_img_list_old.splice(product_img_list_old.indexOf(key), 1);
+                    }
                 }
                 );
-            // $('#fuModal_ProductImage.remove').on('click', function () {
-            //     $(this).closest('.fileinput').fileinput('clear');
-            // });
+
         }
 
         function initWysiwyg() {
@@ -365,7 +366,7 @@
                     ddlModal_ProductType: {
                         required: {
                             depends: function (element) {
-                                return $("#ddlModal_Rate").val() === "";
+                                return $("#ddlModal_ProductType").val() === "";
                             }
                         }
                     },
@@ -375,6 +376,11 @@
                     dtpModal_UnpublishDate: {
                         required: true
                     },
+                    txtModal_RentalPrice: {
+                        required: true
+                    },
+
+
                 },
                 messages: {
                     txtModal_ProductName: {
@@ -391,6 +397,9 @@
                     },
                     dtpModal_UnpublishDate: {
                         required: "Please enter unpublish date."
+                    },
+                    txtModal_RentalPrice: {
+                        required: "Please enter rental price."
                     },
                 }
             });
@@ -520,12 +529,11 @@
         function editHandler(result) {
             var data = result.data;
 
+            initSizeChange();
             setAllCheckBox();
             product_img_list_old = [];
             if (data) {
-
                 try {
-
 
                     $("#formId").val(data._id);
                     $("#txtModal_ProductID").val(data._id);
@@ -549,7 +557,6 @@
                     $("#txtModal_RentalPrice").val(data.price.rental_price);
                     $("#txtModal_RetailPrice").val(data.price.retail_price);
 
-                    console.log("data.desc :: "+ data.desc);
                     // Description
                     $('#wysModal_Description').summernote('code', data.desc);
 
@@ -557,7 +564,6 @@
                     $("#taModal_Remarks").val(data.remarks);
 
                 } catch (err) {
-
                     console.log("err : " + err);
                 }
                 updateRecordMode();
@@ -625,6 +631,10 @@
                         $('#modalLoad').modal('hide');
                     });
             }
+        }
+
+        function imgTabOnClick() {
+           initSizeChange();
         }
 
         $(document).ready(function () {
@@ -776,7 +786,7 @@
                                 <a class="nav-link" data-toggle="tab" href="#detail">Detail</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#image">Image</a>
+                                <a class="nav-link" data-toggle="tab" href="#image" onclick="imgTabOnClick();">Image</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" data-toggle="tab" href="#gallery">Gallery</a>

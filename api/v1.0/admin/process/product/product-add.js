@@ -19,15 +19,13 @@ module.exports = function (req, res) {
 		let resp = config.getResponse(res, 200, error, {}, null);
 		config.logApiCall(req, res, resp);
 	} else {
-		// processImg(req, data, error, function (all_image_list, err) {
-		// 	addProduct(req, res, err, data, all_image_list);
-		// });
 		addProduct(req, res, error, data);
 	}
 }
 
 function getParam(req) {
 	var data = {};
+
 	data.admin_user_id = req.session.adminUserid;
 	data.name = req.body['name'];
 	data.status = req.body['status'];
@@ -59,63 +57,44 @@ function getParam(req) {
 function validateParam(req, data) {
 	let error = [];
 
-	// if (config.isEmpty(data.name)) {
-	// 	error.push(config.getErrorResponse('101A008', req));
-	// }
-	// if (config.isEmpty(data.product_type)) {
-	// 	error.push(config.getErrorResponse('101A003', req));
-	// }
+	if (config.isEmpty(data.admin_user_id)) {
+		error.push(config.getErrorResponse('101A011', req));
+	}
 
-	// if (config.isEmpty(data.publish_date)) {
-	// 	error.push(config.getErrorResponse('101A004', req));
-	// }
-	// if (config.isEmpty(data.unpublish_date)) {
-	// 	error.push(config.getErrorResponse('101A005', req));
-	// }
-	// if (config.isEmpty(data.status)) {
-	// 	error.push(config.getErrorResponse('101A006', req));
-	// }
+	if (config.isEmpty(data.name)) {
+		error.push(config.getErrorResponse('105A001', req));
+	}
+
+	if (config.isEmpty(data.status)) {
+		error.push(config.getErrorResponse('105A002', req));
+	}
+
+	if (config.isEmpty(data.product_type)) {
+		error.push(config.getErrorResponse('105A003', req));
+	}
+
+	if (config.isEmpty(data.publish_date)) {
+		error.push(config.getErrorResponse('105A004', req));
+	}
+
+	if (config.isEmpty(data.unpublish_date)) {
+		error.push(config.getErrorResponse('105A005', req));
+	}
+
+	if (typeof data.image == 'undefined') {
+		error.push(config.getErrorResponse('105A006', req));
+	}
+
+	if (config.isEmpty(data.payment_type)) {
+		error.push(config.getErrorResponse('105A007', req));
+	}
+
+	if (config.isEmpty(data.rental_price)) {
+		error.push(config.getErrorResponse('105A008', req));
+	}
 
 	return error;
 }
-
-// function processImg(req, data, error, callback) {
-// 	let all_image_list = [];
-// 	let imageList = data.image;
-// 	let imageUrl;
-// 	for (let a = 0; a < imageList.length; a++) {
-
-// 		let image = imageList[a];
-// 		if (typeof image == 'undefined') {
-// 			continue;
-// 		}
-
-// 		let tmpPath = image.path;
-// 		let indexOfSeparator = tmpPath.lastIndexOf("/");
-// 		if (indexOfSeparator <= 0) {
-// 			indexOfSeparator = tmpPath.lastIndexOf("\\");
-// 		}
-// 		let indexOfDot = tmpPath.lastIndexOf(".");
-// 		if (indexOfDot <= 0) {
-// 			indexOfDot = tmpPath.length;
-// 		}
-// 		let filename = tmpPath.substring(indexOfSeparator + 1, tmpPath.length - (tmpPath.length - indexOfDot));
-
-// 		cloudinary.v2.uploader.upload(tmpPath, { public_id: config.GLOBAL['APP_NAME'].toLowerCase() + '/product/' + filename }, function (err, result) {
-// 			if (err) {
-// 				error.push(config.getErrorResponse('101Z012', req));
-// 				let resp = config.getResponse(res, 500, error, {}, err);
-// 				config.logApiCall(req, res, resp);
-// 				return callback(true);
-// 			}
-// 			imageUrl = result['secure_url'];
-// 			all_image_list.push(imageUrl);
-// 			console.log('imageUrl :: ' + imageUrl);
-// 		});
-// 	}
-
-// 	callback(all_image_list, error);
-// }
 
 function getProductData(data) {
 	var price = {
@@ -142,61 +121,74 @@ function getProductData(data) {
 	return insertData;
 }
 
-function addProduct(req, res, error, data) {
+function processImg(rawImage, callback) {
 
 	let all_image_list = [];
+	let uploadCount = 0;
+
+	let rawImageList = rawImage;
+	if (typeof rawImageList == 'undefined') {
+		return callback(null);
+	}
+
+	try {
+
+		for (let a = 0; a < rawImageList.length; a++) {
+			let image = rawImageList[a];
+			if (typeof image == 'undefined') {
+				return callback(null);
+			}
+
+			let tmpPath = image.path;
+			let indexOfSeparator = tmpPath.lastIndexOf("/");
+			if (indexOfSeparator <= 0) {
+				indexOfSeparator = tmpPath.lastIndexOf("\\");
+			}
+			let indexOfDot = tmpPath.lastIndexOf(".");
+			if (indexOfDot <= 0) {
+				indexOfDot = tmpPath.length;
+			}
+			let filename = tmpPath.substring(indexOfSeparator + 1, tmpPath.length - (tmpPath.length - indexOfDot));
+
+			cloudinary.v2.uploader.upload(tmpPath, { public_id: config.GLOBAL['APP_NAME'].toLowerCase() + '/product/' + filename }, function (err, result) {
+				if (err) {
+					error.push(config.getErrorResponse('101Z012', req));
+					let resp = config.getResponse(res, 500, error, {}, err);
+					config.logApiCall(req, res, resp);
+					console.log('cloudinary error :: ' + JSON.stringify(err));
+					return callback(true);
+				}
+
+				all_image_list[a] = result['secure_url'];
+				uploadCount++;
+
+				if (uploadCount == rawImageList.length) {
+					return callback(all_image_list);
+				}
+
+			});
+		}
+	} catch (err) {
+		console.log("err: " + err);
+	}
+}
+
+function addProduct(req, res, error, data) {
+
 	async.series(
 		[
 			function (callback) {
 
-				let imageList = data.image;
-				let imageUrl;
-				if (typeof imageList == 'undefined') {
+				processImg(data.image, function (imageUrlList) {
+					data.image = imageUrlList;
 					return callback(null);
-				}
-
-				for (let a = 0; a < imageList.length; a++) {
-					let image = imageList[a];
-					if (typeof image == 'undefined') {
-						if (a == imageList.length - 1) {
-							return callback(null);
-						}
-						continue;
-					}
-
-					let tmpPath = image.path;
-					let indexOfSeparator = tmpPath.lastIndexOf("/");
-					if (indexOfSeparator <= 0) {
-						indexOfSeparator = tmpPath.lastIndexOf("\\");
-					}
-					let indexOfDot = tmpPath.lastIndexOf(".");
-					if (indexOfDot <= 0) {
-						indexOfDot = tmpPath.length;
-					}
-					let filename = tmpPath.substring(indexOfSeparator + 1, tmpPath.length - (tmpPath.length - indexOfDot));
-
-					cloudinary.v2.uploader.upload(tmpPath, { public_id: config.GLOBAL['APP_NAME'].toLowerCase() + '/product/' + filename }, function (err, result) {
-						if (err) {
-							error.push(config.getErrorResponse('101Z012', req));
-							let resp = config.getResponse(res, 500, error, {}, err);
-							config.logApiCall(req, res, resp);
-							return callback(true);
-						}
-						imageUrl = result['secure_url'];
-						all_image_list.push(imageUrl);
-
-						if (a == imageList.length - 1) {
-							return callback(null);
-						}
-					});
-				}
+				});
 
 			},
 			function (callback) {
-				data.image = all_image_list;
 				Product.create(getProductData(data), function (err, result) {
 					if (err) {
-						console.log(JSON.stringify(err));
+						console.log('Product.create error :: ' + JSON.stringify(err));
 						error.push(config.getErrorResponse('101Z012', req));
 						let resp = config.getResponse(res, 500, error, {}, err);
 						config.logApiCall(req, res, resp);

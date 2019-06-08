@@ -9,7 +9,6 @@ module.exports = function (req, res) {
 	let filters = config.getFilter(data);
 	let sort = config.getSort(req.body.order, getSortFields());
 
-	console.log("req.body['order_date_from'] :: " + req.body['order_date']);
 	if (error && error.length > 0) {
 		let resp = config.getResponse(res, 200, error, {}, null);
 		config.logApiCall(req, res, resp);
@@ -20,7 +19,7 @@ module.exports = function (req, res) {
 
 function getParam(req) {
 	var data = {};
-	data.id = req.body['id'] || '';
+	data._id = req.body['id'] || '';
 	data.email = req.body['email'] || '';
 	data.phone_no = req.body['phone_no'] || '';
 	data.status = req.body['status'] || '';
@@ -33,7 +32,7 @@ function getParam(req) {
 }
 
 function getSortFields() {
-	return { 1: "id", 2: "email", 3: "phone_no", 4: "status", 5: "order_date" };
+	return { 1: "_id", 2: "email", 3: "phone_no", 4: "status", 5: "order_date" };
 }
 
 function getOrderList(req, res, error, filters, sort) {
@@ -56,6 +55,13 @@ function getOrderList(req, res, error, filters, sort) {
 					let resp = config.getResponse(res, 500, error, {}, err);
 					config.logApiCall(req, res, resp);
 					return;
+				}
+				if (results && results.length > 0) {
+					for (let i = 0; i < results.length; i++) {
+						results[i] = config.getOrderInfo(results[i]);
+					}
+				} else {
+					results = [];
 				}
 
 				let resp = config.getResponseP(res, 100, error, req.body.draw, recordsFiltered, recordsTotal, results);

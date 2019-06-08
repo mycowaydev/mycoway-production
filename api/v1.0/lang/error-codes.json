@@ -40,7 +40,7 @@
 	"101Z011": "error_page_not_found",
 	"101Z012": "error_server_error",
 	"101Z999": "error_unknown_error",
-
+	
 	"102A001": "error_review_name_empty",
 	"102A002": "error_review_status_empty",
 	"102A003": "error_review_rate_empty",
@@ -49,5 +49,21 @@
 	"103A002": "error_service_status_empty",
 	"103A003": "error_service_value_empty",
 	"103A004": "error_service_unit_empty",
-	"103A005": "error_service_repeat_empty"
+	"103A005": "error_service_repeat_empty",
+
+	"104A001": "error_order_email_empty",
+	"104A002": "error_order_status_empty",
+	"104A003": "error_order_ic_image_empty",
+	"104A004": "error_order_card_image_empty",
+	"104A005": "error_order_signature_image_empty",
+
+	"105A001": "error_product_name_empty",
+	"105A002": "error_product_status_empty",
+	"105A003": "error_product_type_empty",
+	"105A004": "error_product_publish_date_empty",
+	"105A005": "error_product_unpublish_date_empty",
+	"105A006": "error_product_image_empty",
+	"105A007": "error_product_payment_type_empty",
+	"105A008": "error_product_rental_price_empty"
+	
 }
