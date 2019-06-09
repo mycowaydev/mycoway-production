@@ -121,53 +121,44 @@ function getProductData(data) {
 	return insertData;
 }
 
-function processImg(rawImage, callback) {
-
-	let all_image_list = [];
-	let uploadCount = 0;
-
-	let rawImageList = rawImage;
-	if (typeof rawImageList == 'undefined') {
-		return callback(null);
-	}
-
+function processImg(rawImage, imageSequence, defaultImage, callback) {
 	try {
 
-		for (let a = 0; a < rawImageList.length; a++) {
-			let image = rawImageList[a];
-			if (typeof image == 'undefined') {
-				return callback(null);
-			}
+		let imageUrl;
 
-			let tmpPath = image.path;
-			let indexOfSeparator = tmpPath.lastIndexOf("/");
-			if (indexOfSeparator <= 0) {
-				indexOfSeparator = tmpPath.lastIndexOf("\\");
-			}
-			let indexOfDot = tmpPath.lastIndexOf(".");
-			if (indexOfDot <= 0) {
-				indexOfDot = tmpPath.length;
-			}
-			let filename = tmpPath.substring(indexOfSeparator + 1, tmpPath.length - (tmpPath.length - indexOfDot));
-
-			cloudinary.v2.uploader.upload(tmpPath, { public_id: config.GLOBAL['APP_NAME'].toLowerCase() + '/product/' + filename }, function (err, result) {
-				if (err) {
-					error.push(config.getErrorResponse('101Z012', req));
-					let resp = config.getResponse(res, 500, error, {}, err);
-					config.logApiCall(req, res, resp);
-					console.log('cloudinary error :: ' + JSON.stringify(err));
-					return callback(true);
-				}
-
-				all_image_list[a] = result['secure_url'];
-				uploadCount++;
-
-				if (uploadCount == rawImageList.length) {
-					return callback(all_image_list);
-				}
-
-			});
+		// Use old/default image if new image not found
+		if (typeof rawImage == 'undefined' && typeof defaultImage != 'undefined' && !config.isEmpty(defaultImage)) {
+			return callback(null, imageSequence, defaultImage);
 		}
+
+		if (typeof rawImage == 'undefined') {
+			return callback(null, imageSequence, '');
+		}
+		let image = rawImage;
+		let tmpPath = image.path;
+		let indexOfSeparator = tmpPath.lastIndexOf("/");
+		if (indexOfSeparator <= 0) {
+			indexOfSeparator = tmpPath.lastIndexOf("\\");
+		}
+		let indexOfDot = tmpPath.lastIndexOf(".");
+		if (indexOfDot <= 0) {
+			indexOfDot = tmpPath.length;
+		}
+		let filename = tmpPath.substring(indexOfSeparator + 1, tmpPath.length - (tmpPath.length - indexOfDot));
+
+		cloudinary.v2.uploader.upload(tmpPath, { public_id: config.GLOBAL['APP_NAME'].toLowerCase() + '/product/' + filename }, function (err, result) {
+			if (err) {
+				error.push(config.getErrorResponse('101Z012', req));
+				let resp = config.getResponse(res, 500, error, {}, err);
+				config.logApiCall(req, res, resp);
+				console.log('cloudinary error :: ' + JSON.stringify(err));
+				return callback(err, imageSequence, null);
+			}
+
+			imageUrl = result['secure_url'];
+			return callback(null, imageSequence, imageUrl);
+
+		});
 	} catch (err) {
 		console.log("err: " + err);
 	}
@@ -179,19 +170,29 @@ function addProduct(req, res, error, data) {
 		[
 			function (callback) {
 
-				processImg(data.image, function (imageUrlList) {
-					data.image = imageUrlList;
-					return callback(null);
-				});
+				let uploadCount = 0;
+				let all_image_list = [];
+
+				for (let a = 0; a < data.image.length; a++) {
+					processImg(data.image[a], a, null, function (err, imageSequence, imageUrl) {
+						uploadCount++;
+						all_image_list[imageSequence] = imageUrl;
+
+						if (uploadCount == data.image.length) {
+							data.image = all_image_list;
+							return callback(null);
+						}
+					});
+				}
 
 			},
 			function (callback) {
 				Product.create(getProductData(data), function (err, result) {
 					if (err) {
-						console.log('Product.create error :: ' + JSON.stringify(err));
 						error.push(config.getErrorResponse('101Z012', req));
 						let resp = config.getResponse(res, 500, error, {}, err);
 						config.logApiCall(req, res, resp);
+						console.log("err: " + err);
 						return callback(true);
 					}
 					let resp = config.getResponse(res, 100, error, {});

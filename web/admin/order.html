@@ -216,7 +216,7 @@
         function initDateTimePicker() {
             $('#dtpModal_OrderDate').daterangepicker({
                 singleDatePicker: true,
-                autoApply: true,
+                autoApply: false,
                 timePicker: true,
                 timePicker24Hour: true,
                 locale: {
@@ -356,7 +356,9 @@
         function initValidateInput() {
             $("#modalForm").validate({
                 rules: {
-
+                    dtpModal_OrderDate: {
+                        required: true
+                    },
                     ddlModal_Status: {
                         required: {
                             depends: function (element) {
@@ -364,12 +366,19 @@
                             }
                         }
                     },
-
+                    txtModal_Email: {
+                        required: true
+                    },
                 },
                 messages: {
-
+                    dtpModal_OrderDate: {
+                        required: "Please select order date."
+                    },
                     ddlModal_Status: {
                         required: "Please select status."
+                    },
+                    txtModal_Email: {
+                        required: "Please enter email."
                     },
 
                 }
@@ -380,6 +389,8 @@
             var mode = app.action.insert;
             $('#modalTitle').text(mode + ' ' + app.name);
             $('#btnModalMainActionText').text(mode);
+            document.getElementById("txtModal_OrderID_label").style.display = 'none';
+            document.getElementById("txtModal_OrderID").style.display = 'none';
             disableElement(false);
             $('#modalCUWindow').modal('show')
         }
@@ -388,6 +399,8 @@
             var mode = app.action.update;
             $('#modalTitle').text(mode + ' ' + app.name);
             $('#btnModalMainActionText').text(mode);
+            document.getElementById("txtModal_OrderID_label").style.display = 'block';
+            document.getElementById("txtModal_OrderID").style.display = 'block';
             disableElement(true);
             $('#modalCUWindow').modal('show')
         }
@@ -487,7 +500,9 @@
             if (data) {
                 $("#formId").val(data._id);
                 $("#txtModal_OrderID").val(data._id);
-                $("#dtpModal_OrderDate").val(moment(data.order_date * 1000).format('YYYY-MM-DD hh:mm'));
+
+                $('#dtpModal_OrderDate').data('daterangepicker').setStartDate(moment(data.order_date * 1000).format('YYYY-MM-DD HH:mm'))
+                $('#dtpModal_OrderDate').data('daterangepicker').setEndDate(moment(data.order_date * 1000).format('YYYY-MM-DD HH:mm'))
 
                 $("#ddlModal_Status").val(data.status);
 
@@ -699,7 +714,7 @@
                         <input type="hidden" id="formId">
                         <input type="hidden" id="AddressId">
                         <div class="form-group row">
-                            <label for="txtModal_OrderID" class="col-sm-2 col-form-label col-form-label-sm">Order ID
+                            <label id="txtModal_OrderID_label" for="txtModal_OrderID" class="col-sm-2 col-form-label col-form-label-sm">Order ID
                             </label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control form-control-sm" id="txtModal_OrderID" name="txtModal_OrderID" placeholder="Order ID">

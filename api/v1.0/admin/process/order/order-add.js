@@ -115,33 +115,48 @@ function getOrderData(data) {
 	return insertData;
 }
 
-function processImg(rawImage, callback) {
+function processImg(rawImage, imageSequence, defaultImage, callback) {
+	try {
 
-	if (typeof rawImage == 'undefined') {
-		return callback('');
-	}
-	let image = rawImage;
-	let tmpPath = image.path;
-	let indexOfSeparator = tmpPath.lastIndexOf("/");
-	if (indexOfSeparator <= 0) {
-		indexOfSeparator = tmpPath.lastIndexOf("\\");
-	}
-	let indexOfDot = tmpPath.lastIndexOf(".");
-	if (indexOfDot <= 0) {
-		indexOfDot = tmpPath.length;
-	}
-	let filename = tmpPath.substring(indexOfSeparator + 1, tmpPath.length - (tmpPath.length - indexOfDot));
+		let imageUrl;
 
-	cloudinary.v2.uploader.upload(tmpPath, { public_id: config.GLOBAL['APP_NAME'].toLowerCase() + '/order/' + filename }, function (err, result) {
-		if (err) {
-			error.push(config.getErrorResponse('101Z012', req));
-			let resp = config.getResponse(res, 500, error, {}, err);
-			config.logApiCall(req, res, resp);
-			return callback('');
+		// Use old/default image if new image not found
+		if (typeof rawImage == 'undefined' && typeof defaultImage != 'undefined' && !config.isEmpty(defaultImage)) {
+			console.log('use old image');
+			return callback(null, imageSequence, defaultImage);
 		}
-		return callback(result['secure_url']);
-	});
 
+		if (typeof rawImage == 'undefined') {
+			return callback(null, imageSequence, '');
+		}
+		let image = rawImage;
+		let tmpPath = image.path;
+		let indexOfSeparator = tmpPath.lastIndexOf("/");
+		if (indexOfSeparator <= 0) {
+			indexOfSeparator = tmpPath.lastIndexOf("\\");
+		}
+		let indexOfDot = tmpPath.lastIndexOf(".");
+		if (indexOfDot <= 0) {
+			indexOfDot = tmpPath.length;
+		}
+		let filename = tmpPath.substring(indexOfSeparator + 1, tmpPath.length - (tmpPath.length - indexOfDot));
+
+		cloudinary.v2.uploader.upload(tmpPath, { public_id: config.GLOBAL['APP_NAME'].toLowerCase() + '/product/' + filename }, function (err, result) {
+			if (err) {
+				error.push(config.getErrorResponse('101Z012', req));
+				let resp = config.getResponse(res, 500, error, {}, err);
+				config.logApiCall(req, res, resp);
+				console.log('cloudinary error :: ' + JSON.stringify(err));
+				return callback(err, imageSequence, null);
+			}
+
+			imageUrl = result['secure_url'];
+			return callback(null, imageSequence, imageUrl);
+
+		});
+	} catch (err) {
+		console.log("err: " + err);
+	}
 }
 
 function addOrder(req, res, error, data) {
@@ -149,11 +164,11 @@ function addOrder(req, res, error, data) {
 		[
 			function (callback) {
 
-				processImg(data.image_ic, function (imageUrl) {
+				processImg(data.image_ic, 0, null, function (err, imageSequence, imageUrl) {
 					data.image_ic = imageUrl;
-					processImg(data.image_card, function (imageUrl) {
+					processImg(data.image_card, 0, null, function (err, imageSequence, imageUrl) {
 						data.image_card = imageUrl;
-						processImg(data.image_signature, function (imageUrl) {
+						processImg(data.image_signature, 0, null, function (err, imageSequence, imageUrl) {
 							data.image_signature = imageUrl;
 							return callback(null);
 						});
