@@ -2,7 +2,7 @@ const config = require('../../../config');
 const mongoose = require('mongoose');
 const schema = mongoose.Schema({
     ip: String,
-    date: Number,
+    date: Date,
     access_to: String,
     os: String,
     os_version: String,

@@ -14,7 +14,7 @@ function addAccessLog(req, res, accessTo) {
 
 	var data = {};
     data.ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    data.date = config.getCurrentTimestamp();
+    data.date = new Date(config.getCurrentTimestamp()*1000);
     data.access_to = accessTo;
 	data.os = agent.os.toString();
     data.os_version = agent.os.toVersion();
