@@ -30,7 +30,8 @@ function getTrafficAgg(req, res, error, query) {
     PublicAccessLog.aggregate([
         {
             $match: {
-                "date" : { $gt: firstDay }
+                "date" : { $gt: firstDay },
+                "ip" : { $ne: '::1' }
             }
         },
         {
