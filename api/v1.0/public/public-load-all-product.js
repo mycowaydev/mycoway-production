@@ -37,7 +37,13 @@ function validateParam(req, data) {
 }
 
 function getQuery(data) {
-	let query = { 'product_type': data.productType, 'status': 'A' };
+	let query = {
+	    'product_type': data.productType,
+	    'status': 'A',
+	    'name': {$ne:null},
+	    'image': {$ne:null},
+	    'price.rental_price': {$ne:null}
+    };
 	return query;
 }
 
