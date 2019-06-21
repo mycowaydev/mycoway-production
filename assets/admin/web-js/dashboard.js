@@ -1,4 +1,4 @@
-colorList19 = [
+var colorList19 = [
     '230, 25, 75',
     '60, 180, 75',
     '255, 225, 25',
@@ -22,6 +22,8 @@ colorList19 = [
     '255, 255, 255'
 ]
 
+var number_of_month = 8;
+
 function getColor(length, border) {
     barColors = []
     for (i = 0; i < length; i++) {
@@ -39,6 +41,20 @@ function initChart(data) {
 
     var months = data.map(obj => obj._id.year + '/' + obj._id.month)
     var counts = data.map(obj => obj.count)
+
+    var current_year = new Date().getFullYear()
+    var current_month = new Date().getMonth()
+
+    today = new Date()
+    for (i = 0; i < number_of_month; i++) {
+        d = new Date(today.getFullYear(), today.getMonth() - number_of_month + i + 1, 1)
+
+        db_month = months[i].split('/')[1]
+        if (db_month != (d.getMonth()+1)) {
+            months.splice(i, 0, d.getFullYear() + '/' + (d.getMonth()+1))
+            counts.splice(i, 0, 0)
+        }
+    }
 
     var myChart = new Chart(ctx, {
         type: 'bar',
@@ -69,7 +85,7 @@ function initChart(data) {
 }
 
 var formData = new FormData();
-formData.append('month_range', 8);
+formData.append('month_range', number_of_month);
 
 fetch('/public-access-log-get-list', { method: 'POST', body: formData })
     .then(function(res) {
@@ -90,5 +106,6 @@ fetch('/public-access-log-get-list', { method: 'POST', body: formData })
         }
     })
     .catch(function(err) {
+        console.log(err)
         notify_server_err()
     })
