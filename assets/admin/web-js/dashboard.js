@@ -22,7 +22,9 @@ var colorList19 = [
     '255, 255, 255'
 ]
 
-var number_of_month = 8;
+function run_chart (){
+    callAPI($('#month_number').val());
+}
 
 function getColor(length, border) {
     barColors = []
@@ -36,7 +38,7 @@ function getColor(length, border) {
     return barColors
 }
 
-function initChart(data) {
+function initChart(data, number_of_month) {
     var ctx = document.getElementById('myChart').getContext('2d')
 
     var months = data.map(obj => obj._id.year + '/' + obj._id.month)
@@ -84,28 +86,32 @@ function initChart(data) {
     })
 }
 
-var formData = new FormData();
-formData.append('month_range', number_of_month);
+function callAPI(number_of_month) {
+    var formData = new FormData();
+    formData.append('month_range', number_of_month);
 
-fetch('/public-access-log-get-list', { method: 'POST', body: formData })
-    .then(function(res) {
-        if(res.ok) {
-            return res.json()
-        }
-        notify_req_failed()
-    })
-    .then(function(result) {
-        var statusCode = result.status_code
-        if (statusCode == '100') {
-            initChart(result.data)
-        } else {
-            var errors = result.error;
-            if (errors && errors.length > 0) {
-                notify_err(errors[0].message)
+    fetch('/public-access-log-get-list', { method: 'POST', body: formData })
+        .then(function(res) {
+            if(res.ok) {
+                return res.json()
             }
-        }
-    })
-    .catch(function(err) {
-        console.log(err)
-        notify_server_err()
-    })
+            notify_req_failed()
+        })
+        .then(function(result) {
+            var statusCode = result.status_code
+            if (statusCode == '100') {
+                initChart(result.data, number_of_month)
+            } else {
+                var errors = result.error;
+                if (errors && errors.length > 0) {
+                    notify_err(errors[0].message)
+                }
+            }
+        })
+        .catch(function(err) {
+            console.log(err)
+            notify_server_err()
+        })
+}
+
+callAPI($('#month_number').val());
