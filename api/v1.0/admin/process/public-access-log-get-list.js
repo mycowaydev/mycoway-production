@@ -37,16 +37,26 @@ function getTrafficAgg(req, res, error, query) {
         {
             $project: {
                 month: { $month: "$date" },
-                year: { $year: "$date" }
+                year: { $year: "$date" },
+                ip: "$ip"
             }
         },
         {
             $group : {
                 _id: {
                     year: "$year",
-                    month: "$month"
+                    month: "$month",
+                    ip: "$ip"
+                }
+            }
+        },
+        {
+            $group : {
+                _id: {
+                    year: "$_id.year",
+                    month: "$_id.month"
                 },
-                count:{ $sum:1 }
+                count: { $sum: 1 }
             }
         },
         {
