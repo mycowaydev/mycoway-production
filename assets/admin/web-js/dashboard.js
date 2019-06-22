@@ -22,6 +22,8 @@ var colorList19 = [
     '255, 255, 255'
 ]
 
+var myChart;
+
 function run_chart (){
     callAPI($('#month_number').val());
 }
@@ -39,6 +41,9 @@ function getColor(length, border) {
 }
 
 function initChart(data, number_of_month) {
+    if (myChart) {
+        myChart.destroy()
+    }
     var ctx = document.getElementById('myChart').getContext('2d')
 
     var months = data.map(obj => obj._id.year + '/' + obj._id.month)
@@ -58,7 +63,7 @@ function initChart(data, number_of_month) {
         }
     }
 
-    var myChart = new Chart(ctx, {
+    myChart = new Chart(ctx, {
         type: 'bar',
         data: {
             labels: months,

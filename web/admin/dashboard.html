@@ -8,6 +8,7 @@
         <link href="../vendors/pnotify/dist/pnotify.buttons.css" rel="stylesheet">
         <link href="../vendors/bootstrap-combobox/css/bootstrap-combobox.css" rel="stylesheet" type="text/css">
         <link href="../build/css/custom.css" rel="stylesheet">
+        <link href="../build/css/dashboard.css" rel="stylesheet">
 
         <script src="../vendors/jquery/dist/jquery.min.js"></script>
         <script src="../vendors/jquery/dist/popper.js"></script>
@@ -25,10 +26,14 @@
     </head>
 
     <body>
+
         <div id="main_panel" class="x_panel">
             <div class="x_content mb-2">
                 <h1>Dashboard</h1>
             </div>
+            Number of Months:
+            <input id="month_number" type="number" name="quantity" min="1" max="30" value="8">
+            <button id="btn_chart" onclick="run_chart()">GO</button>
             <canvas id="myChart" max-height="200"></canvas>
         </div>
     </body>
