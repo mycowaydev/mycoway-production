@@ -103,6 +103,8 @@ function addQuantity(elementIndex) {
         var cart_list = JSON.parse(sessionStorage.cart);
         cart_list[elementIndex].quantity = result.value;
         sessionStorage.cart = JSON.stringify(cart_list);
+
+        $("#item-total"+elementIndex).html("RM " + (cart_list[elementIndex].price * cart_list[elementIndex].quantity))
 	}
 	refreshCartNumber();
 }
@@ -116,6 +118,8 @@ function reduceQuantity(elementIndex) {
         var cart_list = JSON.parse(sessionStorage.cart);
         cart_list[elementIndex].quantity = result.value;
         sessionStorage.cart = JSON.stringify(cart_list);
+
+        $("#item-total"+elementIndex).html("RM " + (cart_list[elementIndex].price * cart_list[elementIndex].quantity))
     }
     refreshCartNumber();
 }
