@@ -112,7 +112,7 @@ function addQuantity(elementIndex) {
 function reduceQuantity(elementIndex) {
     var result = document.getElementById('qty' + elementIndex);
     var qty = result.value;
-    if( !isNaN( qty ) && qty > 0 ){
+    if( !isNaN( qty ) && qty > 1 ){
         result.value--;
 
         var cart_list = JSON.parse(sessionStorage.cart);
