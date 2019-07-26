@@ -47,20 +47,10 @@ if (!sessionStorage.cart) {
 
 /****** Validation ******/
 
-function validatePhoneNumber(){
-    if (phone_number.value == emergency_phone_number.value) {
-        $('#emergency_phone_number')[0].setCustomValidity(getStringById('validation_emergency_phone_number'));
-    } else {
-        $('#emergency_phone_number')[0].setCustomValidity('');
-    }
-}
-
 function clear(){
     clearError($('#order_detail_form')[0])
 }
 
-$('#phone_number').change(validatePhoneNumber);
-$('#emergency_phone_number').keyup(validatePhoneNumber);
 $('#order_detail_form').keydown(clear);
 $('.input-file').click(clear);
 $('#order_detail_form')[0].noValidate = true;

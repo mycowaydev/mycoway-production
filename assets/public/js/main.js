@@ -127,6 +127,32 @@ function validationMessageIDFor(element) {
     }
 };
 
+function addValidationMsg(element, string_classname) {
+    var parent  = element.parentNode,
+        div     = document.createElement('div');
+    div.style.fontSize = '0.8em';
+    div.style.color = '#ff0000';
+    div.style.width = '100%';
+    div.classList.add('validation-message');
+
+    if (getStringById(string_classname)){
+        div.classList.add(string_classname);
+    } else {
+        div.appendChild(document.createTextNode(string_classname));
+    }
+
+    if (element.nodeName == 'INPUT' && element.type === 'file'){
+        var grandparent = parent.parentNode;
+        grandparent.insertBefore(div, parent.nextSibling);
+        parent.focus();
+    } else {
+        parent.insertBefore(div, element.nextSibling);
+        element.focus();
+        element.style.borderColor = '#ff0000';
+    }
+    showString();
+}
+
 function validateForm(submitEvent) {
     clearError(submitEvent.target);
     if (!submitEvent.target.checkValidity()) {
@@ -141,32 +167,20 @@ function validateForm(submitEvent) {
             var element = elements[index];
 
             if (element.willValidate === true && element.validity.valid !== true) {
-                var parent  = element.parentNode,
-                    div     = document.createElement('div');
-                div.style.fontSize = '0.8em';
-                div.style.color = '#ff0000';
-                div.style.width = '100%';
-                div.classList.add('validation-message');
-
                 var string_classname = validationMessageIDFor(element);
-                if (getStringById(string_classname)){
-                    div.classList.add(validationMessageIDFor(element));
-                } else {
-                    div.appendChild(document.createTextNode(string_classname));
-                }
-
-                if (element.nodeName == 'INPUT' && element.type === 'file'){
-                    var grandparent = parent.parentNode;
-                    grandparent.insertBefore(div, parent.nextSibling);
-                    parent.focus();
-                } else {
-                    parent.insertBefore(div, element.nextSibling);
-                    element.focus();
-                    element.style.borderColor = '#ff0000';
-                }
-                showString();
+                addValidationMsg(element, string_classname)
                 break;
             }
+        }
+    } else if ($('#emergency_phone_number').length && $('#phone_number').length){
+        if ($('#phone_number').val() == $('#emergency_phone_number').val()){
+            var element = document.getElementById('emergency_phone_number')
+            addValidationMsg(element, 'validation_emergency_phone_number')
+
+            submitEvent.preventDefault();
+            submitEvent.stopImmediatePropagation();
+            submitEvent.stopPropagation();
+            return false
         }
     } else {
         return true;
