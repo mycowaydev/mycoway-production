@@ -59,6 +59,8 @@ var language_cn = {
     string_state: "州",
     string_country: "国家",
     string_order_details: "订单信息",
+    string_agree_tnc: "我同意这",
+    string_tnc: "条款和条件",
     string_cart: "购物清单",
     string_order_form_tips: "提交订单详情后，我们的团队成员将与您联系并协助您完成付款和安装。",
     string_order_items: "订单项目",
@@ -123,5 +125,6 @@ var language_cn = {
     validation_postcode: "请只输入5位数字",
     validation_phone_number: "请输入格式为012-3456789的有效电话号码",
     validation_email: "请输入有效的电子邮件地址",
+    validation_tnc: "必须同意条款和条件才能继续",
     string_minimum_rating: "最低標準為一颗星。"
 }

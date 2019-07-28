@@ -59,6 +59,8 @@ var language_en = {
     string_state: "State",
     string_country: "Country",
     string_order_details: "Order Details",
+    string_agree_tnc: "I agree to the ",
+    string_tnc: "Terms and Conditions",
     string_cart: "Cart",
     string_order_form_tips: "After order details submitted, our team member will contact you and assist you the process of payment and installation.",
     string_order_items: "Order Item(s)",
@@ -123,5 +125,6 @@ var language_en = {
     validation_postcode: "Please only enter 5 digits",
     validation_phone_number: "Please enter valid phone number in format 012-3456789",
     validation_email: "Please enter a valid email address",
+    validation_tnc: "Must agree terms and conditions to proceed",
     string_minimum_rating: "Minimum rate is one star."
 }

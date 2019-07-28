@@ -195,6 +195,11 @@ module.exports = function (apiVersion) {
 				localVar['selected_tab'] = 'tab-review';
 				public_log(req, res, 'review');
 				break;
+			case 'terms':
+                public_log(req, res, 'tnc');
+                var tnc_text = fs.readFileSync("./termsandconditions.txt").toString().split("\n")
+                localVar['tnc_text'] = tnc_text;
+                break;
 			default:
 				break;
 		}

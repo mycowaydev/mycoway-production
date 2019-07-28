@@ -59,6 +59,8 @@ var language_my = {
     string_state: "Negeri",
     string_country: "Negara",
     string_order_details: "Maklumat Pesanan",
+    string_agree_tnc: "Saya bersetuju dengan ",
+    string_tnc: "Terma dan Syarat.",
     string_cart: "senarai membeli-belah",
     string_order_form_tips: "Selepas butiran pesanan dihantar, ahli pasukan kami akan menghubungi anda dan membantu proses pembayaran dan pemasangan.",
     string_order_items: "Item Pesanan",
@@ -123,5 +125,6 @@ var language_my = {
     validation_postcode: "Sila masukkan hanya 5 digit",
     validation_phone_number: "Sila masukkan nombor telefon yang sah dalam format 012-3456789",
     validation_email: "Sila masukkan alamat emel yang sah",
+    validation_tnc: "Mesti bersetuju syarat dan syarat untuk diteruskan",
     string_minimum_rating: "Kadar minimum adalah satu bintang."
 }

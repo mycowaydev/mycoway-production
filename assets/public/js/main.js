@@ -117,6 +117,8 @@ function validationMessageIDFor(element) {
             return 'alert_empty_card';
         } else if (id == 'file_sig') {
             return 'alert_empty_signature';
+        } else if (id == 'tnc') {
+            return 'validation_tnc';
         } else if (name == 'INPUT' && type === 'email') {
             return 'validation_email';
         } else {
@@ -141,7 +143,7 @@ function addValidationMsg(element, string_classname) {
         div.appendChild(document.createTextNode(string_classname));
     }
 
-    if (element.nodeName == 'INPUT' && element.type === 'file'){
+    if (element.nodeName == 'INPUT' && (element.type === 'file' || element.type === 'checkbox')){
         var grandparent = parent.parentNode;
         grandparent.insertBefore(div, parent.nextSibling);
         parent.focus();

@@ -725,3 +725,13 @@ textarea {
 div:focus {
     outline: none;
 }
+
+input[type=checkbox] {
+    width: unset;
+    margin-right: 20px;
+}
+
+.tnc-container {
+    display:table-cell;
+    vertical-align:middle;
+}
