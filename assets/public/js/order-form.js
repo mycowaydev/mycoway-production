@@ -45,11 +45,89 @@ if (!sessionStorage.cart) {
     }
 }
 
+/*** form collapse ***/
+var acc = document.getElementsByClassName("accordion");
+for (var i = 0; i < acc.length; i++) {
+    acc[i].addEventListener("click", function() {
+        event.preventDefault();
+
+        $('.accordion').removeClass('active')
+        $('.collapse-section').css("display","none")
+
+        this.classList.add("active");
+        var panel = this.nextElementSibling;
+        if (panel.style.display === "block") {
+            panel.style.display = "none";
+        } else {
+            panel.style.display = "block";
+        }
+    });
+}
+
+$('#section-orders-next').click(function() {
+    event.preventDefault();
+    $('.accordion').removeClass('active')
+    $('.collapse-section').css("display","none")
+    $('#section-upload-btn').addClass('active')
+    $('#section-upload').css("display","block")
+});
+
+$('#section-upload-next').click(function() {
+    event.preventDefault();
+    $('.accordion').removeClass('active')
+    $('.collapse-section').css("display","none")
+    $('#section-details-btn').addClass('active')
+    $('#section-details').css("display","block")
+});
+
 /****** Validation ******/
 
 function clear(){
     clearError($('#order_detail_form')[0])
 }
+
+function validateForm(submitEvent) {
+    clearError(submitEvent.target);
+    if (!submitEvent.target.checkValidity()) {
+        submitEvent.preventDefault();
+        submitEvent.stopImmediatePropagation();
+        submitEvent.stopPropagation();
+
+        var form     = submitEvent.target,
+            elements = form.elements;
+
+        for (var index = 0, len = elements.length; index < len; index++) {
+            var element = elements[index];
+
+            if (element.willValidate === true && element.validity.valid !== true) {
+                var string_classname = validationMessageIDFor(element);
+                addValidationMsg(element, string_classname)
+
+                console.log(element.id)
+                if (element.id == 'file_ic' || element.id == 'file_card' || element.id == 'file_sig'){
+                    $('.accordion').removeClass('active')
+                    $('.collapse-section').css("display","none")
+                    $('#section-upload-btn').addClass('active')
+                    $('#section-upload').css("display","block")
+                    $('#section-upload-btn').focus()
+                }
+                break;
+            }
+        }
+    } else if ($('#emergency_phone_number').length && $('#phone_number').length){
+        if ($('#phone_number').val() == $('#emergency_phone_number').val()){
+            var element = document.getElementById('emergency_phone_number')
+            addValidationMsg(element, 'validation_emergency_phone_number')
+
+            submitEvent.preventDefault();
+            submitEvent.stopImmediatePropagation();
+            submitEvent.stopPropagation();
+            return false
+        }
+    } else {
+        return true;
+    }
+};
 
 $('#order_detail_form').keydown(clear);
 $('.input-file').click(clear);

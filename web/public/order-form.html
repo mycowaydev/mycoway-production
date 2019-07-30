@@ -38,134 +38,153 @@
             <div class="container">
                 <div class="cart_inner">
                     <form method="POST" id="order_detail_form">
-                        <div class="form-row">
-                            <div class="name string_order_items"></div>
-                            <div class="value">
-                                <div id="cart-detail"></div>
-                                <div class="order_box" id="order_box">
-                                    <ul class="list" id="order_box_ul">
-                                        <li>
-                                            <h4>
-                                                <span class="string_product"></span>
-                                                <span class="last string_payment"></span>
-                                            </h4>
-                                        </li>
-                                    </ul>
+
+                        <button class="accordion active" id="section-orders-btn">Order Review</button>
+                        <div class="collapse-section" id="section-orders" style="display:block">
+                            <div class="form-row last-row">
+                                <div class="name string_order_items"></div>
+                                <div class="value">
+                                    <div id="cart-detail"></div>
+                                    <div class="order_box" id="order_box">
+                                        <ul class="list" id="order_box_ul">
+                                            <li>
+                                                <h4>
+                                                    <span class="string_product"></span>
+                                                    <span class="last string_payment"></span>
+                                                </h4>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="label--desc string_order_items_remark"></div>
                                 </div>
-                                <div class="label--desc string_order_items_remark"></div>
+                            </div>
+                            <div class="next-btn-container">
+                                <button class="next-btn" id="section-orders-next">Next</button>
                             </div>
                         </div>
-                        <div class="form-row">
-                            <div class="name">
-                                <span class="string_malaysia_ic_front"></span>
-                                <i id="ic_tooltips" href title="" class="fa fa-info-circle" style="font-size:12px;vertical-align: text-top;margin-left: 10px;" ></i>
+
+                        <button class="accordion" id="section-upload-btn">Upload Files</button>
+                        <div class="collapse-section" id="section-upload">
+                            <div class="form-row">
+                                <div class="name">
+                                    <span class="string_malaysia_ic_front"></span>
+                                    <i id="ic_tooltips" href title="" class="fa fa-info-circle" style="font-size:12px;vertical-align: text-top;margin-left: 10px;" ></i>
+                                </div>
+                                <div class="value">
+                                    <div class="input-group js-input-file" tabindex="0">
+                                        <input class="input-file focus_center" type="file" id="file_ic" required>
+                                        <label class="label--file string_choose_file" for="file_ic"></label>
+                                        <span class="input-file__info string_no_file_chosen"></span>
+                                    </div>
+                                    <div class="label--desc string_ic_remark"></div>
+                                </div>
                             </div>
-                            <div class="value">
-                                <div class="input-group js-input-file" tabindex="0">
-                                    <input class="input-file focus_center" type="file" id="file_ic" required>
-                                    <label class="label--file string_choose_file" for="file_ic"></label>
-                                    <span class="input-file__info string_no_file_chosen"></span>
+                            <div class="form-row">
+                                <div class="name">
+                                    <span class="string_credit_debit_card_front"></span>
+                                    <i id="card_tooltips" href title="" class="fa fa-info-circle" style="font-size:12px;vertical-align: text-top;margin-left: 10px;"></i>
                                 </div>
-                                <div class="label--desc string_ic_remark"></div>
+                                <div class="value">
+                                    <div class="input-group js-input-file" tabindex="0">
+                                        <input class="input-file focus_center" type="file" id="file_card" required>
+                                        <label class="label--file string_choose_file" for="file_card"></label>
+                                        <span class="input-file__info string_no_file_chosen"></span>
+                                    </div>
+                                    <div class="label--desc string_ic_remark"></div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="name">
-                                <span class="string_credit_debit_card_front"></span>
-                                <i id="card_tooltips" href title="" class="fa fa-info-circle" style="font-size:12px;vertical-align: text-top;margin-left: 10px;"></i>
+                            <div class="form-row last-row">
+                                <div class="name">
+                                    <span class="string_signature"></span>
+                                </div>
+                                <div class="value">
+                                    <div class="input-group js-input-file" tabindex="0">
+                                        <input class="input-file focus_center" type="file" id="file_sig" required>
+                                        <label class="label--file string_choose_file" for="file_sig"></label>
+                                        <span class="input-file__info string_no_file_chosen"></span>
+                                    </div>
+                                    <div class="label--desc string_ic_remark"></div>
+                                </div>
                             </div>
-                            <div class="value">
-                                <div class="input-group js-input-file" tabindex="0">
-                                    <input class="input-file focus_center" type="file" id="file_card" required>
-                                    <label class="label--file string_choose_file" for="file_card"></label>
-                                    <span class="input-file__info string_no_file_chosen"></span>
-                                </div>
-                                <div class="label--desc string_ic_remark"></div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="name">
-                                <span class="string_signature"></span>
-                            </div>
-                            <div class="value">
-                                <div class="input-group js-input-file" tabindex="0">
-                                    <input class="input-file focus_center" type="file" id="file_sig" required>
-                                    <label class="label--file string_choose_file" for="file_sig"></label>
-                                    <span class="input-file__info string_no_file_chosen"></span>
-                                </div>
-                                <div class="label--desc string_ic_remark"></div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="name string_installation_address"></div>
-                            <div class="value">
-                                <div class="input-group">
-                                    <input class="input--style-6 address-input placeholder_first_line focus_center" type="text" name="first_line" id="first_line" placeholder="First Line" required>
-                                </div>
-                                <div class="input-group">
-                                    <input class="input--style-6 address-input placeholder_second_line focus_center" type="text" name="second_line" id="second_line" placeholder="Second Line">
-                                </div>
-                                <div class="input-group">
-                                    <input class="input--style-6 address-input placeholder_third_line focus_center" type="text" name="third_line" id="third_line" placeholder="Third Line">
-                                </div>
-                                <div class="input-group">
-                                    <input class="input--style-6 address-input width-60 placeholder_city focus_center" type="text" name="city" id="city" placeholder="City" required>
-                                </div>
-                                <div class="input-group">
-                                    <input class="input--style-6 address-input width-30 placeholder_postcode focus_center" type="text" pattern='^\d{5}$' name="postcode" id="postcode" placeholder="Postcode e.g. 23000" required>
-                                </div>
-                                <div class="input-group">
-                                    <select name="state" id="state"  class="width-60 placeholder_state focus_center" required>
-                                        <option value="Perlis">Perlis</option>
-                                        <option value="Kedah">Kedah</option>
-                                        <option value="Penang">Penang</option>
-                                        <option value="Perak">Perak</option>
-                                        <option value="Kelantan">Kelantan</option>
-                                        <option value="Terengganu">Terengganu</option>
-                                        <option value="Pahang">Pahang</option>
-                                        <option value="Selangor">Selangor</option>
-                                        <option value="Kuala Lumpur" selected>Kuala Lumpur</option>
-                                        <option value="Negeri Sembilan">Negeri Sembilan</option>
-                                        <option value="Melaka">Melaka</option>
-                                        <option value="Johor">Johor</option>
-                                        <option value="Sabah">Sabah</option>
-                                        <option value="Sarawak">Sarawak</option>
-                                    </select>
-                                </div>
-                                <div class="input-group">
-                                    <input class="input--style-6 address-input width-60 placeholder_country focus_center" type="text" name="country" id="country" placeholder="Country" required>
-                                </div>
+                            <div class="next-btn-container">
+                                <button class="next-btn" id="section-upload-next">Next</button>
                             </div>
                         </div>
-                        <div class="form-row">
-                            <div class="name string_phone_number"></div>
-                            <div class="value">
-                                <input class="input--style-6 focus_center" type="tel" pattern='^\d{3}-\d{7,8}$' name="phone_number" id="phone_number" placeholder="e.g. 012-3456789" required>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="name string_emergency_phone_number"></div>
-                            <div class="value">
-                                <input class="input--style-6 focus_center" type="tel" pattern='^\d{3}-\d{7,8}$' name="emergency_phone_number" id="emergency_phone_number" placeholder="e.g. 012-3456789" required>
-                            </div>
-                        </div>
-                        <div class="form-row last-row">
-                            <div class="name string_email_address"></div>
-                            <div class="value">
-                                <div class="input-group">
-                                    <input class="input--style-6 focus_center" type="email" name="email" id="email_address" placeholder="e.g. example@email.com" required>
+
+                        <button class="accordion" id="section-details-btn">Personal Details</button>
+                        <div class="collapse-section" id="section-details">
+                            <div class="form-row">
+                                <div class="name string_installation_address"></div>
+                                <div class="value">
+                                    <div class="input-group">
+                                        <input class="input--style-6 address-input placeholder_first_line focus_center" type="text" name="first_line" id="first_line" placeholder="First Line" required>
+                                    </div>
+                                    <div class="input-group">
+                                        <input class="input--style-6 address-input placeholder_second_line focus_center" type="text" name="second_line" id="second_line" placeholder="Second Line">
+                                    </div>
+                                    <div class="input-group">
+                                        <input class="input--style-6 address-input placeholder_third_line focus_center" type="text" name="third_line" id="third_line" placeholder="Third Line">
+                                    </div>
+                                    <div class="input-group">
+                                        <input class="input--style-6 address-input width-60 placeholder_city focus_center" type="text" name="city" id="city" placeholder="City" required>
+                                    </div>
+                                    <div class="input-group">
+                                        <input class="input--style-6 address-input width-30 placeholder_postcode focus_center" type="text" pattern='^\d{5}$' name="postcode" id="postcode" placeholder="Postcode e.g. 23000" required>
+                                    </div>
+                                    <div class="input-group">
+                                        <select name="state" id="state"  class="width-60 placeholder_state focus_center" required>
+                                            <option value="Perlis">Perlis</option>
+                                            <option value="Kedah">Kedah</option>
+                                            <option value="Penang">Penang</option>
+                                            <option value="Perak">Perak</option>
+                                            <option value="Kelantan">Kelantan</option>
+                                            <option value="Terengganu">Terengganu</option>
+                                            <option value="Pahang">Pahang</option>
+                                            <option value="Selangor">Selangor</option>
+                                            <option value="Kuala Lumpur" selected>Kuala Lumpur</option>
+                                            <option value="Negeri Sembilan">Negeri Sembilan</option>
+                                            <option value="Melaka">Melaka</option>
+                                            <option value="Johor">Johor</option>
+                                            <option value="Sabah">Sabah</option>
+                                            <option value="Sarawak">Sarawak</option>
+                                        </select>
+                                    </div>
+                                    <div class="input-group">
+                                        <input class="input--style-6 address-input width-60 placeholder_country focus_center" type="text" name="country" id="country" placeholder="Country" required>
+                                    </div>
                                 </div>
                             </div>
+                            <div class="form-row">
+                                <div class="name string_phone_number"></div>
+                                <div class="value">
+                                    <input class="input--style-6 focus_center" type="tel" pattern='^\d{3}-\d{7,8}$' name="phone_number" id="phone_number" placeholder="e.g. 012-3456789" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="name string_emergency_phone_number"></div>
+                                <div class="value">
+                                    <input class="input--style-6 focus_center" type="tel" pattern='^\d{3}-\d{7,8}$' name="emergency_phone_number" id="emergency_phone_number" placeholder="e.g. 012-3456789" required>
+                                </div>
+                            </div>
+                            <div class="form-row last-row">
+                                <div class="name string_email_address"></div>
+                                <div class="value">
+                                    <div class="input-group">
+                                        <input class="input--style-6 focus_center" type="email" name="email" id="email_address" placeholder="e.g. example@email.com" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row last-row tnc-container">
+                                <input type="checkbox" id="tnc" name="tnc" value="tnc" required>
+                                <span class="string_agree_tnc">I agree to the </span>
+                                <a href='terms' target='_blank'><span class="string_tnc">Terms and Conditions.</span></a>
+                            </div>
+                            <div class="card-footer">
+                                <a class='back-btn string_back' href='javascript:history.back()'></a>
+                                <button class="payment-btn string_submit_order_details" type="submit" id="upload"></button>
+                            </div>
                         </div>
-                        <div class="form-row last-row tnc-container">
-                            <input type="checkbox" id="tnc" name="tnc" value="tnc" required>
-                            <span class="string_agree_tnc">I agree to the </span>
-                            <a href='terms' target='_blank'><span class="string_tnc">Terms and Conditions.</span></a>
-                        </div>
-                        <div class="card-footer">
-                            <a class='back-btn string_back' href='javascript:history.back()'></a>
-                            <button class="payment-btn string_submit_order_details" type="submit" id="upload"></button>
-                        </div>
+
                     </form>
                 </div>
             </div>

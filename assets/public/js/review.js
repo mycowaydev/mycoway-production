@@ -172,6 +172,30 @@ function clear(){
     clearError($('#review_form')[0])
 }
 
+function validateForm(submitEvent) {
+    clearError(submitEvent.target);
+    if (!submitEvent.target.checkValidity()) {
+        submitEvent.preventDefault();
+        submitEvent.stopImmediatePropagation();
+        submitEvent.stopPropagation();
+
+        var form     = submitEvent.target,
+            elements = form.elements;
+
+        for (var index = 0, len = elements.length; index < len; index++) {
+            var element = elements[index];
+
+            if (element.willValidate === true && element.validity.valid !== true) {
+                var string_classname = validationMessageIDFor(element);
+                addValidationMsg(element, string_classname)
+                break;
+            }
+        }
+    } else {
+        return true;
+    }
+};
+
 $('#review_form').keydown(clear);
 $('#review_form')[0].noValidate = true;
 $('#review_form')[0].addEventListener('submit', validateForm);

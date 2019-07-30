@@ -128,7 +128,8 @@ module.exports = function (apiVersion) {
 	let localVar = {
 		selected_tab: '',
 		getJsonFile: '',
-		order_id: ''
+		order_id: '',
+		tnc_text: ''
 	};
 
 	router.get('/404', function (req, res) {

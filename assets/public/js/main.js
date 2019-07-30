@@ -155,39 +155,7 @@ function addValidationMsg(element, string_classname) {
     showString();
 }
 
-function validateForm(submitEvent) {
-    clearError(submitEvent.target);
-    if (!submitEvent.target.checkValidity()) {
-        submitEvent.preventDefault();
-        submitEvent.stopImmediatePropagation();
-        submitEvent.stopPropagation();
 
-        var form     = submitEvent.target,
-            elements = form.elements;
-
-        for (var index = 0, len = elements.length; index < len; index++) {
-            var element = elements[index];
-
-            if (element.willValidate === true && element.validity.valid !== true) {
-                var string_classname = validationMessageIDFor(element);
-                addValidationMsg(element, string_classname)
-                break;
-            }
-        }
-    } else if ($('#emergency_phone_number').length && $('#phone_number').length){
-        if ($('#phone_number').val() == $('#emergency_phone_number').val()){
-            var element = document.getElementById('emergency_phone_number')
-            addValidationMsg(element, 'validation_emergency_phone_number')
-
-            submitEvent.preventDefault();
-            submitEvent.stopImmediatePropagation();
-            submitEvent.stopPropagation();
-            return false
-        }
-    } else {
-        return true;
-    }
-};
 
 $(document).ready(function () {
     if (typeof selected_tab !== 'undefined') {

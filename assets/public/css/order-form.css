@@ -735,3 +735,46 @@ input[type=checkbox] {
     display:table-cell;
     vertical-align:middle;
 }
+
+.accordion {
+  background-color: #8691f0;
+  color: white;
+  cursor: pointer;
+  padding: 10px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  transition: 0.4s;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+form .active, .accordion:hover {
+  background-color: #384aeb;
+}
+
+.collapse-section {
+  padding: 0 18px;
+  display: none;
+  background-color: white;
+  overflow: hidden;
+}
+
+.next-btn {
+    height: 40px;
+    padding: 0px 44px;
+    margin-left: 44px;
+    line-height: 38px;
+    text-transform: capitalize;
+    background: #384aeb;
+    border-radius: 30px;
+    color: #fff;
+    font-weight: 500;
+}
+
+.next-btn-container {
+    text-align: right;
+    margin-bottom: 20px
+}
