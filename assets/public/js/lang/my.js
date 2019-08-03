@@ -126,5 +126,16 @@ var language_my = {
     validation_phone_number: "Sila masukkan nombor telefon yang sah dalam format 012-3456789",
     validation_email: "Sila masukkan alamat emel yang sah",
     validation_tnc: "Mesti bersetuju syarat dan syarat untuk diteruskan",
-    string_minimum_rating: "Kadar minimum adalah satu bintang."
+    string_minimum_rating: "Kadar minimum adalah satu bintang.",
+
+    string_checkout: "Checkout",
+    string_order_summary: "Ringkasan Pesanan",
+    string_subtotal: "Jumlah",
+    string_charges: "Caj",
+    string_apply: "Apply",
+    string_total: "Jumlah",
+    placeholder_voucher_code: "Masukkan Kod Voucher",
+    validation_voucher_code_invalid: "Kod Voucher Tidak Sah",
+    string_next: "Seterusnya",
+    string_upload_file: "Memuat naik fail"
 }

@@ -47,7 +47,7 @@ var language_en = {
     string_orderno: "OrderNo",
     string_date: "Date",
     string_status: "Status",
-    string_personal_detail: "Personal Detail",
+    string_personal_detail: "Personal Details",
     string_emergency_phone_number: "Emergency Phone Number",
     string_email_address: "Email Address",
     string_shipping_address: "Shipping Address",
@@ -126,5 +126,16 @@ var language_en = {
     validation_phone_number: "Please enter valid phone number in format 012-3456789",
     validation_email: "Please enter a valid email address",
     validation_tnc: "Must agree terms and conditions to proceed",
-    string_minimum_rating: "Minimum rate is one star."
+    string_minimum_rating: "Minimum rate is one star.",
+
+    string_checkout: "Checkout",
+    string_order_summary: "Order Summary",
+    string_subtotal: "Subtotal",
+    string_charges: "Charges",
+    string_apply: "Apply",
+    string_total: "Total",
+    placeholder_voucher_code: "Enter Voucher Code",
+    validation_voucher_code_invalid: "Voucher Code Not Valid",
+    string_next: "Next",
+    string_upload_file: "Upload Files"
 }

@@ -126,5 +126,16 @@ var language_cn = {
     validation_phone_number: "请输入格式为012-3456789的有效电话号码",
     validation_email: "请输入有效的电子邮件地址",
     validation_tnc: "必须同意条款和条件才能继续",
-    string_minimum_rating: "最低標準為一颗星。"
+    string_minimum_rating: "最低標準為一颗星。",
+
+    string_checkout: "總數",
+    string_order_summary: "订单摘要",
+    string_subtotal: "次总额",
+    string_charges: "其他收费",
+    string_apply: "確定",
+    string_total: "总额",
+    placeholder_voucher_code: "输入折扣验证码",
+    validation_voucher_code_invalid: "折扣验证码不存在",
+    string_next: "下一步",
+    string_upload_file: "上載文件"
 }

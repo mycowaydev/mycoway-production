@@ -39,31 +39,31 @@
                 <div class="cart_inner">
                     <form method="POST" id="order_detail_form">
 
-                        <button class="accordion active" id="section-orders-btn">Checkout</button>
+                        <button class="accordion active string_checkout" id="section-orders-btn"></button>
                         <div class="collapse-section" id="section-orders" style="display:block">
                             <div class="form-row last-row">
-                                <div class="name">Order Summary</div>
+                                <div class="name string_order_summary"></div>
                                 <div class="value">
                                     <div id="cart-detail"></div>
                                     <div class="order_box" id="order_box">
                                         <ul class="list" id="order_box_ul">
                                             <li>
-                                                <span class="">Subtotal</span>
+                                                <span class="string_subtotal"></span>
                                                 <span class="last" id="checkout-subtotal"></span>
                                             </li>
                                             <li>
-                                                <span class="">Charges</span>
+                                                <span class="string_charges"></span>
                                                 <span class="last" id="checkout-charges"></span>
                                             </li>
                                             <li>
                                                 <div class="row-container flex">
-                                                    <input id="voucher-code" class="focus_center voucher" type="text" maxlength="10" placeholder="Enter Voucher Code">
-                                                    <button id="voucher-apply" class="btn apply-btn">Apply</button>
+                                                    <input id="voucher-code" class="focus_center voucher placeholder_voucher_code" type="text" maxlength="10">
+                                                    <button id="voucher-apply" class="btn apply-btn string_apply"></button>
                                                 </div>
-                                                <span class="label--desc" id="voucher-remark">Voucher Code Not Valid</span>
+                                                <span class="label--desc validation_voucher_code_invalid" id="voucher-remark"></span>
                                             </li>
                                             <li>
-                                                <span class="">Total</span>
+                                                <span class="string_total"></span>
                                                 <b><span class="last total-amount" id="checkout-total"></span></b>
                                             </li>
                                         </ul>
@@ -72,11 +72,11 @@
                                 </div>
                             </div>
                             <div class="next-btn-container">
-                                <button class=" btn next-btn" id="section-orders-next">Next</button>
+                                <button class=" btn next-btn string_next" id="section-orders-next"></button>
                             </div>
                         </div>
 
-                        <button class="accordion" id="section-upload-btn">Upload Files</button>
+                        <button class="accordion string_upload_file" id="section-upload-btn"></button>
                         <div class="collapse-section" id="section-upload">
                             <div class="form-row">
                                 <div class="name">
@@ -120,11 +120,11 @@
                                 </div>
                             </div>
                             <div class="next-btn-container">
-                                <button class="btn next-btn" id="section-upload-next">Next</button>
+                                <button class="btn next-btn string_next" id="section-upload-next"></button>
                             </div>
                         </div>
 
-                        <button class="accordion" id="section-details-btn">Personal Details</button>
+                        <button class="accordion string_personal_detail" id="section-details-btn"></button>
                         <div class="collapse-section" id="section-details">
                             <div class="form-row">
                                 <div class="name string_installation_address"></div>
