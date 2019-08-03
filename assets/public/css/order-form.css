@@ -691,15 +691,7 @@ textarea {
 }
 
 .payment-btn {
-    height: 40px;
-    padding: 0px 44px;
     margin-left: 44px;
-    line-height: 38px;
-    text-transform: capitalize;
-    background: #384aeb;
-    border-radius: 30px;
-    color: #fff;
-    font-weight: 500;
 }
 
 .address-input {
@@ -731,9 +723,13 @@ input[type=checkbox] {
     margin-right: 20px;
 }
 
-.tnc-container {
+.row-container {
     display:table-cell;
     vertical-align:middle;
+}
+
+.flex {
+    display: flex;
 }
 
 .accordion {
@@ -762,10 +758,9 @@ form .active, .accordion:hover {
   overflow: hidden;
 }
 
-.next-btn {
+.btn {
     height: 40px;
     padding: 0px 44px;
-    margin-left: 44px;
     line-height: 38px;
     text-transform: capitalize;
     background: #384aeb;
@@ -774,7 +769,40 @@ form .active, .accordion:hover {
     font-weight: 500;
 }
 
+.next-btn {
+    margin-left: 44px;
+}
+
+.apply-btn {
+    padding: 0px 24px;
+    margin-left: 14px;
+    border-radius: 0px;
+}
+
 .next-btn-container {
     text-align: right;
     margin-bottom: 20px
+}
+
+.voucher {
+    padding-left: 10px;
+}
+
+#order_box_ul .last {
+    margin: 0px 10px;
+}
+
+.total-amount {
+    color: black;
+    font-size: 16px;
+}
+
+#voucher-remark {
+    margin-top: 0px;
+    color: red;
+    display: none;
+}
+
+.btn:disabled {
+    cursor: context-menu;
 }

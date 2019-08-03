@@ -39,27 +39,40 @@
                 <div class="cart_inner">
                     <form method="POST" id="order_detail_form">
 
-                        <button class="accordion active" id="section-orders-btn">Order Review</button>
+                        <button class="accordion active" id="section-orders-btn">Checkout</button>
                         <div class="collapse-section" id="section-orders" style="display:block">
                             <div class="form-row last-row">
-                                <div class="name string_order_items"></div>
+                                <div class="name">Order Summary</div>
                                 <div class="value">
                                     <div id="cart-detail"></div>
                                     <div class="order_box" id="order_box">
                                         <ul class="list" id="order_box_ul">
                                             <li>
-                                                <h4>
-                                                    <span class="string_product"></span>
-                                                    <span class="last string_payment"></span>
-                                                </h4>
+                                                <span class="">Subtotal</span>
+                                                <span class="last" id="checkout-subtotal"></span>
+                                            </li>
+                                            <li>
+                                                <span class="">Charges</span>
+                                                <span class="last" id="checkout-charges"></span>
+                                            </li>
+                                            <li>
+                                                <div class="row-container flex">
+                                                    <input id="voucher-code" class="focus_center voucher" type="text" maxlength="10" placeholder="Enter Voucher Code">
+                                                    <button id="voucher-apply" class="btn apply-btn">Apply</button>
+                                                </div>
+                                                <span class="label--desc" id="voucher-remark">Voucher Code Not Valid</span>
+                                            </li>
+                                            <li>
+                                                <span class="">Total</span>
+                                                <b><span class="last total-amount" id="checkout-total"></span></b>
                                             </li>
                                         </ul>
                                     </div>
-                                    <div class="label--desc string_order_items_remark"></div>
+                                    <!--<div class="label&#45;&#45;desc string_order_items_remark"></div>-->
                                 </div>
                             </div>
                             <div class="next-btn-container">
-                                <button class="next-btn" id="section-orders-next">Next</button>
+                                <button class=" btn next-btn" id="section-orders-next">Next</button>
                             </div>
                         </div>
 
@@ -107,7 +120,7 @@
                                 </div>
                             </div>
                             <div class="next-btn-container">
-                                <button class="next-btn" id="section-upload-next">Next</button>
+                                <button class="btn next-btn" id="section-upload-next">Next</button>
                             </div>
                         </div>
 
@@ -174,14 +187,14 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-row last-row tnc-container">
+                            <div class="form-row last-row row-container">
                                 <input type="checkbox" id="tnc" name="tnc" value="tnc" required>
                                 <span class="string_agree_tnc">I agree to the </span>
                                 <a href='terms' target='_blank'><span class="string_tnc">Terms and Conditions.</span></a>
                             </div>
                             <div class="card-footer">
                                 <a class='back-btn string_back' href='javascript:history.back()'></a>
-                                <button class="payment-btn string_submit_order_details" type="submit" id="upload"></button>
+                                <button class="btn payment-btn string_submit_order_details" type="submit" id="upload"></button>
                             </div>
                         </div>
 

@@ -31,19 +31,62 @@ try {
 $( "#ic_tooltips" ).tooltip({ content: '<img src="res/sample_ic.jpg" />' });
 $( "#card_tooltips" ).tooltip({ content: '<img src="res/sample_card.jpg" />' });
 
-//** load cart item **//
-if (!sessionStorage.cart) {
-    $( "#cart-detail" ).text(getStringById('string_cart_is_empty'));
-    window.location.href = '/cart'
-} else {
-    var cart_list = JSON.parse(sessionStorage.cart);
-    for (var cart_item of cart_list) {
-        var order_line = "<li>" + cart_item.product_name + " <span class=\"middle\">x " +  cart_item.quantity
-            + "</span> <span class=\"middle\">" + getStringById('string_payment_method')[cart_item.payment_type]  + "</span> <span class=\"last\">RM "
-            + (cart_item.price * cart_item.quantity) + "</span></li>"
-        $( "#order_box_ul" ).append(order_line);
-    }
+//** Voucher Code **/
+var charges_amount = 200
+var cart_list = JSON.parse(sessionStorage.cart)
+var subtotal_amount = 0
+
+var voucherList = (function() {
+    var json = null;
+    $.ajax({
+        'async': false,
+        'global': false,
+        'url': "res/voucher.json",
+        'dataType': "json",
+        'success': function (data) {
+            json = data;
+        }
+    });
+    return json;
+})();
+
+for (var cart_item of cart_list) {
+    subtotal_amount += (cart_item.price * cart_item.quantity)
 }
+$("#checkout-subtotal").text('RM ' + subtotal_amount)
+$("#checkout-charges").text('RM ' + charges_amount)
+$("#checkout-total").text('RM ' + (subtotal_amount+charges_amount))
+
+$('#voucher-apply').click(function() {
+    event.preventDefault();
+    if (voucherList.indexOf($("#voucher-code").val()) >= 0){
+        $("#voucher-remark").css("display", "none")
+        $("#voucher-code").prop("disabled",true)
+        $("#voucher-apply").prop("disabled",true)
+        $("#checkout-charges").css("text-decoration", "line-through")
+        $("#checkout-total").text('RM ' + subtotal_amount)
+    } else {
+        $("#voucher-remark").css("display", "block")
+    }
+});
+
+$('#voucher-code').keydown(function() {
+    $("#voucher-remark").css("display", "none")
+});
+
+//** load cart item **//
+//if (!sessionStorage.cart) {
+//    $( "#cart-detail" ).text(getStringById('string_cart_is_empty'));
+//    window.location.href = '/cart'
+//} else {
+//    var cart_list = JSON.parse(sessionStorage.cart);
+//    for (var cart_item of cart_list) {
+//        var order_line = "<li>" + cart_item.product_name + " <span class=\"middle\">x " +  cart_item.quantity
+//            + "</span> <span class=\"middle\">" + getStringById('string_payment_method')[cart_item.payment_type]  + "</span> <span class=\"last\">RM "
+//            + (cart_item.price * cart_item.quantity) + "</span></li>"
+//        $( "#order_box_ul" ).append(order_line);
+//    }
+//}
 
 /*** form collapse ***/
 var acc = document.getElementsByClassName("accordion");
