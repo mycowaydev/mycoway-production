@@ -1,4 +1,5 @@
-var orderList = JSON.parse(sessionStorage.order_submitted)
+var orderListObj = JSON.parse(sessionStorage.order_submitted)
+var orderList = orderListObj.order
 
 function setElementValue(element, value){
     if(value){
