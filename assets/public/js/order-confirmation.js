@@ -32,11 +32,15 @@ $.each( orderProductItems , function( index, obj ){
     );
 });
 
-//$('#product_list').append(
-//    "<tr>" +
-//         "<td><h4>Shipping</h4></td>" +
-//         "<td><h5></h5></td>" +
-//         "<td><h5></h5></td>" +
-//         "<td><p>Free</p></td>" +
-//     "</tr>"
-//);
+if (orderList.voucher_code == ''){
+    $('#product_list').append(
+        "<tr>" +
+             "<td><h4>Charges</h4></td>" +
+             "<td><h5></h5></td>" +
+             "<td><h5></h5></td>" +
+             "<td><p>RM 200</p></td>" +
+         "</tr>"
+    );
+}
+
+
