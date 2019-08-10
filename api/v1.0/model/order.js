@@ -41,6 +41,7 @@ const schema = mongoose.Schema({
     emergency_no: String,
     address: addressSchema,
     order_product: [orderProductSchema],
+    voucher_code: String,
     order_date: { type: Number, default: config.getCurrentTimestamp() },
     status: String,
     remarks: String,

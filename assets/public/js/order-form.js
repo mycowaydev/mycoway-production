@@ -74,20 +74,6 @@ $('#voucher-code').keydown(function() {
     $("#voucher-remark").css("display", "none")
 });
 
-//** load cart item **//
-//if (!sessionStorage.cart) {
-//    $( "#cart-detail" ).text(getStringById('string_cart_is_empty'));
-//    window.location.href = '/cart'
-//} else {
-//    var cart_list = JSON.parse(sessionStorage.cart);
-//    for (var cart_item of cart_list) {
-//        var order_line = "<li>" + cart_item.product_name + " <span class=\"middle\">x " +  cart_item.quantity
-//            + "</span> <span class=\"middle\">" + getStringById('string_payment_method')[cart_item.payment_type]  + "</span> <span class=\"last\">RM "
-//            + (cart_item.price * cart_item.quantity) + "</span></li>"
-//        $( "#order_box_ul" ).append(order_line);
-//    }
-//}
-
 /*** form collapse ***/
 var acc = document.getElementsByClassName("accordion");
 for (var i = 0; i < acc.length; i++) {
@@ -208,6 +194,7 @@ function getModalFormData() {
     formData.set('address[postcode]', $("#postcode").val());
     formData.set('address[state]', $("#state").val());
     formData.set('address[country]', $("#country").val());
+    formData.set('voucher_code', $("#voucher-code").val());
     formData.set('remarks', '');
 
     var file_ic = $('#file_ic')[0].files[0];

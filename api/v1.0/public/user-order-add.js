@@ -52,6 +52,7 @@ function getParam(req) {
 	data.emergency_no = req.body['emergency_no'];
 	data.address = req.body['address'];
 	data.order_product = req.body['order_product'];
+	data.voucher_code = req.body['voucher_code'];
 	data.order_date = config.getCurrentTimestamp();
 	data.status = req.body['status'];
 	data.remarks = req.body['remarks'];
