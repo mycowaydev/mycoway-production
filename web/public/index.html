@@ -1,79 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>Home - Coway</title>
-        include includes/head
-        <link href="css/home.css" rel="stylesheet">
-    </head>
-    <body>
-        include includes/header.html
 
-        <div class="modal-display-template modal fade video-modal" id="partial-1m-home-brand-tvc">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <a class="btn-close-blue pull-right close-modal" data-dismiss="modal" title="Close">&nbsp;</a>
-                    </div>
-                    <div class="modal-body">
-                        <div class="main-content">
-                            <div class="container youtube-tvc">
-                                <h4 class="sim-row-edit" data-type="title">COWAY 1 MILLION HOMES IN MALAYSIA TVC</h4><br>
-                                <div class="row">
-                                    <div class="col-sm-8 col-sm-offset-2">
-                                        <div class="embed-responsive embed-responsive-16by9 sim-row-edit" data-type="text">
-                                            <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/hRMOmLgDp6w"></iframe>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+<head>
+    <title>Home - Coway</title>
+    include includes/head
+    <link href="css/home.css" rel="stylesheet">
+</head>
+
+<body>
+    include includes/header.html
+
+    <main class="site-main">
+
+        <section class="main-banner">
+            <img src="img/coway-1million-home-in-malaysia-text.png" class="main-banner-text">
+            <div class="main-banner-description">
+                <h2 class="string_promo_code"></h2>
+                <h4 class="string_promo_code_desc"></h4>
+            </div>
+        </section>
+
+        <section class="quick-link-img mt-0 mb-4">
+            <div class="owl-carousel owl-theme hero-carousel">
+                <div class="hero-carousel__slide">
+                    <img src="img/coway/water-purifier-intro.jpg" alt="" class="img-fluid">
+                    <a href="water-purifier" class="hero-carousel__slideOverlay">
+                        <h3 class="string_water_purifier"></h3>
+                        <p class="string_water_purifier_slogan"></p>
+                    </a>
+                </div>
+                <div class="hero-carousel__slide">
+                    <img src="img/coway/air-purifier-intro.jpg" alt="" class="img-fluid">
+                    <a href="air-purifier" class="hero-carousel__slideOverlay">
+                        <h3 class="string_air_purifier"></h3>
+                        <p class="string_air_purifier_slogan"></p>
+                    </a>
+                </div>
+                <div class="hero-carousel__slide">
+                    <img src="img/coway/promotion-intro.jpg" alt="" class="img-fluid">
+                    <a href="promotion" class="hero-carousel__slideOverlay">
+                        <h3 class="string_promotion"></h3>
+                        <p class="string_promotion_slogan"></p>
+                    </a>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <main class="site-main">
+    </main>
 
-            <section class="main-banner">
-                <img src="img/coway-1million-home-in-malaysia-text.png" class="main-banner-text">
-                <p>
-                    <a class="btn-rounded sim-row-edit" data-target="#partial-1m-home-brand-tvc" data-type="modals" href="#" title="1 Million Homes In Malaysia Brand TVC" target="" data-anchor="" data-toggle="modal" data-genre="modal" style="margin-right: 7px;" data-titlehash="" tabindex="0">BRAND TVC</a>
-                </p>
-            </section>
+    include includes/footer.html
 
-            <section class="quick-link-img mt-0 mb-4">
-                <div class="owl-carousel owl-theme hero-carousel">
-                    <div class="hero-carousel__slide">
-                        <img src="img/coway/water-purifier-intro.jpg" alt="" class="img-fluid">
-                        <a href="water-purifier" class="hero-carousel__slideOverlay">
-                            <h3 class="string_water_purifier"></h3>
-                            <p class="string_water_purifier_slogan"></p>
-                        </a>
-                    </div>
-                    <div class="hero-carousel__slide">
-                        <img src="img/coway/air-purifier-intro.jpg" alt="" class="img-fluid">
-                        <a href="air-purifier" class="hero-carousel__slideOverlay">
-                            <h3 class="string_air_purifier"></h3>
-                            <p class="string_air_purifier_slogan"></p>
-                        </a>
-                    </div>
-                    <div class="hero-carousel__slide">
-                        <img src="img/coway/promotion-intro.jpg" alt="" class="img-fluid">
-                        <a href="promotion" class="hero-carousel__slideOverlay">
-                            <h3 class="string_promotion"></h3>
-                            <p class="string_promotion_slogan"></p>
-                        </a>
-                    </div>
-                </div>
-            </section>
+    include includes/script
 
-        </main>
+    include includes/language
+    include includes/messenger.html
+</body>
 
-        include includes/footer.html
-
-        include includes/script
-
-        include includes/language
-        include includes/messenger.html
-    </body>
 </html>

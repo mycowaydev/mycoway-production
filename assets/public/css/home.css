@@ -19,6 +19,11 @@ a {
     height: auto;
 }
 
+.main-banner-description {
+    margin: 5% auto 10% 40%;
+    display: inline-block;
+}
+
 .btn-rounded {
     margin: 5% auto 10% 40%;
     display: inline-block;

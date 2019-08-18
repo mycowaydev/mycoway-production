@@ -6,6 +6,8 @@ var language_my = {
     string_shop_now: "Beli-belah Sekarang",
     string_home: "Laman Utama",
     string_shop: "Beli-belah",
+    string_promo_code: "Kod Voucher: AW001",
+    string_promo_code_desc: "Untuk mengetepikan yuran pendaftaran RM200",
     string_water_purifier: "Pembersih Air",
     string_water_purifier_slogan: "Meningkatkan kesejahteraan anda",
     string_water_purifier_message: "Pelbagai dispenser air kami dilengkapi dengan sistem penapisan air maju untuk menyediakan anda dengan air bersih yang terbaik.",

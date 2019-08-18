@@ -6,6 +6,8 @@ var language_en = {
     string_shop_now: "Shop Now",
     string_home: "Home",
     string_shop: "Shop",
+    string_promo_code: "Promo Code: AW001",
+    string_promo_code_desc: "To waive RM200 Register fees",
     string_water_purifier: "Water Purifier",
     string_water_purifier_slogan: "Enhance your well being",
     string_water_purifier_message: "Enjoy a glass of perfection from our series of water dispensers that come with advanced water filtration systems to give you the best purified water.",

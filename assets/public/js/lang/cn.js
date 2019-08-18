@@ -6,6 +6,8 @@ var language_cn = {
     string_shop_now: "去購物",
     string_home: "主頁",
     string_shop: "購物",
+    string_promo_code: "折扣验证码: AW001",
+    string_promo_code_desc: "免除RM200注册费",
     string_water_purifier: "净水器",
     string_water_purifier_slogan: "增进你的健康",
     string_water_purifier_message: "我们的系列饮水机配备先进的水过滤系统，为您提供最佳净化水。",
