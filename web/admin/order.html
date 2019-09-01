@@ -554,6 +554,7 @@
                 .then(function (result) {
                     if (result.status_code == '100') {
                         editHandler(result);
+                        loadProductList(result.data.order_product);
                     } else {
                         errorMessageHandler(result);
                     }
@@ -593,6 +594,137 @@
                     .finally(function () {
                         $('#modalLoad').modal('hide');
                     });
+            }
+        }
+
+        function addQuantity(elementIndex) {
+            var result = document.getElementById('qty' + elementIndex);
+            var qty = result.value;
+            if (!isNaN(qty)) {
+                result.value++;
+
+                // var cart_list = JSON.parse(sessionStorage.cart);
+                // cart_list[elementIndex].quantity = result.value;
+                // sessionStorage.cart = JSON.stringify(cart_list);
+
+                //$("#item-total"+elementIndex).html("RM " + (cart_list[elementIndex].price * cart_list[elementIndex].quantity))
+            }
+            //refreshCartNumber();
+        }
+
+        function reduceQuantity(elementIndex) {
+            var result = document.getElementById('qty' + elementIndex);
+            var qty = result.value;
+            if (!isNaN(qty) && qty > 1) {
+                result.value--;
+
+                // var cart_list = JSON.parse(sessionStorage.cart);
+                // cart_list[elementIndex].quantity = result.value;
+                // sessionStorage.cart = JSON.stringify(cart_list);
+
+                //$("#item-total"+elementIndex).html("RM " + (cart_list[elementIndex].price * cart_list[elementIndex].quantity))
+            }
+            //refreshCartNumber();
+        }
+
+        function deleteItem(elementIndex) {
+            // var cart_list = JSON.parse(sessionStorage.cart);
+            // cart_list.splice(elementIndex,1);
+            // sessionStorage.cart = JSON.stringify(cart_list);
+
+            $('#cartItemRow' + elementIndex).remove();
+            // if (cart_list.length === 0){
+            //     $("tbody").prepend(emptyRowContent);
+            //     $('#checkout').click(function(e) {
+            //         e.preventDefault();
+            //     });
+            //     $('#checkout').addClass('button-disable');
+            // }
+
+            // $("#pageloader").fadeIn();
+            // document.location.reload();
+        }
+
+        function loadProductList(productList) {
+
+            try {
+
+                console.log("productList        :: " + JSON.stringify(productList));
+                // console.log("productList length :: " + JSON.stringify(productList.length));
+
+                let index = 0;
+                // if (productList.length == 1) {
+                //     $('#txtTotalRecord').text( $('#txtPageTitle').text() + ' x ' +  productList.length);
+                // } else if (productList.length > 1) {
+                //     $('#txtTotalRecord').text(productList.length);
+                // }
+
+                let productListHtml = "";
+
+                productListHtml = productListHtml + '<div class="table-responsive">' +
+                    '<table class="table">' +
+                    '<thead>' +
+                    '<tr>' +
+                    '<th scope="col" class="string_product">Product</th>' +
+                    '<th scope="col" class="string_payment">Payment</th>' +
+                    // '<th scope="col" class="string_payment_type"></th>' +
+                    '<th scope="col" class="string_quantity">Quantity</th>' +
+                    '<th scope="col"></th>' +
+                    '</tr>' +
+                    '</thead>' +
+                    '<tbody>';
+
+                productList.forEach(product => {
+                    index = index + 1;
+
+                    productListHtml = productListHtml +
+                        '<tr id="cartItemRow' + index + '">' +
+                        '<td>' +
+                        '<h5 class="card-product__title">' + product.product_name + '</h5>' +
+                        '</td>' +
+
+                        '<td>' +
+                        '<h5 class="card-product__price">RM ' + product.price + ' </h5>' +
+                        '</td>' +
+
+                        // '<td>' +
+                        // '<h5' +getStringById('string_payment_method')[product.payment_type] + ' </h5>' +
+                        // '</td>' +
+
+                        '<td>' +
+                        '<div class="product_count">' +
+                        '<input class="input-text qty" style="height: 40px" id="qty' + index + '" maxlength="3" name="qty" title="Quantity:" type="text" value="' + product.quantity + '">' +
+                        '<button class="increase items-count" onclick=\'addQuantity(' + index + ', ' + product.price + ')\' id="btnIncProductQty" type="button">' +
+                        '<i class="fa fa-chevron-up"></i>' +
+                        '</button>' +
+                        '<button class="reduced items-count" onclick=\'reduceQuantity(' + index + ', ' + product.price + ')\' id="btnDecProductQty" type="button">' +
+                        '<i class="fa fa-chevron-down"></i>' +
+                        '</button>' +
+                        '</div>' +
+                        '</td>' +
+
+                        '<td>' +
+                        '<a onclick=\'deleteItem(' + index + ')\'><i class="fa fa-trash"></i></a>' +
+                        '</td>' +
+
+                        '</tr>';
+                });
+
+                productListHtml = productListHtml +
+                    '</tbody>' +
+                    '</table>' +
+                    '</div>' +
+                    '<tr>' +
+                    '<div class="modal-footer">' +
+                    '<button type="button" class="btn btn-primary btn-sm" id="btnModalAddProductAction">Add Product</button>' +
+                    '</div>' +
+                    '</tr>';
+
+                //console.log(productListHtml);
+
+                $('#productList').append(productListHtml);
+            } catch (ex) {
+                console.log("loadProductList error :: " + ex);
             }
         }
 
@@ -797,6 +929,12 @@
 
                             </div>
                             <div id="productItems" class="tab-pane fade mt-4">
+                                <section class="cart_area">
+                                    <div class="container">
+                                        <div id="productList" class="cart_inner">
+                                        </div>
+                                    </div>
+                                </section>
                             </div>
                             <div id="address" class="tab-pane fade mt-4">
                                 <div class="form-group row">
