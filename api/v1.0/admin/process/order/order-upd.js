@@ -26,6 +26,7 @@ module.exports = function (req, res) {
 function getParam(req) {
 	var data = {};
 
+	//console.log(JSON.stringify(req.body));
 	data.admin_user_id = req.session.adminUserid;
 	data.id = req.body['id'];
 	data.order_date = req.body['order_date'];
@@ -56,6 +57,25 @@ function getParam(req) {
 
 	// Remarks
 	data.remarks = req.body['remarks'];
+
+	data.addProductList = JSON.parse(req.body['addProductList']);
+	data.existingProductList = JSON.parse(req.body['existingProductList']);
+	data.deletedProductList = JSON.parse(req.body['deletedProductList']);
+
+	if(data.addProductList){
+		data.order_product = data.addProductList;
+	}
+	if(data.existingProductList){
+		data.order_product = data.order_product.concat(data.existingProductList);
+	}
+
+	// console.log(JSON.stringify(data.order_product.length));
+	// for (let a = 0; a < data.order_product.length; a++) {
+	// 	console.log('quantity :: '+JSON.stringify(data.order_product[a].quantity));
+	// }
+	// for (let a = 0; a < data.existingProductList.length; a++) {
+	// 	console.log(JSON.stringify(data.existingProductList[a].quantity));
+	// }
 
 	return data;
 }

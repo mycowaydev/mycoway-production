@@ -34,7 +34,9 @@
                 method: 'POST'
             },
             mtparam: {
-                status: 'ORDER.STATUS'
+                status: 'ORDER.STATUS',
+                payment_type: 'PRODUCT_PAYMENT',
+                product_type: 'PRODUCT_TYPE'
             },
             action: {
                 update: 'Update',
@@ -46,6 +48,7 @@
                 getList: '/order-get-list',
                 getById: '/order-get-info',
                 mtparam: '/admin-get-mt-param-group',
+                productparam: '/get-product-param',
             },
             setting: {
                 dateFormat: 'YYYY-MM-DD HH:mm'
@@ -56,9 +59,31 @@
         var image_card_old = [];
         var image_signature_old = [];
 
+        var deletedProductList = [];
+
+        var existingProductList = [];
+
+
+        var productDetails = {};
+        var addProductList = [];
+
+        var productListId = [];
+        var productListPaymentType = [];
+        var productList = [];
+
+        var mtpProductList = [];
+
         var mtpStatus = getMTParam(app.mtparam.status).then(function (result) {
             mtpStatus = result.data;
             initDropdownList('#ddlSearch_Status,#ddlModal_Status', result.data);
+        });
+
+        var mtpProductType = getMTParam(app.mtparam.product_type).then(function (result) {
+            mtpProductType = result.data;
+        });
+
+        var mtpProductPayment = getMTParam(app.mtparam.payment_type).then(function (result) {
+            mtpProductPayment = result.data;
         });
 
         function init() {
@@ -122,9 +147,85 @@
             }
         }
 
+        function initProductDropdownList(target, data) {
+            productDetails = {};
+            for (var row = 0; row < data.length; row++) {
+
+                var product = {
+                    product_id: data[row]._id,
+                    product_name: data[row].name,
+                    payment_type: data[row].payment_type,
+                    desc: data[row].desc,
+                    image: data[row].image,
+                    price: data[row].price,
+                    remarks: data[row].remarks,
+                    quantity: 1
+                };
+
+                productDetails[data[row]._id] = product;
+                let ddlValue = getProductType(data[row].product_type) + " - " + data[row].name;
+                $(target).append(new Option(ddlValue, data[row]._id));
+
+            }
+        }
+
+        function loadPaymentType() {
+            try {
+                let selectedProduct = $("#ddlModal_Product").val();
+
+                //console.log("productDetails :: " + JSON.stringify(productDetails[selectedProduct].payment_type));
+                let paymentType = (productDetails[selectedProduct].payment_type + '').split(",");
+
+                $("#ddlModal_PaymentType").html("");
+                $("#ddlModal_PaymentType").append(new Option("Please select", ""));
+
+                for (var row = 0; row < paymentType.length; row++) {
+                    let ddlValue = getProductPayment(paymentType[row]);
+                    $("#ddlModal_PaymentType").append(new Option(ddlValue, paymentType[row]));
+
+                }
+
+            } catch (ex) {
+                console.log("loadPaymentType error :: " + ex);
+            }
+        }
+
+        function getProductType(data) {
+            for (var row = 0; row < mtpProductType.length; row++) {
+                if (mtpProductType[row].code == data) {
+                    return mtpProductType[row].value;
+                }
+            }
+        }
+
+        function getProductPayment(data) {
+            for (var row = 0; row < mtpProductPayment.length; row++) {
+                if (mtpProductPayment[row].code == data) {
+                    return mtpProductPayment[row].value;
+                }
+            }
+        }
+
         function getMTParam(group) {
             return new Promise((resolve, reject) => {
                 fetch(app.link.mtparam, { method: app.http.method, body: group })
+                    .then(function (res) {
+                        if (res.ok) {
+                            return res.json();
+                        }
+                    })
+                    .then(function (result) {
+                        return resolve(result);
+                    })
+                    .catch(function (err) {
+                        return reject(err);
+                    })
+            });
+        }
+
+        function getProductParam() {
+            return new Promise((resolve, reject) => {
+                fetch(app.link.productparam, { method: app.http.method, body: '' })
                     .then(function (res) {
                         if (res.ok) {
                             return res.json();
@@ -251,10 +352,10 @@
 
                     if (data.image_card) {
 
-                        console.log("image_card : " + true);
+                        //console.log("image_card : " + true);
                         let imgLst = (data.image_card + '').split(",");
                         for (let i = 0; i < imgLst.length; i++) {
-                            console.log("image_card : inside");
+                            //console.log("image_card : inside");
                             var configs = {};
                             configs['downloadUrl'] = imgLst[i];
                             image_card_old.push(imgLst[i] + '');
@@ -432,6 +533,30 @@
         function getModalFormData() {
             var formData = new FormData();
 
+            if (existingProductList != null) {
+                for (let a = 0; a < existingProductList.length; a++) {
+                    let quantity = $("#qty_" + existingProductList[a].product_id + "_" + existingProductList[a].payment_type).val();
+                    existingProductList[a].quantity = quantity;
+                }
+            }
+
+            if (addProductList != null) {
+                for (let a = 0; a < addProductList.length; a++) {
+                    let quantity = $("#qty_" + addProductList[a].product_id + "_" + addProductList[a].payment_type).val();
+                    addProductList[a].quantity = quantity;
+                }
+            }
+
+            formData.append('existingProductList', JSON.stringify(existingProductList));
+            formData.append('addProductList', JSON.stringify(addProductList));
+            formData.append('deletedProductList', JSON.stringify(deletedProductList));
+
+            // console.log("deletedProductList  :: " + JSON.stringify(deletedProductList));
+
+            // console.log("existingProductList :: " + JSON.stringify(existingProductList));
+
+            // console.log("addProductList      :: " + JSON.stringify(addProductList));
+
             formData.append('id', $("#formId").val());
             formData.append('order_date', moment($("#dtpModal_OrderDate").val()).unix());
             formData.append('status', $("#ddlModal_Status").val());
@@ -441,16 +566,15 @@
             formData.append('phone_no', $("#txtModal_Phone").val());
             formData.append('emergency_no', $("#txtModal_EmergencyPhone").val());
 
-
             // Document
             var icImage_files = document.getElementById('fuModal_IcImage').files[0];
-            console.log("icImage_files : " + icImage_files);
+            //console.log("icImage_files : " + icImage_files);
             if (typeof icImage_files != 'undefined') {
                 formData.append('image_ic', icImage_files);
             }
 
             var cardImage_files = document.getElementById('fuModal_CardImage').files[0];
-            console.log("cardImage_files : " + cardImage_files);
+            //console.log("cardImage_files : " + cardImage_files);
             if (typeof cardImage_files != 'undefined') {
                 formData.append('image_card', cardImage_files);
             }
@@ -484,7 +608,7 @@
         function getOrderDate() {
 
             var orderDate = $("#dtpSearch_OrderDate").val().split("-");
-            console.log(orderDate);
+            //console.log(orderDate);
 
         }
 
@@ -554,7 +678,14 @@
                 .then(function (result) {
                     if (result.status_code == '100') {
                         editHandler(result);
-                        loadProductList(result.data.order_product);
+                        addProductList = [];
+                        existingProductList = result.data.order_product;
+
+                        getProductParam().then(function (result) {
+                            mtpProductList = result.data;
+                            loadProductList();
+                        });
+
                     } else {
                         errorMessageHandler(result);
                     }
@@ -569,7 +700,7 @@
 
         function actionModifyData() {
             if ($("#modalForm").valid()) {
-                $('#modalLoad').modal('show');
+                //$('#modalLoad').modal('show');
 
                 var mode = $('#btnModalMainActionText').text();
                 var path = (mode === app.action.update ? app.link.update : app.link.insert);
@@ -598,67 +729,148 @@
         }
 
         function addQuantity(elementIndex) {
-            var result = document.getElementById('qty' + elementIndex);
-            var qty = result.value;
-            if (!isNaN(qty)) {
-                result.value++;
-
-                // var cart_list = JSON.parse(sessionStorage.cart);
-                // cart_list[elementIndex].quantity = result.value;
-                // sessionStorage.cart = JSON.stringify(cart_list);
-
-                //$("#item-total"+elementIndex).html("RM " + (cart_list[elementIndex].price * cart_list[elementIndex].quantity))
+            try {
+                var result = document.getElementById('qty_' + elementIndex);
+                var qty = result.value;
+                if (!isNaN(qty)) {
+                    result.value++;
+                }
+            } catch (ex) {
+                console.log("loadProductList error :: " + ex);
             }
-            //refreshCartNumber();
         }
 
         function reduceQuantity(elementIndex) {
-            var result = document.getElementById('qty' + elementIndex);
+            var result = document.getElementById('qty_' + elementIndex);
             var qty = result.value;
             if (!isNaN(qty) && qty > 1) {
                 result.value--;
-
-                // var cart_list = JSON.parse(sessionStorage.cart);
-                // cart_list[elementIndex].quantity = result.value;
-                // sessionStorage.cart = JSON.stringify(cart_list);
-
-                //$("#item-total"+elementIndex).html("RM " + (cart_list[elementIndex].price * cart_list[elementIndex].quantity))
             }
-            //refreshCartNumber();
+        }
+
+        function addProduct() {
+            try {
+
+                let selectedProduct = $("#ddlModal_Product").val();
+                //console.log("selectedProduct :: " + selectedProduct);
+                let selectedPaymentType = $("#ddlModal_PaymentType").val();
+                let duplicateProduct = false;
+
+                for (let i = 0; i < productList.length; i++) {
+
+                    let existingProductId = productList[i].product_id;
+                    let existingPaymentType = productList[i].payment_type;
+
+                    if (selectedProduct == existingProductId && selectedPaymentType == existingPaymentType) {
+                        duplicateProduct = true;
+                        break;
+                    }
+                }
+
+                if (!duplicateProduct) {
+                    let addProductDetails = productDetails[selectedProduct];
+                    //console.log("productDetails[selectedProduct] 1 :: " + productDetails[selectedProduct].payment_type);
+                    addProductDetails.payment_type = selectedPaymentType;
+                    addProductDetails.new = true;
+
+                    //console.log("productDetails[selectedProduct] 2 :: " + productDetails[selectedProduct].payment_type);
+                    if (selectedPaymentType == "R") {
+                        addProductDetails.price = addProductDetails.price.rental_price;
+                    } else if (selectedPaymentType == "P") {
+                        addProductDetails.price = addProductDetails.price.retail_price;
+                    }
+                    addProductList.push(addProductDetails);
+
+                    //console.log("mtpProductList  :: " + JSON.stringify(mtpProductList));
+                    loadProductList();
+                }
+                else {
+                    console.log("Duplicate Product  !!!!  ");
+                }
+
+
+            } catch (ex) {
+                console.log("addProduct error :: " + ex);
+            }
         }
 
         function deleteItem(elementIndex) {
-            // var cart_list = JSON.parse(sessionStorage.cart);
-            // cart_list.splice(elementIndex,1);
-            // sessionStorage.cart = JSON.stringify(cart_list);
 
-            $('#cartItemRow' + elementIndex).remove();
-            // if (cart_list.length === 0){
-            //     $("tbody").prepend(emptyRowContent);
-            //     $('#checkout').click(function(e) {
-            //         e.preventDefault();
-            //     });
-            //     $('#checkout').addClass('button-disable');
-            // }
+            //console.log("elementIndex :: " + elementIndex);
 
-            // $("#pageloader").fadeIn();
-            // document.location.reload();
+            let selectedProduct = productListId[elementIndex];
+            let selectedPaymentType = productListPaymentType[elementIndex];
+
+            let isNew;
+            for (let i = 0; i < productList.length; i++) {
+                let existingProductId = productList[i].product_id;
+                let existingPaymentType = productList[i].payment_type;
+
+                if (selectedProduct == existingProductId && selectedPaymentType == existingPaymentType) {
+                    isNew = productList[i].new;
+                    break;
+                }
+            }
+
+            //console.log("is new :: " + isNew);
+
+            if (isNew) {
+                console.log("is new deleting :: ");
+
+                console.log("is new deleting 2 :: " + JSON.stringify(addProductList));
+                for (let i = 0; i < addProductList.length; i++) {
+                    let existingProductId = addProductList[i].product_id;
+                    let existingPaymentType = addProductList[i].payment_type;
+
+                    if (selectedProduct == existingProductId && selectedPaymentType == existingPaymentType) {
+                        addProductList.splice(i, 1);
+                        break;
+                    }
+                }
+
+                //console.log("is new deleting 3 :: " + JSON.stringify(addProductList));
+            }
+            else {
+                for (let i = 0; i < existingProductList.length; i++) {
+                    let existingProductId = existingProductList[i].product_id;
+                    let existingPaymentType = existingProductList[i].payment_type;
+
+                    if (selectedProduct == existingProductId && selectedPaymentType == existingPaymentType) {
+                        deletedProductList.push(existingProductList[i]);
+                        existingProductList.splice(i, 1);
+                        break;
+                    }
+                }
+            }
+
+            productList = addProductList;
+            if (existingProductList != null) {
+                productList = [];
+                productList = existingProductList.concat(addProductList);
+            }
+
+            $('#' + selectedProduct).remove();
+
+            //console.log("deletedProductList :: " + JSON.stringify(deletedProductList));
         }
 
-        function loadProductList(productList) {
+        function loadProductList() {
 
             try {
 
-                console.log("productList        :: " + JSON.stringify(productList));
+                productList = addProductList;
+                if (existingProductList != null) {
+                    productList = [];
+                    productList = existingProductList.concat(addProductList);
+                }
+
+                //console.log("productList        :: " + JSON.stringify(productList));
                 // console.log("productList length :: " + JSON.stringify(productList.length));
+                //JSON.stringify(newAddedProduct);
 
                 let index = 0;
-                // if (productList.length == 1) {
-                //     $('#txtTotalRecord').text( $('#txtPageTitle').text() + ' x ' +  productList.length);
-                // } else if (productList.length > 1) {
-                //     $('#txtTotalRecord').text(productList.length);
-                // }
 
+                //  <!-- START OF PRODUCT LIST -->
                 let productListHtml = "";
 
                 productListHtml = productListHtml + '<div class="table-responsive">' +
@@ -674,11 +886,15 @@
                     '</thead>' +
                     '<tbody>';
 
+                productListId = [];
+                productListPaymentType = [];
+                deletedProductList = [];
                 productList.forEach(product => {
-                    index = index + 1;
-
+                    let productUniqueId = product.product_id + "_" + product.payment_type;
+                    productListId.push(product.product_id);
+                    productListPaymentType.push(product.payment_type);
                     productListHtml = productListHtml +
-                        '<tr id="cartItemRow' + index + '">' +
+                        '<tr id="' + product.product_id + '">' +
                         '<td>' +
                         '<h5 class="card-product__title">' + product.product_name + '</h5>' +
                         '</td>' +
@@ -693,11 +909,11 @@
 
                         '<td>' +
                         '<div class="product_count">' +
-                        '<input class="input-text qty" style="height: 40px" id="qty' + index + '" maxlength="3" name="qty" title="Quantity:" type="text" value="' + product.quantity + '">' +
-                        '<button class="increase items-count" onclick=\'addQuantity(' + index + ', ' + product.price + ')\' id="btnIncProductQty" type="button">' +
+                        '<input class="input-text qty" style="height: 40px" id="qty_' + productUniqueId + '" maxlength="3" name="qty" title="Quantity:" type="text" value="' + product.quantity + '">' +
+                        '<button class="increase items-count" onclick=\'addQuantity("' + productUniqueId + '")\' id="btnIncProductQty" type="button">' +
                         '<i class="fa fa-chevron-up"></i>' +
                         '</button>' +
-                        '<button class="reduced items-count" onclick=\'reduceQuantity(' + index + ', ' + product.price + ')\' id="btnDecProductQty" type="button">' +
+                        '<button class="reduced items-count" onclick=\'reduceQuantity("' + productUniqueId + '")\' id="btnDecProductQty" type="button">' +
                         '<i class="fa fa-chevron-down"></i>' +
                         '</button>' +
                         '</div>' +
@@ -708,21 +924,42 @@
                         '</td>' +
 
                         '</tr>';
+
+                    index = index + 1;
                 });
 
                 productListHtml = productListHtml +
                     '</tbody>' +
                     '</table>' +
-                    '</div>' +
-                    '<tr>' +
+                    '</div>';
+
+                //  <!-- END OF PRODUCT LIST -->
+
+                //  <!-- START OF ADD PRODUCT -->
+                productListHtml = productListHtml +
+                    '<select onchange="loadPaymentType()" id="ddlModal_Product" class="form-control form-control-sm" name="ddlModal_Product">' +
+                    '<option value="">Please select</option>' +
+                    '</select>' +
+
+                    '<br />' +
+                    '<select id="ddlModal_PaymentType" class="form-control form-control-sm" name="ddlModal_PaymentType">' +
+                    '<option value="">Please select</option>' +
+                    '</select>' +
                     '<div class="modal-footer">' +
                     '<button type="button" class="btn btn-primary btn-sm" id="btnModalAddProductAction">Add Product</button>' +
-                    '</div>' +
-                    '</tr>';
+                    '</div>';
 
+                //  <!-- END OF ADD PRODUCT -->
+
+                // console.log("productListId :: " + JSON.stringify(productListId));
                 //console.log(productListHtml);
-
+                $("#productList").html("");
                 $('#productList').append(productListHtml);
+
+                initProductDropdownList('#ddlModal_Product', mtpProductList);
+                $("#btnModalAddProductAction").click(function (event) {
+                    addProduct();
+                });
             } catch (ex) {
                 console.log("loadProductList error :: " + ex);
             }
