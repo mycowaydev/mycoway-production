@@ -173,7 +173,6 @@
             try {
                 let selectedProduct = $("#ddlModal_Product").val();
 
-                //console.log("productDetails :: " + JSON.stringify(productDetails[selectedProduct].payment_type));
                 let paymentType = (productDetails[selectedProduct].payment_type + '').split(",");
 
                 $("#ddlModal_PaymentType").html("");
@@ -351,11 +350,8 @@
                     }
 
                     if (data.image_card) {
-
-                        //console.log("image_card : " + true);
                         let imgLst = (data.image_card + '').split(",");
                         for (let i = 0; i < imgLst.length; i++) {
-                            //console.log("image_card : inside");
                             var configs = {};
                             configs['downloadUrl'] = imgLst[i];
                             image_card_old.push(imgLst[i] + '');
@@ -395,12 +391,10 @@
                 showDrag: true,
             })
                 .on('filepredelete', function (event, key, jqXHR, data) {
-                    //  image_ic_old.splice(image_ic_old.indexOf(key), 1);
                     image_ic_old = [];
                 })
                 .on('change', function (event, key, jqXHR, data) {
                     image_ic_old = [];
-                    //console.log("change");
                 });
 
 
@@ -421,11 +415,9 @@
             })
                 .on('filepredelete', function (event, key, jqXHR, data) {
                     image_card_old = [];
-                    //image_card_old.splice(image_card_old.indexOf(key), 1);
                 })
                 .on('change', function (event, key, jqXHR, data) {
                     image_card_old = [];
-                    //console.log("change");
                 });;
 
             $('#fuModal_SignatureImage').fileinput('destroy');
@@ -551,12 +543,6 @@
             formData.append('addProductList', JSON.stringify(addProductList));
             formData.append('deletedProductList', JSON.stringify(deletedProductList));
 
-            // console.log("deletedProductList  :: " + JSON.stringify(deletedProductList));
-
-            // console.log("existingProductList :: " + JSON.stringify(existingProductList));
-
-            // console.log("addProductList      :: " + JSON.stringify(addProductList));
-
             formData.append('id', $("#formId").val());
             formData.append('order_date', moment($("#dtpModal_OrderDate").val()).unix());
             formData.append('status', $("#ddlModal_Status").val());
@@ -568,13 +554,11 @@
 
             // Document
             var icImage_files = document.getElementById('fuModal_IcImage').files[0];
-            //console.log("icImage_files : " + icImage_files);
             if (typeof icImage_files != 'undefined') {
                 formData.append('image_ic', icImage_files);
             }
 
             var cardImage_files = document.getElementById('fuModal_CardImage').files[0];
-            //console.log("cardImage_files : " + cardImage_files);
             if (typeof cardImage_files != 'undefined') {
                 formData.append('image_card', cardImage_files);
             }
@@ -606,10 +590,7 @@
         }
 
         function getOrderDate() {
-
             var orderDate = $("#dtpSearch_OrderDate").val().split("-");
-            //console.log(orderDate);
-
         }
 
         function successHandler(mode) {
@@ -728,23 +709,54 @@
             }
         }
 
-        function addQuantity(elementIndex) {
+        function changeQuantity(productUniqueId, operation) {
             try {
-                var result = document.getElementById('qty_' + elementIndex);
-                var qty = result.value;
+
+                console.log("operation :  " + operation);
+                var quantity = document.getElementById('qty_' + productUniqueId);
+                var qty = quantity.value;
                 if (!isNaN(qty)) {
-                    result.value++;
+                    if (operation == "add") {
+                        quantity.value++;
+                    } else if (operation == "reduce") {
+                        quantity.value--;
+                    }
+                }
+
+                let selectedProductId = '';
+                let selectedPaymentType = '';
+                let isNew;
+                for (let i = 0; i < productList.length; i++) {
+                    selectedProductId = productList[i].product_id;
+                    selectedPaymentType = productList[i].payment_type;
+                    if ((selectedProductId + "_" + selectedPaymentType) == productUniqueId) {
+                        isNew = productList[i].new;
+                        break;
+                    }
+                }
+
+                if (isNew) {
+                    for (let i = 0; i < addProductList.length; i++) {
+                        let productId = addProductList[i].product_id;
+                        let paymentType = addProductList[i].payment_type;
+                        if (selectedProductId == productId && selectedPaymentType == paymentType) {
+                            addProductList[i].quantity = quantity.value;
+                            break;
+                        }
+                    }
+                }
+                else {
+                    for (let i = 0; i < existingProductList.length; i++) {
+                        let productId = existingProductList[i].product_id;
+                        let paymentType = existingProductList[i].payment_type;
+                        if (selectedProductId == productId && selectedPaymentType == paymentType) {
+                            existingProductList[i].quantity = quantity.value;
+                            break;
+                        }
+                    }
                 }
             } catch (ex) {
                 console.log("loadProductList error :: " + ex);
-            }
-        }
-
-        function reduceQuantity(elementIndex) {
-            var result = document.getElementById('qty_' + elementIndex);
-            var qty = result.value;
-            if (!isNaN(qty) && qty > 1) {
-                result.value--;
             }
         }
 
@@ -752,10 +764,10 @@
             try {
 
                 let selectedProduct = $("#ddlModal_Product").val();
-                //console.log("selectedProduct :: " + selectedProduct);
                 let selectedPaymentType = $("#ddlModal_PaymentType").val();
                 let duplicateProduct = false;
 
+                // Check duplicate product
                 for (let i = 0; i < productList.length; i++) {
 
                     let existingProductId = productList[i].product_id;
@@ -769,11 +781,9 @@
 
                 if (!duplicateProduct) {
                     let addProductDetails = productDetails[selectedProduct];
-                    //console.log("productDetails[selectedProduct] 1 :: " + productDetails[selectedProduct].payment_type);
                     addProductDetails.payment_type = selectedPaymentType;
                     addProductDetails.new = true;
 
-                    //console.log("productDetails[selectedProduct] 2 :: " + productDetails[selectedProduct].payment_type);
                     if (selectedPaymentType == "R") {
                         addProductDetails.price = addProductDetails.price.rental_price;
                     } else if (selectedPaymentType == "P") {
@@ -781,13 +791,11 @@
                     }
                     addProductList.push(addProductDetails);
 
-                    //console.log("mtpProductList  :: " + JSON.stringify(mtpProductList));
                     loadProductList();
                 }
                 else {
                     console.log("Duplicate Product  !!!!  ");
                 }
-
 
             } catch (ex) {
                 console.log("addProduct error :: " + ex);
@@ -795,8 +803,6 @@
         }
 
         function deleteItem(elementIndex) {
-
-            //console.log("elementIndex :: " + elementIndex);
 
             let selectedProduct = productListId[elementIndex];
             let selectedPaymentType = productListPaymentType[elementIndex];
@@ -812,12 +818,7 @@
                 }
             }
 
-            //console.log("is new :: " + isNew);
-
             if (isNew) {
-                console.log("is new deleting :: ");
-
-                console.log("is new deleting 2 :: " + JSON.stringify(addProductList));
                 for (let i = 0; i < addProductList.length; i++) {
                     let existingProductId = addProductList[i].product_id;
                     let existingPaymentType = addProductList[i].payment_type;
@@ -827,8 +828,6 @@
                         break;
                     }
                 }
-
-                //console.log("is new deleting 3 :: " + JSON.stringify(addProductList));
             }
             else {
                 for (let i = 0; i < existingProductList.length; i++) {
@@ -850,8 +849,6 @@
             }
 
             $('#' + selectedProduct).remove();
-
-            //console.log("deletedProductList :: " + JSON.stringify(deletedProductList));
         }
 
         function loadProductList() {
@@ -863,10 +860,6 @@
                     productList = [];
                     productList = existingProductList.concat(addProductList);
                 }
-
-                //console.log("productList        :: " + JSON.stringify(productList));
-                // console.log("productList length :: " + JSON.stringify(productList.length));
-                //JSON.stringify(newAddedProduct);
 
                 let index = 0;
 
@@ -909,11 +902,11 @@
 
                         '<td>' +
                         '<div class="product_count">' +
-                        '<input class="input-text qty" style="height: 40px" id="qty_' + productUniqueId + '" maxlength="3" name="qty" title="Quantity:" type="text" value="' + product.quantity + '">' +
-                        '<button class="increase items-count" onclick=\'addQuantity("' + productUniqueId + '")\' id="btnIncProductQty" type="button">' +
+                        '<input class="input-text qty" style="height: 40px" id="qty_' + productUniqueId + '" onchange=\'changeQuantity("' + productUniqueId + '","")\' maxlength="3" name="qty" title="Quantity:" type="text" value="' + product.quantity + '">' +
+                        '<button class="increase items-count" onclick=\'changeQuantity("' + productUniqueId + '","add")\' id="btnIncProductQty"  type="button">' +
                         '<i class="fa fa-chevron-up"></i>' +
                         '</button>' +
-                        '<button class="reduced items-count" onclick=\'reduceQuantity("' + productUniqueId + '")\' id="btnDecProductQty" type="button">' +
+                        '<button class="reduced items-count" onclick=\'changeQuantity("' + productUniqueId + '","reduce")\' id="btnDecProductQty" type="button">' +
                         '<i class="fa fa-chevron-down"></i>' +
                         '</button>' +
                         '</div>' +
@@ -951,8 +944,6 @@
 
                 //  <!-- END OF ADD PRODUCT -->
 
-                // console.log("productListId :: " + JSON.stringify(productListId));
-                //console.log(productListHtml);
                 $("#productList").html("");
                 $('#productList').append(productListHtml);
 

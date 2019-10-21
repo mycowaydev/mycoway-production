@@ -149,10 +149,11 @@
 
                 // Assigning the attributes to created checkbox 
                 checkbox.type = "checkbox";
-                checkbox.name = "cb_" + data[row].code;
+                //checkbox.name = "ddlModal_PaymentType";
+                //checkbox.name = "cb_" + data[row].code;
                 checkbox.value = data[row].value;
                 checkbox.id = "cb_" + data[row].code;
-
+                //checkbox.className+='ks-cboxtags';
                 checkbox_list.push(data[row].code);
 
                 // creating label for checkbox 
@@ -323,8 +324,7 @@
                     if (key && product_img_list_old.indexOf(key) != -1) {
                         product_img_list_old.splice(product_img_list_old.indexOf(key), 1);
                     }
-                }
-                );
+                });
 
         }
 
@@ -379,7 +379,16 @@
                     txtModal_RentalPrice: {
                         required: true
                     },
-
+                    // ddlModal_PaymentType: {
+                    //     required: {
+                    //         depends: function (element) {
+                    //             return true;
+                    //         }
+                    //     }
+                    // },
+                    // fuModal_ProductImage: {
+                    //     required: true
+                    // },
 
                 },
                 messages: {
@@ -393,14 +402,20 @@
                         required: "Please select product type."
                     },
                     dtpModal_PublishDate: {
-                        required: "Please enter publish date."
+                        required: "Please select publish date."
                     },
                     dtpModal_UnpublishDate: {
-                        required: "Please enter unpublish date."
+                        required: "Please select unpublish date."
                     },
                     txtModal_RentalPrice: {
                         required: "Please enter rental price."
                     },
+                    // ddlModal_PaymentType: {
+                    //     required: "Please select payment type."
+                    // },
+                    // fuModal_ProductImage: {
+                    //     required: "Please select image."
+                    // },
                 }
             });
         }
@@ -633,10 +648,6 @@
             }
         }
 
-        function imgTabOnClick() {
-           initSizeChange();
-        }
-
         $(document).ready(function () {
             init();
         });
@@ -786,7 +797,7 @@
                                 <a class="nav-link" data-toggle="tab" href="#detail">Detail</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#image" onclick="imgTabOnClick();">Image</a>
+                                <a class="nav-link" data-toggle="tab" href="#image">Image</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" data-toggle="tab" href="#gallery">Gallery</a>
@@ -847,6 +858,7 @@
                                         </ul>
                                     </div>
                                 </div>
+                        
                                 <div class="form-group row">
                                     <label for="txtModal_OriginalPrice" class="col-sm-2 col-form-label col-form-label-sm">Original Price</label>
                                     <div class="col-sm-10">
