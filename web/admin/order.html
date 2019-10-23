@@ -34,7 +34,7 @@
                 method: 'POST'
             },
             mtparam: {
-                status: 'ORDER.STATUS',
+                status: 'ORDER_STATUS',
                 payment_type: 'PRODUCT_PAYMENT',
                 product_type: 'PRODUCT_TYPE'
             },
@@ -603,6 +603,11 @@
             var data = result.data;
 
             if (data) {
+
+                image_ic_old = [];
+                image_card_old = [];
+                image_signature_old = [];
+
                 $("#formId").val(data._id);
                 $("#txtModal_OrderID").val(data._id);
 
