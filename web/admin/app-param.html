@@ -142,13 +142,10 @@
                     beforeSend: function (value) {
                         $('#modalLoad').modal('show');
                     },
-                    fnInitComplete: function (settings, json) {
+                    success: function () {
                         alert('asd');
                         $('#modalLoad').modal('hide');
                     },
-                },
-                fnInitComplete: function(oSettings, json) {
-                  alert( 'DataTables has finished its initialisation.' );
                 },
                 columns: [
                     { data: '_id' },
