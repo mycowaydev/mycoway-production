@@ -142,7 +142,7 @@
                     beforeSend: function (value) {
                         $('#modalLoad').modal('show');
                     },
-                    complete: function (data) {
+                    always: function (data) {
                         alert(data);
                         $('#modalLoad').modal('hide');
                     },
