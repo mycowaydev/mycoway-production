@@ -131,7 +131,7 @@
                 serverSide: true,
                 searching: false,
                 deferLoading: 0,
-                ajax: {
+                ajax: $ajax({
                     url: app.link.getList,
                     type: app.http.method,
                     data: function (dataValue) {
@@ -142,7 +142,7 @@
                     beforeSend: function (value) {
                         $('#modalLoad').modal('show');
                     }
-                }.done(function (data) {
+                }).done(function (data) {
                     alert(data);
                     $('#modalLoad').modal('hide');
                 }),
