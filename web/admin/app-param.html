@@ -141,12 +141,11 @@
                     },
                     beforeSend: function (value) {
                         $('#modalLoad').modal('show');
-                    },
-                    always: function (data) {
-                        alert(data);
-                        $('#modalLoad').modal('hide');
-                    },
-                },
+                    }
+                }.done(function (data) {
+                    alert(data);
+                    $('#modalLoad').modal('hide');
+                }),
                 columns: [
                     { data: '_id' },
                     { data: 'key' },
