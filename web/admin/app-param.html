@@ -142,8 +142,8 @@
                     beforeSend: function (value) {
                         $('#modalLoad').modal('show');
                     }
-                }).done(function(data) {
-                    alert('done');
+                }).always(function(data) {
+                    alert('always');
                     $('#modalLoad').modal('hide');
                 }),
                 columns: [
