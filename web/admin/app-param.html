@@ -142,7 +142,8 @@
                     beforeSend: function (value) {
                         $('#modalLoad').modal('show');
                     },
-                    complete: function () {
+                    initComplete: function () {
+                        alert('asd');
                         $('#modalLoad').modal('hide');
                     },
                 },
