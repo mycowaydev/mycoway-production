@@ -143,8 +143,10 @@
                         $('#modalLoad').modal('show');
                     },
                     complete: function () {
-                        $('#modalLoad').modal('hide');
+                        //$('#modalLoad').modal('hide');
                         $('#modalLoad').hide();
+                        $('.modal-backdrop').hide();
+                        $('#modalLoad').modal('hide');
                         initSizeChange();
                     },
                 },
