@@ -95,9 +95,6 @@
             $('#modalCUWindow').on('hidden.bs.modal', function () {
                 resetAllModalInput();
             });
-            $("#modalCUWindow").on("shown.bs.modal", function (e) {
-                modalDismiss('#modalLoad');
-            })
         }
 
         function initDropdownList(target, data) {
@@ -219,8 +216,7 @@
             $('#modalTitle').text(mode + ' ' + app.name);
             $('#btnModalMainActionText').text(mode);
             disableElement(false);
-            modalDisplay('#modalCUWindow');
-            $('.modal-backdrop').show();
+            $('#modalCUWindow').modal('show');
         }
 
         function updateRecordMode() {
@@ -228,8 +224,6 @@
             $('#modalTitle').text(mode + ' ' + app.name);
             $('#btnModalMainActionText').text(mode);
             disableElement(true);
-            modalDisplay('#modalCUWindow');
-            $('.modal-backdrop').show();
         }
 
         function disableElement(disable) {
@@ -312,6 +306,7 @@
                 })
                 .finally(function () {
                     modalDismiss('#modalLoad');
+                    $('#modalCUWindow').modal('show');
                 })
         }
 
@@ -352,9 +347,9 @@
         }
 
         function modalDisplay(modal) {
+            $(modal).show();
             $('.modal-backdrop').show();
             $(modal).modal('show');
-            $(modal).show();
         }
 
         $(document).ready(function () {
