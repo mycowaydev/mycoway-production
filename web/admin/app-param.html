@@ -143,11 +143,8 @@
                         $('#modalLoad').modal('show');
                     },
                     complete: function () {
-                        alert('asd');
-                        //$('.close').click();
-                        //$('#modalLoad').modal('hide');
+                        $('#modalLoad').modal('hide');
                         $('#modalLoad').hide();
-                        $('.modal-backdrop').hide();
                         initSizeChange();
                     },
                 },
@@ -513,6 +510,7 @@
             </div>
         </div>
     </div>
+    <button type="button" class="btn btn-warning btn-lg shiny" data-dismiss="modal" aria-hidden="true">Cancel</button>
     <!-- LOADING END -->
     <!-- LOADING END -->
     <!-- LOADING END -->
