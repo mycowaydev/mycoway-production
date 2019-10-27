@@ -167,10 +167,14 @@
                 ],
                 order: [[1, 'desc']],
                 drawCallback: function (settings) {
-                    $('#modalLoad').modal('hide');
+                    dismissWindow();
                     initSizeChange();
                 }
             });
+        }
+
+        function dismissWindow() {
+            $('#modalLoad').modal('hide');
         }
 
         function initDataTableBehavior() {
