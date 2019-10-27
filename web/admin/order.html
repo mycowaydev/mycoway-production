@@ -63,7 +63,6 @@
 
         var existingProductList = [];
 
-
         var productDetails = {};
         var addProductList = [];
 
@@ -259,10 +258,11 @@
                         dataValue.order_date_to = $("#dtpSearch_OrderDate_To").val();
                     },
                     beforeSend: function (value) {
-                        $('#modalLoad').modal('show');
+                        modalDisplay('#modalLoad');
                     },
                     complete: function () {
-                        $('#modalLoad').modal('hide'); initSizeChange();
+                        modalDismiss('#modalLoad');
+                        initSizeChange();
                     },
                 },
                 columns: [
@@ -495,7 +495,6 @@
             document.getElementById("txtModal_OrderID_label").style.display = 'block';
             document.getElementById("txtModal_OrderID").style.display = 'block';
             disableElement(true);
-            $('#modalCUWindow').modal('show')
         }
 
         function disableElement(disable) {
@@ -650,7 +649,7 @@
         }
 
         function getDetailById(id) {
-            $('#modalLoad').modal('show');
+            modalDisplay('#modalLoad');
             var formData = new FormData();
             formData.append('id', id);
 
@@ -680,13 +679,14 @@
                     notify_server_err();
                 })
                 .finally(function () {
-                    $('#modalLoad').modal('hide');
+                    modalDismiss('#modalLoad');
+                    $('#modalCUWindow').modal('show');
                 });
         }
 
         function actionModifyData() {
             if ($("#modalForm").valid()) {
-                //$('#modalLoad').modal('show');
+                modalDisplay('#modalLoad');
 
                 var mode = $('#btnModalMainActionText').text();
                 var path = (mode === app.action.update ? app.link.update : app.link.insert);
@@ -709,9 +709,21 @@
                         notify_server_err();
                     })
                     .finally(function () {
-                        $('#modalLoad').modal('hide');
+                        modalDismiss('#modalLoad');
                     });
             }
+        }
+
+        function modalDismiss(modal) {
+            $(modal).hide();
+            $('.modal-backdrop').hide();
+            $(modal).modal('hide');
+        }
+
+        function modalDisplay(modal) {
+            $(modal).show();
+            $('.modal-backdrop').show();
+            $(modal).modal('show');
         }
 
         function changeQuantity(productUniqueId, operation) {

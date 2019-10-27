@@ -101,9 +101,6 @@
             $('#modalCUWindow').on('hidden.bs.modal', function () {
                 resetAllModalInput();
             });
-            $("#modalCUWindow").on("shown.bs.modal", function (e) {
-                $('#modalLoad').modal('hide');
-            })
         }
 
         function initDropdownList(target, data, link) {
@@ -171,10 +168,10 @@
                         dataValue.status = $("#ddlSearch_Status").val();
                     },
                     beforeSend: function (admin_username) {
-                        $('#modalLoad').modal('show');
+                        modalDisplay('#modalLoad');
                     },
                     complete: function () {
-                        $('#modalLoad').modal('hide');
+                        modalDismiss('#modalLoad');
                         initSizeChange();
                     },
                 },
@@ -271,7 +268,6 @@
             $('#modalTitle').text(mode + ' ' + app.name);
             $('#btnModalMainActionText').text(mode);
             disableElement(true);
-            $('#modalCUWindow').modal('show');
         }
 
         function disableElement(disable) {
@@ -333,7 +329,7 @@
         }
 
         function getDetailById(id) {
-            $('#modalLoad').modal('show');
+            modalDisplay('#modalLoad');
             var formData = new FormData();
             formData.append('id', id);
 
@@ -355,13 +351,14 @@
                     notify_server_err();
                 })
                 .finally(function () {
-                    $('#modalLoad').modal('hide');
+                    modalDismiss('#modalLoad');
+                    $('#modalCUWindow').modal('show');
                 })
         }
 
         function actionModifyData() {
             if ($("#modalForm").valid()) {
-                $('#modalLoad').modal('show');
+                modalDisplay('#modalLoad');
 
                 var mode = $('#btnModalMainActionText').text();
                 var path = (mode === app.action.update ? app.link.update : app.link.insert);
@@ -384,9 +381,21 @@
                         notify_server_err();
                     })
                     .finally(function () {
-                        $('#modalLoad').modal('hide');
+                        modalDismiss('#modalLoad');
                     });
             }
+        }
+
+        function modalDismiss(modal) {
+            $(modal).hide();
+            $('.modal-backdrop').hide();
+            $(modal).modal('hide');
+        }
+
+        function modalDisplay(modal) {
+            $(modal).show();
+            $('.modal-backdrop').show();
+            $(modal).modal('show');
         }
 
         $(document).ready(function () {

@@ -31,7 +31,6 @@
     <script src="../vendors/bootstrap-fileinput-master/themes/fa/theme.js"></script>
     <script src="../build/js/custom.js"></script>
 
-
     <script>
         var app = {
             name: "Product",
@@ -207,10 +206,11 @@
                         dataValue.unpublish_date = $("#dtpSearch_UnpublishDate").val();
                     },
                     beforeSend: function (value) {
-                        $('#modalLoad').modal('show');
+                        modalDisplay('#modalLoad');
                     },
                     complete: function () {
-                        $('#modalLoad').modal('hide'); initSizeChange();
+                        modalDismiss('#modalLoad');
+                        initSizeChange();
                     },
                 },
                 columns: [
@@ -434,11 +434,9 @@
             var mode = app.action.update;
             $('#modalTitle').text(mode + ' ' + app.name);
             $('#btnModalMainActionText').text(mode);
-            //$('#txtModal_ProductID_div').style.visibility = 'visible';
             document.getElementById("txtModal_ProductID_label").style.display = 'block';
             document.getElementById("txtModal_ProductID").style.display = 'block';
             disableElement(true);
-            $('#modalCUWindow').modal('show')
         }
         function disableElement(disable) {
             $("#txtModal_ProductID").prop("disabled", true);
@@ -594,7 +592,7 @@
         }
 
         function getDetailById(id) {
-            $('#modalLoad').modal('show');
+            modalDisplay('#modalLoad');
             var formData = new FormData();
             formData.append('id', id);
 
@@ -616,13 +614,14 @@
                     notify_server_err();
                 })
                 .finally(function () {
-                    $('#modalLoad').modal('hide');
+                    modalDismiss('#modalLoad');
+                    $('#modalCUWindow').modal('show');
                 });
         }
 
         function actionModifyData() {
             if ($("#modalForm").valid()) {
-                $('#modalLoad').modal('show');
+                modalDisplay('#modalLoad');
                 var mode = $('#btnModalMainActionText').text();
                 var path = (mode === app.action.update ? app.link.update : app.link.insert);
                 fetch(path, { method: app.http.method, body: getModalFormData() })
@@ -643,9 +642,21 @@
                         notify_server_err();
                     })
                     .finally(function () {
-                        $('#modalLoad').modal('hide');
+                        modalDismiss('#modalLoad');
                     });
             }
+        }
+
+        function modalDismiss(modal) {
+            $(modal).hide();
+            $('.modal-backdrop').hide();
+            $(modal).modal('hide');
+        }
+
+        function modalDisplay(modal) {
+            $(modal).show();
+            $('.modal-backdrop').show();
+            $(modal).modal('show');
         }
 
         $(document).ready(function () {
@@ -858,7 +869,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                        
+
                                 <div class="form-group row">
                                     <label for="txtModal_OriginalPrice" class="col-sm-2 col-form-label col-form-label-sm">Original Price</label>
                                     <div class="col-sm-10">

@@ -146,10 +146,11 @@
                         dataValue.status = $("#ddlSearch_Status").val();
                     },
                     beforeSend: function (value) {
-                        $('#modalLoad').modal('show');
+                        modalDisplay('#modalLoad');
                     },
                     complete: function () {
-                        $('#modalLoad').modal('hide'); initSizeChange();
+                        modalDismiss('#modalLoad');
+                        initSizeChange();
                     },
                 },
                 columns: [
@@ -240,7 +241,6 @@
             $('#modalTitle').text(mode + ' ' + app.name);
             $('#btnModalMainActionText').text(mode);
             disableElement(true);
-            $('#modalCUWindow').modal('show')
         }
 
         function disableElement(disable) {
@@ -304,7 +304,7 @@
         }
 
         function getDetailById(id) {
-            $('#modalLoad').modal('show');
+            modalDisplay('#modalLoad');
             var formData = new FormData();
             formData.append('id', id);
 
@@ -326,13 +326,14 @@
                     notify_server_err();
                 })
                 .finally(function () {
-                    $('#modalLoad').modal('hide');
+                    modalDismiss('#modalLoad');
+                    $('#modalCUWindow').modal('show');
                 });
         }
 
         function actionModifyData() {
             if ($("#modalForm").valid()) {
-                $('#modalLoad').modal('show');
+                modalDisplay('#modalLoad');
 
                 var mode = $('#btnModalMainActionText').text();
                 var path = (mode === app.action.update ? app.link.update : app.link.insert);
@@ -355,9 +356,21 @@
                         notify_server_err();
                     })
                     .finally(function () {
-                        $('#modalLoad').modal('hide');
+                        modalDismiss('#modalLoad');
                     });
             }
+        }
+
+        function modalDismiss(modal) {
+            $(modal).hide();
+            $('.modal-backdrop').hide();
+            $(modal).modal('hide');
+        }
+
+        function modalDisplay(modal) {
+            $(modal).show();
+            $('.modal-backdrop').show();
+            $(modal).modal('show');
         }
 
         $(document).ready(function () {
@@ -372,26 +385,25 @@
             <!-- ACCORDION START -->
             <div class="accordion" id="accordion">
                 <div class="panel border">
-                    <a class="panel-heading" role="tab" id="headerPanel" data-toggle="collapse" data-parent="#accordion"
-                        href="#collapsePanel" aria-expanded="false" aria-controls="collapsePanel">
-                        <h4 id="app_title" class="panel-title"><span class="glyphicon glyphicon-chevron-down"
-                                aria-hidden="false"></span></h4>
+                    <a class="panel-heading" role="tab" id="headerPanel" data-toggle="collapse" data-parent="#accordion" href="#collapsePanel"
+                        aria-expanded="false" aria-controls="collapsePanel">
+                        <h4 id="app_title" class="panel-title">
+                            <span class="glyphicon glyphicon-chevron-down" aria-hidden="false"></span>
+                        </h4>
                     </a>
                     <div id="collapsePanel" class="panel-collapse show m-3" role="">
                         <div class="panel-body">
                             <form id="searchForm">
                                 <div class="form-group row">
-                                    <label for="ddlSearch_Status"
-                                        class="col-sm-2 col-form-label col-form-label-sm">Status</label>
+                                    <label for="ddlSearch_Status" class="col-sm-2 col-form-label col-form-label-sm">Status</label>
                                     <div class="col-sm-10">
-                                        <select id="ddlSearch_Status" class="form-control form-control-sm"
-                                            name="normal">
+                                        <select id="ddlSearch_Status" class="form-control form-control-sm" name="normal">
                                             <option value="">Please select</option>
-                                        </select> </div>
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="ddlSearch_Rate"
-                                        class="col-sm-2 col-form-label col-form-label-sm">Rate</label>
+                                    <label for="ddlSearch_Rate" class="col-sm-2 col-form-label col-form-label-sm">Rate</label>
                                     <div class="col-sm-10">
                                         <select id="ddlSearch_Rate" class="form-control form-control-sm" name="normal">
                                             <option value="">Please select</option>
@@ -400,10 +412,8 @@
                                 </div>
                             </form>
                             <div class="text-right">
-                                <button id="btnMainReset" class="btn btn-secondary btn-sm"
-                                    id="btnMainReset">Reset</button>
-                                <button id="btnMainSearch" class="btn btn-success btn-sm"
-                                    id="btnMainSearch">Search</button>
+                                <button id="btnMainReset" class="btn btn-secondary btn-sm" id="btnMainReset">Reset</button>
+                                <button id="btnMainSearch" class="btn btn-success btn-sm" id="btnMainSearch">Search</button>
                             </div>
                         </div>
                     </div>
@@ -444,12 +454,14 @@
     <!-- PROMPT MODAL START -->
     <!-- PROMPT MODAL START -->
     <!-- PROMPT MODAL START -->
-    <div class="modal fade bd-example-modal-lg" id="modalCUWindow" tabindex="-1" role="dialog"
-        aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal fade bd-example-modal-lg" id="modalCUWindow" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel"><span id="modalTitle"></span></h5>
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        <span id="modalTitle"></span>
+                    </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -460,16 +472,13 @@
                         <div class="form-group row">
                             <label for="txtModal_Name" class="col-sm-2 col-form-label col-form-label-sm">Name</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control form-control-sm" id="txtModal_Name"
-                                    name="txtModal_Name" placeholder="Name">
+                                <input type="text" class="form-control form-control-sm" id="txtModal_Name" name="txtModal_Name" placeholder="Name">
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="ddlModal_Status"
-                                class="col-sm-2 col-form-label col-form-label-sm">Status</label>
+                            <label for="ddlModal_Status" class="col-sm-2 col-form-label col-form-label-sm">Status</label>
                             <div class="col-sm-10">
-                                <select id="ddlModal_Status" class="form-control form-control-sm"
-                                    name="ddlModal_Status">
+                                <select id="ddlModal_Status" class="form-control form-control-sm" name="ddlModal_Status">
                                     <option value="">Please select</option>
                                 </select>
                             </div>
@@ -477,8 +486,7 @@
                         <div class="form-group row">
                             <label for="txtModal_Email" class="col-sm-2 col-form-label col-form-label-sm">Email</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control form-control-sm" id="txtModal_Email"
-                                    name="txtModal_Email" placeholder="Email">
+                                <input type="text" class="form-control form-control-sm" id="txtModal_Email" name="txtModal_Email" placeholder="Email">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -490,19 +498,16 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="taModal_Description"
-                                class="col-sm-2 col-form-label col-form-label-sm">Description</label>
+                            <label for="taModal_Description" class="col-sm-2 col-form-label col-form-label-sm">Description</label>
                             <div class="col-sm-10">
-                                <textarea class="form-control form-control-sm" rows="5" id="taModal_Description"
-                                    name="taModal_Description" placeholder="Description"></textarea>
+                                <textarea class="form-control form-control-sm" rows="5" id="taModal_Description" name="taModal_Description" placeholder="Description"></textarea>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="taModal_Remarks" class="col-sm-2 col-form-label col-form-label-sm">Remarks
-                                (FOUO)</label>
+                            <label for="taModal_Remarks" class="col-sm-2 col-form-label col-form-label-sm">Remarks (FOUO)
+                            </label>
                             <div class="col-sm-10">
-                                <textarea class="form-control form-control-sm" rows="5" id="taModal_Remarks"
-                                    name="taModal_Remarks" placeholder="Remarks"></textarea>
+                                <textarea class="form-control form-control-sm" rows="5" id="taModal_Remarks" name="taModal_Remarks" placeholder="Remarks"></textarea>
                             </div>
                         </div>
                     </form>
