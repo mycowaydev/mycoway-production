@@ -96,7 +96,7 @@
                 resetAllModalInput();
             });
             $("#modalCUWindow").on("shown.bs.modal", function (e) {
-                loadModalDismiss();
+                modalDismiss('#modalLoad');
             })
         }
 
@@ -140,10 +140,10 @@
                         dataValue.status = $("#ddlSearch_Status").val();
                     },
                     beforeSend: function (value) {
-                        loadModalDisplay();
+                        modalDisplay('#modalLoad');
                     },
                     complete: function () {
-                        loadModalDismiss();
+                        modalDismiss('#modalLoad');
                         initSizeChange();
                     },
                 },
@@ -219,7 +219,8 @@
             $('#modalTitle').text(mode + ' ' + app.name);
             $('#btnModalMainActionText').text(mode);
             disableElement(false);
-            $('#modalCUWindow').modal('show');
+            modalDisplay('#modalCUWindow');
+            $('.modal-backdrop').show();
         }
 
         function updateRecordMode() {
@@ -227,7 +228,8 @@
             $('#modalTitle').text(mode + ' ' + app.name);
             $('#btnModalMainActionText').text(mode);
             disableElement(true);
-            $('#modalCUWindow').modal('show');
+            modalDisplay('#modalCUWindow');
+            $('.modal-backdrop').show();
         }
 
         function disableElement(disable) {
@@ -287,7 +289,7 @@
         }
 
         function getDetailById(id) {
-            $('#modalLoad').modal('show');
+            modalDisplay('#modalLoad');
             var formData = new FormData();
             formData.append('id', id);
 
@@ -309,13 +311,13 @@
                     notify_server_err();
                 })
                 .finally(function () {
-                    loadModalDismiss();
+                    modalDismiss('#modalLoad');
                 })
         }
 
         function actionModifyData() {
             if ($("#modalForm").valid()) {
-                $('#modalLoad').modal('show');
+                modalDisplay('#modalLoad');
 
                 var mode = $('#btnModalMainActionText').text();
                 var path = (mode === app.action.update ? app.link.update : app.link.insert);
@@ -338,21 +340,21 @@
                         notify_server_err();
                     })
                     .finally(function () {
-                        loadModalDismiss();
+                        modalDismiss('#modalLoad');
                     });
             }
         }
 
-        function loadModalDismiss() {
-            $('#modalLoad').hide();
+        function modalDismiss(modal) {
+            $(modal).hide();
             $('.modal-backdrop').hide();
-            $('#modalLoad').modal('hide');
+            $(modal).modal('hide');
         }
 
-        function loadModalDisplay() {
-            $('#modalLoad').show();
+        function modalDisplay(modal) {
             $('.modal-backdrop').show();
-            $('#modalLoad').modal('show');
+            $(modal).modal('show');
+            $(modal).show();
         }
 
         $(document).ready(function () {
