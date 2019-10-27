@@ -66,6 +66,7 @@
         function initSizeChange() {
             height = $('#main_panel').height();
             window.parent.postMessage({ "height": height }, "*");
+                    $('#modalLoad').modal('hide');
         }
 
         function initButton() {
@@ -167,7 +168,6 @@
                 ],
                 order: [[1, 'desc']],
                 drawCallback: function (settings) {
-                    $('#modalLoad').modal('hide');
                     initSizeChange();
                 }
             });
