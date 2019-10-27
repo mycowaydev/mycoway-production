@@ -140,8 +140,9 @@
                         dataValue.status = $("#ddlSearch_Status").val();
                     },
                     beforeSend: function (value) {
-                        $('#modalLoad').show();
                         $('#modalLoad').modal('show');
+                        $('#modalLoad').show();
+                        $('.modal-backdrop').show();
                     },
                     complete: function () {
                         //$('#modalLoad').modal('hide');
