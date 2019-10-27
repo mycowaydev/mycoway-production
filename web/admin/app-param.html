@@ -96,7 +96,7 @@
                 resetAllModalInput();
             });
             $("#modalCUWindow").on("shown.bs.modal", function (e) {
-                $('#modalLoad').modal('hide');
+                loadModalDismiss();
             })
         }
 
@@ -140,15 +140,10 @@
                         dataValue.status = $("#ddlSearch_Status").val();
                     },
                     beforeSend: function (value) {
-                        $('#modalLoad').modal('show');
-                        $('#modalLoad').show();
-                        $('.modal-backdrop').show();
+                        loadModalDisplay();
                     },
                     complete: function () {
-                        //$('#modalLoad').modal('hide');
-                        $('#modalLoad').hide();
-                        $('.modal-backdrop').hide();
-                        $('#modalLoad').modal('hide');
+                        loadModalDismiss();
                         initSizeChange();
                     },
                 },
@@ -314,7 +309,7 @@
                     notify_server_err();
                 })
                 .finally(function () {
-                    $('#modalLoad').modal('hide');
+                    loadModalDismiss();
                 })
         }
 
@@ -343,9 +338,21 @@
                         notify_server_err();
                     })
                     .finally(function () {
-                        $('#modalLoad').modal('hide');
+                        loadModalDismiss();
                     });
             }
+        }
+
+        function loadModalDismiss() {
+            $('#modalLoad').hide();
+            $('.modal-backdrop').hide();
+            $('#modalLoad').modal('hide');
+        }
+
+        function loadModalDisplay() {
+            $('#modalLoad').show();
+            $('.modal-backdrop').show();
+            $('#modalLoad').modal('show');
         }
 
         $(document).ready(function () {
