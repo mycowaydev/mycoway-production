@@ -144,7 +144,10 @@
                     },
                     complete: function () {
                         alert('asd');
-                        $('#modalLoad').modal('hide');
+                        //$('.close').click();
+                        //$('#modalLoad').modal('hide');
+                        $('#modalLoad').hide();
+                        $('.modal-backdrop').hide();
                         initSizeChange();
                     },
                 },
