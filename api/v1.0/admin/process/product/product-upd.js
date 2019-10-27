@@ -36,7 +36,7 @@ function getParam(req) {
 	data.unpublish_date = req.body['unpublish_date'];
 
 	// Image
-	data.product_img_list_old = req.body['product_img_list_old'];
+	data.product_img_list_old = JSON.parse(req.body['product_img_list_old']);
 	data.image = req.body['image'];
 
 	// Gallery
@@ -179,8 +179,14 @@ function updateProduct(req, res, error, data) {
 
 				let uploadCount = 0;
 				let all_image_list = [];
+				let existing_image_list = [];
+
+				for (let i = 0; i < data.product_img_list_old.length; i++) {
+					existing_image_list[i] = data.product_img_list_old[i];
+				}
 
 				if (config.isEmpty(data.image)) {
+					data.image = existing_image_list;
 					return callback(null);
 				}
 
@@ -191,6 +197,9 @@ function updateProduct(req, res, error, data) {
 
 						if (uploadCount == data.image.length) {
 							data.image = all_image_list;
+							if (existing_image_list) {
+								data.image = data.image.concat(existing_image_list);
+							}
 							return callback(null);
 						}
 					});
@@ -198,7 +207,6 @@ function updateProduct(req, res, error, data) {
 
 			},
 			function (callback) {
-				data.image = old_image_list.concat(data.image);
 				let query = getQuery(data);
 				let set = { $set: getReplacement(data) };
 

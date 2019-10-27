@@ -503,7 +503,7 @@
             formData.append('unpublish_date', moment($("#dtpModal_UnpublishDate").val()).unix());
 
             // Image
-            formData.append('product_img_list_old', product_img_list_old);
+            formData.append('product_img_list_old', JSON.stringify(product_img_list_old));
             var files = document.getElementById('fuModal_ProductImage').files;
             if (typeof files != 'undefined') {
                 let fileLength = files.length;
