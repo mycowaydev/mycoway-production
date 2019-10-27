@@ -15,6 +15,7 @@
     <script src="../vendors/moment/min/moment.min.js"></script>
     <script src="../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
     <script src="../vendors/datatables.net/js/jquery.dataTables.js"></script>
+    <script src="../vendors/datatables.net/js/jquery.dataTables.min.js"></script>
     <script src="../vendors/jquery/dist/jquery.validate.min.js"></script>
     <script src="../vendors/pnotify/dist/pnotify.js"></script>
     <script src="../vendors/pnotify/dist/pnotify.buttons.js"></script>
@@ -142,12 +143,6 @@
                     beforeSend: function (value) {
                         $('#modalLoad').modal('show');
                     },
-                    complete: function (data) {
-                        $('#modalLoad').modal('hide');
-                        $('#modalLoad').modal('hide');
-                        $('#modalLoad').modal('hide');
-                        initSizeChange();
-                    },
                 },
                 columns: [
                     { data: '_id' },
@@ -170,7 +165,11 @@
                         }
                     },
                 ],
-                order: [[1, 'desc']]
+                order: [[1, 'desc']],
+                drawCallback: function (settings) {
+                    $('#modalLoad').modal('hide');
+                    initSizeChange();
+                }
             });
         }
 
