@@ -14,6 +14,7 @@ const errorCodes = require('./api/' + version + '/lang/error-codes.json');
 
 const Log = require('./api/' + version + '/model/log');
 const HashIds = require('hashids');
+const mongo = require('mongodb');
 
 module.exports = Object.freeze({
 	GLOBAL: {
@@ -514,6 +515,9 @@ module.exports = Object.freeze({
 				if (data[key]) {
 					let filter = {};
 					filter[key] = {};
+					if (key == '_id') {
+						filter[key] = new mongo.ObjectID(data[key]);
+					}
 					filter[key]['$regex'] = data[key];
 					filter[key]['$options'] = '$i';
 					filters['$and'].push(filter);
