@@ -140,6 +140,7 @@
                         dataValue.status = $("#ddlSearch_Status").val();
                     },
                     beforeSend: function (value) {
+                        $('#modalLoad').show();
                         $('#modalLoad').modal('show');
                     },
                     complete: function () {
@@ -512,7 +513,6 @@
             </div>
         </div>
     </div>
-    <button type="button" class="btn btn-warning btn-lg shiny" data-dismiss="modal" aria-hidden="true">Cancel</button>
     <!-- LOADING END -->
     <!-- LOADING END -->
     <!-- LOADING END -->
