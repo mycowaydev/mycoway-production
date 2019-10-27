@@ -15,7 +15,6 @@
     <script src="../vendors/moment/min/moment.min.js"></script>
     <script src="../vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
     <script src="../vendors/datatables.net/js/jquery.dataTables.js"></script>
-    <script src="../vendors/datatables.net/js/jquery.dataTables.min.js"></script>
     <script src="../vendors/jquery/dist/jquery.validate.min.js"></script>
     <script src="../vendors/pnotify/dist/pnotify.js"></script>
     <script src="../vendors/pnotify/dist/pnotify.buttons.js"></script>
@@ -52,11 +51,11 @@
         function init() {
             initApp();
             initButton();
+            initModal();
             initDataTable();
             initDataTableBehavior();
             initValidateInput();
             initSizeChange();
-            initModal();
         }
 
         function initApp() {
@@ -143,6 +142,10 @@
                     beforeSend: function (value) {
                         $('#modalLoad').modal('show');
                     },
+                    complete: function () {
+                        $('#modalLoad').modal('hide');
+                        initSizeChange();
+                    },
                 },
                 columns: [
                     { data: '_id' },
@@ -165,16 +168,8 @@
                         }
                     },
                 ],
-                order: [[1, 'desc']],
-                drawCallback: function (settings) {
-                    dismissWindow();
-                    initSizeChange();
-                }
+                order: [[1, 'desc']]
             });
-        }
-
-        function dismissWindow() {
-            $('#modalLoad').modal('hide');
         }
 
         function initDataTableBehavior() {
