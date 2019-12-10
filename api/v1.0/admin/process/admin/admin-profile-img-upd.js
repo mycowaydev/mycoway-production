@@ -80,7 +80,7 @@ function adminUpdateProfileImg(req, res, error, data) {
 					cloudinary.v2.uploader.upload(tmpPath, { public_id: config.GLOBAL['APP_NAME'].toLowerCase() + '/profile-img/' + filename }, function (err, result) {
 						if (err) {
 							error.push(config.getErrorResponse('101Z012', req));
-							let resp = config.getResponse(res, 500, error, {}, err);
+							let resp = config.getResponse(res, 502, error, {}, err);
 							config.logApiCall(req, res, resp);
 							return callback(true);
 						}
@@ -99,7 +99,7 @@ function adminUpdateProfileImg(req, res, error, data) {
 				Admin.findOneAndUpdate(query, set, options, function (err, result) {
 					if (err) {
 						error.push(config.getErrorResponse('101Z012', req));
-						let resp = config.getResponse(res, 500, error, {}, err);
+						let resp = config.getResponse(res, 501, error, {}, err);
 						config.logApiCall(req, res, resp);
 						return callback(true);
 					}
