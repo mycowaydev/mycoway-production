@@ -102,8 +102,8 @@ function loadProductDetail(productList) {
         $('#txtProductName').text(product.name)
         $('#description').append(product.desc)
 
-        if (product.price.originalPrice)
-            addPriceInfo('string_original_price', product.price.originalPrice, true)
+        if (product.price.original_price)
+            addPriceInfo('string_original_price', product.price.original_price, true)
         if (product.price.retail_price)
             addPriceInfo('string_retail_price', product.price.retail_price, false)
         if (product.price.rental_price)
