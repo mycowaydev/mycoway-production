@@ -110,7 +110,7 @@ function getReplacement(data) {
 		'price': price,
 		'payment_type': data.payment_type.split(","),
 		'image': data.image,
-		'gallery': data.gallery,
+		'gallery': data.gallery.split(","),
 		'desc': data.desc,
 		'publish_date': data.publish_date,
 		'unpublish_date': data.unpublish_date,
