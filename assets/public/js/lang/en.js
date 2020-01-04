@@ -32,7 +32,7 @@ var language_en = {
     string_phone_number: "Phone Number",
     string_email: "Email",
     string_gallery_image: "Product image",
-    string_gallery_video: "Product video",
+    string_gallery_video: "Video",
     string_cart_list: "Cart List",
     string_product: "Product",
     string_product_detail: "Product Detail",

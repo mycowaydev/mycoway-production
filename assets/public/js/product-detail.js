@@ -123,7 +123,7 @@ function loadProductDetail(productList) {
                 var video_thumbnail = 'https://img.youtube.com/vi/' + youtubeVideoId[1] + '/0.jpg';
                 $('#galleryVideo').append('<a href="' + gallery + '" data-toggle="lightbox" data-gallery="productGalleryVideo" class="col-sm-3"><img class="img-fluid" src="' + video_thumbnail + '" /></a>');
             } else {
-                $('#galleryImage').append('<a href="' + gallery + '" data-toggle="lightbox" data-gallery="productGalleryImage" class="col-sm-3"><img class="img-fluid" src="' + gallery + '" /></a>');
+                //$('#galleryImage').append('<a href="' + gallery + '" data-toggle="lightbox" data-gallery="productGalleryImage" class="col-sm-3"><img class="img-fluid" src="' + gallery + '" /></a>');
             }
         });
         productDetail = product;
