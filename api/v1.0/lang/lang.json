@@ -11,11 +11,27 @@
 		"error_value_empty": "Please enter value.",
 		"error_order_no_empty": "Please enter order no.",
 		"error_active_empty": "Please enter active.",
+		
+		
+		"error_admin_user_id_empty": "Please enter admin user id.",
+		"error_admin_username_empty": "Please enter admin username.",
+		"error_old_password_empty": "Please enter old password.",
+		"error_password_empty": "Please enter password.",
+		"error_password_confirmation_empty": "Please enter password confirmation.",
+		"error_password_not_match_with_password_confirmation": "Password not match with password confirmation.",
+		"error_password_cannot_same_with_old_password": "Password cannot be same with old password.",
+		"error_status_empty": "Please enter status.",
+		
 		"error_id_empty": "Missing ID.",
 		"error_admin_login_user_id_empty": "Please enter user ID.",
 		"error_admin_login_password_empty": "Please enter password.",
 		"error_admin_login_user_id_password_invalid": "Invalid user ID / password.",
 		"error_admin_login_acc_blocked": "Your account has been blocked due to too many invalid attempts. Please contact support for help.",
+		"error_admin_old_password_invalid": "Invalid admin old password.",
+		"error_admin_password_confirmation_not_match": "Password not match with password confirmation.",
+		"error_admin_hash_password_db_empty": "Admin hash password is empty, Please contact system administrator.",
+		"error_admin_salt_db_empty": "Admin salt is empty, Please contact system administrator.",
+		
 		"error_session_expired": "Session expired.",
 		"error_bad_request": "Bad request.",
 		"error_signature_empty": "Signature missing.",
@@ -29,6 +45,7 @@
 		"error_page_not_found": "Page not found.",
 		"error_server_error": "Server error.",
 		"error_unknown_error": "Unknown error.",
+		
 		"error_review_name_empty": "Missing review name.",
 		"error_review_status_empty": "Missing review status.",
 		"error_review_rate_empty": "Missing review rate.",
@@ -36,6 +53,23 @@
 		"error_service_status_empty": "Missing service status",
 		"error_service_value_empty": "Missing service value",
 		"error_service_unit_empty": "Missing service unit",
-		"error_service_repeat_empty": "Missing service repeat"
+		"error_service_repeat_empty": "Missing service repeat",
+		
+		"error_order_email_empty": "Missing order email",
+		"error_order_status_empty": "Missing order status",
+		"error_order_ic_image_empty": "Missing order ic image",
+		"error_order_card_image_empty": "Missing order card image",
+		"error_order_signature_image_empty": "Missing order signature image",
+
+		"error_product_name_empty": "Missing product name",
+		"error_product_status_empty": "Missing product status",
+		"error_product_type_empty": "Missing product type",
+		"error_product_publish_date_empty": "Missing product publish date",
+		"error_product_unpublish_date_empty": "Missing product unpublish date",
+		"error_product_image_empty": "Missing product image",
+		"error_product_payment_type_empty": "Missing product payment type",
+		"error_product_rental_price_empty": "Missing product rental price"
+		
+		
 	}
 }
