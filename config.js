@@ -70,7 +70,11 @@ module.exports = Object.freeze({
 		let value;
 		let code;
 		if (req && req.headers) {
-			code = req.headers['accept-language'];
+			let acceptLang = req.headers['accept-language'];
+			code = acceptLang;
+			if(acceptLang.indexOf('en') != -1){
+				code = 'en';
+			}
 		}
 		let list = lang[code ? code : 'en'];
 		if (list) {

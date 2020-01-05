@@ -642,7 +642,7 @@
 
         function errorMessageHandler(result) {
             if (result.error && result.error.length > 0) {
-                notify_err(errors[0].message);
+                notify_err(result.error[0].message);
             } else {
                 notify_server_err();
             }
