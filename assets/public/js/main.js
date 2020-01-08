@@ -58,7 +58,7 @@ function getFormattedNumber(num, slider) {
 
 function getDateFormattedString(epouch) {
     var convertedDate = new Date(epouch * 1000);
-    return convertedDate.getFullYear() + "/" + getFormattedNumber(convertedDate.getMonth(), -2) + "/" + getFormattedNumber(convertedDate.getDate(), -2)
+    return convertedDate.getFullYear() + "/" + getFormattedNumber(convertedDate.getMonth()+1, -2) + "/" + getFormattedNumber(convertedDate.getDate(), -2)
         + " " + getFormattedNumber(convertedDate.getHours(), -2) + ":" + getFormattedNumber(convertedDate.getMinutes(), -2);
 }
 
