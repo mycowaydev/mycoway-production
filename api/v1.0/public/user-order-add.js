@@ -71,9 +71,6 @@ function validateParam(req, data) {
     if (config.isEmpty(data.image_card)) {
         error.push(config.getErrorResponse('101A008 image_card', req));
     }
-    if (config.isEmpty(data.image_signature)) {
-        error.push(config.getErrorResponse('101A008 image_signature', req));
-    }
     if (config.isEmpty(data.phone_no)) {
         error.push(config.getErrorResponse('101A008 phone_no', req));
     }

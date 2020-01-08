@@ -203,9 +203,6 @@ function getModalFormData() {
     var file_card = $('#file_card')[0].files[0];
     formData.set('image_card', file_card, file_card.name);
 
-    var file_sig = $('#file_sig')[0].files[0];
-    formData.set('image_signature', file_sig, file_sig.name);
-
     var cart_list = JSON.parse(sessionStorage.cart);
     $.each( cart_list , function( index, order_item ){
         setProductOrder(formData, 'order_product[' + index + '][product_id]', order_item.product_id);
