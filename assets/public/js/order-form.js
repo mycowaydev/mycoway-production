@@ -44,7 +44,7 @@ var voucherList = (function() {
         'url': "res/voucher.json",
         'dataType': "json",
         'success': function (data) {
-            json = data;
+            json = data.toString().trim().toLowerCase();
         }
     });
     return json;
@@ -59,7 +59,7 @@ $("#checkout-total").text('RM ' + (subtotal_amount+charges_amount))
 
 $('#voucher-apply').click(function() {
     event.preventDefault();
-    if (voucherList.indexOf($("#voucher-code").val()) >= 0){
+    if (voucherList.indexOf($("#voucher-code").val().trim().toLowerCase()) >= 0){
         $("#voucher-remark").css("display", "none")
         $("#voucher-code").prop("disabled",true)
         $("#voucher-apply").prop("disabled",true)
