@@ -125,7 +125,7 @@ var language_cn = {
     string_cart_is_empty: "购物车是空的",
     validation_require_field: "必須填寫",
     validation_postcode: "请只输入5位数字",
-    validation_phone_number: "请输入格式为012-3456789的有效电话号码",
+    validation_phone_number: "请输入格式为0123456789的有效电话号码",
     validation_email: "请输入有效的电子邮件地址",
     validation_tnc: "必须同意条款和条件才能继续",
     string_minimum_rating: "最低標準為一颗星。",

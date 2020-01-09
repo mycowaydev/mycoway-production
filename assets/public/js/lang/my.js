@@ -125,7 +125,7 @@ var language_my = {
     string_cart_is_empty: "senarai membeli-belah kosong",
     validation_require_field: "Bidang ini memerlukan",
     validation_postcode: "Sila masukkan hanya 5 digit",
-    validation_phone_number: "Sila masukkan nombor telefon yang sah dalam format 012-3456789",
+    validation_phone_number: "Sila masukkan nombor telefon yang sah dalam format 0123456789",
     validation_email: "Sila masukkan alamat emel yang sah",
     validation_tnc: "Mesti bersetuju syarat dan syarat untuk diteruskan",
     string_minimum_rating: "Kadar minimum adalah satu bintang.",

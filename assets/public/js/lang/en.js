@@ -125,7 +125,7 @@ var language_en = {
     string_cart_is_empty: "cart is empty",
     validation_require_field: "Please fill out this field",
     validation_postcode: "Please only enter 5 digits",
-    validation_phone_number: "Please enter valid phone number in format 012-3456789",
+    validation_phone_number: "Please enter valid phone number in format 0123456789",
     validation_email: "Please enter a valid email address",
     validation_tnc: "Must agree terms and conditions to proceed",
     string_minimum_rating: "Minimum rate is one star.",
