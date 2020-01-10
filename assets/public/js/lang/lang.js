@@ -2,10 +2,10 @@ function getArray(lang){
     if (lang){
         if (lang == "my"){
             return language_my
-        } else if (lang == "cn") {
-            return language_cn
-        } else {
+        } else if (lang == "en") {
             return language_en
+        } else {
+            return language_cn
         }
     }
     return language_en
@@ -31,12 +31,12 @@ function changeFlag(lang){
     $('#selected_language').removeClass('flag-icon-cn')
     $('#selected_language').removeClass('flag-icon-my')
 
-    if (lang == "my"){
-        $('#selected_language').addClass('flag-icon-my')
-    } else if (lang == "cn") {
-        $('#selected_language').addClass('flag-icon-cn')
-    } else {
+    if (lang == "en"){
         $('#selected_language').addClass('flag-icon-gb')
+    } else if (lang == "my") {
+        $('#selected_language').addClass('flag-icon-my')
+    } else {
+        $('#selected_language').addClass('flag-icon-cn')
     }
 }
 

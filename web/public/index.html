@@ -48,6 +48,25 @@
 
     </main>
 
+    <!-- Trigger/Open The Modal -->
+    <button id="myBtn">Open Modal</button>
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close" onclick="closeDefaultLanguage()">&times;</span>
+            <p>默认语言为华语</p>
+            <p>Default language is Chinese</p>
+            <div class="button-row">
+                <button class="gray_btn" onclick="changeLanguage('en');closeDefaultLanguage();">Change to English</button>
+                <button class="primary-btn" onclick="changeLanguage('cn');closeDefaultLanguage();">继续使用华语</button>
+            </div>
+        </div>
+
+    </div>
+
     include includes/footer.html
 
     include includes/script

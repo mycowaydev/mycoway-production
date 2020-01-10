@@ -155,8 +155,6 @@ function addValidationMsg(element, string_classname) {
     showString();
 }
 
-
-
 $(document).ready(function () {
     if (typeof selected_tab !== 'undefined') {
         if (selected_tab) {
@@ -174,3 +172,17 @@ $(".hero-carousel__slide").click(function() {
     window.location = $(this).find("a").attr("href");
     return false;
 });
+
+// default language option popout box
+function closeDefaultLanguage(){
+    modal.style.display = "none";
+}
+var modal = document.getElementById("myModal");
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+if (window.sessionStorage.getItem("language") == null){
+    modal.style.display = "block";
+}

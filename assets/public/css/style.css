@@ -4833,3 +4833,15 @@ a {
 a span {
     color: #0961ef;
 }
+
+.primary-btn {
+    height: 40px;
+    padding: 0px 44px;
+    line-height: 38px;
+    text-transform: capitalize;
+    background: #384aeb;
+    border-radius: 30px;
+    color: #fff;
+    font-weight: 500;
+    border: 1px solid #eeeeee;
+}
