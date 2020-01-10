@@ -41,7 +41,7 @@ function changeFlag(lang){
 }
 
 function showString(){
-    var lang = "en"
+    var lang = "cn"
     if (window.sessionStorage.getItem("language") != null){
         lang = window.sessionStorage.getItem("language")
     }
@@ -58,7 +58,7 @@ function refreshFaq(){
  }
 
 function changeLanguage(in_lang) {
-    var lang = 'en'
+    var lang = 'cn'
     if (in_lang){
         if (in_lang == "my" || in_lang == "cn" || in_lang == "en"){
             lang = in_lang

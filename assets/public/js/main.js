@@ -63,19 +63,19 @@ function getDateFormattedString(epouch) {
 }
 
 function getStringById(id) {
-    var lang = 'en';
+    var lang = 'cn';
 
     if (window.sessionStorage.getItem("language") != null) {
         lang = window.sessionStorage.getItem("language")
     }
 
-    if (lang == "cn") {
-        return language_cn[id];
+    if (lang == "en") {
+        return language_en[id];
     }
     else if (lang == "my") {
         return language_my[id];
     } else {
-        return language_en[id];
+        return language_cn[id];
     }
 }
 
