@@ -176,11 +176,14 @@ $(".hero-carousel__slide").click(function() {
 // default language option popout box
 function closeDefaultLanguage(){
     modal.style.display = "none";
+    if(window.sessionStorage.getItem("language") == null){
+        sessionStorage.setItem("language", 'cn')
+    }
 }
-var modal = document.getElementById("myModal");
+var modal = document.getElementById("defaultLanguageModal");
 window.onclick = function(event) {
   if (event.target == modal) {
-    modal.style.display = "none";
+    closeDefaultLanguage();
   }
 }
 if (window.sessionStorage.getItem("language") == null){
