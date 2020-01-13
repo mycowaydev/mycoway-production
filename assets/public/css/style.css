@@ -478,7 +478,7 @@ a {
 		left: 5px
 	}
 	.header_area .navbar {
-		background: #ffffff
+
 	}
 	.navbar-toggler[aria-expanded="false"] span:nth-child(2) {
 		opacity: 1
@@ -4168,18 +4168,6 @@ a {
 	left: 240px
 }
 
-.gray_btn {
-	line-height: 38px;
-	background: #f1f6f7;
-	border: 1px solid #eeeeee;
-	border-radius: 30px;
-	padding: 0px 44px;
-	display: inline-block;
-	color: #222;
-	text-transform: capitalize;
-	font-weight: 500
-}
-
 .product_image_area {
 	padding-top: 20px
 }
@@ -4834,16 +4822,28 @@ a span {
     color: #0961ef;
 }
 
+.gray_btn {
+    padding-top: 6px;
+    padding-bottom: 6px;
+	background: #f1f6f7;
+	border: 1px solid #eeeeee;
+	border-radius: 30px;
+	display: inline-block;
+	color: #222;
+	text-transform: capitalize;
+	font-weight: 500
+}
+
 .primary-btn {
-    height: 40px;
-    padding: 0px 44px;
-    line-height: 38px;
-    text-transform: capitalize;
+    padding-top: 6px;
+    padding-bottom: 6px;
     background: #384aeb;
-    border-radius: 30px;
-    color: #fff;
-    font-weight: 500;
     border: 1px solid #eeeeee;
+    border-radius: 30px;
+    display: inline-block;
+    color: #fff;
+    text-transform: capitalize;
+    font-weight: 500;
 }
 
 /* The Modal (background) */
@@ -4890,7 +4890,30 @@ a span {
     margin-top: 50px;
 }
 
+.language-modal-content button {
+    width: 80%;
+    margin: 5px 0 5px 0
+}
+
 .language-modal-content p {
     color: #000;
     font-size: 20px;
+}
+
+@media (max-width: 1000px) {
+	.language-modal-content {
+	    margin: 20% auto;
+	    width: 60%;
+		font-size: 15px
+	}
+
+	.language-modal-content p {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 275px) {
+    .language-modal-content button {
+        border-radius: 25px;
+    }
 }
