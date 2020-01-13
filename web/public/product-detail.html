@@ -48,7 +48,6 @@
                   <div class="s_product_text">
                      <h1 id="txtProductName" style="margin-bottom: 10px"></h1>
                      <div id="priceInfo" style="margin-bottom: 10px"></div>
-                     <div class='product_payment' style="margin-bottom: 10px">
                         <table>
                            <tr>
                               <td>
@@ -58,14 +57,12 @@
                                  <span style="margin: 10px"></span>
                               </td>
                               <td>
-                                 <select name="payment" id="ddlPayment">
-                                 </select>
+                                 <div class='product_payment' style="margin-bottom: 10px">
+                                    <select name="payment" id="ddlPayment" style="height: 42px">
+                                    </select>
+                                 </div>
                               </td>
                            </tr>
-                        </table>
-                     </div>
-                     <div class='product_count' style="margin-bottom: 10px">
-                        <table>
                            <tr>
                               <td>
                                  <span for="qty" class="string_quantity"></span>
@@ -74,8 +71,8 @@
                                  <span style="margin: 10px"></span>
                               </td>
                               <td>
-                                 <div>
-                                    <input class='input-text qty' style="height: 42px" id='txtProductQty' maxlength='3' name='qty' title='Quantity:' type='text' value='1'>
+                                 <div class='product_count' style="margin-bottom: 10px">
+                                    <input class='input-text qty' style="height: 42px; width: 80px" id='txtProductQty' maxlength='3' name='qty' title='Quantity:' type='text' value='1'>
                                     <button class='increase items-count' id="btnIncProductQty" type='button'>
                                        <i class='lnr lnr-chevron-up'></i>
                                     </button>
@@ -86,7 +83,6 @@
                               </td>
                            </tr>
                         </table>
-                     </div>
                      <div>
                         <button type="button" class="button primary-btn string_add_to_cart" id="btnAddCart"></button>
                      </div>
@@ -107,6 +103,8 @@
                </ul>
                <div class="tab-content" id="myTabContent">
                   <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
+                     <div id="descriptionChild" class="s_product_text">
+                     </div>
                   </div>
                   <div class="tab-pane fade" id="gallery" role="tabpanel" aria-labelledby="gallery-tab">
                      <div id="galleryVideo" class="s_product_text">

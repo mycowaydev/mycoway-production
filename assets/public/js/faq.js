@@ -1,8 +1,6 @@
 var faq_json_url = 'res/faq-en.json';
-if (window.sessionStorage.getItem("language") == "en"){
-    faq_json_url = 'res/faq-en.json';
-} else if (window.sessionStorage.getItem("language") == "my") {
-    faq_json_url = 'res/faq-my.json';
+if (window.sessionStorage.getItem("language") == "cn") {
+    faq_json_url = 'res/faq-cn.json';
 } else {
     faq_json_url = 'res/faq-en.json';
 }

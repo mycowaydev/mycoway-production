@@ -12,7 +12,7 @@
             "line": "<ul><li><a href='/water-purifier'>Water Purifier</a></li><li><a href='/air-purifier'>Air Purifier</a></li></ul>"
           },
           {
-            "line": "If you need more information, <a class='call-us'>call us</a> or leave us your number and we will call you!"
+            "line": "If you need more information, call us or leave us your number and we will call you!"
           }
         ]
       }, {
@@ -47,7 +47,7 @@
         "question": " How do I renew my Service Membership? ",
         "answer": [
           {
-            "line": "Simply provide us your details <a href=\"https://www.coway.com.my/loyalty-programme\">here</a> and our service team will contact you as soon as possible for your renewal request. You may also contact your respective CODY for service membership renewal assistance."
+            "line": "Simply provide us your details <a href=\"https://www.facebook.com/www.mycoway.com.my\">here</a> and our service team will contact you as soon as possible for your renewal request. You may also contact your respective CODY for service membership renewal assistance."
           }
         ]
       }, {

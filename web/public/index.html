@@ -11,16 +11,9 @@
     include includes/header.html
 
     <main class="site-main">
+        <a href="promotion"><img src="img/mycoway_main.jpg" class="main-banner"></a>
 
-        <section class="main-banner">
-            <img src="img/coway-1million-home-in-malaysia-text.png" class="main-banner-text">
-            <div class="main-banner-description">
-                <h2 class="string_promo_code" id="promo-code"></h2>
-                <h4 class="string_promo_code_desc" id="promo-code-desc"></h4>
-            </div>
-        </section>
-
-        <section class="quick-link-img mt-0 mb-4">
+        <section div="link_panel" class="quick-link-img mt-0 mb-4">
             <div class="owl-carousel owl-theme hero-carousel">
                 <div class="hero-carousel__slide">
                     <img src="img/coway/water-purifier-intro.jpg" alt="" class="img-fluid">
@@ -43,6 +36,23 @@
                         <p class="string_promotion_slogan"></p>
                     </a>
                 </div>
+                <div class="hero-carousel__slide">
+                    <img src="img/coway/review-intro.jpg" alt="" class="img-fluid">
+                    <a href="review" class="hero-carousel__slideOverlay">
+                        <h3 class="string_reviews"></h3>
+                        <p class="string_reviews"></p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <br/>
+
+        <section class="quick-link-img mt-0 mb-4">
+            <hr>
+            <h3 class="string_promotion"></h3>
+            <hr>
+            <div id="promotion_panel_detail" class="owl-carousel owl-theme hero-carousel">
             </div>
         </section>
 
@@ -51,6 +61,8 @@
     include includes/footer.html
 
     include includes/script
+
+    <script src="js/index.js"></script>
 
     include includes/language
     include includes/messenger.html

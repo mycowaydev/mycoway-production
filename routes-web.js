@@ -139,6 +139,7 @@ module.exports = function (apiVersion) {
 	router.get('/', function (req, res) {
 		localVar['selected_tab'] = 'tab-home';
 		public_log(req, res, 'index');
+		localVar['getJsonFile'] = 'res/promotion.json';
 		res.render(path.join(__dirname, '/web/public/index'), localVar);
 	});
 
@@ -153,6 +154,7 @@ module.exports = function (apiVersion) {
 		switch (page) {
 			case 'index':
 				localVar['selected_tab'] = 'tab-home';
+				localVar['getJsonFile'] = 'res/promotion.json';
 				public_log(req, res, 'index');
 				break;
 			case 'air-purifier':

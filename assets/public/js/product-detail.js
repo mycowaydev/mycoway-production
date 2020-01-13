@@ -100,14 +100,14 @@ function loadProductDetail(productList) {
         });
 
         $('#txtProductName').text(product.name)
-        $('#description').append(product.desc)
+        $('#descriptionChild').append(product.desc)
 
-        if (product.price.original_price)
-            addPriceInfo('string_original_price', product.price.original_price, true)
-        if (product.price.retail_price)
-            addPriceInfo('string_retail_price', product.price.retail_price, false)
         if (product.price.rental_price)
             addPriceInfo('string_rental_price', product.price.rental_price, false)
+        if (product.price.retail_price)
+            addPriceInfo('string_retail_price', product.price.retail_price, false)
+        if (product.price.original_price)
+            addOriginalPriceInfo('string_original_price', product.price.original_price, true)
 
         var paymentType = getStringById('string_payment_method')
         product.payment_type.forEach(payment => {
@@ -137,7 +137,18 @@ function addPriceInfo(priceTag, price, strikeFlag) {
         '<span>' + getStringById(priceTag) + '</span>' +
         '<span>' + price + '</span>' +
         (strikeFlag ? '</strike>' : '') +
-        '</h2 >'
+        '</h2>'
+    );
+}
+
+function addOriginalPriceInfo(priceTag, price, strikeFlag) {
+    $('#priceInfo').append(
+        '<span>' +
+        (strikeFlag ? '<strike>' : '') +
+        '<span>' + getStringById(priceTag) + '</span>' +
+        '<span>' + price + '</span>' +
+        (strikeFlag ? '</strike>' : '') +
+        '</span>'
     );
 }
 
