@@ -56,7 +56,8 @@ function loadProductList(productList) {
     });
 
     $('#promotion_panel_detail').trigger('refresh.owl.carousel')
-    $('#promotion_panel_detail').trigger('play.owl.autoplay',[3000])
+    //$('#promotion_panel_detail').trigger('play.owl.autoplay',[3000])
+    $('.owl-carousel').trigger('play.owl.autoplay',[3000])
 }
 
 $(document).ready(function () {
