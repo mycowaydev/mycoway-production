@@ -39,6 +39,11 @@ function hidePromotionList() {
 }
 
 function loadProductList(productList) {
+    if(productList.length <= 0) {
+        hidePromotionList();
+        return;
+    }
+    
     productList.forEach(product => {
         $('#promotion_panel_detail').trigger('add.owl.carousel',
         '<div class="hero-carousel__slide">' +
