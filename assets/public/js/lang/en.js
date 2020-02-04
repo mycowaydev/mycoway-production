@@ -95,9 +95,9 @@ var language_en = {
     string_no_product_selected: "No product in cart.",
     string_original_price: "Original Price: RM ",
     string_rental_price: "Monthly Rental: RM ",
-    string_retail_price: "Retail Price: RM ",
+    string_retail_price: "Outright (Buy): RM ",
     string_payment_method: {
-        'P': 'Retail',
+        'P': 'Outright (Buy)',
         'R': 'Rental'
     },
     string_order_no: "Order No",
@@ -136,6 +136,7 @@ var language_en = {
     string_charges: "Charges",
     string_apply: "Apply",
     string_total: "Total",
+    string_promotion_alert: "* Key in representative code from your agent, or Default code is AW0001 *",
     placeholder_voucher_code: "Enter Voucher Code",
     validation_voucher_code_invalid: "Voucher Code Not Valid",
     string_next: "Next",

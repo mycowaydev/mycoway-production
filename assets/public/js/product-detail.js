@@ -120,8 +120,13 @@ function loadProductDetail(productList) {
         product.gallery.forEach(gallery => {
             var youtubeVideoId = gallery.match(/(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/);
             if (youtubeVideoId != null) {
-                var video_thumbnail = 'https://img.youtube.com/vi/' + youtubeVideoId[1] + '/0.jpg';
-                $('#galleryVideo').append('<a href="' + gallery + '" data-toggle="lightbox" data-gallery="productGalleryVideo" class="col-sm-3"><img class="img-fluid" src="' + video_thumbnail + '" /></a>');
+                var url = 'https://www.youtube.com/watch?v=' + youtubeVideoId[1];
+
+                $.getJSON('https://noembed.com/embed',
+                    {format: 'json', url: url}, function (data) {
+                    var video_thumbnail = 'https://img.youtube.com/vi/' + youtubeVideoId[1] + '/0.jpg';
+                    $('#galleryVideo').append('<a href="' + gallery + '" data-toggle="lightbox" data-gallery="productGalleryVideo" class="col-sm-3"><img class="img-fluid" src="' + video_thumbnail + '" /><div style="text-align: center; margin: 10px"><span>' + data.title + '</span></div></a>');    
+                });
             } else {
                 //$('#galleryImage').append('<a href="' + gallery + '" data-toggle="lightbox" data-gallery="productGalleryImage" class="col-sm-3"><img class="img-fluid" src="' + gallery + '" /></a>');
             }

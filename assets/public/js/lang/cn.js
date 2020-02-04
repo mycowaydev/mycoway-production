@@ -95,9 +95,9 @@ var language_cn = {
     string_no_product_selected: "购物车中没有产品。",
     string_original_price: "原价: RM ",
     string_rental_price: "每月租金: RM ",
-    string_retail_price: "零售价: RM ",
+    string_retail_price: "购买: RM ",
     string_payment_method: {
-        'P': '直购',
+        'P': '购买',
         'R': '租金'
     },
     string_order_no: "订单号",
@@ -136,6 +136,7 @@ var language_cn = {
     string_charges: "其他收费",
     string_apply: "確定",
     string_total: "总额",
+    string_promotion_alert: "* 请输入代码来之各自销售代理,或者输入默认代码AW001 *",
     placeholder_voucher_code: "输入折扣验证码",
     validation_voucher_code_invalid: "折扣验证码不存在",
     string_next: "下一步",
