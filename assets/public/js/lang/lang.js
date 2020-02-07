@@ -51,7 +51,7 @@ function showString(){
 
 function refreshFaq(){
      if (typeof selected_tab !== 'undefined') {
-         if (selected_tab == 'tab-faq') {
+         if (selected_tab == 'tab-faq' || selected_tab == 'tab-shop') {
              document.location.reload();
          }
      }
