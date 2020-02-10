@@ -43,7 +43,7 @@ function loadProductList(productList) {
         hidePromotionList();
         return;
     }
-    
+
     productList.forEach(product => {
         $('#promotion_panel_detail').trigger('add.owl.carousel',
         '<div class="hero-carousel__slide">' +
@@ -58,6 +58,11 @@ function loadProductList(productList) {
     $('#promotion_panel_detail').trigger('refresh.owl.carousel')
     //$('#promotion_panel_detail').trigger('play.owl.autoplay',[3000])
     $('.owl-carousel').trigger('play.owl.autoplay',[3000])
+
+    $(".hero-carousel__slide").click(function() {
+        window.location = $(this).find("a").attr("href");
+        return false;
+    });
 }
 
 $(document).ready(function () {

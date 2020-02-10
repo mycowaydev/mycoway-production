@@ -136,7 +136,7 @@ var language_en = {
     string_charges: "Charges",
     string_apply: "Apply",
     string_total: "Total",
-    string_promotion_alert: "* Key in representative code from your agent, or Default code is AW0001 *",
+    string_promotion_alert: "* Key in representative code from your agent, or Default code is AW001 *",
     placeholder_voucher_code: "Enter Voucher Code",
     validation_voucher_code_invalid: "Voucher Code Not Valid",
     string_next: "Next",
