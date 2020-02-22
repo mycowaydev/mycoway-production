@@ -4821,8 +4821,7 @@ a span {
 }
 
 .gray_btn {
-    padding-top: 6px;
-    padding-bottom: 6px;
+	padding: 6px 44px;
 	background: #f1f6f7;
 	border: 1px solid #eeeeee;
 	border-radius: 30px;
@@ -4836,6 +4835,18 @@ a span {
     padding-top: 6px;
     padding-bottom: 6px;
     background: #384aeb;
+    border: 1px solid #eeeeee;
+    border-radius: 30px;
+    display: inline-block;
+    color: #fff;
+    text-transform: capitalize;
+    font-weight: 500;
+}
+
+.secondary-btn {
+    padding-top: 6px;
+    padding-bottom: 6px;
+    background: #7e89f2;
     border: 1px solid #eeeeee;
     border-radius: 30px;
     display: inline-block;
@@ -4914,4 +4925,10 @@ a span {
     .language-modal-content button {
         border-radius: 25px;
     }
+}
+
+.grid-button {
+    display: grid;
+    width: 60%;
+    grid-row-gap: 5px;
 }

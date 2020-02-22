@@ -1,6 +1,6 @@
 var const_array = {
-    const_phone_number: '011-6290 7381<br/>016-935 1323',
-    const_email_address: 'mycoway.com.my@gmail.com'
+    const_phone_number: '017-228 8377',
+    const_email_address: 'https://www.facebook.com/www.mycoway.com.my'
 }
 
 for (k in const_array) {
