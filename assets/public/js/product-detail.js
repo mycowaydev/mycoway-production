@@ -167,7 +167,7 @@ function buttonBehavior() {
         addToCart();
     });
     $("#btnCheckPromotion").click(function () {
-        var win = window.open('https://wa.me/60172288377', '_blank');
+        var win = window.open('https://wa.me/60172288377?text=Hi%20CowayTeam.%20Tell%20me%20more%20about', '_blank');
         win.focus();
     });
     $("#btnIncProductQty").click(function () {
